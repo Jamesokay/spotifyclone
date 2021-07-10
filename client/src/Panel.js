@@ -8,7 +8,7 @@ export default function panel(props) {
     return (
       <CardGroup>
       {content.map(cont =>
-        <Card>
+        <Card key={cont.key}>
           <Card.Img variant="top" src={cont.imgUrl} />
            <Card.Title>{cont.name}</Card.Title>
         </Card>
