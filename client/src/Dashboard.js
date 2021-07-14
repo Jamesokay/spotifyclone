@@ -23,6 +23,7 @@ export default function Dashboard(props) {
     useEffect(() => {
       if (!accessToken) return 
 
+      // Top Artists
       spotifyApi.getMyTopArtists({limit : 5})
         .then(data => {
           setTopArtists(data.body.items.map(artist => {
@@ -37,23 +38,68 @@ export default function Dashboard(props) {
          console.log(error)
       })
       
-      // successfully grabs the playlistId and adds it to array
-      spotifyApi.getMyRecentlyPlayedTracks({limit : 4})
+      // Recent Contexts
+      spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
       .then(data => {
-         data.body.items.forEach(item => {
-           if (!item.context) {
-             return
-           } else if (item.context.type === "playlist") {
-              setRecent(recent => [...recent, item.context.uri.substr(17)])
+        
+        const recentIds = []
+      
+        data.body.items.forEach(item => {
+
+          if (!item.context) {            
+            return          
+          } 
+          else if (item.context.type === "playlist" && !recentIds.includes(item.context.uri.substr(17))) {
+            recentIds.push(item.context.uri.substr(17))
+      
+            spotifyApi.getPlaylist(item.context.uri.substr(17))
+            .then(data => {             
+              let obj = {
+                key: data.body.id,
+                name: data.body.name,
+                imgUrl: data.body.images[0].url
+              }
+              setRecent(recent => [...recent, obj])              
+            })
               return
-           }
-         })
+          }
+          else if (item.context.type === 'album' && !recentIds.includes(item.track.album.id)) {
+            recentIds.push(item.track.album.id)
+           
+              let obj = {
+                key: item.track.album.id,
+                name: item.track.album.name,
+                imgUrl: item.track.album.images[0].url
+              }
+              setRecent(recent => [...recent, obj])
+              return        
+          }
+          else if (item.context.type === 'artist' && !recentIds.includes(item.track.artists[0].id)) {
+            recentIds.push(item.track.artists[0].id)
+      
+            spotifyApi.getArtist(item.track.artists[0].id)
+            .then(data => {
+              let obj = {
+                key: data.body.id,
+                name: data.body.name,
+                imgUrl: data.body.images[0].url
+              }
+              setRecent(recent => [...recent, obj])
+            })
+            return
+          } 
         })
+      })
          .catch(error => {
           console.log(error)
        })
 
     }, [accessToken])
+
+    useEffect(() => {
+      if (!recent) return
+      console.log(recent)
+    }, [recent])
     
     
    
@@ -62,7 +108,7 @@ export default function Dashboard(props) {
     <div>
     <Container>
       <Panel props={topArtists} />
-      <h3>{recent}</h3>
+      <Panel props={recent.slice(0, 5)} />
     </Container>
     </div>
     )
