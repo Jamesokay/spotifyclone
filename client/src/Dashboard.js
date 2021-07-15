@@ -14,6 +14,7 @@ export default function Dashboard(props) {
     const accessToken = useAuth(code)
     const [topArtists, setTopArtists] = useState([])
     const [recent, setRecent] = useState([])
+    const [moreLike, setMoreLike] = useState([])
 
     useEffect(() => {
         if (!accessToken) return
@@ -23,9 +24,9 @@ export default function Dashboard(props) {
     useEffect(() => {
       if (!accessToken) return 
 
-      // Top Artists
+      // Top Artists - extract
       spotifyApi.getMyTopArtists({limit : 5})
-        .then(data => {
+      .then(data => {
           setTopArtists(data.body.items.map(artist => {
             return {
               key: artist.id,
@@ -33,12 +34,12 @@ export default function Dashboard(props) {
               imgUrl: artist.images[0].url
             }
           }))
-        }) 
+        })
       .catch(error => {
          console.log(error)
       })
       
-      // Recent Contexts
+      // Recent Contexts - extract 
       spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
       .then(data => {
         
@@ -97,18 +98,30 @@ export default function Dashboard(props) {
     }, [accessToken])
 
     useEffect(() => {
-      if (!recent) return
-      console.log(recent)
-    }, [recent])
+      if (!accessToken) return
+      if (topArtists[0] === undefined) return
+      // Can put the 'Essential artistX' logic here too
+
+      spotifyApi.getArtistRelatedArtists(topArtists[0].key)
+      .then(data => {
+        setMoreLike(data.body.artists.map(artist => {
+          return {
+            key: artist.id,
+            name: artist.name,
+            imgUrl: artist.images[0].url
+          }
+        }))
+      })
+
+    }, [accessToken, topArtists])
     
-    
-   
     
     return (
     <div>
     <Container>
       <Panel props={topArtists} />
       <Panel props={recent.slice(0, 5)} />
+      <Panel props={moreLike.slice(0, 5)} />
     </Container>
     </div>
     )

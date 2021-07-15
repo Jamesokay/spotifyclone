@@ -2,6 +2,8 @@ import React from 'react'
 import { Card, CardGroup } from 'react-bootstrap'
 
 export default function panel(props) {
+    
+  if (!props) return
 
     const content = props.props
     
