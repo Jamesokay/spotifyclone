@@ -9,12 +9,12 @@ const spotifyApi = new SpotifyWebApi({
     clientId: 'e39d5b5b499d4088a003eb0471c537bb'
  })
 
-export default function Dashboard(props) {
-    const code = props.code
+export default function Dashboard({ code }) {
     const accessToken = useAuth(code)
     const [topArtists, setTopArtists] = useState([])
     const [recent, setRecent] = useState([])
     const [moreLike, setMoreLike] = useState([])
+    const [essentialArtist, setEssentialArtist] = useState([])
 
     useEffect(() => {
         if (!accessToken) return
@@ -100,7 +100,7 @@ export default function Dashboard(props) {
     useEffect(() => {
       if (!accessToken) return
       if (topArtists[0] === undefined) return
-      // Can put the 'Essential artistX' logic here too
+      if (topArtists[2] === undefined) return
 
       spotifyApi.getArtistRelatedArtists(topArtists[0].key)
       .then(data => {
@@ -112,6 +112,23 @@ export default function Dashboard(props) {
           }
         }))
       })
+      .catch(error => {
+        console.log(error)
+     })
+
+      spotifyApi.getArtistAlbums(topArtists[2].key)
+      .then(data => {
+        setEssentialArtist(data.body.items.map(album => {
+          return {
+            key: album.id,
+            name: album.name,
+            imgUrl: album.images[0].url
+          }
+        }))
+      })
+      .catch(error => {
+        console.log(error)
+      })
 
     }, [accessToken, topArtists])
     
@@ -119,9 +136,10 @@ export default function Dashboard(props) {
     return (
     <div>
     <Container>
-      <Panel props={topArtists} />
-      <Panel props={recent.slice(0, 5)} />
-      <Panel props={moreLike.slice(0, 5)} />
+      <Panel name='Top Artists' content={topArtists} />
+      <Panel name='Recently Played' content={recent.slice(0, 5)} />
+      <Panel name='More Like That Artist You Like' content={moreLike.slice(0, 5)} />
+      <Panel name='Essential Somebody' content={essentialArtist.slice(0, 5)} />
     </Container>
     </div>
     )
