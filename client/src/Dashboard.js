@@ -15,10 +15,12 @@ export default function Dashboard({ code }) {
     const [recent, setRecent] = useState([])
     const [moreLike, setMoreLike] = useState([])
     const [essentialArtist, setEssentialArtist] = useState([])
+    const [recommend, setRecommend] = useState([])
 
     useEffect(() => {
         if (!accessToken) return
         spotifyApi.setAccessToken(accessToken)
+        localStorage.setItem('access', accessToken)
     }, [accessToken])
 
     useEffect(() => {
@@ -99,8 +101,8 @@ export default function Dashboard({ code }) {
 
     useEffect(() => {
       if (!accessToken) return
-      if (topArtists[0] === undefined) return
-      if (topArtists[2] === undefined) return
+     // if (topArtists[0] === undefined) return
+      if (topArtists[4] === undefined) return
 
       spotifyApi.getArtistRelatedArtists(topArtists[0].key)
       .then(data => {
@@ -115,7 +117,7 @@ export default function Dashboard({ code }) {
       .catch(error => {
         console.log(error)
      })
-
+      // these are structurally identical, just with different functions called
       spotifyApi.getArtistAlbums(topArtists[2].key)
       .then(data => {
         setEssentialArtist(data.body.items.map(album => {
@@ -125,6 +127,29 @@ export default function Dashboard({ code }) {
             imgUrl: album.images[0].url
           }
         }))
+      })
+      .catch(error => {
+        console.log(error)
+      })
+      
+      // Recommended For You
+      spotifyApi.getRecommendations({
+        seed_artists: [topArtists[3].key, topArtists[4].key],
+        min_popularity: 50
+      })
+      .then(data => {
+        data.body.tracks.forEach(item => {
+          spotifyApi.getArtist(item.artists[0].id)
+          .then(data => {
+            let obj = {
+              key: data.body.id,
+              name: data.body.name,
+              imgUrl: data.body.images[0].url
+            }
+            setRecommend(recommend => [...recommend, obj])
+            return
+          })
+        })
       })
       .catch(error => {
         console.log(error)
@@ -140,6 +165,7 @@ export default function Dashboard({ code }) {
       <Panel name='Recently Played' content={recent.slice(0, 5)} />
       <Panel name='More Like That Artist You Like' content={moreLike.slice(0, 5)} />
       <Panel name='Essential Somebody' content={essentialArtist.slice(0, 5)} />
+      <Panel name='Recommended For You' content={recommend.slice(0, 5)} />
     </Container>
     </div>
     )
