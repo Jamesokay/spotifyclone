@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap'
 import { useState, useEffect } from 'react'
 import useAuth from './useAuth'
 import Panel from './Panel'
+import getDataObject from './getDataObject'
 
 const spotifyApi = new SpotifyWebApi({
     clientId: 'e39d5b5b499d4088a003eb0471c537bb'
@@ -26,29 +27,27 @@ export default function Dashboard({ code }) {
     useEffect(() => {
       if (!accessToken) return 
 
-      // Top Artists - extract
+      // Top Artists
       spotifyApi.getMyTopArtists({limit : 5})
       .then(data => {
-          setTopArtists(data.body.items.map(artist => {
-            return {
-              key: artist.id,
-              name: artist.name,
-              imgUrl: artist.images[0].url
-            }
-          }))
+          setTopArtists(data.body.items.map(getDataObject))
         })
       .catch(error => {
          console.log(error)
       })
       
-      // Recent Contexts - extract 
+      // Recent Contexts 
       spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
       .then(data => {
         
         const recentIds = []
       
         data.body.items.forEach(item => {
-
+        // below logic can be extracted, provided we can get accessToken from localStorage
+        // ah, but the problem of recentIds dependency
+        // simply move it to the above then()? 
+        // but then how to return recent? Place all inside setRecent?
+        // the function needs to return whatever the recent array should be
           if (!item.context) {            
             return          
           } 
@@ -57,23 +56,14 @@ export default function Dashboard({ code }) {
       
             spotifyApi.getPlaylist(item.context.uri.substr(17))
             .then(data => {             
-              let obj = {
-                key: data.body.id,
-                name: data.body.name,
-                imgUrl: data.body.images[0].url
-              }
+              let obj = getDataObject(data)
               setRecent(recent => [...recent, obj])              
             })
               return
           }
           else if (item.context.type === 'album' && !recentIds.includes(item.track.album.id)) {
-            recentIds.push(item.track.album.id)
-           
-              let obj = {
-                key: item.track.album.id,
-                name: item.track.album.name,
-                imgUrl: item.track.album.images[0].url
-              }
+            recentIds.push(item.track.album.id)   
+              let obj = getDataObject(item.track.album)
               setRecent(recent => [...recent, obj])
               return        
           }
@@ -82,11 +72,7 @@ export default function Dashboard({ code }) {
       
             spotifyApi.getArtist(item.track.artists[0].id)
             .then(data => {
-              let obj = {
-                key: data.body.id,
-                name: data.body.name,
-                imgUrl: data.body.images[0].url
-              }
+              let obj = getDataObject(data)
               setRecent(recent => [...recent, obj])
             })
             return
@@ -101,32 +87,21 @@ export default function Dashboard({ code }) {
 
     useEffect(() => {
       if (!accessToken) return
-     // if (topArtists[0] === undefined) return
       if (topArtists[4] === undefined) return
-
+      
+      // More Like Artist
       spotifyApi.getArtistRelatedArtists(topArtists[0].key)
       .then(data => {
-        setMoreLike(data.body.artists.map(artist => {
-          return {
-            key: artist.id,
-            name: artist.name,
-            imgUrl: artist.images[0].url
-          }
-        }))
+        setMoreLike(data.body.artists.map(getDataObject))
       })
       .catch(error => {
         console.log(error)
      })
-      // these are structurally identical, just with different functions called
+      
+      // Essential Artist
       spotifyApi.getArtistAlbums(topArtists[2].key)
       .then(data => {
-        setEssentialArtist(data.body.items.map(album => {
-          return {
-            key: album.id,
-            name: album.name,
-            imgUrl: album.images[0].url
-          }
-        }))
+        setEssentialArtist(data.body.items.map(getDataObject))
       })
       .catch(error => {
         console.log(error)
@@ -141,13 +116,8 @@ export default function Dashboard({ code }) {
         data.body.tracks.forEach(item => {
           spotifyApi.getArtist(item.artists[0].id)
           .then(data => {
-            let obj = {
-              key: data.body.id,
-              name: data.body.name,
-              imgUrl: data.body.images[0].url
-            }
+            let obj = getDataObject(data)
             setRecommend(recommend => [...recommend, obj])
-            return
           })
         })
       })
