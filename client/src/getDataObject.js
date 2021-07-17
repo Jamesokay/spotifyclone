@@ -1,4 +1,3 @@
-
 export default function getDataObject(dataObject) {
     
     if (dataObject.body) {
