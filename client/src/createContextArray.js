@@ -13,7 +13,7 @@ export default function createContextArray(dataItems) {
     const recentIds = []
 
     dataItems.forEach(item => {
-       if (!item.context) {            
+        if (!item || !item.context) {            
           return     
         }
         else if (item.context.type === "playlist" && !recentIds.includes(item.context.uri.substr(17))) {
@@ -23,10 +23,13 @@ export default function createContextArray(dataItems) {
           .then(data => {             
             recent.push(getDataObject(data))              
           })
+          .catch(error => {
+            console.log(error)
+          })
         }
         else if (item.context.type === 'album' && !recentIds.includes(item.track.album.id)) {
-          recentIds.push(item.track.album.id)   
-            recent.push(getDataObject(item.track.album))       
+          recentIds.push(item.track.album.id)  
+          recent.push(getDataObject(item.track.album))       
         }
         else if (item.context.type === 'artist' && !recentIds.includes(item.track.artists[0].id)) {
           recentIds.push(item.track.artists[0].id)
@@ -34,6 +37,9 @@ export default function createContextArray(dataItems) {
           spotifyApi.getArtist(item.track.artists[0].id)
           .then(data => {
             recent.push(getDataObject(data)) 
+          })
+          .catch(error => {
+            console.log(error)
           })
         } 
       })

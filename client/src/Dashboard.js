@@ -41,18 +41,23 @@ export default function Dashboard({ code }) {
       spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
       .then(data => 
         setRecent(createContextArray(data.body.items)))
+      .catch(error => {
+        console.log(error)
+      })
 
     }, [accessToken])
 
-    useEffect(() => {
-      if (!recent) return
-      if (!accessToken) return
-      console.log(recent)
-    }, [recent, accessToken])
+//    useEffect(() => {
+//      if (!recent) return
+//      if (!accessToken) return
+//      console.log(recent)
+//    }, [recent, accessToken])
 
     useEffect(() => {
       if (!accessToken) return
+      if (topArtists[0] === undefined) return
       if (topArtists[4] === undefined) return
+      // lack of check for [3] and [4], yet working perfectly...
       
       // More Like Artist
       spotifyApi.getArtistRelatedArtists(topArtists[0].key)
@@ -64,7 +69,7 @@ export default function Dashboard({ code }) {
      })
       
       // Essential Artist
-      spotifyApi.getArtistAlbums(topArtists[2].key)
+      spotifyApi.getArtistAlbums(topArtists[3].key)
       .then(data => {
         setEssentialArtist(data.body.items.map(getDataObject))
       })
@@ -74,7 +79,7 @@ export default function Dashboard({ code }) {
       
       // Recommended For You
       spotifyApi.getRecommendations({
-        seed_artists: [topArtists[3].key, topArtists[4].key],
+        seed_artists: [topArtists[2].key, topArtists[4].key],
         min_popularity: 50
       })
       .then(data => {
@@ -97,10 +102,10 @@ export default function Dashboard({ code }) {
     <div>
     <Container>
       <Panel name='Top Artists' content={topArtists} />
-      <Panel name='Recently Played' content={recent.slice(0, 5)} />
+      <Panel name='Recent' content={recent.slice(0, 5)} />
       <Panel name='More Like That Artist You Like' content={moreLike.slice(0, 5)} />
       <Panel name='Essential Somebody' content={essentialArtist.slice(0, 5)} />
-      <Panel name='Recommended For You' content={recommend.slice(0, 5)} />
+      <Panel name='Recommended' content={recommend.slice(0, 5)} />
     </Container>
     </div>
     )
