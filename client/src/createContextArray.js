@@ -7,15 +7,12 @@ const spotifyApi = new SpotifyWebApi({
 
 spotifyApi.setAccessToken(localStorage.getItem('access'))
 
-export default function createContextArray() {
+export default function createContextArray(dataItems) {
     
     const recent = []
     const recentIds = []
 
-    spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
-    .then(data => {
-    
-      data.body.items.forEach(item => {
+    dataItems.forEach(item => {
        if (!item.context) {            
           return     
         }
@@ -24,29 +21,22 @@ export default function createContextArray() {
     
           spotifyApi.getPlaylist(item.context.uri.substr(17))
           .then(data => {             
-            let obj = getDataObject(data)
-            recent.push(obj)              
+            recent.push(getDataObject(data))              
           })
         }
         else if (item.context.type === 'album' && !recentIds.includes(item.track.album.id)) {
           recentIds.push(item.track.album.id)   
-            let obj = getDataObject(item.track.album)
-            recent.push(obj)       
+            recent.push(getDataObject(item.track.album))       
         }
         else if (item.context.type === 'artist' && !recentIds.includes(item.track.artists[0].id)) {
           recentIds.push(item.track.artists[0].id)
     
           spotifyApi.getArtist(item.track.artists[0].id)
           .then(data => {
-            let obj = getDataObject(data)
-            recent.push(obj) 
+            recent.push(getDataObject(data)) 
           })
         } 
       })
-    })
-    .catch(error => {
-        console.log(error)
-    })
     
     return recent
 }

@@ -38,7 +38,9 @@ export default function Dashboard({ code }) {
       })
       
       // Recent Contexts 
-      setRecent(createContextArray())
+      spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
+      .then(data => 
+        setRecent(createContextArray(data.body.items)))
 
     }, [accessToken])
 
@@ -95,7 +97,7 @@ export default function Dashboard({ code }) {
     <div>
     <Container>
       <Panel name='Top Artists' content={topArtists} />
-      <Panel name='Recently Played' content={recent} />
+      <Panel name='Recently Played' content={recent.slice(0, 5)} />
       <Panel name='More Like That Artist You Like' content={moreLike.slice(0, 5)} />
       <Panel name='Essential Somebody' content={essentialArtist.slice(0, 5)} />
       <Panel name='Recommended For You' content={recommend.slice(0, 5)} />
