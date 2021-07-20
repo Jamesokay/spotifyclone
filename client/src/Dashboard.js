@@ -99,7 +99,7 @@ export default function Dashboard({ code }) {
     
     
     return (
-    <div>
+   
     <Container>
       <Panel name='Top Artists' content={topArtists} />
       <Panel name='Recent' content={recent.slice(0, 5)} />
@@ -107,6 +107,6 @@ export default function Dashboard({ code }) {
       <Panel name='Essential Somebody' content={essentialArtist.slice(0, 5)} />
       <Panel name='Recommended' content={recommend.slice(0, 5)} />
     </Container>
-    </div>
+   
     )
 }
