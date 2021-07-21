@@ -27,10 +27,6 @@ export default function createContextArray(dataItems) {
             console.log(error)
           })
         }
-        else if (item.context.type === 'album' && !recentIds.includes(item.track.album.id)) {
-          recentIds.push(item.track.album.id)  
-          recent.push(getDataObject(item.track.album))       
-        }
         else if (item.context.type === 'artist' && !recentIds.includes(item.track.artists[0].id)) {
           recentIds.push(item.track.artists[0].id)
     
@@ -41,8 +37,13 @@ export default function createContextArray(dataItems) {
           .catch(error => {
             console.log(error)
           })
+        }
+        else if (item.context.type === 'album' && !recentIds.includes(item.track.album.id)) {
+            recentIds.push(item.track.album.id)  
+            recent.push(getDataObject(item.track.album))       
         } 
       })
+
+        return recent
     
-    return recent
 }

@@ -38,19 +38,20 @@ export default function Dashboard({ code }) {
       
       // Recent Contexts 
       spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
-      .then(data => 
-        setRecent(createContextArray(data.body.items)))
+      .then(data => {
+        console.log(data.body.items)
+        setRecent(createContextArray(data.body.items))})
       .catch(error => {
         console.log(error)
       })
 
     }, [accessToken])
 
-//    useEffect(() => {
-//      if (!recent) return
-//      if (!accessToken) return
-//      console.log(recent)
-//    }, [recent, accessToken])
+    useEffect(() => {
+      if (!recent) return
+      if (!accessToken) return
+      console.log(recent)
+    }, [recent, accessToken])
 
     useEffect(() => {
       if (!accessToken) return
@@ -78,7 +79,7 @@ export default function Dashboard({ code }) {
       
       // Recommended For You
       spotifyApi.getRecommendations({
-        seed_artists: [topArtists[2].key, topArtists[4].key],
+        seed_artists: [topArtists[4].key],
         min_popularity: 50
       })
       .then(data => {
@@ -101,7 +102,7 @@ export default function Dashboard({ code }) {
    
     <div>
       <Panel name='Top Artists' content={topArtists} />
-      <Panel name='Recent' content={recent.slice(0, 5)} />
+      <Panel name='Recent' content={recent} />
       <Panel name='More Like That Artist You Like' content={moreLike.slice(0, 5)} />
       <Panel name='Essential Somebody' content={essentialArtist.slice(0, 5)} />
       <Panel name='Recommended' content={recommend.slice(0, 5)} />
