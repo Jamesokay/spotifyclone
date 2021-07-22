@@ -17,9 +17,11 @@ export default function createContextArray(dataItems) {
           return     
         }
         else if (item.context.type === "playlist" && !recentIds.includes(item.context.uri.substr(17))) {
-          recentIds.push(item.context.uri.substr(17))
+          
+          let playlistId = item.context.uri.substr(17)
+          recentIds.push(playlistId)
     
-          spotifyApi.getPlaylist(item.context.uri.substr(17))
+          spotifyApi.getPlaylist(playlistId)
           .then(data => {             
             recent.push(getDataObject(data))              
           })
@@ -43,7 +45,8 @@ export default function createContextArray(dataItems) {
             recent.push(getDataObject(item.track.album))       
         } 
       })
-
+      
+      
         return recent
     
 }

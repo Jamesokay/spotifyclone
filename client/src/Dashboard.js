@@ -14,6 +14,7 @@ export default function Dashboard({ code }) {
     const accessToken = useAuth(code)
     const [topArtists, setTopArtists] = useState([])
     const [recent, setRecent] = useState([])
+    const [recentRaw, setRecentRaw] = useState([])
     const [moreLike, setMoreLike] = useState([])
     const [essentialArtist, setEssentialArtist] = useState([])
     const [recommend, setRecommend] = useState([])
@@ -40,7 +41,8 @@ export default function Dashboard({ code }) {
       spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
       .then(data => {
         console.log(data.body.items)
-        setRecent(createContextArray(data.body.items))})
+        setRecentRaw(createContextArray(data.body.items))
+      })
       .catch(error => {
         console.log(error)
       })
@@ -55,10 +57,13 @@ export default function Dashboard({ code }) {
 
     useEffect(() => {
       if (!accessToken) return
+      if (!recentRaw) return
       if (topArtists[0] === undefined) return
       if (topArtists[4] === undefined) return
       // lack of check for [3] and [4], yet working perfectly...
       
+      // This seperation is important, setRecent needs to be in THIS useEffect to render correctly
+      setRecent(recentRaw)
       // More Like Artist
       spotifyApi.getArtistRelatedArtists(topArtists[0].key)
       .then(data => {
@@ -95,7 +100,7 @@ export default function Dashboard({ code }) {
         console.log(error)
       })
 
-    }, [accessToken, topArtists])
+    }, [accessToken, recentRaw, topArtists])
     
     
     return (

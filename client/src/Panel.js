@@ -4,6 +4,7 @@ import { Container, Card } from 'react-bootstrap'
 export default function panel(props) {
      
     return (
+
       <Container className='d-flex justify-content-between' style={{maxWidth: '1200px'}}>
       {props.content.map(cont =>
         <Card style={{minWidth: '220px', height: '295px', marginTop: '10px', background: '#212121'}} key={cont.key}>
