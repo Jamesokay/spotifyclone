@@ -5,6 +5,7 @@ import useAuth from './useAuth'
 import Panel from './Panel'
 import getDataObject from './getDataObject'
 import createContextArray from './createContextArray'
+import { Container } from 'react-bootstrap'
 
 const spotifyApi = new SpotifyWebApi({
     clientId: 'e39d5b5b499d4088a003eb0471c537bb'
@@ -16,6 +17,7 @@ export default function Dashboard({ code }) {
     const [recent, setRecent] = useState([])
     const [recentRaw, setRecentRaw] = useState([])
     const [moreLike, setMoreLike] = useState([])
+    const [showDash, setShowDash] = useState(true)
 //    const [essentialArtist, setEssentialArtist] = useState([])
 //    const [recommend, setRecommend] = useState([])
 
@@ -105,12 +107,20 @@ export default function Dashboard({ code }) {
     }, [accessToken, topArtists])
     
     
-    return (
-   
-    <div>
-      <Panel name='Recent' content={recent.slice(0, 5)} />
-      <Panel name='More Like That Artist You Like' content={moreLike.slice(0, 5)} />
-    </div>
-   
+    if (showDash) return (
+      <div>
+        <Container className="d-flex justify-content-center align-items-center">
+          <button className='btn btn-dark btn-lg' onClick={() => setShowDash(false)}>HIDE</button>
+        </Container>
+        <Panel name='Recent' content={recent.slice(0, 5)} />
+        <Panel name='More Like That Artist You Like' content={moreLike.slice(0, 5)} />        
+      </div>
     )
+    else return (
+      <Container className="d-flex justify-content-center align-items-center">
+        <h1 style={{color: 'white'}}>Dash Hidden</h1>
+        <p><button className='btn btn-dark btn-lg' onClick={() => setShowDash(true)}>SHOW</button></p>
+      </Container>
+    )
+    
 }
