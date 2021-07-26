@@ -16,8 +16,8 @@ export default function Dashboard({ code }) {
     const [recent, setRecent] = useState([])
     const [recentRaw, setRecentRaw] = useState([])
     const [moreLike, setMoreLike] = useState([])
-    const [essentialArtist, setEssentialArtist] = useState([])
-    const [recommend, setRecommend] = useState([])
+//    const [essentialArtist, setEssentialArtist] = useState([])
+//    const [recommend, setRecommend] = useState([])
 
     useEffect(() => {
         if (!accessToken) return
@@ -50,20 +50,19 @@ export default function Dashboard({ code }) {
     }, [accessToken])
 
     useEffect(() => {
-      if (!recent) return
       if (!accessToken) return
-      console.log(recent)
-    }, [recent, accessToken])
+      // This seperation is important, setRecent needs to be in THIS useEffect to render correctly    
+      setRecent(recentRaw)
+      return () => {
+        setRecent([])
+      }
+    }, [recentRaw, accessToken])
 
     useEffect(() => {
-      if (!accessToken) return
-      if (!recentRaw) return
+      if (!accessToken) return     
       if (topArtists[0] === undefined) return
       if (topArtists[4] === undefined) return
-      // lack of check for [3] and [4], yet working perfectly...
-      
-      // This seperation is important, setRecent needs to be in THIS useEffect to render correctly
-      setRecent(recentRaw)
+ 
       // More Like Artist
       spotifyApi.getArtistRelatedArtists(topArtists[0].key)
       .then(data => {
@@ -74,43 +73,43 @@ export default function Dashboard({ code }) {
      })
       
       // Essential Artist
-      spotifyApi.getArtistAlbums(topArtists[3].key)
-      .then(data => {
-        setEssentialArtist(data.body.items.map(getDataObject))
-      })
-      .catch(error => {
-        console.log(error)
-      })
+//      spotifyApi.getArtistTopTracks(topArtists[3].key, 'AU')
+//      .then(data => {
+//        data.body.tracks.forEach(item => {
+//          let obj = getDataObject(item.album)
+//          setEssentialArtist(essentialArtist => [...essentialArtist, obj])
+//        })
+//      })
+//      .catch(error => {
+//        console.log(error)
+//      })
       
       // Recommended For You
-      spotifyApi.getRecommendations({
-        seed_artists: [topArtists[4].key],
-        min_popularity: 50
-      })
-      .then(data => {
-        data.body.tracks.forEach(item => {
-          spotifyApi.getArtist(item.artists[0].id)
-          .then(data => {
-            let obj = getDataObject(data)
-            setRecommend(recommend => [...recommend, obj])
-          })
-        })
-      })
-      .catch(error => {
-        console.log(error)
-      })
+//      spotifyApi.getRecommendations({
+//        seed_artists: [topArtists[0].key, topArtists[1].key, topArtists[4].key],
+//        min_popularity: 50
+//      })
+//      .then(data => {
+//        data.body.tracks.forEach(item => {
+//          spotifyApi.getArtist(item.artists[0].id)
+//          .then(data => {
+//            let obj = getDataObject(data)
+//            setRecommend(recommend => [...recommend, obj])
+//          })
+//        })
+//      })
+//      .catch(error => {
+//        console.log(error)
+//      })
 
-    }, [accessToken, recentRaw, topArtists])
+    }, [accessToken, topArtists])
     
     
     return (
    
     <div>
-      <Panel name='Top Artists' content={topArtists} />
-      <Panel name='Recent' content={recent} />
+      <Panel name='Recent' content={recent.slice(0, 5)} />
       <Panel name='More Like That Artist You Like' content={moreLike.slice(0, 5)} />
-      <Panel name='Essential Somebody' content={essentialArtist.slice(0, 5)} />
-      <Panel name='Recommended' content={recommend.slice(0, 5)} />
     </div>
    
     )
