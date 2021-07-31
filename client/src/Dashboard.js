@@ -5,19 +5,19 @@ import useAuth from './useAuth'
 import Panel from './Panel'
 import getDataObject from './getDataObject'
 import createContextArray from './createContextArray'
-import { Container } from 'react-bootstrap'
 
 const spotifyApi = new SpotifyWebApi({
     clientId: 'e39d5b5b499d4088a003eb0471c537bb'
  })
 
-export default function Dashboard({ code }) {
+export default function Dashboard({ code, dispatch }) {
     const accessToken = useAuth(code)
     const [topArtists, setTopArtists] = useState([])
     const [recent, setRecent] = useState([])
     const [recentRaw, setRecentRaw] = useState([])
     const [moreLike, setMoreLike] = useState([])
-    const [showDash, setShowDash] = useState(true)
+    
+
 //    const [essentialArtist, setEssentialArtist] = useState([])
 //    const [recommend, setRecommend] = useState([])
 
@@ -55,9 +55,7 @@ export default function Dashboard({ code }) {
       if (!accessToken) return
       // This seperation is important, setRecent needs to be in THIS useEffect to render correctly    
       setRecent(recentRaw)
-      return () => {
-        setRecent([])
-      }
+      console.log(recentRaw)
     }, [recentRaw, accessToken])
 
     useEffect(() => {
@@ -107,20 +105,10 @@ export default function Dashboard({ code }) {
     }, [accessToken, topArtists])
     
     
-    if (showDash) return (
+    return (
       <div>
-        <Container className="d-flex justify-content-center align-items-center">
-          <button className='btn btn-dark btn-lg' onClick={() => setShowDash(false)}>HIDE</button>
-        </Container>
-        <Panel name='Recent' content={recent.slice(0, 5)} />
-        <Panel name='More Like That Artist You Like' content={moreLike.slice(0, 5)} />        
+        <Panel content={recent.slice(0, 5)} dispatch={dispatch}/>
+        <Panel content={moreLike.slice(0, 5)} dispatch={dispatch}/>        
       </div>
     )
-    else return (
-      <Container className="d-flex justify-content-center align-items-center">
-        <h1 style={{color: 'white'}}>Dash Hidden</h1>
-        <p><button className='btn btn-dark btn-lg' onClick={() => setShowDash(true)}>SHOW</button></p>
-      </Container>
-    )
-    
-}
+}        

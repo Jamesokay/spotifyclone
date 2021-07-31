@@ -1,11 +1,62 @@
 import "bootstrap/dist/css/bootstrap.min.css"
 import Login from "./Login"
 import Dashboard from "./Dashboard"
+import ArtistPage from "./ArtistPage"
+import AlbumPage from "./AlbumPage"
+import PlaylistPage from "./PlaylistPage"
+import { useReducer } from 'react'
 
 const code = new URLSearchParams(window.location.search).get("code")
 
+const initialState = {
+  pageType: 'dashboard',
+  pageId: null
+}
+
+function reducer(state, action) {
+  switch(action.type) {
+    case 'ARTIST_PAGE':
+      return {
+        pageType: 'artist',
+        pageId: action.id
+      }
+    case 'ALBUM_PAGE':
+      return {
+        pageType: 'album',
+        pageId: action.id
+      }
+    case 'PLAYLIST_PAGE':
+      return {
+        pageType: 'playlist',
+        pageId: action.id
+      }
+    default:
+      return state
+    }
+}
+
 function App() {
-  return code ? <Dashboard code={code} /> : <Login />
+ 
+  const [store, dispatch] = useReducer(reducer, initialState)
+  
+  if (code) {
+    if (store.pageType === 'dashboard') {
+      return <Dashboard code={code} dispatch={dispatch} />
+    }
+    else if (store.pageType === 'artist') {
+      return <ArtistPage id={store.pageId} />
+    }
+    else if (store.pageType === 'album') {
+      return <AlbumPage id={store.pageId} />
+   }
+    else if (store.pageType === 'playlist') {
+     return <PlaylistPage id={store.pageId} />
+    }
+  }
+  else return <Login />
+
+
+
 }
 
 export default App;
