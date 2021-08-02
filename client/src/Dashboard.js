@@ -14,8 +14,56 @@ export default function Dashboard({ code, dispatch }) {
     const accessToken = useAuth(code)
     const [topArtists, setTopArtists] = useState([])
     const [recent, setRecent] = useState([])
-    const [recentRaw, setRecentRaw] = useState([])
     const [moreLike, setMoreLike] = useState([])
+
+    function getUniqueById(array) {
+
+      const clearUndefinedValues = array.filter(item => {
+        return item !== undefined
+      })
+ 
+      const ids = clearUndefinedValues.map(item => item.id)      
+      const filtered = clearUndefinedValues.filter(({id}, index) => !ids.includes(id, index + 1))
+      console.log(filtered)
+      return filtered
+    }
+
+  function spotifyContextQuery(item) {
+ 
+    if (!item.type) {
+      return
+    }
+    else if (item.type === 'playlist') {
+      spotifyApi.getPlaylist(item.id)
+      .then(data => {
+        let obj = getDataObject(data.body)
+        setRecent(recent => [...recent, obj])
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    }
+    else if (item.type === 'artist') {
+      spotifyApi.getArtist(item.id)
+      .then(data => {
+        let obj = getDataObject(data)
+        setRecent(recent => [...recent, obj])
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    }
+    else if (item.type === 'album') {
+      spotifyApi.getAlbum(item.id)
+      .then(data => {
+        let obj = getDataObject(data)
+        setRecent(recent => [...recent, obj])
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    }
+  }
     
 
 //    const [essentialArtist, setEssentialArtist] = useState([])
@@ -38,12 +86,17 @@ export default function Dashboard({ code, dispatch }) {
       .catch(error => {
          console.log(error)
       })
-      
+    } , [accessToken] )
+
+    useEffect(() => {   
+      if (!accessToken) return   
       // Recent Contexts 
       spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
       .then(data => {
-        console.log(data.body.items)
-        setRecentRaw(createContextArray(data.body.items))
+        let recentRaw = data.body.items.map(createContextArray)
+        let recentFiltered = getUniqueById(recentRaw)
+        recentFiltered.forEach(spotifyContextQuery)
+        // recent will be the result of all the api queries based on type
       })
       .catch(error => {
         console.log(error)
@@ -53,10 +106,9 @@ export default function Dashboard({ code, dispatch }) {
 
     useEffect(() => {
       if (!accessToken) return
-      // This seperation is important, setRecent needs to be in THIS useEffect to render correctly    
-      setRecent(recentRaw)
-      console.log(recentRaw)
-    }, [recentRaw, accessToken])
+      if (!recent) return
+      console.log(recent)
+    }, [recent, accessToken])
 
     useEffect(() => {
       if (!accessToken) return     
@@ -107,8 +159,8 @@ export default function Dashboard({ code, dispatch }) {
     
     return (
       <div>
-        <Panel content={recent.slice(0, 5)} dispatch={dispatch}/>
-        <Panel content={moreLike.slice(0, 5)} dispatch={dispatch}/>        
+        <Panel content={recent.slice(0, 5)} dispatch={dispatch} />
+        <Panel content={moreLike.slice(0, 5)} dispatch={dispatch} />        
       </div>
     )
 }        

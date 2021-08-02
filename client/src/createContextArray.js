@@ -1,52 +1,29 @@
-import getDataObject from './getDataObject'
-import SpotifyWebApi from 'spotify-web-api-node'
 
-const spotifyApi = new SpotifyWebApi({
-    clientId: 'e39d5b5b499d4088a003eb0471c537bb'
- })
-
-spotifyApi.setAccessToken(localStorage.getItem('access'))
-
-export default function createContextArray(dataItems) {
+export default function createContextArray(item) {
     
-    const recent = []
-    const recentIds = []
-
-    dataItems.forEach(item => {
-        if (!item || !item.context) {            
+        if (!item.context) {            
           return     
         }
-        else if (item.context.type === "playlist" && !recentIds.includes(item.context.uri.substr(17))) {
-          
-          let playlistId = item.context.uri.substr(17)
-          recentIds.push(playlistId)
-    
-          spotifyApi.getPlaylist(playlistId)
-          .then(data => {             
-            recent.push(getDataObject(data))              
-          })
-          .catch(error => {
-            console.log(error)
-          })
+        else if (item.context.type === "playlist") {
+          let obj = { 
+            type: 'playlist',
+            id: item.context.uri.substr(17)
+          }      
+          return obj
         }
-        else if (item.context.type === 'artist' && !recentIds.includes(item.track.artists[0].id)) {
-          recentIds.push(item.track.artists[0].id)
-    
-          spotifyApi.getArtist(item.track.artists[0].id)
-          .then(data => {
-            recent.push(getDataObject(data)) 
-          })
-          .catch(error => {
-            console.log(error)
-          })
+        else if (item.context.type === 'artist') {
+          let obj = { 
+            type: 'artist',
+            id: item.context.uri.substr(15)
+          }      
+          return obj          
         }
-        else if (item.context.type === 'album' && !recentIds.includes(item.track.album.id)) {
-            recentIds.push(item.track.album.id)  
-            recent.push(getDataObject(item.track.album))       
+        else if (item.context.type === 'album') {
+          let obj = { 
+            type: 'album',
+            id: item.context.uri.substr(14)
+          }      
+          return obj      
         } 
-      })
-      
-      
-        return recent
     
 }
