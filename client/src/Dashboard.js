@@ -7,7 +7,7 @@ import getDataObject from './getDataObject'
 import createContextArray from './createContextArray'
 
 const spotifyApi = new SpotifyWebApi({
-    clientId: 'e39d5b5b499d4088a003eb0471c537bb'
+    clientId: localStorage.getItem('clientId')
  })
 
 export default function Dashboard({ code, dispatch }) {
@@ -72,7 +72,7 @@ export default function Dashboard({ code, dispatch }) {
     useEffect(() => {
         if (!accessToken) return
         spotifyApi.setAccessToken(accessToken)
-        localStorage.setItem('access', accessToken)
+        localStorage.setItem('accessToken', accessToken)
     }, [accessToken])
 
     useEffect(() => {

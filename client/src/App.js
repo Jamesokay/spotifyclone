@@ -36,6 +36,8 @@ function reducer(state, action) {
 }
 
 function App() {
+
+  localStorage.setItem('clientId', 'e39d5b5b499d4088a003eb0471c537bb')
  
   const [store, dispatch] = useReducer(reducer, initialState)
   
@@ -44,11 +46,11 @@ function App() {
       return <Dashboard code={code} dispatch={dispatch} />
     }
     else if (store.pageType === 'artist') {
-      return <ArtistPage id={store.pageId} />
+      return <ArtistPage id={store.pageId} dispatch={dispatch}/>
     }
     else if (store.pageType === 'album') {
       return <AlbumPage id={store.pageId} />
-   }
+    }
     else if (store.pageType === 'playlist') {
      return <PlaylistPage id={store.pageId} />
     }
