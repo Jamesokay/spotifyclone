@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
 import { Row, Col } from 'react-bootstrap'
+import toMinsSecs from './toMinsSecs'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -34,7 +35,7 @@ export default function PlaylistPage({ id }) {
                   name: item.track.name,
                   artistName: item.track.artists[0].name,
                   albumName: item.track.album.name,
-                  duration: item.track.duration_ms
+                  duration: toMinsSecs(item.track.duration_ms)
                 }
             }))
         })
