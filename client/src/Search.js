@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
 import { Form, Row, Col } from 'react-bootstrap'
+import Panel from './Panel'
+import getDataObject from './getDataObject'
 
 
 
@@ -12,7 +14,8 @@ export default function Search({ dispatch }) {
 
     const accessToken = localStorage.getItem('accessToken')
     const [search, setSearch] = useState('')
-    const [searchResults, setSearchResults] = useState([])
+    const [trackResults, setTrackResults] = useState([])
+    const [artistResults, setArtistResults] = useState([])
 
     useEffect(() => {
         if (!accessToken) return
@@ -23,10 +26,9 @@ export default function Search({ dispatch }) {
         if (!accessToken) return
         if (!search) return
 
-        spotifyApi.searchTracks(search)
+        spotifyApi.searchTracks(search, {limit: 5})
         .then(data => {
-            console.log(data.body)
-            setSearchResults(data.body.tracks.items.map(item => {
+            setTrackResults(data.body.tracks.items.map(item => {
                 return {
                     id: item.id,
                     name: item.name,
@@ -38,6 +40,16 @@ export default function Search({ dispatch }) {
         .catch(error => {
             console.log(error)
         })
+
+        spotifyApi.searchArtists(search, {limit: 5})
+        .then(data => {
+            console.log(data.body)
+            setArtistResults(data.body.artists.items.map(getDataObject))
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
     }, [accessToken, search])
 
     return (
@@ -54,12 +66,14 @@ export default function Search({ dispatch }) {
                 <Col>TRACK</Col>
                 <Col>ARTIST</Col>
             </Row>
-            {searchResults.map(result => 
+            {trackResults.map(result => 
             <Row  style={{color: 'white'}} key={result.id}>
                 <Col>{result.name}</Col>
                 <Col>{result.artist}</Col>
             </Row>
             )}
+
+            <Panel content={artistResults} />
         </div>
     )
 }
