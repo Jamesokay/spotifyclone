@@ -160,7 +160,8 @@ export default function Dashboard({ code, dispatch }) {
     return (
       <div>
         <Panel content={recent.slice(0, 5)} dispatch={dispatch} />
-        <Panel content={moreLike.slice(0, 5)} dispatch={dispatch} />        
+        <Panel content={moreLike.slice(0, 5)} dispatch={dispatch} />
+        <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'SEARCH_PAGE'})}>Search</button>      
       </div>
     )
 }        
