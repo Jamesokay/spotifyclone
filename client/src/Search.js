@@ -3,6 +3,7 @@ import SpotifyWebApi from 'spotify-web-api-node'
 import { Form, Row, Col } from 'react-bootstrap'
 import Panel from './Panel'
 import getDataObject from './getDataObject'
+import toMinsSecs from './toMinsSecs'
 
 
 
@@ -16,6 +17,13 @@ export default function Search({ dispatch }) {
     const [search, setSearch] = useState('')
     const [trackResults, setTrackResults] = useState([])
     const [artistResults, setArtistResults] = useState([])
+    const [albumResults, setAlbumResults] = useState([])
+    const [playlistResults, setPlaylistResults] = useState([])
+
+    function filterByImage(array) {
+        const result = array.filter(item => item.images.length > 0)
+        return result
+    }
 
     useEffect(() => {
         if (!accessToken) return
@@ -32,7 +40,8 @@ export default function Search({ dispatch }) {
                 return {
                     id: item.id,
                     name: item.name,
-                    artist: item.artists[0].name
+                    artist: item.artists[0].name,
+                    duration: toMinsSecs(item.duration_ms)
                 }
             }))
 
@@ -41,10 +50,31 @@ export default function Search({ dispatch }) {
             console.log(error)
         })
 
-        spotifyApi.searchArtists(search, {limit: 5})
+        spotifyApi.searchArtists(search, {limit: 10})
         .then(data => {
-            console.log(data.body)
-            setArtistResults(data.body.artists.items.map(getDataObject))
+            let artistRaw = (data.body.artists.items)
+            let artistFiltered = filterByImage(artistRaw)
+            setArtistResults(artistFiltered.map(getDataObject))
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
+        spotifyApi.searchAlbums(search, {limit: 10})
+        .then(data => {
+            let albumRaw = (data.body.albums.items)
+            let albumFiltered = filterByImage(albumRaw)
+            setAlbumResults(albumFiltered.map(getDataObject))
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
+        spotifyApi.searchPlaylists(search, {limit: 10})
+        .then(data => {
+            let playlistRaw = (data.body.playlists.items)
+            let playlistFiltered = filterByImage(playlistRaw)
+            setPlaylistResults(playlistFiltered.map(getDataObject))
         })
         .catch(error => {
             console.log(error)
@@ -65,15 +95,18 @@ export default function Search({ dispatch }) {
             <Row style={{color: 'white'}}>
                 <Col>TRACK</Col>
                 <Col>ARTIST</Col>
+                <Col>TIME</Col>
             </Row>
             {trackResults.map(result => 
             <Row  style={{color: 'white'}} key={result.id}>
                 <Col>{result.name}</Col>
                 <Col>{result.artist}</Col>
+                <Col>{result.duration}</Col>
             </Row>
             )}
-
-            <Panel content={artistResults} />
+            <Panel content={artistResults.slice(0, 5)} dispatch={dispatch} />
+            <Panel content={albumResults.slice(0, 5)} dispatch={dispatch} />
+            <Panel content={playlistResults.slice(0, 5)} dispatch={dispatch} />
         </div>
     )
 }

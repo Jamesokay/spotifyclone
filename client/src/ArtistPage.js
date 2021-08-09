@@ -18,6 +18,18 @@ export default function ArtistPage({ id, dispatch }) {
     const [artistAlbums, setArtistAlbums] = useState([])
     const [artistTracks, setArtistTracks] = useState([])
 
+    function clearDuplicateAlbums(array) {
+        const names = []
+        const result = []     
+        array.forEach(item => {
+            if (!names.includes(item.name)) {
+                names.push(item.name)
+                result.push(item)
+            }
+        })
+        return result
+    }
+
     useEffect(() => {
       if (!accessToken) return
       spotifyApi.setAccessToken(accessToken)
@@ -37,7 +49,10 @@ export default function ArtistPage({ id, dispatch }) {
 
         spotifyApi.getArtistAlbums(id)
         .then(data => {
-            setArtistAlbums(data.body.items.map(getDataObject))
+            console.log(data.body)
+            let albumsRaw = data.body.items
+            let albumsFiltered = clearDuplicateAlbums(albumsRaw)
+            setArtistAlbums(albumsFiltered.map(getDataObject))
         })
         .catch(error => {
             console.log(error)
@@ -54,11 +69,11 @@ export default function ArtistPage({ id, dispatch }) {
 
     }, [accessToken, id])
 
-    useEffect(() => {
-        if (!accessToken) return
-        if (!artistName) return
-        console.log(artistName)
-    }, [accessToken, artistName])
+    // useEffect(() => {
+    //     if (!accessToken) return
+    //     if (!artistAlbums) return
+    //     console.log(artistAlbums)
+    // }, [accessToken, artistAlbums])
 
 
     return (
