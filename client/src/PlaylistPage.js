@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
-import { Row, Col } from 'react-bootstrap'
 import toMinsSecs from './toMinsSecs'
+import TracksTable from './TracksTable'
 
 
 const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
  })
 
-export default function PlaylistPage({ id }) {
+export default function PlaylistPage({ id, dispatch }) {
 
     const accessToken = localStorage.getItem('accessToken')
     const [playlistname, setPlaylistName] = useState('')
@@ -34,7 +34,9 @@ export default function PlaylistPage({ id }) {
                   id: item.track.id,
                   name: item.track.name,
                   artistName: item.track.artists[0].name,
+                  artistId: item.track.artists[0].id,
                   albumName: item.track.album.name,
+                  albumId: item.track.album.id,
                   duration: toMinsSecs(item.track.duration_ms)
                 }
             }))
@@ -51,19 +53,8 @@ export default function PlaylistPage({ id }) {
           <h2 style={{color: 'white'}}>{playlistname}</h2>
           <img alt='' src={playlistImg} />
           <p>{about}</p>
-          <Row style={{color: 'white'}}>
-              <Col>TITLE</Col>
-              <Col>ALBUM</Col>
-              <Col>TIME</Col>
-          </Row>
-          <hr />
-          {tracks.map(track =>
-            <Row key={track.id}>
-                <Col><span style={{color: 'white'}}>{track.name}</span> <br /> {track.artistName} </Col>
-                <Col>{track.albumName}</Col>
-                <Col>{track.duration}</Col>
-            </Row>
-          )}
+          <TracksTable content={tracks} dispatch={dispatch} page='playlist' />
+          <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 
         </div>
     )
 }

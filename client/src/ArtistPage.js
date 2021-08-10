@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
 import getDataObject from './getDataObject'
 import Panel from './Panel'
-import { Row, Col } from 'react-bootstrap'
-import toMinsSecs from './toMinsSecs'
+// import toMinsSecs from './toMinsSecs'
+import TracksTable from './TracksTable'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -80,12 +80,7 @@ export default function ArtistPage({ id, dispatch }) {
         <div>
           <h2 style={{color: 'white'}}>{artistName}</h2>
           <img alt='' src={artistImgUrl} />
-          {artistTracks.map(track =>
-            <Row key={track.id}>
-              <Col style={{color: 'white'}}>{track.name}</Col>
-              <Col style={{color: 'white'}}>{toMinsSecs(track.duration_ms)}</Col>
-            </Row>
-          )}
+          <TracksTable content={artistTracks} dispatch={dispatch} page='artist' />
           <Panel content={artistAlbums.slice(0, 5)} dispatch={dispatch} />
         </div>
     )

@@ -36,6 +36,11 @@ function reducer(state, action) {
         pageType: 'search',
         pageId: null
       }
+    case 'DASHBOARD':
+      return {
+        pageType: 'dashboard',
+        pageId: null
+      }
     default:
       return state
     }
@@ -55,10 +60,10 @@ function App() {
       return <ArtistPage id={store.pageId} dispatch={dispatch}/>
     }
     else if (store.pageType === 'album') {
-      return <AlbumPage id={store.pageId} />
+      return <AlbumPage id={store.pageId} dispatch={dispatch}/>
     }
     else if (store.pageType === 'playlist') {
-     return <PlaylistPage id={store.pageId} />
+     return <PlaylistPage id={store.pageId} dispatch={dispatch}/>
     }
     else if (store.pageType === 'search') {
       return <Search dispatch={dispatch} />

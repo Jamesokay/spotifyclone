@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
-import { Row, Col } from 'react-bootstrap'
 import toMinsSecs from './toMinsSecs'
+import TracksTable from './TracksTable'
 
 
 const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
  })
 
-export default function AlbumPage({ id }) {
+export default function AlbumPage({ id, dispatch }) {
     const accessToken = localStorage.getItem('accessToken')
     const [albumName, setAlbumName] = useState('')
     const [albumImg, setAlbumImg] = useState('')
@@ -31,6 +31,7 @@ export default function AlbumPage({ id }) {
                   id: item.id,
                   name: item.name,
                   artistName: item.artists[0].name,
+                  artistId: item.artists[0].id,
                   duration: toMinsSecs(item.duration_ms)
                 }
             }))
@@ -46,17 +47,7 @@ export default function AlbumPage({ id }) {
         <div>
           <h2 style={{color: 'white'}}>{albumName}</h2>
           <img alt='' src={albumImg} />
-          <Row style={{color: 'white'}}>
-              <Col>TITLE</Col>
-              <Col>TIME</Col>
-          </Row>
-          <hr />
-          {tracks.map(track =>
-            <Row key={track.id}>
-                <Col><span style={{color: 'white'}}>{track.name}</span> <br /> {track.artistName} </Col>
-                <Col>{track.duration}</Col>
-            </Row>
-          )}
+          <TracksTable content={tracks} dispatch={dispatch} page='album' />
         </div>
     )
 }
