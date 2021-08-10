@@ -30,7 +30,11 @@ export default function panel({ content, dispatch }) {
           <Card style={{minWidth: '220px', height: '295px', marginTop: '20px', background: '#212121'}} key={cont.key}>
             <Card.Img style={{height: '190px', width: '190px', margin: '15px', objectFit: 'cover'}} src={cont.imgUrl} />
             <Card.Title onClick={() => pageChange(cont.type, cont.id)} style={{fontSize: '12pt', color: 'white', marginLeft: '15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '190px'}}>{cont.name}</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted" style={{fontSize: '10pt', color: 'white', marginLeft: '15px', maxWidth: '190px'}}>content info</Card.Subtitle>
+            {cont.type === 'album'?
+            <Card.Subtitle onClick={() => pageChange('artist', cont.artistId)} className="mb-2 text-muted" style={{fontSize: '10pt', color: 'white', marginLeft: '15px', maxWidth: '190px'}}>{cont.artistName}</Card.Subtitle>
+            :
+            <Card.Subtitle className="mb-2 text-muted" style={{fontSize: '10pt', color: 'white', marginLeft: '15px', maxWidth: '190px'}}>{cont.type}</Card.Subtitle>
+            }
           </Card>
         )}
         </Container>)
