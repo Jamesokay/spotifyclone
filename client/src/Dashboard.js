@@ -46,7 +46,7 @@ export default function Dashboard({ code, dispatch }) {
     else if (item.type === 'artist') {
       spotifyApi.getArtist(item.id)
       .then(data => {
-        let obj = getDataObject(data)
+        let obj = getDataObject(data.body)
         setRecent(recent => [...recent, obj])
       })
       .catch(error => {
@@ -56,7 +56,7 @@ export default function Dashboard({ code, dispatch }) {
     else if (item.type === 'album') {
       spotifyApi.getAlbum(item.id)
       .then(data => {
-        let obj = getDataObject(data)
+        let obj = getDataObject(data.body)
         setRecent(recent => [...recent, obj])
       })
       .catch(error => {

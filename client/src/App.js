@@ -48,10 +48,9 @@ function reducer(state, action) {
 
 function App() {
 
+  const [store, dispatch] = useReducer(reducer, initialState)
   localStorage.setItem('clientId', 'e39d5b5b499d4088a003eb0471c537bb')
  
-  const [store, dispatch] = useReducer(reducer, initialState)
-  
   if (code) {
     if (store.pageType === 'dashboard') {
       return <Dashboard code={code} dispatch={dispatch} />
