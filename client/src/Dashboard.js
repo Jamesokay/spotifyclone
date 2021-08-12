@@ -1,7 +1,7 @@
 import React from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
-import { useState, useEffect } from 'react'
-import useAuth from './useAuth'
+import { useState, useEffect, useContext } from 'react'
+import { AuthContext } from './AuthContext'
 import Panel from './Panel'
 import getDataObject from './getDataObject'
 import createContextArray from './createContextArray'
@@ -10,8 +10,8 @@ const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
  })
 
-export default function Dashboard({ code, dispatch }) {
-    const accessToken = useAuth(code)
+export default function Dashboard({ dispatch }) {
+    const accessToken = useContext(AuthContext)
     const [topArtists, setTopArtists] = useState([])
     const [recent, setRecent] = useState([])
     const [moreLike, setMoreLike] = useState([])

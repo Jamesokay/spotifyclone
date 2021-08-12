@@ -5,9 +5,8 @@ import ArtistPage from "./ArtistPage"
 import AlbumPage from "./AlbumPage"
 import PlaylistPage from "./PlaylistPage"
 import Search from "./Search"
-import { useReducer } from 'react'
-
-const code = new URLSearchParams(window.location.search).get("code")
+import { useReducer, useState, useEffect } from 'react'
+import { AuthProvider } from './AuthContext'
 
 const initialState = {
   pageType: 'dashboard',
@@ -48,12 +47,19 @@ function reducer(state, action) {
 
 function App() {
 
+  const code = new URLSearchParams(window.location.search).get("code")
   const [store, dispatch] = useReducer(reducer, initialState)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   localStorage.setItem('clientId', 'e39d5b5b499d4088a003eb0471c537bb')
- 
-  if (code) {
+  
+  useEffect(() => {
+    if (!code) return
+    setIsLoggedIn(true)
+  }, [code])
+
+  function Page() {
     if (store.pageType === 'dashboard') {
-      return <Dashboard code={code} dispatch={dispatch} />
+      return <Dashboard dispatch={dispatch} />
     }
     else if (store.pageType === 'artist') {
       return <ArtistPage id={store.pageId} dispatch={dispatch}/>
@@ -67,6 +73,14 @@ function App() {
     else if (store.pageType === 'search') {
       return <Search dispatch={dispatch} />
     }
+  }
+
+  if (isLoggedIn === true) {
+    return (
+      <AuthProvider>
+        <Page />
+      </AuthProvider>
+    )
   }
   else return <Login />
 
