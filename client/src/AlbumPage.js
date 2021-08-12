@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
 import toMinsSecs from './toMinsSecs'
 import TracksTable from './TracksTable'
+import { AuthContext } from './AuthContext'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -9,7 +10,7 @@ const spotifyApi = new SpotifyWebApi({
  })
 
 export default function AlbumPage({ id, dispatch }) {
-    const accessToken = localStorage.getItem('accessToken')
+    const accessToken = useContext(AuthContext)
     const [albumName, setAlbumName] = useState('')
     const [albumImg, setAlbumImg] = useState('')
     const [tracks, setTracks] = useState([])

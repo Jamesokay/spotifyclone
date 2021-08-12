@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
 import getDataObject from './getDataObject'
 import Panel from './Panel'
 // import toMinsSecs from './toMinsSecs'
 import TracksTable from './TracksTable'
+import { AuthContext } from './AuthContext'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -12,22 +13,23 @@ const spotifyApi = new SpotifyWebApi({
 
 export default function ArtistPage({ id, dispatch }) {
     
-    const accessToken = localStorage.getItem('accessToken')
+    const accessToken = useContext(AuthContext)
     const [artistName, setArtistName] = useState('')
     const [artistImgUrl, setArtistImgUrl] = useState('')
     const [artistAlbums, setArtistAlbums] = useState([])
     const [artistTracks, setArtistTracks] = useState([])
 
-    function clearDuplicateAlbums(array) {
-        const names = []
-        const result = []     
-        array.forEach(item => {
-            if (!names.includes(item.name)) {
-                names.push(item.name)
-                result.push(item)
-            }
+    function checkPopularity(id) {      
+        spotifyApi.getAlbum(id)
+        .then(data => {
+          if (data.body.popularity > 40) {
+            let obj = getDataObject(data.body)
+            setArtistAlbums(artistAlbums => [...artistAlbums, obj])
+          }
         })
-        return result
+        .catch(error => {
+            console.log(error)
+        })
     }
 
     useEffect(() => {
@@ -47,12 +49,11 @@ export default function ArtistPage({ id, dispatch }) {
             console.log(error)
         })
 
-        spotifyApi.getArtistAlbums(id)
+        spotifyApi.getArtistAlbums(id, {limit: 50})
         .then(data => {
             console.log(data.body)
-            let albumsRaw = data.body.items
-            let albumsFiltered = clearDuplicateAlbums(albumsRaw)
-            setArtistAlbums(albumsFiltered.map(getDataObject))
+            let albumsIds = data.body.items.map(item => item.id)
+            albumsIds.forEach(checkPopularity)
         })
         .catch(error => {
             console.log(error)

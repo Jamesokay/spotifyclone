@@ -1,6 +1,5 @@
-import React from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
-import { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { AuthContext } from './AuthContext'
 import Panel from './Panel'
 import getDataObject from './getDataObject'
@@ -72,7 +71,6 @@ export default function Dashboard({ dispatch }) {
     useEffect(() => {
         if (!accessToken) return
         spotifyApi.setAccessToken(accessToken)
-        localStorage.setItem('accessToken', accessToken)
     }, [accessToken])
 
     useEffect(() => {
@@ -90,13 +88,12 @@ export default function Dashboard({ dispatch }) {
 
     useEffect(() => {   
       if (!accessToken) return   
-      // Recent Contexts 
+ 
       spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
       .then(data => {
         let recentRaw = data.body.items.map(createContextArray)
         let recentFiltered = getUniqueById(recentRaw)
         recentFiltered.forEach(spotifyContextQuery)
-        // recent will be the result of all the api queries based on type
       })
       .catch(error => {
         console.log(error)
@@ -115,7 +112,6 @@ export default function Dashboard({ dispatch }) {
       if (topArtists[0] === undefined) return
       if (topArtists[4] === undefined) return
  
-      // More Like Artist
       spotifyApi.getArtistRelatedArtists(topArtists[0].key)
       .then(data => {
         setMoreLike(data.body.artists.map(getDataObject))

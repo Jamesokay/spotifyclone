@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
 import { Form, Row, Col } from 'react-bootstrap'
 import Panel from './Panel'
 import getDataObject from './getDataObject'
 import toMinsSecs from './toMinsSecs'
+import { AuthContext } from './AuthContext'
 
 
 
@@ -13,7 +14,7 @@ const spotifyApi = new SpotifyWebApi({
 
 export default function Search({ dispatch }) {
 
-    const accessToken = localStorage.getItem('accessToken')
+    const accessToken = useContext(AuthContext)
     const [search, setSearch] = useState('')
     const [trackResults, setTrackResults] = useState([])
     const [artistResults, setArtistResults] = useState([])
