@@ -13,7 +13,6 @@ export default function AlbumPage({ id, dispatch }) {
     const accessToken = useContext(AuthContext)
     const [albumName, setAlbumName] = useState('')
     const [albumImg, setAlbumImg] = useState('')
-    const [albumPopularity, setAlbumPopularity] = useState()
     const [tracks, setTracks] = useState([])
 
     useEffect(() => {
@@ -28,7 +27,6 @@ export default function AlbumPage({ id, dispatch }) {
         .then(data =>{
             setAlbumName(data.body.name)
             setAlbumImg(data.body.images[0].url)
-            setAlbumPopularity(data.body.popularity)
             setTracks(data.body.tracks.items.map(item => {
                 return {
                   id: item.id,
@@ -49,9 +47,9 @@ export default function AlbumPage({ id, dispatch }) {
     return (
         <div>
           <h2 style={{color: 'white'}}>{albumName}</h2>
-          <h3>Popularity: {albumPopularity}</h3>
           <img alt='' src={albumImg} />
           <TracksTable content={tracks} dispatch={dispatch} page='album' />
+          <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 
         </div>
     )
 }

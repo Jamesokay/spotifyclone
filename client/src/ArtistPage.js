@@ -81,7 +81,7 @@ export default function ArtistPage({ id, dispatch }) {
           return b.popularity - a.popularity
           })
 
-        console.log(artistAlbumsRaw)
+     //   console.log(artistAlbumsRaw)
 
     }, [accessToken, id, artistAlbumsRaw])
 
@@ -93,6 +93,7 @@ export default function ArtistPage({ id, dispatch }) {
           <img alt='' src={artistImgUrl} />
           <TracksTable content={artistTracks} dispatch={dispatch} page='artist' />
           <Panel content={artistAlbumsRaw.slice(0, 5)} dispatch={dispatch} />
+          <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 
         </div>
     )
 }

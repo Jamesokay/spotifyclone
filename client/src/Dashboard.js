@@ -14,6 +14,7 @@ export default function Dashboard({ dispatch }) {
     const [topArtists, setTopArtists] = useState([])
     const [recent, setRecent] = useState([])
     const [moreLike, setMoreLike] = useState([])
+    const [recommend, setRecommend] = useState([])
 
     function getUniqueById(array) {
 
@@ -63,10 +64,6 @@ export default function Dashboard({ dispatch }) {
       })
     }
   }
-    
-
-//    const [essentialArtist, setEssentialArtist] = useState([])
-//    const [recommend, setRecommend] = useState([])
 
     useEffect(() => {
         if (!accessToken) return
@@ -120,35 +117,24 @@ export default function Dashboard({ dispatch }) {
         console.log(error)
      })
       
-      // Essential Artist
-//      spotifyApi.getArtistTopTracks(topArtists[3].key, 'AU')
-//      .then(data => {
-//        data.body.tracks.forEach(item => {
-//          let obj = getDataObject(item.album)
-//          setEssentialArtist(essentialArtist => [...essentialArtist, obj])
-//        })
-//      })
-//      .catch(error => {
-//        console.log(error)
-//      })
-      
       // Recommended For You
-//      spotifyApi.getRecommendations({
-//        seed_artists: [topArtists[0].key, topArtists[1].key, topArtists[4].key],
-//        min_popularity: 50
-//      })
-//      .then(data => {
-//        data.body.tracks.forEach(item => {
-//          spotifyApi.getArtist(item.artists[0].id)
-//          .then(data => {
-//            let obj = getDataObject(data)
-//            setRecommend(recommend => [...recommend, obj])
-//          })
-//        })
-//      })
-//      .catch(error => {
-//        console.log(error)
-//      })
+     spotifyApi.getRecommendations({
+       seed_artists: [topArtists[0].key, topArtists[1].key, topArtists[4].key],
+       min_popularity: 50
+     })
+     .then(data => {
+       data.body.tracks.forEach(item => {
+         spotifyApi.getArtist(item.artists[0].id)
+         .then(data => {
+           let obj = getDataObject(data.body)
+           // filter here? To get rid of tracks with same artist?
+           setRecommend(recommend => [...recommend, obj])
+         })
+       })
+     })
+     .catch(error => {
+       console.log(error)
+     })
 
     }, [accessToken, topArtists])
     
@@ -157,6 +143,7 @@ export default function Dashboard({ dispatch }) {
       <div>
         <Panel content={recent.slice(0, 5)} dispatch={dispatch} />
         <Panel content={moreLike.slice(0, 5)} dispatch={dispatch} />
+        <Panel content={recommend.slice(0, 5)} dispatch={dispatch} />
         <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'SEARCH_PAGE'})}>Search</button>      
       </div>
     )
