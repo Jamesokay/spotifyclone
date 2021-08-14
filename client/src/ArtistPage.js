@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
-import getDataObject from './getDataObject'
 import Panel from './Panel'
 // import toMinsSecs from './toMinsSecs'
 import TracksTable from './TracksTable'
@@ -15,12 +14,28 @@ export default function ArtistPage({ id, dispatch }) {
     
     const accessToken = useContext(AuthContext)
     const [artistName, setArtistName] = useState('')
-    const [artistPopularity, setArtistPopularity] = useState()
     const [artistImgUrl, setArtistImgUrl] = useState('')
-    const [artistAlbums, setArtistAlbums] = useState([])
+    const [artistAlbumsRaw, setArtistAlbumsRaw] = useState([])
     const [artistTracks, setArtistTracks] = useState([])
 
-
+    function getAlbumObject(id) {
+        spotifyApi.getAlbum(id)
+        .then(data => {
+            let obj = {
+                    key: data.body.id,
+                    id: data.body.id,
+                    type: 'artistAlbum',
+                    name: data.body.name,
+                    popularity: data.body.popularity,
+                    imgUrl: data.body.images[0].url,
+                    subtitle: data.body.release_date.slice(0, 4) + ' • Album'
+            }
+            setArtistAlbumsRaw(artistAlbumsRaw => [...artistAlbumsRaw, obj])
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
 
     useEffect(() => {
       if (!accessToken) return
@@ -34,7 +49,6 @@ export default function ArtistPage({ id, dispatch }) {
         .then(data =>{
             setArtistName(data.body.name)
             setArtistImgUrl(data.body.images[0].url)
-            setArtistPopularity(data.body.popularity)
         })
         .catch(error => {
             console.log(error)
@@ -48,55 +62,37 @@ export default function ArtistPage({ id, dispatch }) {
             console.log(error)
         })
 
-    }, [accessToken, id])
-
-    useEffect(() => {
-        if (!accessToken) return
-        if (!artistPopularity) return
-
-        const threshold = (artistPopularity * 0.6)
-        console.log(threshold)
-
-        function checkPopularity(id) {
-            spotifyApi.getAlbum(id)
-            .then(data => {
-              if (data.body.popularity > threshold) {
-                console.log(data.body)
-                let obj = getDataObject(data.body)
-                setArtistAlbums(artistAlbums => [...artistAlbums, obj])
-              }
-            })
-            .catch(error => {
-                console.log(error)
-            })
-        }
-    
         spotifyApi.getArtistAlbums(id, {limit: 50})
         .then(data => {
             let albumsIds = data.body.items.map(item => item.id)
-            albumsIds.forEach(checkPopularity)
+            albumsIds.forEach(getAlbumObject)
         })
         .catch(error => {
             console.log(error)
         })
 
-    }, [accessToken, id, artistPopularity])
+    }, [accessToken, id])
 
+    useEffect(() => {
+        if (!accessToken) return
+        if (!artistAlbumsRaw) return
+            
+        artistAlbumsRaw.sort(function(a, b) {
+          return b.popularity - a.popularity
+          })
 
-    // useEffect(() => {
-    //     if (!accessToken) return
-    //     if (!artistAlbums) return
-    //     console.log(artistAlbums)
-    // }, [accessToken, artistAlbums])
+        console.log(artistAlbumsRaw)
+
+    }, [accessToken, id, artistAlbumsRaw])
+
 
 
     return (
         <div>
           <h2 style={{color: 'white'}}>{artistName}</h2>
-          <h3>popularity: {artistPopularity}</h3>
           <img alt='' src={artistImgUrl} />
           <TracksTable content={artistTracks} dispatch={dispatch} page='artist' />
-          <Panel content={artistAlbums.slice(0, 5)} dispatch={dispatch} />
+          <Panel content={artistAlbumsRaw.slice(0, 5)} dispatch={dispatch} />
         </div>
     )
 }

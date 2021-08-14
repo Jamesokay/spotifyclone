@@ -7,8 +7,8 @@ export default function getDataObject(dataObject) {
           type: dataObject.type,
           name: dataObject.name,
           imgUrl: dataObject.images[0].url,
-          artistName: dataObject.artists[0].name,
-          artistId: dataObject.artists[0].id
+          subtitle: dataObject.artists[0].name,
+          artistId: dataObject.artists[0].id,
         }
       }
       else {
@@ -17,7 +17,8 @@ export default function getDataObject(dataObject) {
           id: dataObject.id,
           type: dataObject.type,
           name: dataObject.name,
-          imgUrl: dataObject.images[0].url
+          imgUrl: dataObject.images[0].url,
+          subtitle: dataObject.type
         }
       }
 }
