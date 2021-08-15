@@ -24,8 +24,22 @@ export default function Dashboard({ dispatch }) {
  
       const ids = clearUndefinedValues.map(item => item.id)      
       const filtered = clearUndefinedValues.filter(({id}, index) => !ids.includes(id, index + 1))
-      console.log(filtered)
+
       return filtered
+    }
+
+    function getUniqueByArtistId(array) {
+      console.log(array)
+      const artistIds = []
+      const filtered = []
+      array.forEach(item => {
+        if (!artistIds.includes(item.artists[0].id)) {
+          artistIds.push(item.artists[0].id)
+          filtered.push(item.artists[0].id)
+        }
+      })
+      console.log(filtered)
+      return filtered    
     }
 
   function spotifyContextQuery(item) {
@@ -98,11 +112,11 @@ export default function Dashboard({ dispatch }) {
 
     }, [accessToken])
 
-    useEffect(() => {
-      if (!accessToken) return
-      if (!recent) return
-      console.log(recent)
-    }, [recent, accessToken])
+    // useEffect(() => {
+    //   if (!accessToken) return
+    //   if (!recent) return
+    //   console.log(recent)
+    // }, [recent, accessToken])
 
     useEffect(() => {
       if (!accessToken) return     
@@ -119,15 +133,16 @@ export default function Dashboard({ dispatch }) {
       
       // Recommended For You
      spotifyApi.getRecommendations({
-       seed_artists: [topArtists[0].key, topArtists[1].key, topArtists[4].key],
+       seed_artists: [topArtists[0].key, topArtists[1].key, topArtists[2].key, topArtists[3].key, topArtists[4].key],
        min_popularity: 50
      })
      .then(data => {
-       data.body.tracks.forEach(item => {
-         spotifyApi.getArtist(item.artists[0].id)
+       let recommendRaw = data.body.tracks
+       let uniqueArtistIds = getUniqueByArtistId(recommendRaw)
+       uniqueArtistIds.forEach(id => {
+         spotifyApi.getArtist(id)
          .then(data => {
            let obj = getDataObject(data.body)
-           // filter here? To get rid of tracks with same artist?
            setRecommend(recommend => [...recommend, obj])
          })
        })
