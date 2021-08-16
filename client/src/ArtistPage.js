@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
 import Panel from './Panel'
-// import toMinsSecs from './toMinsSecs'
+import getDataObject from './getDataObject'
 import TracksTable from './TracksTable'
 import { AuthContext } from './AuthContext'
 
@@ -17,6 +17,7 @@ export default function ArtistPage({ id, dispatch }) {
     const [artistImgUrl, setArtistImgUrl] = useState('')
     const [artistAlbumsRaw, setArtistAlbumsRaw] = useState([])
     const [artistTracks, setArtistTracks] = useState([])
+    const [alsoLike, setAlsoLike] = useState([])
 
     function getAlbumObject(id) {
         spotifyApi.getAlbum(id)
@@ -71,6 +72,15 @@ export default function ArtistPage({ id, dispatch }) {
             console.log(error)
         })
 
+        spotifyApi.getArtistRelatedArtists(id)
+        .then(data => {
+          setAlsoLike(data.body.artists.map(getDataObject))
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      
+
     }, [accessToken, id])
 
     useEffect(() => {
@@ -93,6 +103,7 @@ export default function ArtistPage({ id, dispatch }) {
           <img alt='' src={artistImgUrl} />
           <TracksTable content={artistTracks} dispatch={dispatch} page='artist' />
           <Panel content={artistAlbumsRaw.slice(0, 5)} dispatch={dispatch} />
+          <Panel content={alsoLike.slice(0, 5)} dispatch={dispatch} />
           <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 
         </div>
     )

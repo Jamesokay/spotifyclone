@@ -27,6 +27,7 @@ export default function AlbumPage({ id, dispatch }) {
         .then(data =>{
             setAlbumName(data.body.name)
             setAlbumImg(data.body.images[0].url)
+            // setAlbumArtist(data.body.artists[0].id)
             setTracks(data.body.tracks.items.map(item => {
                 return {
                   id: item.id,

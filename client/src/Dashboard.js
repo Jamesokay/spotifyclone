@@ -17,14 +17,11 @@ export default function Dashboard({ dispatch }) {
     const [recommend, setRecommend] = useState([])
 
     function getUniqueById(array) {
-
       const clearUndefinedValues = array.filter(item => {
         return item !== undefined
       })
- 
       const ids = clearUndefinedValues.map(item => item.id)      
       const filtered = clearUndefinedValues.filter(({id}, index) => !ids.includes(id, index + 1))
-
       return filtered
     }
 
