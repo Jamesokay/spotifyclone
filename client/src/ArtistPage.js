@@ -38,6 +38,12 @@ export default function ArtistPage({ id, dispatch }) {
         })
     }
 
+    function getUniqueByName(array) {
+        const names = array.map(item => item.name)      
+        const filtered = array.filter(({name}, index) => !names.includes(name, index + 1))
+        return filtered
+      }
+
     useEffect(() => {
       if (!accessToken) return
       spotifyApi.setAccessToken(accessToken)
@@ -65,7 +71,8 @@ export default function ArtistPage({ id, dispatch }) {
 
         spotifyApi.getArtistAlbums(id, {limit: 50})
         .then(data => {
-            let albumsIds = data.body.items.map(item => item.id)
+            let albumsFiltered = getUniqueByName(data.body.items)
+            let albumsIds = albumsFiltered.map(item => item.id)
             albumsIds.forEach(getAlbumObject)
         })
         .catch(error => {
@@ -90,8 +97,6 @@ export default function ArtistPage({ id, dispatch }) {
         artistAlbumsRaw.sort(function(a, b) {
           return b.popularity - a.popularity
           })
-
-     //   console.log(artistAlbumsRaw)
 
     }, [accessToken, id, artistAlbumsRaw])
 

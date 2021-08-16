@@ -3,6 +3,7 @@ import SpotifyWebApi from 'spotify-web-api-node'
 import toMinsSecs from './toMinsSecs'
 import TracksTable from './TracksTable'
 import { AuthContext } from './AuthContext'
+import Panel from './Panel'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -14,6 +15,30 @@ export default function AlbumPage({ id, dispatch }) {
     const [albumName, setAlbumName] = useState('')
     const [albumImg, setAlbumImg] = useState('')
     const [tracks, setTracks] = useState([])
+    const [artistId, setArtistId] = useState('')
+    const [moreByArtist, setMoreByArtist] = useState([])
+   
+
+    function getAlbumObject(id) {
+
+        spotifyApi.getAlbum(id)
+        .then(data => {
+              let obj = {
+                    key: data.body.id,
+                    id: data.body.id,
+                    type: 'artistAlbum',
+                    name: data.body.name,
+                    popularity: data.body.popularity,
+                    imgUrl: data.body.images[0].url,
+                    subtitle: data.body.release_date.slice(0, 4)
+              }
+              setMoreByArtist(moreByArtist => [...moreByArtist, obj])
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
+
 
     useEffect(() => {
         if (!accessToken) return
@@ -27,7 +52,7 @@ export default function AlbumPage({ id, dispatch }) {
         .then(data =>{
             setAlbumName(data.body.name)
             setAlbumImg(data.body.images[0].url)
-            // setAlbumArtist(data.body.artists[0].id)
+            setArtistId(data.body.artists[0].id)
             setTracks(data.body.tracks.items.map(item => {
                 return {
                   id: item.id,
@@ -42,6 +67,39 @@ export default function AlbumPage({ id, dispatch }) {
             console.log(error)
         })
     }, [accessToken, id])
+
+    useEffect(() => {
+        if (!accessToken) return
+        if (!artistId) return
+
+        function getUniqueByName(array) {
+            const names = array.map(item => item.name)
+            names.push(albumName)      
+            const filtered = array.filter(({name}, index) => !names.includes(name, index + 1))
+            return filtered
+          }
+
+        spotifyApi.getArtistAlbums(artistId, {limit: 50})
+        .then(data => {
+            let filteredAlbums = getUniqueByName(data.body.items)
+            let albumsIds = filteredAlbums.map(item => item.id)
+            albumsIds.forEach(getAlbumObject)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
+    }, [accessToken, artistId, albumName])
+
+    useEffect(() => {
+        if (!accessToken) return
+        if (!moreByArtist) return
+        
+        moreByArtist.sort(function(a, b) {
+            return b.popularity - a.popularity
+            })
+
+    }, [accessToken, moreByArtist])
       
 
 
@@ -50,6 +108,7 @@ export default function AlbumPage({ id, dispatch }) {
           <h2 style={{color: 'white'}}>{albumName}</h2>
           <img alt='' src={albumImg} />
           <TracksTable content={tracks} dispatch={dispatch} page='album' />
+          <Panel content={moreByArtist.slice(0, 5)} dispatch={dispatch} />
           <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 
         </div>
     )
