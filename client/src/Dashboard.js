@@ -15,6 +15,7 @@ export default function Dashboard({ dispatch }) {
     const [recent, setRecent] = useState([])
     const [moreLike, setMoreLike] = useState([])
     const [recommend, setRecommend] = useState([])
+    const [relatedArtistsSeed, setRelatedArtistsSeed] = useState('')
 
     function getUniqueById(array) {
       const clearUndefinedValues = array.filter(item => {
@@ -84,7 +85,6 @@ export default function Dashboard({ dispatch }) {
     useEffect(() => {
       if (!accessToken) return 
 
-      // Top Artists
       spotifyApi.getMyTopArtists({limit : 5})
       .then(data => {
           setTopArtists(data.body.items.map(getDataObject))
@@ -109,16 +109,12 @@ export default function Dashboard({ dispatch }) {
 
     }, [accessToken])
 
-    // useEffect(() => {
-    //   if (!accessToken) return
-    //   if (!recent) return
-    //   console.log(recent)
-    // }, [recent, accessToken])
-
     useEffect(() => {
       if (!accessToken) return     
       if (topArtists[0] === undefined) return
       if (topArtists[4] === undefined) return
+
+      setRelatedArtistsSeed(topArtists[0].name)
  
       spotifyApi.getArtistRelatedArtists(topArtists[0].key)
       .then(data => {
@@ -128,7 +124,6 @@ export default function Dashboard({ dispatch }) {
         console.log(error)
      })
       
-      // Recommended For You
      spotifyApi.getRecommendations({
        seed_artists: [topArtists[0].key, topArtists[1].key, topArtists[2].key, topArtists[3].key, topArtists[4].key],
        min_popularity: 50
@@ -153,9 +148,9 @@ export default function Dashboard({ dispatch }) {
     
     return (
       <div>
-        <Panel content={recent.slice(0, 5)} dispatch={dispatch} />
-        <Panel content={moreLike.slice(0, 5)} dispatch={dispatch} />
-        <Panel content={recommend.slice(0, 5)} dispatch={dispatch} />
+        <Panel title='Recently Played' content={recent.slice(0, 5)} dispatch={dispatch} />
+        <Panel title={'More like ' + relatedArtistsSeed} content={moreLike.slice(0, 5)} dispatch={dispatch} />
+        <Panel title='Recommended for you' content={recommend.slice(0, 5)} dispatch={dispatch} />
         <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'SEARCH_PAGE'})}>Search</button>      
       </div>
     )

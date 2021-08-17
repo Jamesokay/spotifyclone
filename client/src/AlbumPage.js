@@ -16,6 +16,7 @@ export default function AlbumPage({ id, dispatch }) {
     const [albumImg, setAlbumImg] = useState('')
     const [tracks, setTracks] = useState([])
     const [artistId, setArtistId] = useState('')
+    const [artistName, setArtistName] = useState('')
     const [moreByArtist, setMoreByArtist] = useState([])
    
 
@@ -53,6 +54,7 @@ export default function AlbumPage({ id, dispatch }) {
             setAlbumName(data.body.name)
             setAlbumImg(data.body.images[0].url)
             setArtistId(data.body.artists[0].id)
+            setArtistName(data.body.artists[0].name)
             setTracks(data.body.tracks.items.map(item => {
                 return {
                   id: item.id,
@@ -108,7 +110,7 @@ export default function AlbumPage({ id, dispatch }) {
           <h2 style={{color: 'white'}}>{albumName}</h2>
           <img alt='' src={albumImg} />
           <TracksTable content={tracks} dispatch={dispatch} page='album' />
-          <Panel content={moreByArtist.slice(0, 5)} dispatch={dispatch} />
+          <Panel title={'More by ' + artistName}content={moreByArtist.slice(0, 5)} dispatch={dispatch} />
           <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 
         </div>
     )

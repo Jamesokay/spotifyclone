@@ -1,7 +1,7 @@
 import React from 'react'
-import { Container, Card } from 'react-bootstrap'
+import { Container, Card, } from 'react-bootstrap'
 
-export default function panel({ content, dispatch }) {
+export default function panel({ title, content, dispatch }) {
     
   function pageChange(pageType, pageId) {
     if (pageType === 'artist') {
@@ -25,9 +25,11 @@ export default function panel({ content, dispatch }) {
   }
      
     return (
-        <Container className='d-flex justify-content-between' style={{maxWidth: '1200px'}}>
+      <Container>
+        <h2 style={{color: 'white', marginLeft: '25px'}}>{title}</h2>
+        <Container className='d-flex justify-content-between'style={{maxWidth: '1200px'}}>    
         {content.map(cont =>
-          <Card style={{minWidth: '220px', height: '295px', marginTop: '20px', background: '#212121'}} key={cont.key}>
+          <Card style={{minWidth: '220px', height: '295px', margin: '10px', background: '#212121'}} key={cont.key}>
             <Card.Img style={{height: '190px', width: '190px', margin: '15px', objectFit: 'cover'}} src={cont.imgUrl} />
             <Card.Title onClick={() => pageChange(cont.type, cont.id)} style={{fontSize: '12pt', color: 'white', marginLeft: '15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '190px'}}>{cont.name}</Card.Title>
             {cont.type === 'album'?
@@ -37,5 +39,6 @@ export default function panel({ content, dispatch }) {
             }
           </Card>
         )}
+        </Container>
         </Container>)
 }
