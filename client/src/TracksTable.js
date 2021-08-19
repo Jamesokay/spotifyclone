@@ -17,71 +17,89 @@ export default function TracksTable({content, dispatch, page}) {
           })
         }
       }
-    
-    const twoCol = {
-      float: 'left', 
-      width: '50%'
-    }
-
-    const threeCol = {
-      float: 'left',
-      width: '33.3%'
-    }
 
     if (page === 'artist') {
         return (
-            <div>
+            <table style={{width: '1200px'}}>
+            <tbody>
             {content.map(cont =>
-              <div className='row' key={cont.id} style={{color: 'white'}}>
-                <div className='column' style={twoCol}>{cont.name}</div>
-                <div className='column' style={twoCol}>{toMinsSecs(cont.duration_ms)}</div>
-              </div>
+              <tr key={cont.id} style={{color: 'white'}}>
+                <td>{cont.name}</td>
+                <td>{toMinsSecs(cont.duration_ms)}</td>
+              </tr>
             )}
-            </div>
+            </tbody>
+            </table>
         )
     }
     else if (page === 'album') {
         return (
-            <div>
-              <div className='row' style={{color: 'white'}}>
-                <div className='column' style={twoCol}>TITLE</div>
-                <div className='column' style={twoCol}>TIME</div>
-              </div>
-              <hr />
+            <table style={{width: '1200px'}}>
+            <thead>
+              <tr style={{color: 'white', textAlign: 'left'}}>
+                <th>TITLE</th>
+                <th>TIME</th>
+              </tr>
+              </thead>
+              <tbody>
               {content.map(cont =>
-                <div className='row' key={cont.id}>
-                  <div className='column' style={twoCol}>
-                    <span style={{color: 'white'}}>{cont.name}</span> 
-                    <br /> 
-                    <span onClick={() => pageChange('artist', cont.artistId)}>{cont.artistName}</span>
-                  </div>
-                  <div className='column' style={twoCol}>{cont.duration}</div>
-                </div>
+                <tr key={cont.id}>
+                  <td>
+                    <p style={{color: 'white'}}>{cont.name}</p> 
+                    <p onClick={() => pageChange('artist', cont.artistId)}>{cont.artistName}</p>
+                  </td>
+                  <td>{cont.duration}</td>
+                </tr>
                )}
-            </div>
+               </tbody>
+            </table>
         )
     }
     else if (page === 'playlist') {
         return (
-            <div>
-              <div className='row' style={{color: 'white'}}>
-                <div className='column' style={threeCol}>TITLE</div>
-                <div className='column' style={threeCol}>ALBUM</div>
-                <div className='column' style={threeCol}>TIME</div>
-              </div>
-              <hr />
+            <table style={{width: '1200px'}}>
+              <thead>
+                <tr style={{color: 'white', textAlign: 'left'}}>
+                <th>TITLE</th>
+                <th>ALBUM</th>
+                <th>TIME</th>
+                </tr>
+              </thead>
+              <tbody>
               {content.map(cont =>
-                <div className='row' key={cont.id}>
-                  <div className='column' style={threeCol}>
-                    <span style={{color: 'white'}}>{cont.name}</span> 
-                    <br /> 
-                    <span onClick={() => pageChange('artist', cont.artistId)}>{cont.artistName}</span> 
-                  </div>
-                  <div className='column' onClick={() => pageChange('album', cont.albumId)} style={threeCol}>{cont.albumName}</div>
-                  <div className='column' style={threeCol}>{cont.duration}</div>
-                </div>
+                <tr key={cont.id}>
+                  <td>
+                    <p style={{color: 'white'}}>{cont.name}</p> 
+                    <p onClick={() => pageChange('artist', cont.artistId)}>{cont.artistName}</p> 
+                  </td>
+                  <td onClick={() => pageChange('album', cont.albumId)}>{cont.albumName}</td>
+                  <td>{cont.duration}</td>
+                </tr>
               )}
-            </div>
+              </tbody>
+            </table>
         )
+    }
+    else if (page === 'search') {
+      return (
+        <table style={{width: '1200px'}}>
+         <thead>
+          <tr style={{color: 'white', textAlign: 'left'}}>
+            <th>TITLE</th>
+            <th>ARTIST</th>
+            <th>TIME</th>
+          </tr>
+          </thead>
+          <tbody>
+          {content.map(cont =>
+          <tr key={cont.id}>
+            <td>{cont.name}</td>
+            <td>{cont.artist}</td>
+            <td>{cont.duration}</td>
+          </tr>
+          )}
+          </tbody>
+        </table>
+      )
     }
 }

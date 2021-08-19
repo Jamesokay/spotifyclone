@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
-import { Form, Row, Col } from 'react-bootstrap'
 import Panel from './Panel'
 import getDataObject from './getDataObject'
 import toMinsSecs from './toMinsSecs'
 import { AuthContext } from './AuthContext'
+import TracksTable from './TracksTable'
 
 
 
@@ -86,25 +86,16 @@ export default function Search({ dispatch }) {
     return (
         <div style={{margin: 'auto', maxWidth: '1200px'}}>
             <h1 style={{color: 'white'}}>Search</h1>
-            <Form.Control
+            <form>
+              <input
               type='search'
               placeholder='search spotify'
               value={search}
               onChange={e => setSearch(e.target.value)}
-            />
+              />
+            </form>
             <hr />
-            <Row style={{color: 'white'}}>
-                <Col>TRACK</Col>
-                <Col>ARTIST</Col>
-                <Col>TIME</Col>
-            </Row>
-            {trackResults.map(result => 
-            <Row  style={{color: 'white'}} key={result.id}>
-                <Col>{result.name}</Col>
-                <Col>{result.artist}</Col>
-                <Col>{result.duration}</Col>
-            </Row>
-            )}
+            <TracksTable content={trackResults} dispatch={dispatch} page='search' />
             <Panel content={artistResults.slice(0, 5)} dispatch={dispatch} />
             <Panel content={albumResults.slice(0, 5)} dispatch={dispatch} />
             <Panel content={playlistResults.slice(0, 5)} dispatch={dispatch} />

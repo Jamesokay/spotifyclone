@@ -103,13 +103,13 @@ export default function ArtistPage({ id, dispatch }) {
 
 
     return (
-        <div style={{margin: 'auto', maxWidth: '1200px'}}>
+          <div style={{display: 'flexbox-wrap', margin: 'auto', width: '1200px'}}>
           <h2 style={{color: 'white'}}>{artistName}</h2>
           <img alt='' src={artistImgUrl} />
           <TracksTable content={artistTracks} dispatch={dispatch} page='artist' />
           <Panel title='Albums' content={artistAlbumsRaw.slice(0, 5)} dispatch={dispatch} />
           <Panel title={'Similar to ' + artistName} content={alsoLike.slice(0, 5)} dispatch={dispatch} />
           <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 
-        </div>
+          </div>
     )
 }

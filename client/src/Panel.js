@@ -56,7 +56,7 @@ export default function panel({ title, content, dispatch }) {
   }
      
     return (
-        <div className='d-flex justify-content-between'>    
+        <div style={{display: 'flex', justifyContent: 'between'}}>    
         {content.map(cont =>
           <div style={cardBody} key={cont.key}>
             <img style={cardImage} src={cont.imgUrl} alt='' />
