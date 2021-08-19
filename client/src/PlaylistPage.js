@@ -50,7 +50,7 @@ export default function PlaylistPage({ id, dispatch }) {
 
 
     return (
-        <div>
+        <div style={{margin: 'auto', maxWidth: '1200px'}}>
           <h2 style={{color: 'white'}}>{playlistname}</h2>
           <img alt='' src={playlistImg} />
           <p>{about}</p>

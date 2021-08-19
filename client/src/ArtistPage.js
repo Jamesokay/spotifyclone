@@ -103,7 +103,7 @@ export default function ArtistPage({ id, dispatch }) {
 
 
     return (
-        <div>
+        <div style={{margin: 'auto', maxWidth: '1200px'}}>
           <h2 style={{color: 'white'}}>{artistName}</h2>
           <img alt='' src={artistImgUrl} />
           <TracksTable content={artistTracks} dispatch={dispatch} page='artist' />

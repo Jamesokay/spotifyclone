@@ -84,7 +84,7 @@ export default function Search({ dispatch }) {
     }, [accessToken, search])
 
     return (
-        <div>
+        <div style={{margin: 'auto', maxWidth: '1200px'}}>
             <h1 style={{color: 'white'}}>Search</h1>
             <Form.Control
               type='search'

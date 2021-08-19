@@ -147,7 +147,7 @@ export default function Dashboard({ dispatch }) {
     
     
     return (
-      <div>
+      <div style={{margin: 'auto', maxWidth: '1200px'}}>
         <Panel title='Recently Played' content={recent.slice(0, 5)} dispatch={dispatch} />
         <Panel title={'More like ' + relatedArtistsSeed} content={moreLike.slice(0, 5)} dispatch={dispatch} />
         <Panel title='Recommended for you' content={recommend.slice(0, 5)} dispatch={dispatch} />

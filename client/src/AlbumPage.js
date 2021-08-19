@@ -106,7 +106,7 @@ export default function AlbumPage({ id, dispatch }) {
 
 
     return (
-        <div>
+        <div style={{margin: 'auto', maxWidth: '1200px'}}>
           <h2 style={{color: 'white'}}>{albumName}</h2>
           <img alt='' src={albumImg} />
           <TracksTable content={tracks} dispatch={dispatch} page='album' />
