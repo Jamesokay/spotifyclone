@@ -1,4 +1,4 @@
-//import "bootstrap/dist/css/bootstrap.min.css"
+import './App.css'
 import Login from "./Login"
 import Dashboard from "./Dashboard"
 import ArtistPage from "./ArtistPage"

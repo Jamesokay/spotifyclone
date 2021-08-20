@@ -106,7 +106,7 @@ export default function ArtistPage({ id, dispatch }) {
           <div style={{display: 'flexbox-wrap', margin: 'auto', width: '1200px'}}>
           <h2 style={{color: 'white'}}>{artistName}</h2>
           <img alt='' src={artistImgUrl} />
-          <TracksTable content={artistTracks} dispatch={dispatch} page='artist' />
+          <TracksTable content={artistTracks.slice(0, 5)} dispatch={dispatch} page='artist' />
           <Panel title='Albums' content={artistAlbumsRaw.slice(0, 5)} dispatch={dispatch} />
           <Panel title={'Similar to ' + artistName} content={alsoLike.slice(0, 5)} dispatch={dispatch} />
           <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 

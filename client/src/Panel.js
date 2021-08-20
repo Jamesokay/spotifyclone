@@ -22,50 +22,18 @@ export default function panel({ title, content, dispatch }) {
       })
     }
   }
-
-  const cardBody = {    
-    width: '220px', 
-    height: '295px', 
-    margin: '10px', 
-    background: '#212121'
-  }
-
-  const cardImage = {
-    height: '190px',
-    width: '190px',
-    margin: '15px',
-    objectFit: 'cover'
-  }
-
-  const cardTitle = {
-    display: 'inline-block',
-    fontSize: '12pt', 
-    color: 'white', 
-    marginLeft: '15px', 
-    overflow: 'hidden', 
-    textOverflow: 'ellipsis', 
-    whiteSpace: 'nowrap', 
-    width: '190px',
-  }
-
-  const cardSub = {
-    fontSize: '10pt', 
-    color: 'white', 
-    marginLeft: '15px', 
-    maxWidth: '190px'
-  }
-     
+    
     return (
         <div style={{display: 'flex', justifyContent: 'between'}}>    
         {content.map(cont =>
-          <div style={cardBody} key={cont.key}>
-            <img style={cardImage} src={cont.imgUrl} alt='' />
-            <span onClick={() => pageChange(cont.type, cont.id)} style={cardTitle}>{cont.name}</span>
+          <div className='cardBody' key={cont.key}>
+            <img className='cardImage' src={cont.imgUrl} alt='' />
+            <b className='cardTitle' onClick={() => pageChange(cont.type, cont.id)}>{cont.name}</b>
             <br />
             {cont.type === 'album'?
-            <span onClick={() => pageChange('artist', cont.artistId)} className="mb-2 text-muted" style={cardSub}>{cont.subtitle}</span>
+            <span className='cardSub' onClick={() => pageChange('artist', cont.artistId)}>{cont.subtitle}</span>
             :
-            <span className="mb-2 text-muted" style={cardSub}>{cont.subtitle}</span>
+            <span className='cardSub'>{cont.subtitle}</span>
             }
           </div>
         )}

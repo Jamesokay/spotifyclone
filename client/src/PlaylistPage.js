@@ -3,6 +3,7 @@ import SpotifyWebApi from 'spotify-web-api-node'
 import toMinsSecs from './toMinsSecs'
 import TracksTable from './TracksTable'
 import { AuthContext } from './AuthContext'
+import HeaderPanel from './HeaderPanel'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -12,9 +13,7 @@ const spotifyApi = new SpotifyWebApi({
 export default function PlaylistPage({ id, dispatch }) {
 
     const accessToken = useContext(AuthContext)
-    const [playlistname, setPlaylistName] = useState('')
-    const [about, setAbout] = useState('')
-    const [playlistImg, setPlaylistImg] = useState('')
+    const [playlist, setPlaylist] = useState({})
     const [tracks, setTracks] = useState([])
 
     useEffect(() => {
@@ -27,9 +26,12 @@ export default function PlaylistPage({ id, dispatch }) {
 
         spotifyApi.getPlaylist(id)
         .then(data =>{
-            setPlaylistName(data.body.name)
-            setAbout(data.body.description)
-            setPlaylistImg(data.body.images[0].url)
+            setPlaylist({
+                    title: data.body.name,
+                    imgUrl: data.body.images[0].url,
+                    about: data.body.description,
+                    type: 'PLAYLIST'
+            })
             setTracks(data.body.tracks.items.map(item => {
                 return {
                   id: item.track.id,
@@ -46,14 +48,18 @@ export default function PlaylistPage({ id, dispatch }) {
             console.log(error)
         })
     }, [accessToken, id])
+
+    useEffect(() => {
+        if (!accessToken) return
+        if (!playlist) return
+        console.log(playlist)
+    }, [accessToken, playlist])
       
 
 
     return (
         <div style={{margin: 'auto', maxWidth: '1200px'}}>
-          <h2 style={{color: 'white'}}>{playlistname}</h2>
-          <img alt='' src={playlistImg} />
-          <p>{about}</p>
+          <HeaderPanel content={playlist} />
           <TracksTable content={tracks} dispatch={dispatch} page='playlist' />
           <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 
         </div>

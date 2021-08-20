@@ -1,0 +1,91 @@
+.cardBody  {    
+    width: 220px; 
+    height: 295px; 
+    margin: 10px;
+    cursor: default;
+    background: #212121;    
+}
+
+.cardImage {
+    height: 190px;
+    width: 190px;
+    margin: 15px;
+    object-fit: cover;
+}
+
+.cardTitle {
+    display: inline-block;
+    font-size: 12pt;
+    font-family: Arial, sans-serif; 
+    color: white; 
+    margin-left: 15px; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+    width: 190px;
+}
+
+.cardSub {
+    font-size: 10pt;
+    font-family: Arial, sans-serif; 
+    color: grey;
+    margin-left: 15px; 
+    max-width: 190px;
+}
+
+.cardBody:hover {
+    background: #535353;
+}
+
+.trackTable {
+    width: 1180px;
+    font-family: Arial , sans-serif;
+    cursor: default;
+    background: #121212;
+}
+
+.trackTableRow {
+    color: grey;
+}
+
+.trackTableRow:hover {
+    color: white;
+    background: #212121;
+}
+
+.headerPanel {
+    display: flex;
+    padding-bottom: 25px;
+}
+
+.headerImage {
+    height: 232px;
+    width: 232px;
+    padding-right: 25px;
+    object-fit: cover;
+}
+
+.headerType {
+    font-family: Arial , sans-serif;
+    color: white; 
+    font-size: 12pt;
+}
+
+.headerTitle {
+    font-family: Arial , sans-serif;
+    font-weight: bold;
+    color: white; 
+    font-size: 40pt;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.headerSub {
+    font-family: Arial , sans-serif;
+    color: grey; 
+    font-size: 10pt;
+}
+
+.headerInfo {
+    float: right;
+}

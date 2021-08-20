@@ -20,10 +20,10 @@ export default function TracksTable({content, dispatch, page}) {
 
     if (page === 'artist') {
         return (
-            <table style={{width: '1200px'}}>
+            <table className='trackTable' cellSpacing='0' cellPadding='0'>
             <tbody>
             {content.map(cont =>
-              <tr key={cont.id} style={{color: 'white'}}>
+              <tr className='trackTableRow' key={cont.id} style={{color: 'white'}}>
                 <td>{cont.name}</td>
                 <td>{toMinsSecs(cont.duration_ms)}</td>
               </tr>
@@ -34,7 +34,7 @@ export default function TracksTable({content, dispatch, page}) {
     }
     else if (page === 'album') {
         return (
-            <table style={{width: '1200px'}}>
+            <table className='trackTable' cellSpacing='0' cellPadding='0'>
             <thead>
               <tr style={{color: 'white', textAlign: 'left'}}>
                 <th>TITLE</th>
@@ -43,7 +43,7 @@ export default function TracksTable({content, dispatch, page}) {
               </thead>
               <tbody>
               {content.map(cont =>
-                <tr key={cont.id}>
+                <tr className='trackTableRow' key={cont.id}>
                   <td>
                     <p style={{color: 'white'}}>{cont.name}</p> 
                     <p onClick={() => pageChange('artist', cont.artistId)}>{cont.artistName}</p>
@@ -57,9 +57,9 @@ export default function TracksTable({content, dispatch, page}) {
     }
     else if (page === 'playlist') {
         return (
-            <table style={{width: '1200px'}}>
+            <table className='trackTable' cellSpacing='0' cellPadding='0'>
               <thead>
-                <tr style={{color: 'white', textAlign: 'left'}}>
+                <tr style={{color: 'grey', textAlign: 'left'}}>
                 <th>TITLE</th>
                 <th>ALBUM</th>
                 <th>TIME</th>
@@ -67,9 +67,9 @@ export default function TracksTable({content, dispatch, page}) {
               </thead>
               <tbody>
               {content.map(cont =>
-                <tr key={cont.id}>
+                <tr className='trackTableRow' key={cont.id}>
                   <td>
-                    <p style={{color: 'white'}}>{cont.name}</p> 
+                    <p style={{ color: 'white' }}>{cont.name}</p> 
                     <p onClick={() => pageChange('artist', cont.artistId)}>{cont.artistName}</p> 
                   </td>
                   <td onClick={() => pageChange('album', cont.albumId)}>{cont.albumName}</td>
@@ -82,7 +82,7 @@ export default function TracksTable({content, dispatch, page}) {
     }
     else if (page === 'search') {
       return (
-        <table style={{width: '1200px'}}>
+        <table className='trackTable' cellSpacing='0' cellPadding='0'>
          <thead>
           <tr style={{color: 'white', textAlign: 'left'}}>
             <th>TITLE</th>
@@ -92,7 +92,7 @@ export default function TracksTable({content, dispatch, page}) {
           </thead>
           <tbody>
           {content.map(cont =>
-          <tr key={cont.id}>
+          <tr className='trackTableRow' key={cont.id}>
             <td>{cont.name}</td>
             <td>{cont.artist}</td>
             <td>{cont.duration}</td>
