@@ -4,6 +4,8 @@ import toMinsSecs from './toMinsSecs'
 import TracksTable from './TracksTable'
 import { AuthContext } from './AuthContext'
 import Panel from './Panel'
+import HeaderPanel from './HeaderPanel'
+import getTotalMs from './getTotalMs'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -12,8 +14,8 @@ const spotifyApi = new SpotifyWebApi({
 
 export default function AlbumPage({ id, dispatch }) {
     const accessToken = useContext(AuthContext)
+    const [album, setAlbum] = useState({})
     const [albumName, setAlbumName] = useState('')
-    const [albumImg, setAlbumImg] = useState('')
     const [tracks, setTracks] = useState([])
     const [artistId, setArtistId] = useState('')
     const [artistName, setArtistName] = useState('')
@@ -51,8 +53,19 @@ export default function AlbumPage({ id, dispatch }) {
 
         spotifyApi.getAlbum(id)
         .then(data =>{
+            setAlbum({
+                // will want to construct info in HP, some need links
+                title: data.body.name,
+                imgUrl: data.body.images[0].url,
+                info: data.body.artists[0].name + ' • ' 
+                    + data.body.release_date.slice(0, 4) 
+                    + ' • ' + data.body.tracks.total 
+                    + ' songs'
+                    + ', '
+                    + getTotalMs(data.body.tracks.items), 
+                type: 'ALBUM'
+            })
             setAlbumName(data.body.name)
-            setAlbumImg(data.body.images[0].url)
             setArtistId(data.body.artists[0].id)
             setArtistName(data.body.artists[0].name)
             setTracks(data.body.tracks.items.map(item => {
@@ -107,8 +120,7 @@ export default function AlbumPage({ id, dispatch }) {
 
     return (
         <div style={{margin: 'auto', maxWidth: '1200px'}}>
-          <h2 style={{color: 'white'}}>{albumName}</h2>
-          <img alt='' src={albumImg} />
+          <HeaderPanel content={album} />
           <TracksTable content={tracks} dispatch={dispatch} page='album' />
           <Panel title={'More by ' + artistName}content={moreByArtist.slice(0, 5)} dispatch={dispatch} />
           <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 

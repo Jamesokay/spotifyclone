@@ -27,7 +27,6 @@ export default function Dashboard({ dispatch }) {
     }
 
     function getUniqueByArtistId(array) {
-      console.log(array)
       const artistIds = []
       const filtered = []
       array.forEach(item => {
@@ -36,7 +35,6 @@ export default function Dashboard({ dispatch }) {
           filtered.push(item.artists[0].id)
         }
       })
-      console.log(filtered)
       return filtered    
     }
 

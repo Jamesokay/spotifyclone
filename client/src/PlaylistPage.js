@@ -30,6 +30,10 @@ export default function PlaylistPage({ id, dispatch }) {
                     title: data.body.name,
                     imgUrl: data.body.images[0].url,
                     about: data.body.description,
+                    info: data.body.owner.id + ' • ' 
+                        + data.body.followers.total 
+                        + ' likes • ' + data.body.tracks.total 
+                        + ' songs',
                     type: 'PLAYLIST'
             })
             setTracks(data.body.tracks.items.map(item => {

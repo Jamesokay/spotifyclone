@@ -5,7 +5,14 @@ export default function HeaderPanel({ content }) {
             <div className='headerInfo'>
             <p className='headerType'>{content.type}</p>
             <p className='headerTitle'>{content.title}</p>
-            <p className='headerSub'>{content.about}</p>
+            {content.type === 'PLAYLIST'?
+              <div> 
+                <p className='headerSub'>{content.about}</p>
+                <p className='headerSub'>{content.info}</p>
+              </div>
+              :
+              <p className='headerSub'>{content.info}</p>
+            }
             </div>
         </div>
     )
