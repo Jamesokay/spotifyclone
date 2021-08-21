@@ -42,7 +42,7 @@ export default function PlaylistPage({ id, dispatch }) {
                     imgUrl: data.body.images[0].url,
                     about: data.body.description,
                     info: ' • ' 
-                        + data.body.followers.total 
+                        + data.body.followers.total.toLocaleString('en-US') 
                         + ' likes • ' + data.body.tracks.total 
                         + ' songs, '
                         + getTotalDuration(data.body.tracks.items),

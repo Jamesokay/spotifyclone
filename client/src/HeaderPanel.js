@@ -8,10 +8,10 @@ export default function HeaderPanel({ content, creator }) {
             {content.type === 'PLAYLIST'?
               <div> 
                 <p className='headerSub'>{content.about}</p>
-                <p><b style={{color: 'white'}}>{creator}</b><span className='headerSub'>{content.info}</span></p>
+                <p><span className='headerCreator'>{creator}</span><span className='headerSub'>{content.info}</span></p>
               </div>
               :
-              <p><b style={{color: 'white'}}>{creator}</b><span className='headerSub'>{content.info}</span></p>
+              <p><span className='headerCreator'>{creator}</span><span className='headerSub'>{content.info}</span></p>
             }
             </div>
         </div>

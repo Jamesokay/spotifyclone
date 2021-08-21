@@ -46,7 +46,7 @@ export default function TracksTable({content, dispatch, page}) {
                 <tr className='trackTableRow' key={cont.id}>
                   <td>
                     <p style={{color: 'white'}}>{cont.name}</p> 
-                    <p onClick={() => pageChange('artist', cont.artistId)}>{cont.artistName}</p>
+                    <p><span className='tableLink' onClick={() => pageChange('artist', cont.artistId)}>{cont.artistName}</span></p>
                   </td>
                   <td>{cont.duration}</td>
                 </tr>
@@ -70,9 +70,9 @@ export default function TracksTable({content, dispatch, page}) {
                 <tr className='trackTableRow' key={cont.id}>
                   <td>
                     <p style={{ color: 'white' }}>{cont.name}</p> 
-                    <p onClick={() => pageChange('artist', cont.artistId)}>{cont.artistName}</p> 
+                    <p><span className='tableLink' onClick={() => pageChange('artist', cont.artistId)}>{cont.artistName}</span></p> 
                   </td>
-                  <td onClick={() => pageChange('album', cont.albumId)}>{cont.albumName}</td>
+                  <td><span className='tableLink' onClick={() => pageChange('album', cont.albumId)}>{cont.albumName}</span></td>
                   <td>{cont.duration}</td>
                 </tr>
               )}

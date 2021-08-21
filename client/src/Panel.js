@@ -27,7 +27,11 @@ export default function panel({ title, content, dispatch }) {
         <div style={{display: 'flex', justifyContent: 'between'}}>    
         {content.map(cont =>
           <div className='cardBody' key={cont.key}>
+            {cont.type === 'artist'?
+            <img className='cardArtist' src={cont.imgUrl} alt='' />
+            :
             <img className='cardImage' src={cont.imgUrl} alt='' />
+            }
             <b className='cardTitle' onClick={() => pageChange(cont.type, cont.id)}>{cont.name}</b>
             <br />
             {cont.type === 'album'?

@@ -1,3 +1,10 @@
+.artistTitle {
+    font-family: Verdana, sans-serif;
+    font-weight: 900;
+    color: white; 
+    font-size: 50pt;
+}
+
 .cardBody  {    
     width: 220px; 
     height: 295px; 
@@ -11,12 +18,22 @@
     width: 190px;
     margin: 15px;
     object-fit: cover;
+    box-shadow: 0px 0px 10px 8px #121212;
+}
+
+.cardArtist {
+    border-radius: 50%;
+    height: 190px;
+    width: 190px;
+    margin: 15px;
+    object-fit: cover;
+    box-shadow: 0px 0px 10px 8px #121212;
 }
 
 .cardTitle {
     display: inline-block;
     font-size: 12pt;
-    font-family: Arial, sans-serif; 
+    font-family: Verdana, sans-serif; 
     color: white; 
     margin-left: 15px; 
     overflow: hidden; 
@@ -27,7 +44,7 @@
 
 .cardSub {
     font-size: 10pt;
-    font-family: Arial, sans-serif; 
+    font-family: Verdana, sans-serif; 
     color: grey;
     margin-left: 15px; 
     max-width: 190px;
@@ -39,9 +56,15 @@
 
 .trackTable {
     width: 1180px;
-    font-family: Arial , sans-serif;
+    font-family: Verdana, sans-serif;
     cursor: default;
     background: #121212;
+    font-size: 10pt;
+}
+
+.tableLink:hover {
+    color: white;
+    text-decoration: underline;
 }
 
 .trackTableRow {
@@ -56,6 +79,7 @@
 .headerPanel {
     display: flex;
     padding-bottom: 25px;
+    cursor: default;
 }
 
 .headerImage {
@@ -66,13 +90,13 @@
 }
 
 .headerType {
-    font-family: Arial , sans-serif;
+    font-family: Verdana, sans-serif;
     color: white; 
     font-size: 12pt;
 }
 
 .headerTitle {
-    font-family: Arial , sans-serif;
+    font-family: Verdana, sans-serif;
     font-weight: bold;
     color: white; 
     font-size: 40pt;
@@ -80,8 +104,19 @@
     margin-bottom: 10px;
 }
 
+.headerCreator {
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+    color: white; 
+    font-size: 10pt;
+}
+
+.headerCreator:hover {
+    text-decoration: underline;
+}
+
 .headerSub {
-    font-family: Arial , sans-serif;
+    font-family: Verdana, sans-serif;
     color: grey; 
     font-size: 10pt;
 }

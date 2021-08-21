@@ -9,11 +9,11 @@ export default function getTotalDuration(array) {
     if (totalMS < 3600000) {
         let mins = parseInt(totalMS / 1000 / 60)
         let secs = parseInt(Math.floor(totalMS / 1000 % 60))   
-        return (mins + ' min ' + secs + ' secs ')
+        return (mins + ' min ' + secs + ' sec ')
     }
     else {
         let hours = parseInt(totalMS / 60000 / 60)
         let mins = parseInt(Math.floor(totalMS / 60000 % 60))
-        return (hours + ' hours ' + mins + ' mins')
+        return (hours + ' hr ' + mins + ' min')
     }   
 }
