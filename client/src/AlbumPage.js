@@ -5,7 +5,7 @@ import TracksTable from './TracksTable'
 import { AuthContext } from './AuthContext'
 import Panel from './Panel'
 import HeaderPanel from './HeaderPanel'
-import getTotalMs from './getTotalMs'
+import getTotalDuration from './getTotalDuration'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -20,7 +20,6 @@ export default function AlbumPage({ id, dispatch }) {
     const [artistId, setArtistId] = useState('')
     const [artistName, setArtistName] = useState('')
     const [moreByArtist, setMoreByArtist] = useState([])
-   
 
     function getAlbumObject(id) {
 
@@ -54,15 +53,12 @@ export default function AlbumPage({ id, dispatch }) {
         spotifyApi.getAlbum(id)
         .then(data =>{
             setAlbum({
-                // will want to construct info in HP, some need links
                 title: data.body.name,
                 imgUrl: data.body.images[0].url,
-                info: data.body.artists[0].name + ' • ' 
-                    + data.body.release_date.slice(0, 4) 
+                info: ' • ' + data.body.release_date.slice(0, 4) 
                     + ' • ' + data.body.tracks.total 
-                    + ' songs'
-                    + ', '
-                    + getTotalMs(data.body.tracks.items), 
+                    + ' songs, '
+                    + getTotalDuration(data.body.tracks.items), 
                 type: 'ALBUM'
             })
             setAlbumName(data.body.name)
@@ -120,7 +116,7 @@ export default function AlbumPage({ id, dispatch }) {
 
     return (
         <div style={{margin: 'auto', maxWidth: '1200px'}}>
-          <HeaderPanel content={album} />
+          <HeaderPanel content={album} creator ={artistName} />
           <TracksTable content={tracks} dispatch={dispatch} page='album' />
           <Panel title={'More by ' + artistName}content={moreByArtist.slice(0, 5)} dispatch={dispatch} />
           <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 

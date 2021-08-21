@@ -4,6 +4,7 @@ import toMinsSecs from './toMinsSecs'
 import TracksTable from './TracksTable'
 import { AuthContext } from './AuthContext'
 import HeaderPanel from './HeaderPanel'
+import getTotalDuration from './getTotalDuration'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -15,6 +16,7 @@ export default function PlaylistPage({ id, dispatch }) {
     const accessToken = useContext(AuthContext)
     const [playlist, setPlaylist] = useState({})
     const [tracks, setTracks] = useState([])
+    const [creator, setCreator] = useState('')
 
     useEffect(() => {
         if (!accessToken) return
@@ -25,17 +27,28 @@ export default function PlaylistPage({ id, dispatch }) {
         if (!accessToken) return
 
         spotifyApi.getPlaylist(id)
-        .then(data =>{
+        .then(data => {
+            
+            spotifyApi.getUser(data.body.owner.id)
+            .then(data => {
+              setCreator(data.body.display_name)
+            })
+            .catch(error => {
+              console.log(error)
+            })
+
             setPlaylist({
                     title: data.body.name,
                     imgUrl: data.body.images[0].url,
                     about: data.body.description,
-                    info: data.body.owner.id + ' • ' 
+                    info: ' • ' 
                         + data.body.followers.total 
                         + ' likes • ' + data.body.tracks.total 
-                        + ' songs',
+                        + ' songs, '
+                        + getTotalDuration(data.body.tracks.items),
                     type: 'PLAYLIST'
             })
+            
             setTracks(data.body.tracks.items.map(item => {
                 return {
                   id: item.track.id,
@@ -51,19 +64,12 @@ export default function PlaylistPage({ id, dispatch }) {
         .catch(error => {
             console.log(error)
         })
-    }, [accessToken, id])
-
-    useEffect(() => {
-        if (!accessToken) return
-        if (!playlist) return
-        console.log(playlist)
-    }, [accessToken, playlist])
-      
+    }, [accessToken, creator, id])
 
 
     return (
         <div style={{margin: 'auto', maxWidth: '1200px'}}>
-          <HeaderPanel content={playlist} />
+          <HeaderPanel content={playlist} creator={creator} />
           <TracksTable content={tracks} dispatch={dispatch} page='playlist' />
           <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 
         </div>
