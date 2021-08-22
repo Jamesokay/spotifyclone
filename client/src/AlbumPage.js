@@ -67,6 +67,7 @@ export default function AlbumPage({ id, dispatch }) {
             setTracks(data.body.tracks.items.map(item => {
                 return {
                   id: item.id,
+                  num: item.track_number,
                   name: item.name,
                   artistName: item.artists[0].name,
                   artistId: item.artists[0].id,

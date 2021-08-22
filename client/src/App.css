@@ -10,7 +10,8 @@
     height: 295px; 
     margin: 10px;
     cursor: default;
-    background: #212121;    
+    background: #212121;
+    border-radius: 5px;    
 }
 
 .cardImage {
@@ -18,7 +19,7 @@
     width: 190px;
     margin: 15px;
     object-fit: cover;
-    box-shadow: 0px 0px 10px 8px #121212;
+    box-shadow: 0px 0px 10px 2px #121212;
 }
 
 .cardArtist {
@@ -27,7 +28,7 @@
     width: 190px;
     margin: 15px;
     object-fit: cover;
-    box-shadow: 0px 0px 10px 8px #121212;
+    box-shadow: 0px 0px 10px 2px #121212;
 }
 
 .cardTitle {
@@ -51,7 +52,7 @@
 }
 
 .cardBody:hover {
-    background: #535353;
+    background: #373737;
 }
 
 .trackTable {
@@ -62,19 +63,48 @@
     font-size: 10pt;
 }
 
+.tableTrackName {
+    color: white;
+    max-width: 500px;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+}
+
 .tableLink:hover {
     color: white;
     text-decoration: underline;
+}
+
+.tableImage {
+    height: 40px; 
+    width: 40px; 
+    object-fit: cover;
 }
 
 .trackTableRow {
     color: grey;
 }
 
+.rowFirst {
+    width: 50px;
+    font-size: 12pt;
+    text-align: center;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.rowLast {
+    width: 50px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
 .trackTableRow:hover {
     color: white;
     background: #212121;
 }
+
 
 .headerPanel {
     display: flex;

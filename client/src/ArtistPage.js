@@ -4,6 +4,7 @@ import Panel from './Panel'
 import getDataObject from './getDataObject'
 import TracksTable from './TracksTable'
 import { AuthContext } from './AuthContext'
+import toMinsSecs from './toMinsSecs'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -63,7 +64,15 @@ export default function ArtistPage({ id, dispatch }) {
 
         spotifyApi.getArtistTopTracks(id, 'AU')
         .then(data => {
-            setArtistTracks(data.body.tracks)
+            setArtistTracks(data.body.tracks.map((track, index ) => {
+                return {
+                    num: index + 1,
+                    id: track.id,
+                    name: track.name,
+                    trackImage: track.album.images[0].url,
+                    duration: toMinsSecs(track.duration_ms)
+                }
+            }))
         })
         .catch(error => {
             console.log(error)

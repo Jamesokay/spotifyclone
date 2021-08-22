@@ -28,7 +28,7 @@ export default function PlaylistPage({ id, dispatch }) {
 
         spotifyApi.getPlaylist(id)
         .then(data => {
-            
+         //   console.log(data.body)
             spotifyApi.getUser(data.body.owner.id)
             .then(data => {
               setCreator(data.body.display_name)
@@ -49,10 +49,12 @@ export default function PlaylistPage({ id, dispatch }) {
                     type: 'PLAYLIST'
             })
             
-            setTracks(data.body.tracks.items.map(item => {
+            setTracks(data.body.tracks.items.map((item, index ) => {
                 return {
+                  num: index + 1,
                   id: item.track.id,
                   name: item.track.name,
+                  trackImage: item.track.album.images[0].url,
                   artistName: item.track.artists[0].name,
                   artistId: item.track.artists[0].id,
                   albumName: item.track.album.name,
@@ -65,6 +67,12 @@ export default function PlaylistPage({ id, dispatch }) {
             console.log(error)
         })
     }, [accessToken, creator, id])
+
+    useEffect(() => {
+        if (!accessToken) return
+        if (!tracks) return
+        console.log(tracks)
+    }, [accessToken, tracks])
 
 
     return (

@@ -1,5 +1,3 @@
-import React from 'react'
-import toMinsSecs from './toMinsSecs'
 
 export default function TracksTable({content, dispatch, page}) {
 
@@ -24,8 +22,10 @@ export default function TracksTable({content, dispatch, page}) {
             <tbody>
             {content.map(cont =>
               <tr className='trackTableRow' key={cont.id} style={{color: 'white'}}>
+                <td className='rowFirst'>{cont.num}</td>
+                <td style={{width: '60px'}}><img className='tableImage' src={cont.trackImage} alt=''/></td>
                 <td>{cont.name}</td>
-                <td>{toMinsSecs(cont.duration_ms)}</td>
+                <td className='rowLast'>{cont.duration}</td>
               </tr>
             )}
             </tbody>
@@ -37,6 +37,7 @@ export default function TracksTable({content, dispatch, page}) {
             <table className='trackTable' cellSpacing='0' cellPadding='0'>
             <thead>
               <tr style={{color: 'white', textAlign: 'left'}}>
+                <th style={{textAlign: 'center'}}>#</th>
                 <th>TITLE</th>
                 <th>TIME</th>
               </tr>
@@ -44,11 +45,12 @@ export default function TracksTable({content, dispatch, page}) {
               <tbody>
               {content.map(cont =>
                 <tr className='trackTableRow' key={cont.id}>
+                  <td className='rowFirst'>{cont.num}</td>
                   <td>
-                    <p style={{color: 'white'}}>{cont.name}</p> 
+                    <p className='tableTrackName'>{cont.name}</p> 
                     <p><span className='tableLink' onClick={() => pageChange('artist', cont.artistId)}>{cont.artistName}</span></p>
                   </td>
-                  <td>{cont.duration}</td>
+                  <td className='rowLast'>{cont.duration}</td>
                 </tr>
                )}
                </tbody>
@@ -60,7 +62,9 @@ export default function TracksTable({content, dispatch, page}) {
             <table className='trackTable' cellSpacing='0' cellPadding='0'>
               <thead>
                 <tr style={{color: 'grey', textAlign: 'left'}}>
+                <th style={{textAlign: 'center'}}>#</th>
                 <th>TITLE</th>
+                <th></th>
                 <th>ALBUM</th>
                 <th>TIME</th>
                 </tr>
@@ -68,12 +72,14 @@ export default function TracksTable({content, dispatch, page}) {
               <tbody>
               {content.map(cont =>
                 <tr className='trackTableRow' key={cont.id}>
-                  <td>
-                    <p style={{ color: 'white' }}>{cont.name}</p> 
-                    <p><span className='tableLink' onClick={() => pageChange('artist', cont.artistId)}>{cont.artistName}</span></p> 
+                  <td className='rowFirst'>{cont.num}</td>
+                  <td style={{width: '60px'}}><img className='tableImage' src={cont.trackImage} alt='' /></td>
+                  <td style={{width: '505px'}}>
+                    <p className='tableTrackName'>{cont.name}</p> 
+                    <p><span className='tableLink' onClick={() => pageChange('artist', cont.artistId)}>{cont.artistName}</span></p>
                   </td>
-                  <td><span className='tableLink' onClick={() => pageChange('album', cont.albumId)}>{cont.albumName}</span></td>
-                  <td>{cont.duration}</td>
+                  <td style={{width: '505px'}}><span className='tableLink' onClick={() => pageChange('album', cont.albumId)}>{cont.albumName}</span></td>
+                  <td className='rowLast'>{cont.duration}</td>
                 </tr>
               )}
               </tbody>
