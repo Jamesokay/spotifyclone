@@ -24,7 +24,7 @@ export default function panel({ title, content, dispatch }) {
   }
     
     return (
-        <div style={{display: 'flex', justifyContent: 'between'}}>    
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>    
         {content.map(cont =>
           <div className='cardBody' key={cont.key}>
             {cont.type === 'artist'?

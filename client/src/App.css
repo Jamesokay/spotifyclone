@@ -1,14 +1,16 @@
 .artistTitle {
     font-family: Verdana, sans-serif;
     font-weight: 900;
+    margin-bottom: 85px;
     color: white; 
-    font-size: 50pt;
+    font-size: 70pt;
+    letter-spacing: -8px;
 }
 
 .cardBody  {    
     width: 220px; 
-    height: 295px; 
-    margin: 10px;
+    height: 295px;
+    margin-top: 25px;
     cursor: default;
     background: #212121;
     border-radius: 5px;    
@@ -78,7 +80,9 @@
 
 .tableImage {
     height: 40px; 
-    width: 40px; 
+    width: 40px;
+    margin-top: 5px;
+    margin-bottom: 5px; 
     object-fit: cover;
 }
 
