@@ -152,7 +152,7 @@ export default function Dashboard({ dispatch }) {
         <Panel content={moreLike.slice(0, 5)} dispatch={dispatch} />
         <p><span className='panelTitle'>Recommended for you</span></p>
         <Panel content={recommend.slice(0, 5)} dispatch={dispatch} />
-        <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'SEARCH_PAGE'})}>Search</button>      
+        <button onClick={() => dispatch({type: 'SEARCH_PAGE'})}>Search</button>      
       </div>
     )
 }        
