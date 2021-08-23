@@ -89,19 +89,15 @@ export default function TracksTable({content, dispatch, page}) {
     else if (page === 'search') {
       return (
         <table className='trackTable' cellSpacing='0' cellPadding='0'>
-         <thead>
-          <tr style={{color: 'white', textAlign: 'left'}}>
-            <th>TITLE</th>
-            <th>ARTIST</th>
-            <th>TIME</th>
-          </tr>
-          </thead>
           <tbody>
           {content.map(cont =>
           <tr className='trackTableRow' key={cont.id}>
-            <td>{cont.name}</td>
-            <td>{cont.artist}</td>
-            <td>{cont.duration}</td>
+            <td className='rowFirst'><img className='tableImage' src={cont.trackImage} alt='' /></td>
+            <td>
+            <p className='trackTableName'>{cont.name}</p>
+            <p><span className='tableLink'>{cont.artist}</span></p>
+            </td>
+            <td className='rowLast'>{cont.duration}</td>
           </tr>
           )}
           </tbody>

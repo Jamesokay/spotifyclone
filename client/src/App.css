@@ -10,7 +10,6 @@
 .cardBody  {    
     width: 220px; 
     height: 295px;
-    margin-top: 25px;
     cursor: default;
     background: #212121;
     border-radius: 5px;    
@@ -36,7 +35,7 @@
 .cardTitle {
     display: inline-block;
     font-size: 12pt;
-    font-family: Verdana, sans-serif; 
+    font-family: Verdana, sans-serif;
     color: white; 
     margin-left: 15px; 
     overflow: hidden; 
@@ -53,8 +52,33 @@
     max-width: 190px;
 }
 
+.cardSubLink {
+    font-size: 10pt;
+    font-family: Verdana, sans-serif; 
+    color: grey;
+    margin-left: 15px; 
+    max-width: 190px;
+}
+
+.cardSubLink:hover {
+    text-decoration: underline;
+}
+
 .cardBody:hover {
     background: #373737;
+}
+
+.panelTitle {
+    font-size: 16pt;
+    font-family: Verdana, sans-serif;
+    color: white;
+    margin-top: 45px;
+    margin-bottom: 25px;
+    cursor: default;
+}
+
+.panelTitle:hover {
+    text-decoration: underline;
 }
 
 .trackTable {

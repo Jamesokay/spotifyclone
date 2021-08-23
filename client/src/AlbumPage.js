@@ -119,7 +119,8 @@ export default function AlbumPage({ id, dispatch }) {
         <div style={{margin: 'auto', maxWidth: '1200px'}}>
           <HeaderPanel content={album} creator ={artistName} />
           <TracksTable content={tracks} dispatch={dispatch} page='album' />
-          <Panel title={'More by ' + artistName}content={moreByArtist.slice(0, 5)} dispatch={dispatch} />
+          <p><span className='panelTitle'>{'More by ' + artistName}</span></p>
+          <Panel content={moreByArtist.slice(0, 5)} dispatch={dispatch} />
           <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 
         </div>
     )

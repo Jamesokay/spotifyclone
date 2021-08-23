@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function panel({ title, content, dispatch }) {
+export default function panel({ content, dispatch }) {
     
   function pageChange(pageType, pageId) {
     if (pageType === 'artist') {
@@ -28,14 +28,14 @@ export default function panel({ title, content, dispatch }) {
         {content.map(cont =>
           <div className='cardBody' key={cont.key}>
             {cont.type === 'artist'?
-            <img className='cardArtist' src={cont.imgUrl} alt='' />
+            <img className='cardArtist' src={cont.imgUrl} alt='' onClick={() => pageChange(cont.type, cont.id)} />
             :
-            <img className='cardImage' src={cont.imgUrl} alt='' />
+            <img className='cardImage' src={cont.imgUrl} alt='' onClick={() => pageChange(cont.type, cont.id)} />
             }
-            <b className='cardTitle' onClick={() => pageChange(cont.type, cont.id)}>{cont.name}</b>
+            <span className='cardTitle' onClick={() => pageChange(cont.type, cont.id)}>{cont.name}</span>
             <br />
             {cont.type === 'album'?
-            <span className='cardSub' onClick={() => pageChange('artist', cont.artistId)}>{cont.subtitle}</span>
+            <span className='cardSubLink' onClick={() => pageChange('artist', cont.artistId)}>{cont.subtitle}</span>
             :
             <span className='cardSub'>{cont.subtitle}</span>
             }

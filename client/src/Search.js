@@ -40,6 +40,7 @@ export default function Search({ dispatch }) {
             setTrackResults(data.body.tracks.items.map(item => {
                 return {
                     id: item.id,
+                    trackImage: item.album.images[0].url,
                     name: item.name,
                     artist: item.artists[0].name,
                     duration: toMinsSecs(item.duration_ms)
@@ -84,8 +85,7 @@ export default function Search({ dispatch }) {
     }, [accessToken, search])
 
     return (
-        <div style={{margin: 'auto', maxWidth: '1200px'}}>
-            <h1 style={{color: 'white'}}>Search</h1>
+        <div style={{display: 'flexbox-wrap', margin: 'auto', width: '1180px'}}>
             <form>
               <input
               type='search'
@@ -94,10 +94,13 @@ export default function Search({ dispatch }) {
               onChange={e => setSearch(e.target.value)}
               />
             </form>
-            <hr />
+            <p><span className='panelTitle'>Songs</span></p>
             <TracksTable content={trackResults} dispatch={dispatch} page='search' />
+            <p><span className='panelTitle'>Artists</span></p>
             <Panel content={artistResults.slice(0, 5)} dispatch={dispatch} />
+            <p><span className='panelTitle'>Albums</span></p>
             <Panel content={albumResults.slice(0, 5)} dispatch={dispatch} />
+            <p><span className='panelTitle'>Playlists</span></p>
             <Panel content={playlistResults.slice(0, 5)} dispatch={dispatch} />
             <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 
         </div>
