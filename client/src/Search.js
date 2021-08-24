@@ -84,12 +84,14 @@ export default function Search({ dispatch }) {
 
     }, [accessToken, search])
 
-    return (
+    if (search) { 
+        return (
         <div style={{display: 'flexbox-wrap', margin: 'auto', width: '1180px'}}>
             <form>
               <input
+              className='searchBar'
               type='search'
-              placeholder='search spotify'
+              placeholder='Search albums, artists and playlists'
               value={search}
               onChange={e => setSearch(e.target.value)}
               />
@@ -104,5 +106,20 @@ export default function Search({ dispatch }) {
             <Panel content={playlistResults.slice(0, 5)} dispatch={dispatch} />
             <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 
         </div>
-    )
+        )
+    } else {
+        return (
+            <div style={{display: 'flexbox-wrap', margin: 'auto', width: '1180px'}}>
+            <form>
+              <input
+              className='searchBar'
+              type='search'
+              placeholder='Search albums, artists and playlists'
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              />
+            </form>
+            </div>
+        )
+    }
 }

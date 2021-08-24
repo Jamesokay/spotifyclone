@@ -106,6 +106,18 @@
     text-decoration: underline;
 }
 
+.searchBar {
+    border-radius: 20px;
+    height: 45px;
+    width: 350px;
+    font-family: Verdana, sans-serif;
+    padding: 20px;
+}
+
+.searchBar:focus {
+    outline: none;
+}
+
 .trackTable {
     width: 1180px;
     font-family: Verdana, sans-serif;

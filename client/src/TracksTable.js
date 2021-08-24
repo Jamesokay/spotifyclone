@@ -94,7 +94,7 @@ export default function TracksTable({content, dispatch, page}) {
           <tr className='trackTableRow' key={cont.id}>
             <td className='rowFirst'><img className='tableImage' src={cont.trackImage} alt='' /></td>
             <td>
-            <p className='trackTableName'>{cont.name}</p>
+            <p className='tableTrackName'>{cont.name}</p>
             <p><span className='tableLink'>{cont.artist}</span></p>
             </td>
             <td className='rowLast'>{cont.duration}</td>
