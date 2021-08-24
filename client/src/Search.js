@@ -104,7 +104,6 @@ export default function Search({ dispatch }) {
             <Panel content={albumResults.slice(0, 5)} dispatch={dispatch} />
             <p><span className='panelTitle'>Playlists</span></p>
             <Panel content={playlistResults.slice(0, 5)} dispatch={dispatch} />
-            <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 
         </div>
         )
     } else {

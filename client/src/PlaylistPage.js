@@ -79,7 +79,6 @@ export default function PlaylistPage({ id, dispatch }) {
         <div style={{margin: 'auto', maxWidth: '1200px'}}>
           <HeaderPanel content={playlist} creator={creator} />
           <TracksTable content={tracks} dispatch={dispatch} page='playlist' />
-          <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 
         </div>
     )
 }

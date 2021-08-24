@@ -118,8 +118,7 @@ export default function ArtistPage({ id, dispatch }) {
           <p><span className='panelTitle'>Albums</span></p>
           <Panel content={artistAlbumsRaw.slice(0, 5)} dispatch={dispatch} />
           <p><span className='panelTitle'>{'Similar to ' + artistName}</span></p>
-          <Panel content={alsoLike.slice(0, 5)} dispatch={dispatch} />
-          <button className='btn btn-dark btn-lg' onClick={() => dispatch({type: 'DASHBOARD'})}>Home</button> 
+          <Panel content={alsoLike.slice(0, 5)} dispatch={dispatch} /> 
           </div>
     )
 }

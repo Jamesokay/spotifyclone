@@ -146,13 +146,9 @@ export default function Dashboard({ dispatch }) {
     
     return (
       <div style={{margin: 'auto', maxWidth: '1200px'}}>
-        <p><span className='panelTitle'>Recently Played</span></p>
-        <Panel content={recent.slice(0, 5)} dispatch={dispatch} />
-        <p><span className='panelTitle'>{'More like ' + relatedArtistsSeed}</span></p>
-        <Panel content={moreLike.slice(0, 5)} dispatch={dispatch} />
-        <p><span className='panelTitle'>Recommended for you</span></p>
-        <Panel content={recommend.slice(0, 5)} dispatch={dispatch} />
-        <button onClick={() => dispatch({type: 'SEARCH_PAGE'})}>Search</button>      
+        <Panel title='Recent' content={recent.slice(0, 5)} dispatch={dispatch} />
+        <Panel title={'More like ' + relatedArtistsSeed} content={moreLike.slice(0, 5)} dispatch={dispatch} />
+        <Panel title='Recommended for you' content={recommend.slice(0, 5)} dispatch={dispatch} />     
       </div>
     )
 }        

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function panel({ content, dispatch }) {
+export default function panel({ title, content, dispatch }) {
     
   function pageChange(pageType, pageId) {
     if (pageType === 'artist') {
@@ -24,7 +24,9 @@ export default function panel({ content, dispatch }) {
   }
     
     return (
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>    
+      <div>
+      <p><span className='panelTitle'>{title}</span></p> 
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>  
         {content.map(cont =>
           <div className='cardBody' key={cont.key}>
             {cont.type === 'artist'?
@@ -41,5 +43,6 @@ export default function panel({ content, dispatch }) {
             }
           </div>
         )}
+        </div>
         </div>)
 }

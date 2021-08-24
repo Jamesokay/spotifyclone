@@ -7,6 +7,8 @@ import PlaylistPage from "./PlaylistPage"
 import Search from "./Search"
 import { useReducer, useState, useEffect } from 'react'
 import { AuthProvider } from './AuthContext'
+import NavBar from './NavBar'
+
 
 const initialState = {
   pageType: 'dashboard',
@@ -78,6 +80,7 @@ function App() {
   if (isLoggedIn === true) {
     return (
       <AuthProvider>
+        <NavBar dispatch={dispatch} />
         <Page />
       </AuthProvider>
     )
