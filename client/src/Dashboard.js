@@ -17,6 +17,14 @@ export default function Dashboard({ dispatch }) {
     const [recommend, setRecommend] = useState([])
     const [relatedArtistsSeed, setRelatedArtistsSeed] = useState('')
 
+    function expandPanel(title, content) {
+        dispatch({
+          type: 'PANEL_EXPANDED',
+          header: title,
+          array: content
+        })
+      }
+
     function getUniqueById(array) {
       const clearUndefinedValues = array.filter(item => {
         return item !== undefined
@@ -146,9 +154,16 @@ export default function Dashboard({ dispatch }) {
     
     return (
       <div style={{margin: 'auto', maxWidth: '1200px'}}>
-        <Panel title='Recent' content={recent.slice(0, 5)} dispatch={dispatch} />
-        <Panel title={'More like ' + relatedArtistsSeed} content={moreLike.slice(0, 5)} dispatch={dispatch} />
-        <Panel title='Recommended for you' content={recommend.slice(0, 5)} dispatch={dispatch} />     
+        <p><span className='panelTitle'
+          onClick={() => expandPanel('Recent', recent)}>Recent</span></p> 
+        <Panel content={recent.slice(0, 5)} dispatch={dispatch} />
+        <p><span className='panelTitle' 
+          onClick={() => expandPanel('More like ' + relatedArtistsSeed, moreLike)}>
+          {'More like ' + relatedArtistsSeed}</span></p> 
+        <Panel content={moreLike.slice(0, 5)} dispatch={dispatch} />
+        <p><span className='panelTitle'
+          onClick={() => expandPanel('Recommended for you', recommend)}>Recommended for you</span></p> 
+        <Panel content={recommend.slice(0, 5)} dispatch={dispatch} />    
       </div>
     )
 }        

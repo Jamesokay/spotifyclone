@@ -20,6 +20,14 @@ export default function ArtistPage({ id, dispatch }) {
     const [artistTracks, setArtistTracks] = useState([])
     const [alsoLike, setAlsoLike] = useState([])
 
+    function expandPanel(title, content) {
+        dispatch({
+          type: 'PANEL_EXPANDED',
+          header: title,
+          array: content
+        })
+    }
+
     function getAlbumObject(id) {
         spotifyApi.getAlbum(id)
         .then(data => {
@@ -115,9 +123,11 @@ export default function ArtistPage({ id, dispatch }) {
           <div style={{display: 'flexbox-wrap', margin: 'auto', width: '1180px'}}>
           <p><span className='artistTitle'>{artistName}</span></p>
           <TracksTable content={artistTracks.slice(0, 5)} dispatch={dispatch} page='artist' />
-          <p><span className='panelTitle'>Albums</span></p>
+          <p><span className='panelTitle'
+            onClick={() => expandPanel('Albums by ' + artistName, artistAlbumsRaw)}>Albums</span></p>
           <Panel content={artistAlbumsRaw.slice(0, 5)} dispatch={dispatch} />
-          <p><span className='panelTitle'>{'Similar to ' + artistName}</span></p>
+          <p><span className='panelTitle'
+            onClick={() => expandPanel('Similar to ' + artistName, alsoLike)}>{'Similar to ' + artistName}</span></p>
           <Panel content={alsoLike.slice(0, 5)} dispatch={dispatch} /> 
           </div>
     )

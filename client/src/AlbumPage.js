@@ -21,6 +21,14 @@ export default function AlbumPage({ id, dispatch }) {
     const [artistName, setArtistName] = useState('')
     const [moreByArtist, setMoreByArtist] = useState([])
 
+    function expandPanel(title, content) {
+        dispatch({
+          type: 'PANEL_EXPANDED',
+          header: title,
+          array: content
+        })
+    }
+
     function getAlbumObject(id) {
 
         spotifyApi.getAlbum(id)
@@ -119,7 +127,8 @@ export default function AlbumPage({ id, dispatch }) {
         <div style={{margin: 'auto', maxWidth: '1200px'}}>
           <HeaderPanel content={album} creator ={artistName} />
           <TracksTable content={tracks} dispatch={dispatch} page='album' />
-          <p><span className='panelTitle'>{'More by ' + artistName}</span></p>
+          <p><span className='panelTitle'
+            onClick={() => expandPanel('More by ' + artistName, moreByArtist)}>{'More by ' + artistName}</span></p>
           <Panel content={moreByArtist.slice(0, 5)} dispatch={dispatch} /> 
         </div>
     )

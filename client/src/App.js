@@ -5,6 +5,7 @@ import ArtistPage from "./ArtistPage"
 import AlbumPage from "./AlbumPage"
 import PlaylistPage from "./PlaylistPage"
 import Search from "./Search"
+import PanelExpanded from './PanelExpanded'
 import { useReducer, useState, useEffect } from 'react'
 import { AuthProvider } from './AuthContext'
 import NavBar from './NavBar'
@@ -42,6 +43,13 @@ function reducer(state, action) {
         pageType: 'dashboard',
         pageId: null
       }
+    case 'PANEL_EXPANDED':
+      return {
+        pageType: 'panelExpanded',
+        pageId: null,
+        title: action.header,
+        array: action.array
+      }
     default:
       return state
     }
@@ -74,6 +82,9 @@ function App() {
     }
     else if (store.pageType === 'search') {
       return <Search dispatch={dispatch} />
+    }
+    else if (store.pageType === 'panelExpanded') {
+      return <PanelExpanded title={store.title} array={store.array} dispatch={dispatch} />
     }
   }
 
