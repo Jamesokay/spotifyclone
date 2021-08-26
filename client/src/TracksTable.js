@@ -48,10 +48,14 @@ export default function TracksTable({content, dispatch, page}) {
                   <td className='rowFirst'>{cont.num}</td>
                   <td>
                     <p className='tableTrackName'>{cont.name}</p>                     
-                      {cont.artists.map(artist => 
+                      {cont.artists.map((artist, index, artists) => 
                       <span key={artist.id} >                 
                         <span className='tableLink' onClick={() => pageChange('artist', artist.id)}>{artist.name}</span>
+                        {(index < artists.length - 1)?
                         <span>, </span>
+                        :
+                        <span></span>
+                        }
                       </span>
                       )}
                     
