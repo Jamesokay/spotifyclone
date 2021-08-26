@@ -1,4 +1,13 @@
-export default function HeaderPanel({ content, creator }) {
+export default function HeaderPanel({ content, creator, dispatch }) {
+
+  function pageChange(pageId) {
+      dispatch({
+        type: 'ARTIST_PAGE',
+        id: pageId
+      })
+    }
+
+
     return (
         <div className='headerPanel'>
             <img className='headerImage' src={content.imgUrl} alt=''/>
@@ -11,7 +20,8 @@ export default function HeaderPanel({ content, creator }) {
                 <p><span className='headerCreator'>{creator}</span><span className='headerSub'>{content.info}</span></p>
               </div>
               :
-              <p><span className='headerCreator'>{creator}</span><span className='headerSub'>{content.info}</span></p>
+              <p><span className='headerCreator'
+                onClick={() => pageChange(creator.id)}>{creator.name}</span><span className='headerSub'>{content.info}</span></p>
             }
             </div>
         </div>

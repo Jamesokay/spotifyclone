@@ -50,6 +50,7 @@ export default function PlaylistPage({ id, dispatch }) {
             })
             
             setTracks(data.body.tracks.items.map((item, index ) => {
+              if (item.track.album.images[0]) {
                 return {
                   num: index + 1,
                   id: item.track.id,
@@ -61,18 +62,25 @@ export default function PlaylistPage({ id, dispatch }) {
                   albumId: item.track.album.id,
                   duration: toMinsSecs(item.track.duration_ms)
                 }
+              } else {
+                return {
+                  num: index + 1,
+                  id: index,
+                  name: '',
+                  artistName: '',
+                  artistId: index + 2,
+                  albumName: '',
+                  albumId: index + 3,
+                  duration: ''
+                }
+              }
+
             }))
         })
         .catch(error => {
             console.log(error)
         })
     }, [accessToken, creator, id])
-
-    useEffect(() => {
-        if (!accessToken) return
-        if (!tracks) return
-        console.log(tracks)
-    }, [accessToken, tracks])
 
 
     return (

@@ -47,8 +47,14 @@ export default function TracksTable({content, dispatch, page}) {
                 <tr className='trackTableRow' key={cont.id}>
                   <td className='rowFirst'>{cont.num}</td>
                   <td>
-                    <p className='tableTrackName'>{cont.name}</p> 
-                    <p><span className='tableLink' onClick={() => pageChange('artist', cont.artistId)}>{cont.artistName}</span></p>
+                    <p className='tableTrackName'>{cont.name}</p>                     
+                      {cont.artists.map(artist => 
+                      <span key={artist.id} >                 
+                        <span className='tableLink' onClick={() => pageChange('artist', artist.id)}>{artist.name}</span>
+                        <span>, </span>
+                      </span>
+                      )}
+                    
                   </td>
                   <td className='rowLast'>{cont.duration}</td>
                 </tr>

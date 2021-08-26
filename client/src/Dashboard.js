@@ -24,14 +24,14 @@ export default function Dashboard({ dispatch }) {
           array: content
         })
       }
-
+    
     function getUniqueById(array) {
-      const clearUndefinedValues = array.filter(item => {
-        return item !== undefined
-      })
-      const ids = clearUndefinedValues.map(item => item.id)      
-      const filtered = clearUndefinedValues.filter(({id}, index) => !ids.includes(id, index + 1))
-      return filtered
+        const clearUndefinedValues = array.filter(item => {
+            return item !== undefined
+          })
+          const ids = clearUndefinedValues.map(item => item.id)      
+          const filtered = clearUndefinedValues.filter(({id}, index) => !ids.includes(id, index + 1))
+          return filtered
     }
 
     function getUniqueByArtistId(array) {
