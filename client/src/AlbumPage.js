@@ -19,7 +19,7 @@ export default function AlbumPage({ id, dispatch }) {
     const [tracks, setTracks] = useState([])
     const [artistId, setArtistId] = useState('')
     const [artistName, setArtistName] = useState('')
-    const [creatorObject, setCreatorObject] = useState({})
+    const [creatorObject, setCreatorObject] = useState([])
     const [moreByArtist, setMoreByArtist] = useState([])
 
     function expandPanel(title, content) {
@@ -70,6 +70,7 @@ export default function AlbumPage({ id, dispatch }) {
                     + getTotalDuration(data.body.tracks.items), 
                 type: 'ALBUM'
             })
+            setCreatorObject(data.body.artists)
             setAlbumName(data.body.name)
             setArtistId(data.body.artists[0].id)
             setArtistName(data.body.artists[0].name)
@@ -90,13 +91,8 @@ export default function AlbumPage({ id, dispatch }) {
 
     useEffect(() => {
         if (!accessToken) return
-        if (!artistName) return
+        if (!albumName) return
         if (!artistId) return
-
-        setCreatorObject({
-            name: artistName,
-            id: artistId
-        })
 
         function getUniqueByName(array) {
             const names = array.map(item => item.name)
@@ -115,7 +111,7 @@ export default function AlbumPage({ id, dispatch }) {
             console.log(error)
         })
 
-    }, [accessToken, artistId, artistName, albumName])
+    }, [accessToken, artistId, albumName])
 
     useEffect(() => {
         if (!accessToken) return
@@ -131,7 +127,7 @@ export default function AlbumPage({ id, dispatch }) {
 
     return (
         <div style={{margin: 'auto', maxWidth: '1200px'}}>
-          <HeaderPanel content={album} creator ={creatorObject} dispatch={dispatch} />
+          <HeaderPanel content={album} creators={creatorObject} dispatch={dispatch} />
           <TracksTable content={tracks} dispatch={dispatch} page='album' />
           <p><span className='panelTitle'
             onClick={() => expandPanel('More by ' + artistName, moreByArtist)}>{'More by ' + artistName}</span></p>

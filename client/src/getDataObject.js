@@ -11,8 +11,7 @@ export default function getDataObject(dataObject) {
           type: dataObject.type,
           name: dataObject.name,
           imgUrl: dataObject.images[0].url,
-          subtitle: dataObject.artists[0].name,
-          artistId: dataObject.artists[0].id,
+          artists: dataObject.artists
         }
       }
       else {

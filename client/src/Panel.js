@@ -35,7 +35,16 @@ export default function Panel({ title, content, dispatch }) {
             <span className='cardTitle' onClick={() => pageChange(cont.type, cont.id)}>{cont.name}</span>
             <br />
             {cont.type === 'album'?
-            <span className='cardSubLink' onClick={() => pageChange('artist', cont.artistId)}>{cont.subtitle}</span>
+            cont.artists.map((artist, index, artists) =>
+            <span key={artist.id}>
+              <span className='cardSubLink' onClick={() => pageChange('artist', artist.id)}>{artist.name}</span>
+              {(index < artists.length - 1)?
+              <span>, </span>
+              :
+              <span></span>
+              }
+            </span>
+            )
             :
             <span className='cardSub'>{cont.subtitle}</span>
             }

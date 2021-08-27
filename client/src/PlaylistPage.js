@@ -16,7 +16,7 @@ export default function PlaylistPage({ id, dispatch }) {
     const accessToken = useContext(AuthContext)
     const [playlist, setPlaylist] = useState({})
     const [tracks, setTracks] = useState([])
-    const [creator, setCreator] = useState('')
+    const [creator, setCreator] = useState([])
 
     useEffect(() => {
         if (!accessToken) return
@@ -28,10 +28,13 @@ export default function PlaylistPage({ id, dispatch }) {
 
         spotifyApi.getPlaylist(id)
         .then(data => {
-         //   console.log(data.body)
             spotifyApi.getUser(data.body.owner.id)
             .then(data => {
-              setCreator(data.body.display_name)
+              let obj = {
+                name: data.body.display_name,
+                id: data.body.id
+              }
+              setCreator(creator => [...creator, obj])
             })
             .catch(error => {
               console.log(error)
@@ -80,12 +83,12 @@ export default function PlaylistPage({ id, dispatch }) {
         .catch(error => {
             console.log(error)
         })
-    }, [accessToken, creator, id])
+    }, [accessToken, id])
 
 
     return (
         <div style={{margin: 'auto', maxWidth: '1200px'}}>
-          <HeaderPanel content={playlist} creator={creator} />
+          <HeaderPanel content={playlist} creators={creator} />
           <TracksTable content={tracks} dispatch={dispatch} page='playlist' />
         </div>
     )
