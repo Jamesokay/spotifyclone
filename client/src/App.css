@@ -74,6 +74,12 @@ body {
     max-width: 190px;
 }
 
+.cardPunc {
+    font-size: 10pt;
+    font-family: Verdana, sans-serif; 
+    color: grey;
+}
+
 .cardSubLink {
     font-size: 10pt;
     font-family: Verdana, sans-serif; 
@@ -167,7 +173,14 @@ li span:hover {
     max-width: 500px;
     overflow: hidden; 
     text-overflow: ellipsis; 
-    white-space: nowrap; 
+    white-space: nowrap;
+    margin-top: 0px;
+    margin-bottom: 3px;
+}
+
+td {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .tableLink {

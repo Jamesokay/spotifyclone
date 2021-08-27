@@ -42,7 +42,7 @@ export default function Search({ dispatch }) {
                     id: item.id,
                     trackImage: item.album.images[0].url,
                     name: item.name,
-                    artist: item.artists[0].name,
+                    artists: item.artists,
                     duration: toMinsSecs(item.duration_ms)
                 }
             }))

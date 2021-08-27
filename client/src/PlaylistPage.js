@@ -59,8 +59,7 @@ export default function PlaylistPage({ id, dispatch }) {
                   id: item.track.id,
                   name: item.track.name,
                   trackImage: item.track.album.images[0].url,
-                  artistName: item.track.artists[0].name,
-                  artistId: item.track.artists[0].id,
+                  artists: item.track.artists,
                   albumName: item.track.album.name,
                   albumId: item.track.album.id,
                   duration: toMinsSecs(item.track.duration_ms)
@@ -70,8 +69,7 @@ export default function PlaylistPage({ id, dispatch }) {
                   num: index + 1,
                   id: index,
                   name: '',
-                  artistName: '',
-                  artistId: index + 2,
+                  artists: [],
                   albumName: '',
                   albumId: index + 3,
                   duration: ''

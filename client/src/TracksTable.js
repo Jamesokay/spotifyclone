@@ -86,7 +86,16 @@ export default function TracksTable({content, dispatch, page}) {
                   <td style={{width: '60px'}}><img className='tableImage' src={cont.trackImage} alt='' /></td>
                   <td style={{width: '505px'}}>
                     <p className='tableTrackName'>{cont.name}</p> 
-                    <p><span className='tableLink' onClick={() => pageChange('artist', cont.artistId)}>{cont.artistName}</span></p>
+                    {cont.artists.map((artist, index, artists) => 
+                      <span key={artist.id} >                 
+                        <span className='tableLink' onClick={() => pageChange('artist', artist.id)}>{artist.name}</span>
+                        {(index < artists.length - 1)?
+                        <span>, </span>
+                        :
+                        <span></span>
+                        }
+                      </span>
+                      )}
                   </td>
                   <td style={{width: '505px'}}><span className='tableLink' onClick={() => pageChange('album', cont.albumId)}>{cont.albumName}</span></td>
                   <td className='rowLast'>{cont.duration}</td>
@@ -105,7 +114,16 @@ export default function TracksTable({content, dispatch, page}) {
             <td className='rowFirst'><img className='tableImage' src={cont.trackImage} alt='' /></td>
             <td>
             <p className='tableTrackName'>{cont.name}</p>
-            <p><span className='tableLink'>{cont.artist}</span></p>
+            {cont.artists.map((artist, index, artists) => 
+                  <span key={artist.id} >                 
+                  <span className='tableLink' onClick={() => pageChange('artist', artist.id)}>{artist.name}</span>
+                  {(index < artists.length - 1)?
+                  <span>, </span>
+                  :
+                  <span></span>
+                  }
+                  </span>
+            )}
             </td>
             <td className='rowLast'>{cont.duration}</td>
           </tr>

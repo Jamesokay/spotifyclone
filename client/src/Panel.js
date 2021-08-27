@@ -39,7 +39,7 @@ export default function Panel({ title, content, dispatch }) {
             <span key={artist.id}>
               <span className='cardSubLink' onClick={() => pageChange('artist', artist.id)}>{artist.name}</span>
               {(index < artists.length - 1)?
-              <span>, </span>
+              <span className='cardPunc'>, </span>
               :
               <span></span>
               }
