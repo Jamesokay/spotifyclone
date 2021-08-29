@@ -12,9 +12,11 @@ const spotifyApi = new SpotifyWebApi({
 export default function Dashboard({ dispatch }) {
     const accessToken = useContext(AuthContext)
     const [topArtists, setTopArtists] = useState([])
+    const [topGenres, setTopGenres] = useState([])
     const [recent, setRecent] = useState([])
     const [moreLike, setMoreLike] = useState([])
     const [recommend, setRecommend] = useState([])
+  //  const [recommendByGenre, setRecommendByGenre] = useState([])
     const [relatedArtistsSeed, setRelatedArtistsSeed] = useState('')
 
     function expandPanel(title, content) {
@@ -34,13 +36,13 @@ export default function Dashboard({ dispatch }) {
           return filtered
     }
 
-    function getUniqueByArtistId(array) {
+    function getUniqueByAlbumId(array) {
       const artistIds = []
       const filtered = []
       array.forEach(item => {
-        if (!artistIds.includes(item.artists[0].id)) {
-          artistIds.push(item.artists[0].id)
-          filtered.push(item.artists[0].id)
+        if (!artistIds.includes(item.album.id)) {
+          artistIds.push(item.album.id)
+          filtered.push(item.album.id)
         }
       })
       return filtered    
@@ -91,9 +93,10 @@ export default function Dashboard({ dispatch }) {
     useEffect(() => {
       if (!accessToken) return 
 
-      spotifyApi.getMyTopArtists({limit : 5})
+      spotifyApi.getMyTopArtists({limit : 20})
       .then(data => {
           setTopArtists(data.body.items.map(getDataObject))
+          setTopGenres(data.body.items.map(item => item.genres))
         })
       .catch(error => {
          console.log(error)
@@ -119,10 +122,11 @@ export default function Dashboard({ dispatch }) {
       if (!accessToken) return     
       if (topArtists[0] === undefined) return
       if (topArtists[4] === undefined) return
+      // if (topGenres[0] === undefined) return
 
-      setRelatedArtistsSeed(topArtists[0].name)
+      setRelatedArtistsSeed(topArtists[4].name)
  
-      spotifyApi.getArtistRelatedArtists(topArtists[0].key)
+      spotifyApi.getArtistRelatedArtists(topArtists[4].key)
       .then(data => {
         setMoreLike(data.body.artists.map(getDataObject))
       })
@@ -131,14 +135,14 @@ export default function Dashboard({ dispatch }) {
      })
       
      spotifyApi.getRecommendations({
-       seed_artists: [topArtists[0].key, topArtists[1].key, topArtists[2].key, topArtists[3].key, topArtists[4].key],
+       seed_artists: [topArtists[1].key, topArtists[2].key, topArtists[3].key],
        min_popularity: 50
      })
      .then(data => {
        let recommendRaw = data.body.tracks
-       let uniqueArtistIds = getUniqueByArtistId(recommendRaw)
-       uniqueArtistIds.forEach(id => {
-         spotifyApi.getArtist(id)
+       let uniqueAlbumIds = getUniqueByAlbumId(recommendRaw)
+       uniqueAlbumIds.forEach(id => {
+         spotifyApi.getAlbum(id)
          .then(data => {
            let obj = getDataObject(data.body)
            setRecommend(recommend => [...recommend, obj])
@@ -149,7 +153,42 @@ export default function Dashboard({ dispatch }) {
        console.log(error)
      })
 
-    }, [accessToken, topArtists])
+    //  spotifyApi.getRecommendations({
+    //   seed_genres: 'alternative',
+    //   min_popularity: 50
+    // })
+    // .then(data => {
+    //   let recommendRaw = data.body.tracks
+    //   let uniqueAlbumIds = getUniqueByAlbumId(recommendRaw)
+    //   uniqueAlbumIds.forEach(id => {
+    //     spotifyApi.getAlbum(id)
+    //     .then(data => {
+    //       let obj = getDataObject(data.body)
+    //       setRecommendByGenre(recommendByGenre => [...recommendByGenre, obj])
+    //     })
+    //   })
+    // })
+    // .catch(error => {
+    //   console.log(error)
+    // })
+
+    }, [accessToken, topArtists, topGenres])
+
+    useEffect(() => {
+      if (!accessToken) return
+      if (!topGenres) return
+
+      console.log(topGenres)
+      
+      spotifyApi.getAvailableGenreSeeds()
+      .then(data => {
+        console.log(data.body)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+    }, [accessToken, topGenres])
     
     
     return (
@@ -163,7 +202,11 @@ export default function Dashboard({ dispatch }) {
         <Panel content={moreLike.slice(0, 5)} dispatch={dispatch} />
         <p><span className='panelTitle'
           onClick={() => expandPanel('Recommended for you', recommend)}>Recommended for you</span></p> 
-        <Panel content={recommend.slice(0, 5)} dispatch={dispatch} />    
+        <Panel content={recommend.slice(0, 5)} dispatch={dispatch} />
+
+        {/* <p><span className='panelTitle'
+          onClick={() => expandPanel('Essential ' + topGenres[0], recommend)}>{'Essential ' + topGenres[0]}</span></p> 
+        <Panel content={recommendByGenre.slice(0, 5)} dispatch={dispatch} />       */}
       </div>
     )
 }        
