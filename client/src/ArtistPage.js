@@ -86,7 +86,7 @@ export default function ArtistPage({ id, dispatch }) {
             console.log(error)
         })
 
-        spotifyApi.getArtistAlbums(id, {limit: 50})
+        spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'album'})
         .then(data => {
             let albumsFiltered = getUniqueByName(data.body.items)
             let albumsIds = albumsFiltered.map(item => item.id)

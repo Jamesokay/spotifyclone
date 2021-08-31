@@ -96,6 +96,7 @@ export default function Dashboard({ dispatch }) {
 
       spotifyApi.getMyTopArtists({limit : 20})
       .then(data => {
+          console.log(data.body.items)
           setTopArtists(data.body.items.map(getDataObject))
         })
       .catch(error => {
@@ -156,10 +157,10 @@ export default function Dashboard({ dispatch }) {
       if (!accessToken) return
       if (topArtists.length < 5) return
 
-      setCustomArtistName(topArtists[1].name)
+      setCustomArtistName(topArtists[0].name)
       
       //Artist Playlists
-      spotifyApi.searchPlaylists(topArtists[1].name)
+      spotifyApi.searchPlaylists(topArtists[0].name)
       .then(data => {
         let playlists = data.body.playlists.items.filter(item => item.owner.display_name === 'Spotify')
         playlists.forEach(item => {
@@ -170,7 +171,7 @@ export default function Dashboard({ dispatch }) {
         console.log(error)
       })
 
-      spotifyApi.getArtistAlbums(topArtists[1].key, {album_type: 'album', limit: 5})
+      spotifyApi.getArtistAlbums(topArtists[0].key, {album_type: 'album', limit: 5})
       .then(data => {
         data.body.items.forEach(item => {
           setCustomArtistPanel(customArtistPanel => [...customArtistPanel, getDataObject(item)])
@@ -183,11 +184,11 @@ export default function Dashboard({ dispatch }) {
 
     }, [accessToken, topArtists])
 
-    useEffect(() => {
-      if (!accessToken) return
-      if (!customArtistPanel) return
-      console.log(customArtistPanel)
-    }, [accessToken, customArtistPanel])
+    // useEffect(() => {
+    //   if (!accessToken) return
+    //   if (!customArtistPanel) return
+    //   console.log(customArtistPanel)
+    // }, [accessToken, customArtistPanel])
 
     
     
@@ -205,7 +206,7 @@ export default function Dashboard({ dispatch }) {
         <Panel content={recommend.slice(0, 5)} dispatch={dispatch} />   
 
         <p><span className='panelTitle'
-          onClick={() => expandPanel('For fans of ' + topArtists[1].name, customArtistPanel)}>{'For fans of ' + customArtistName}</span></p> 
+          onClick={() => expandPanel('For fans of ' + topArtists[0].name, customArtistPanel)}>{'For fans of ' + customArtistName}</span></p> 
         <Panel content={customArtistPanel.slice(0, 5)} dispatch={dispatch} />  
       </div>
     )

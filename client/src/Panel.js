@@ -32,8 +32,9 @@ export default function Panel({ title, content, dispatch }) {
             :
             <img className='cardImage' src={cont.imgUrl} alt='' onClick={() => pageChange(cont.type, cont.id)} />
             }
+            <div className='cardText'>
             <span className='cardTitle' onClick={() => pageChange(cont.type, cont.id)}>{cont.name}</span>
-            <br />
+            <br />           
             {cont.type === 'album'?
             cont.artists.map((artist, index, artists) =>
             <span key={artist.id}>
@@ -48,6 +49,7 @@ export default function Panel({ title, content, dispatch }) {
             :
             <span className='cardSub'>{cont.subtitle}</span>
             }
+            </div>
           </div>
         )}
         </div>)
