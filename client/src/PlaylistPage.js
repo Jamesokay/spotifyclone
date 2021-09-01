@@ -85,7 +85,7 @@ export default function PlaylistPage({ id, dispatch }) {
 
 
     return (
-        <div style={{margin: 'auto', maxWidth: '1200px'}}>
+        <div className='page'>
           <HeaderPanel content={playlist} creators={creator} />
           <TracksTable content={tracks} dispatch={dispatch} page='playlist' />
         </div>

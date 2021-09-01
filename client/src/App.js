@@ -9,6 +9,7 @@ import PanelExpanded from './PanelExpanded'
 import { useReducer, useState, useEffect } from 'react'
 import { AuthProvider } from './AuthContext'
 import NavBar from './NavBar'
+import Player from './Player'
 
 
 const initialState = {
@@ -91,8 +92,11 @@ function App() {
   if (isLoggedIn === true) {
     return (
       <AuthProvider>
+       <div>
         <NavBar dispatch={dispatch} />
         <Page />
+        <Player />
+       </div>
       </AuthProvider>
     )
   }

@@ -86,7 +86,7 @@ export default function Search({ dispatch }) {
 
     if (search) { 
         return (
-        <div style={{display: 'flexbox-wrap', margin: 'auto', width: '1180px'}}>
+        <div className='page'>
             <form>
               <input
               className='searchBar'
@@ -108,7 +108,7 @@ export default function Search({ dispatch }) {
         )
     } else {
         return (
-            <div style={{display: 'flexbox-wrap', margin: 'auto', width: '1180px'}}>
+            <div className='page'>
             <form>
               <input
               className='searchBar'

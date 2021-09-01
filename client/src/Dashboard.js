@@ -193,7 +193,7 @@ export default function Dashboard({ dispatch }) {
     
     
     return (
-      <div style={{margin: 'auto', maxWidth: '1200px'}}>
+      <div className='page'>
         <p><span className='panelTitle'
           onClick={() => expandPanel('Recent', recent)}>Recent</span></p> 
         <Panel content={recent.slice(0, 5)} dispatch={dispatch} />

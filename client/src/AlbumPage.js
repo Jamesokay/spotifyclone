@@ -126,7 +126,7 @@ export default function AlbumPage({ id, dispatch }) {
 
 
     return (
-        <div style={{margin: 'auto', maxWidth: '1200px'}}>
+        <div className='page'>
           <HeaderPanel content={album} creators={creatorObject} dispatch={dispatch} />
           <TracksTable content={tracks} dispatch={dispatch} page='album' />
           <p><span className='panelTitle'

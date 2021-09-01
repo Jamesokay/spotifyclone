@@ -120,7 +120,7 @@ export default function ArtistPage({ id, dispatch }) {
 
 
     return (
-          <div style={{display: 'flexbox-wrap', margin: 'auto', width: '1180px'}}>
+          <div className='page'>
           <p><span className='artistTitle'>{artistName}</span></p>
           <TracksTable content={artistTracks.slice(0, 5)} dispatch={dispatch} page='artist' />
           <p><span className='panelTitle'
