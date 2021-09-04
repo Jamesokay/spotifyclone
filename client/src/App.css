@@ -141,16 +141,75 @@ body {
     cursor: default;
     bottom: 0;
     border-top: 0.5px solid #373737;
-    justify-content: center;
+}
+
+.playingTrack {
+    display: flex;
+    margin: 15px;
+    width: 320px;
+    background-color: #212121;
+}
+
+.playingTrackImg {
+    height: 60px;
+    width: 60px;
+    background-color: violet;
+}
+
+.playingTrackInfo {
+    margin: 15px;
+}
+
+.playingTrackName {
+    color: white;
+    font-family: Verdana, sans-serif;
+    font-size: 10pt;
+}
+
+.playingTrackName:hover {
+    text-decoration: underline;
+}
+
+.playingTrackArtist {
+    color: grey;
+    font-family: Verdana, sans-serif;
+    font-size: 8pt;
+}
+
+.playingTrackArtist:hover {
+    color: white;
+    text-decoration: underline;
 }
 
 .playButton {
+    display: flex;
     height: 35px;
     width: 35px;
-    border-radius: 17.5px;
+    border-radius: 50%;
     background: white;
     margin: auto;
+    margin-right: 50%;
 }
+
+.playButton:hover {
+    transform: scale(1.05)
+}
+
+.playButton:hover > .playIcon {
+    transform: scale(1.05)
+}
+
+
+.playIcon {
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-left: 10px solid #212121;
+    border-bottom: 7px solid transparent;
+    margin-left: 15px;
+    margin-top: 11px;
+}
+
 
 ul {
     list-style-type: none;
@@ -243,7 +302,34 @@ td {
     color: grey;
 }
 
+.tablePlayIcon {
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-left: 10px solid white;
+    border-bottom: 7px solid transparent;
+    position: absolute;
+    left: 40%;
+    top: 40%;
+    visibility: hidden;
+}
+
+.trackTableRow:hover .tableIndex {
+    visibility: hidden;
+}
+
+.trackTableRow:hover .tablePlayIcon {
+    visibility: visible;
+}
+
+.tableIndex {
+    position: absolute;
+    left: 40%;
+    top: 40%;
+}
+
 .rowFirst {
+    position: relative;
     width: 50px;
     font-size: 12pt;
     text-align: center;

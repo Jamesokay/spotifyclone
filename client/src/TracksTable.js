@@ -22,7 +22,10 @@ export default function TracksTable({content, dispatch, page}) {
             <tbody>
             {content.map(cont =>
               <tr className='trackTableRow' key={cont.id} style={{color: 'white'}}>
-                <td className='rowFirst'>{cont.num}</td>
+                <td className='rowFirst'>
+                <span className='tableIndex'>{cont.num}</span>
+                <div className='tablePlayIcon'></div>
+                </td>
                 <td style={{width: '60px'}}><img className='tableImage' src={cont.trackImage} alt=''/></td>
                 <td>{cont.name}</td>
                 <td className='rowLast'>{cont.duration}</td>
@@ -45,7 +48,10 @@ export default function TracksTable({content, dispatch, page}) {
               <tbody>
               {content.map(cont =>
                 <tr className='trackTableRow' key={cont.id}>
-                  <td className='rowFirst'>{cont.num}</td>
+                  <td className='rowFirst'>
+                    <span className='tableIndex'>{cont.num}</span>
+                    <div className='tablePlayIcon'></div>
+                  </td>
                   <td>
                     <p className='tableTrackName'>{cont.name}</p>                     
                       {cont.artists.map((artist, index, artists) => 
@@ -82,7 +88,10 @@ export default function TracksTable({content, dispatch, page}) {
               <tbody>
               {content.map(cont =>
                 <tr className='trackTableRow' key={cont.id}>
-                  <td className='rowFirst'>{cont.num}</td>
+                  <td className='rowFirst'>
+                    <span className='tableIndex'>{cont.num}</span>
+                    <div className='tablePlayIcon'></div>
+                  </td>
                   <td style={{width: '60px'}}><img className='tableImage' src={cont.trackImage} alt='' /></td>
                   <td style={{width: '505px'}}>
                     <p className='tableTrackName'>{cont.name}</p> 
