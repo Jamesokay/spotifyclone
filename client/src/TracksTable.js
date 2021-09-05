@@ -16,6 +16,7 @@ export default function TracksTable({content, dispatch, page}) {
         }
       }
 
+
     if (page === 'artist') {
         return (
             <table className='trackTable' cellSpacing='0' cellPadding='0'>

@@ -96,7 +96,6 @@ export default function Dashboard({ dispatch }) {
 
       spotifyApi.getMyTopArtists({limit : 20})
       .then(data => {
-          console.log(data.body.items)
           setTopArtists(data.body.items.map(getDataObject))
         })
       .catch(error => {

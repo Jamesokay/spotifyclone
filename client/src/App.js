@@ -17,6 +17,7 @@ const initialState = {
   pageId: null
 }
 
+
 function reducer(state, action) {
   switch(action.type) {
     case 'ARTIST_PAGE':
@@ -79,7 +80,7 @@ function App() {
       return <AlbumPage id={store.pageId} dispatch={dispatch}/>
     }
     else if (store.pageType === 'playlist') {
-     return <PlaylistPage id={store.pageId} dispatch={dispatch}/>
+     return <PlaylistPage id={store.pageId} dispatch={dispatch} />
     }
     else if (store.pageType === 'search') {
       return <Search dispatch={dispatch} />
@@ -92,11 +93,9 @@ function App() {
   if (isLoggedIn === true) {
     return (
       <AuthProvider>
-       <div>
         <NavBar dispatch={dispatch} />
         <Page />
         <Player />
-       </div>
       </AuthProvider>
     )
   }

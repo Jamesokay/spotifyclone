@@ -18,6 +18,7 @@ export default function PlaylistPage({ id, dispatch }) {
     const [tracks, setTracks] = useState([])
     const [creator, setCreator] = useState([])
 
+
     useEffect(() => {
         if (!accessToken) return
         spotifyApi.setAccessToken(accessToken)
