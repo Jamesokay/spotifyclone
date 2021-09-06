@@ -1,44 +1,11 @@
-import { useState, useEffect, useContext } from 'react'
-import SpotifyWebApi from 'spotify-web-api-node'
-import { AuthContext } from './AuthContext'
+import { useContext } from 'react'
+import { TrackContext } from './TrackContext'
 
-const spotifyApi = new SpotifyWebApi({
-  clientId: localStorage.getItem('clientId')
-})
 
 export default function Player() {
-  
-  const accessToken = useContext(AuthContext)
-  const [track, setTrack] = useState({})
 
-  useEffect(() => {
-    if (!accessToken) return
-    spotifyApi.setAccessToken(accessToken)
-  }, [accessToken])
-
-
-  useEffect(() => {
-    if (!accessToken) return
-
-    spotifyApi.getMyCurrentPlayingTrack()
-    .then(data => {
-      setTrack({
-        name: data.body.item.name,
-        artists: data.body.item.artists,
-        imgUrl: data.body.item.album.images[0].url
-      })
-    })
-    .catch(error => {
-      console.log(error)
-    })
-
-  }, [accessToken])
-
-  useEffect(() => {
-    if (!accessToken) return
-    if (!track) return
-    console.log(track.artists)
-  }, [accessToken, track])
+  const trackContext = useContext(TrackContext)
+  const track = trackContext.currentTrack
 
   return (
     <div className='playBar'>

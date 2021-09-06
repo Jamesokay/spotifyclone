@@ -4,6 +4,7 @@ import { AuthContext } from './AuthContext'
 import Panel from './Panel'
 import getDataObject from './getDataObject'
 import createContextArray from './createContextArray'
+// import { TrackContext } from './TrackContext'
 
 const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
@@ -18,6 +19,8 @@ export default function Dashboard({ dispatch }) {
     const [relatedArtistsSeed, setRelatedArtistsSeed] = useState('')
     const [customArtistPanel, setCustomArtistPanel] = useState([])
     const [customArtistName, setCustomArtistName] = useState([])
+//    const trackContext = useContext(TrackContext)
+
 
     function expandPanel(title, content) {
         dispatch({
@@ -89,6 +92,27 @@ export default function Dashboard({ dispatch }) {
         if (!accessToken) return
         spotifyApi.setAccessToken(accessToken)
     }, [accessToken])
+
+    // useEffect(() => {
+    //   if (!accessToken) return
+
+    //   function trackChange(trackName, trackArtists, trackImage) {
+    //     trackContext.setCurrentTrack({
+    //       name: trackName,
+    //       artists: trackArtists,
+    //       imgUrl: trackImage
+    //     })
+    //   }
+
+    //   spotifyApi.getMyCurrentPlayingTrack()
+    //   .then(data => {
+    //     console.log(data.body)
+    //     trackChange(data.body.item.name, data.body.artists, data.body.item.album.images[0].url)
+    //   })
+    //   .catch(error => {
+    //     console.log(error)
+    //   })
+    // }, [accessToken, trackContext])
 
 
     useEffect(() => {

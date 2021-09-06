@@ -1,5 +1,17 @@
+import { useContext } from 'react'
+import { TrackContext } from './TrackContext'
 
 export default function TracksTable({content, dispatch, page}) {
+
+    const testContextFunc = useContext(TrackContext)
+
+    function trackChange(trackName, trackArtists, trackImage) {
+      testContextFunc.setCurrentTrack({
+          name: trackName,
+          artists: trackArtists,
+          imgUrl: trackImage
+        })
+    }
 
     function pageChange(pageType, pageId) {
         if (pageType === 'artist') {
@@ -91,7 +103,9 @@ export default function TracksTable({content, dispatch, page}) {
                 <tr className='trackTableRow' key={cont.id}>
                   <td className='rowFirst'>
                     <span className='tableIndex'>{cont.num}</span>
-                    <div className='tablePlayIcon'></div>
+                    <div className='tablePlayIcon'
+                    onClick={() => trackChange(cont.name, cont.artists, cont.trackImage)}
+                    ></div>
                   </td>
                   <td style={{width: '60px'}}><img className='tableImage' src={cont.trackImage} alt='' /></td>
                   <td style={{width: '505px'}}>
