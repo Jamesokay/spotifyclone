@@ -78,7 +78,8 @@ export default function ArtistPage({ id, dispatch }) {
                     id: track.id,
                     name: track.name,
                     trackImage: track.album.images[0].url,
-                    duration: toMinsSecs(track.duration_ms)
+                    duration: toMinsSecs(track.duration_ms),
+                    artists: track.artists
                 }
             }))
         })

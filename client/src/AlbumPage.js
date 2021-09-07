@@ -70,6 +70,7 @@ export default function AlbumPage({ id, dispatch }) {
                     + getTotalDuration(data.body.tracks.items), 
                 type: 'ALBUM'
             })
+            let albumImg = data.body.images[0].url
             setCreatorObject(data.body.artists)
             setAlbumName(data.body.name)
             setArtistId(data.body.artists[0].id)
@@ -80,7 +81,8 @@ export default function AlbumPage({ id, dispatch }) {
                   num: item.track_number,
                   name: item.name,
                   artists: item.artists,
-                  duration: toMinsSecs(item.duration_ms)
+                  duration: toMinsSecs(item.duration_ms),
+                  trackImage: albumImg
                 }
             }))
         })

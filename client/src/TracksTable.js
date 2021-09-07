@@ -37,7 +37,8 @@ export default function TracksTable({content, dispatch, page}) {
               <tr className='trackTableRow' key={cont.id} style={{color: 'white'}}>
                 <td className='rowFirst'>
                 <span className='tableIndex'>{cont.num}</span>
-                <div className='tablePlayIcon'></div>
+                <div className='tablePlayIcon'
+                onClick={() => trackChange(cont.name, cont.artists, cont.trackImage)}></div>
                 </td>
                 <td style={{width: '60px'}}><img className='tableImage' src={cont.trackImage} alt=''/></td>
                 <td>{cont.name}</td>
@@ -63,7 +64,8 @@ export default function TracksTable({content, dispatch, page}) {
                 <tr className='trackTableRow' key={cont.id}>
                   <td className='rowFirst'>
                     <span className='tableIndex'>{cont.num}</span>
-                    <div className='tablePlayIcon'></div>
+                    <div className='tablePlayIcon'
+                    onClick={() => trackChange(cont.name, cont.artists, cont.trackImage)}></div>
                   </td>
                   <td>
                     <p className='tableTrackName'>{cont.name}</p>                     
