@@ -25,7 +25,9 @@ function TrackContextProvider({ children }) {
         setCurrentTrack({
           name: data.body.item.name, 
           artists: data.body.item.artists, 
-          imgUrl: data.body.item.album.images[0].url})
+          imgUrl: data.body.item.album.images[0].url,
+          albumId: data.body.item.album.id
+        })
       })
       .catch(error => {
         console.log(error)

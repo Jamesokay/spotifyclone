@@ -97,7 +97,7 @@ function App() {
        <TrackContextProvider>
         <NavBar dispatch={dispatch} />
         <Page />
-        <Player />
+        <Player dispatch={dispatch} />
         </TrackContextProvider>
       </AuthProvider>
     )

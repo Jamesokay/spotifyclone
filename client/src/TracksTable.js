@@ -5,11 +5,12 @@ export default function TracksTable({content, dispatch, page}) {
 
     const testContextFunc = useContext(TrackContext)
 
-    function trackChange(trackName, trackArtists, trackImage) {
+    function trackChange(trackName, trackArtists, trackImage, trackAlbum) {
       testContextFunc.setCurrentTrack({
           name: trackName,
           artists: trackArtists,
-          imgUrl: trackImage
+          imgUrl: trackImage,
+          albumId: trackAlbum
         })
     }
 
@@ -38,7 +39,7 @@ export default function TracksTable({content, dispatch, page}) {
                 <td className='rowFirst'>
                 <span className='tableIndex'>{cont.num}</span>
                 <div className='tablePlayIcon'
-                onClick={() => trackChange(cont.name, cont.artists, cont.trackImage)}></div>
+                onClick={() => trackChange(cont.name, cont.artists, cont.trackImage, cont.albumId)}></div>
                 </td>
                 <td style={{width: '60px'}}><img className='tableImage' src={cont.trackImage} alt=''/></td>
                 <td>{cont.name}</td>
@@ -65,7 +66,7 @@ export default function TracksTable({content, dispatch, page}) {
                   <td className='rowFirst'>
                     <span className='tableIndex'>{cont.num}</span>
                     <div className='tablePlayIcon'
-                    onClick={() => trackChange(cont.name, cont.artists, cont.trackImage)}></div>
+                    onClick={() => trackChange(cont.name, cont.artists, cont.trackImage, cont.albumId)}></div>
                   </td>
                   <td>
                     <p className='tableTrackName'>{cont.name}</p>                     
@@ -106,7 +107,7 @@ export default function TracksTable({content, dispatch, page}) {
                   <td className='rowFirst'>
                     <span className='tableIndex'>{cont.num}</span>
                     <div className='tablePlayIcon'
-                    onClick={() => trackChange(cont.name, cont.artists, cont.trackImage)}
+                    onClick={() => trackChange(cont.name, cont.artists, cont.trackImage, cont.albumId)}
                     ></div>
                   </td>
                   <td style={{width: '60px'}}><img className='tableImage' src={cont.trackImage} alt='' /></td>
@@ -138,7 +139,7 @@ export default function TracksTable({content, dispatch, page}) {
           {content.map(cont =>
           <tr className='trackTableRow' key={cont.id}>
             <td className='rowFirst'><img className='tableImage' src={cont.trackImage} alt='' /></td>
-            <td>
+            <td className='rowSecond'>
             <p className='tableTrackName'>{cont.name}</p>
             {cont.artists.map((artist, index, artists) => 
                   <span key={artist.id} >                 

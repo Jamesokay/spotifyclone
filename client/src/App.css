@@ -145,7 +145,8 @@ body {
 
 .playingTrack {
     display: flex;
-    margin: 15px;
+    margin-top: 15px;
+    margin-left: 15px;
     width: 320px;
     background-color: #212121;
 }
@@ -157,7 +158,7 @@ body {
 }
 
 .playingTrackInfo {
-    margin-left: 15px;
+    margin: 15px;
 }
 
 .playingTrackName {
@@ -278,8 +279,8 @@ li span:hover {
     overflow: hidden; 
     text-overflow: ellipsis; 
     white-space: nowrap;
+    margin-bottom: 0px;
     margin-top: 0px;
-    margin-bottom: 3px;
 }
 
 td {
@@ -298,9 +299,7 @@ td {
 
 .tableImage {
     height: 40px; 
-    width: 40px;
-    margin-top: 5px;
-    margin-bottom: 5px; 
+    width: 40px; 
     object-fit: cover;
 }
 
@@ -328,12 +327,6 @@ td {
     visibility: visible;
 }
 
-.tableIndex {
-    position: absolute;
-    left: 40%;
-    top: 40%;
-}
-
 .rowFirst {
     position: relative;
     width: 50px;
@@ -341,6 +334,10 @@ td {
     text-align: center;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
+}
+
+.rowSecond {
+    padding-left: 10px;
 }
 
 .rowLast {

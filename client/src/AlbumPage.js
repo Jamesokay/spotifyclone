@@ -81,6 +81,7 @@ export default function AlbumPage({ id, dispatch }) {
                   num: item.track_number,
                   name: item.name,
                   artists: item.artists,
+                  albumId: id,
                   duration: toMinsSecs(item.duration_ms),
                   trackImage: albumImg
                 }
