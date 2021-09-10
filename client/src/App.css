@@ -53,7 +53,7 @@ body {
 
 .cardPlayButton {
     position: absolute;
-    left: 70%;
+    left: 71%;
     top: 70%;
     display: flex;
     position: absolute;
@@ -154,6 +154,7 @@ body {
     cursor: default;
     margin-bottom: 20px;
     border-bottom: 0.5px solid #373737;
+    z-index: 2;
 }
 
 

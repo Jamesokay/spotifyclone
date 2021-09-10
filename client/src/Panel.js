@@ -1,5 +1,9 @@
+import { useContext } from 'react'
+import { TrackContext } from './TrackContext'
 
 export default function Panel({ content, dispatch }) {
+
+  const testContextFunc = useContext(TrackContext)
     
   function pageChange(pageType, pageId) {
     if (pageType === 'artist') {
@@ -31,7 +35,8 @@ export default function Panel({ content, dispatch }) {
             :
             <div className='cardImageBox'>
               <img className='cardImage' src={cont.imgUrl} alt='' onClick={() => pageChange(cont.type, cont.id)} />
-              <div className ='cardPlayButton'>
+              <div className ='cardPlayButton'
+                onClick={() => testContextFunc.setCurrentTrack(cont.firstTrack)}>
                 <div className='cardPlayIcon'></div>
               </div>
             </div>

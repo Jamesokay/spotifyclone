@@ -66,7 +66,16 @@ export default function Search({ dispatch }) {
         .then(data => {
             let albumRaw = (data.body.albums.items)
             let albumFiltered = filterByImage(albumRaw)
-            setAlbumResults(albumFiltered.map(getDataObject))
+            albumFiltered.forEach(item => {
+              spotifyApi.getAlbum(item.id)
+              .then(data => {
+                  let obj = getDataObject(data.body)
+                  setAlbumResults(albumResults => [...albumResults, obj])
+              })
+              .catch(error => {
+                  console.log(error)
+              })          
+            })
         })
         .catch(error => {
             console.log(error)
@@ -76,7 +85,16 @@ export default function Search({ dispatch }) {
         .then(data => {
             let playlistRaw = (data.body.playlists.items)
             let playlistFiltered = filterByImage(playlistRaw)
-            setPlaylistResults(playlistFiltered.map(getDataObject))
+            playlistFiltered.forEach(item => {
+                spotifyApi.getPlaylist(item.id)
+                .then(data => {
+                    let obj = getDataObject(data.body)
+                    setPlaylistResults(playlistResults => [...playlistResults, obj])
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+            })
         })
         .catch(error => {
             console.log(error)

@@ -41,7 +41,13 @@ export default function AlbumPage({ id, dispatch }) {
                     name: data.body.name,
                     popularity: data.body.popularity,
                     imgUrl: data.body.images[0].url,
-                    subtitle: data.body.release_date.slice(0, 4)
+                    subtitle: data.body.release_date.slice(0, 4),
+                    firstTrack: {
+                        name: data.body.tracks.items[0].name, 
+                        artists: data.body.tracks.items[0].artists, 
+                        imgUrl: data.body.images[0].url,
+                        albumId: data.body.id
+                    }
               }
               setMoreByArtist(moreByArtist => [...moreByArtist, obj])
         })

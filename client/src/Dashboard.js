@@ -163,7 +163,14 @@ export default function Dashboard({ dispatch }) {
       .then(data => {
         let playlists = data.body.playlists.items.filter(item => item.owner.display_name === 'Spotify')
         playlists.forEach(item => {
-          setCustomArtistPanel(customArtistPanel => [...customArtistPanel, getDataObject(item)])
+          spotifyApi.getPlaylist(item.id)
+          .then(data => {
+            let obj = getDataObject(data.body)
+            setCustomArtistPanel(customArtistPanel => [...customArtistPanel, obj])
+          })
+          .catch(error => {
+            console.log(error)
+          })
         })        
       })
       .catch(error => {
@@ -172,9 +179,15 @@ export default function Dashboard({ dispatch }) {
 
       spotifyApi.getArtistAlbums(topArtists[0].key, {album_type: 'album', limit: 5})
       .then(data => {
-        console.log(data.body)
         data.body.items.forEach(item => {
-          setCustomArtistPanel(customArtistPanel => [...customArtistPanel, getDataObject(item)])
+          spotifyApi.getAlbum(item.id)
+          .then(data => {
+          let obj = getDataObject(data.body)
+          setCustomArtistPanel(customArtistPanel => [...customArtistPanel, obj])
+          })
+          .catch(error => {
+            console.log(error)
+          })
         })
         
       })

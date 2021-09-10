@@ -38,7 +38,13 @@ export default function ArtistPage({ id, dispatch }) {
                     name: data.body.name,
                     popularity: data.body.popularity,
                     imgUrl: data.body.images[0].url,
-                    subtitle: data.body.release_date.slice(0, 4) + ' • Album'
+                    subtitle: data.body.release_date.slice(0, 4) + ' • Album',
+                    firstTrack: {
+                      name: data.body.tracks.items[0].name, 
+                      artists: data.body.tracks.items[0].artists, 
+                      imgUrl: data.body.images[0].url,
+                      albumId: data.body.id
+                  }
             }
             setArtistAlbumsRaw(artistAlbumsRaw => [...artistAlbumsRaw, obj])
         })
