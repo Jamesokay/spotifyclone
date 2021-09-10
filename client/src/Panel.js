@@ -1,6 +1,5 @@
-import React from 'react'
 
-export default function Panel({ title, content, dispatch }) {
+export default function Panel({ content, dispatch }) {
     
   function pageChange(pageType, pageId) {
     if (pageType === 'artist') {
@@ -30,7 +29,12 @@ export default function Panel({ title, content, dispatch }) {
             {cont.type === 'artist'?
             <img className='cardArtist' src={cont.imgUrl} alt='' onClick={() => pageChange(cont.type, cont.id)} />
             :
-            <img className='cardImage' src={cont.imgUrl} alt='' onClick={() => pageChange(cont.type, cont.id)} />
+            <div className='cardImageBox'>
+              <img className='cardImage' src={cont.imgUrl} alt='' onClick={() => pageChange(cont.type, cont.id)} />
+              <div className ='cardPlayButton'>
+                <div className='cardPlayIcon'></div>
+              </div>
+            </div>
             }
             <div className='cardText'>
             <span className='cardTitle' onClick={() => pageChange(cont.type, cont.id)}>{cont.name}</span>

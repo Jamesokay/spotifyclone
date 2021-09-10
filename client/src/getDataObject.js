@@ -11,7 +11,12 @@ export default function getDataObject(dataObject) {
           type: dataObject.type,
           name: dataObject.name,
           imgUrl: dataObject.images[0].url,
-          artists: dataObject.artists
+          artists: dataObject.artists,
+          //  firstTrack: dataObject.tracks.items[0].name 
+          //   artists: dataObject.tracks.items[0].artists, 
+          //   imgUrl: dataObject.images[0].url,
+          //   albumId: dataObject.id
+          //  }
         }
       }
       else {

@@ -172,6 +172,7 @@ export default function Dashboard({ dispatch }) {
 
       spotifyApi.getArtistAlbums(topArtists[0].key, {album_type: 'album', limit: 5})
       .then(data => {
+        console.log(data.body)
         data.body.items.forEach(item => {
           setCustomArtistPanel(customArtistPanel => [...customArtistPanel, getDataObject(item)])
         })
