@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { TrackContext } from './TrackContext'
 
 
@@ -6,6 +6,7 @@ export default function Player({ dispatch }) {
 
   const trackContext = useContext(TrackContext)
   const track = trackContext.currentTrack
+  const [isPlaying, setIsPlaying] = useState(false)
 
   function pageChange(pageType, pageId) {
     if (pageType === 'artist') {
@@ -46,7 +47,20 @@ export default function Player({ dispatch }) {
         </div>
       </div>
       <div className='playButton'>
-        <div className='playIcon'></div>
+      {(!isPlaying)?
+        <div className='playIcon' onClick={() => setIsPlaying(true)}></div>
+        :
+        <div className='pauseIcon' onClick={() => setIsPlaying(false)}></div>
+      }
+      </div>
+      <div className='playProgressBar'>
+        <div className='playProgress'></div>
+      </div>
+      <div className='prevBox'>
+        <div className='prevTrackButton'></div>
+      </div>
+      <div className='nextBox'>
+        <div className='nextTrackButton'></div>
       </div>
     </div>
     )

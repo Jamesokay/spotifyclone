@@ -175,6 +175,27 @@ body {
     bottom: 0;
     border-top: 0.5px solid #373737;
 }
+.playProgressBar {
+    height: 5px;
+    width: 33.3%;
+    background-color: #373737;
+    position: absolute;
+    left: 33.3%;
+    bottom: 15px;
+    border-radius: 10px;
+
+}
+
+.playProgress {
+    height: 5px;
+    width: 30%;
+    background-color: grey;
+    border-radius: 10px;
+}
+
+.playProgress:hover {
+    background-color: #1ed760;
+}
 
 .playingTrack {
     display: flex;
@@ -187,7 +208,6 @@ body {
 .playingTrackImg {
     height: 60px;
     width: 60px;
-    background-color: violet;
 }
 
 .playingTrackInfo {
@@ -217,12 +237,14 @@ body {
 
 .playButton {
     display: flex;
+    position: absolute;
     height: 35px;
     width: 35px;
     border-radius: 50%;
     background: white;
-    margin: auto;
-    margin-right: 50%;
+    margin-top: 15px;
+    right: 50%;
+
 }
 
 .playButton:hover {
@@ -231,6 +253,54 @@ body {
 
 .playButton:hover > .playIcon {
     transform: scale(1.05)
+}
+
+.prevBox {
+    position: absolute;
+    margin-top: 26px;
+    left: 45.4%;
+    border-left: 3px solid grey;
+}
+
+.prevTrackButton {
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-right: 10px solid grey;
+    border-bottom: 7px solid transparent;
+    margin-left: -2px;    
+}
+
+.prevBox:hover {
+    border-left: 3px solid white;
+}
+
+.prevBox:hover .prevTrackButton {
+    border-right: 10px solid white;
+}
+
+.nextBox {
+    position: absolute;
+    margin-top: 26px;
+    right: 48%;
+    border-right: 3px solid grey;
+}
+
+.nextTrackButton {
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-left: 10px solid grey;
+    border-bottom: 7px solid transparent;
+    margin-right: -2px;
+}
+
+.nextBox:hover {
+    border-right: 3px solid white;
+}
+
+.nextBox:hover .nextTrackButton {
+    border-left: 10px solid white;
 }
 
 
@@ -242,6 +312,14 @@ body {
     border-bottom: 7px solid transparent;
     margin-left: 15px;
     margin-top: 11px;
+}
+
+.pauseIcon {
+    width: 4px;
+    height: 12px;
+    border-right: 3.5px solid #212121;
+    border-left: 3.5px solid #212121;
+    margin: auto;
 }
 
 .playerPunc {
@@ -336,6 +414,35 @@ td {
     object-fit: cover;
 }
 
+.searchTableImage {
+    height: 40px; 
+    width: 40px;
+    margin-left: 10px; 
+    object-fit: cover;
+}
+
+.trackTableRow:hover .searchTableImage {
+    opacity: 0.5;
+}
+
+.searchTablePlayIcon {
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-left: 10px solid white;
+    border-bottom: 7px solid transparent;
+    position: absolute;
+    right: 27.5%;
+    top: 37.5%;
+    visibility: hidden;
+}
+
+.trackTableRow:hover .searchTablePlayIcon {
+    visibility: visible;
+}
+
+
+
 .trackTableRow {
     color: grey;
 }
@@ -355,6 +462,7 @@ td {
 .trackTableRow:hover .tableIndex {
     visibility: hidden;
 }
+
 
 .trackTableRow:hover .tablePlayIcon {
     visibility: visible;

@@ -138,7 +138,12 @@ export default function TracksTable({content, dispatch, page}) {
           <tbody>
           {content.map(cont =>
           <tr className='trackTableRow' key={cont.id}>
-            <td className='rowFirst'><img className='tableImage' src={cont.trackImage} alt='' /></td>
+            <td className='rowFirst'>
+              <img className='searchTableImage' src={cont.trackImage} alt='' />
+              <div className='searchTablePlayIcon'
+              onClick={() => trackChange(cont.name, cont.artists, cont.trackImage, cont.albumId)}
+              ></div>
+            </td>
             <td className='rowSecond'>
             <p className='tableTrackName'>{cont.name}</p>
             {cont.artists.map((artist, index, artists) => 
