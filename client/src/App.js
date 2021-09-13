@@ -9,7 +9,7 @@ import PanelExpanded from './PanelExpanded'
 import { useReducer, useState, useEffect } from 'react'
 import { AuthProvider } from './AuthContext'
 import NavBar from './NavBar'
-import Player from './Player'
+import WebPlayer from './WebPlayer'
 import { TrackContextProvider } from './TrackContext'
 
 
@@ -97,7 +97,7 @@ function App() {
        <TrackContextProvider>
         <NavBar dispatch={dispatch} />
         <Page />
-        <Player dispatch={dispatch} />
+        <WebPlayer dispatch={dispatch} />
         </TrackContextProvider>
       </AuthProvider>
     )

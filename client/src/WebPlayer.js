@@ -1,12 +1,15 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { TrackContext } from './TrackContext'
+import { AuthContext } from './AuthContext'
 
 
-export default function Player({ dispatch }) {
+export default function WebPlayer({ dispatch }) {
 
   const trackContext = useContext(TrackContext)
+  const accessToken = useContext(AuthContext)
   const track = trackContext.currentTrack
   const [isPlaying, setIsPlaying] = useState(false)
+  let testPlayer
 
   function pageChange(pageType, pageId) {
     if (pageType === 'artist') {
@@ -22,6 +25,64 @@ export default function Player({ dispatch }) {
       })
     }
   }
+
+  const loadScript = () => {
+    const script = document.createElement("script");
+    script.id = "spotify-player";
+    script.type = "text/javascript";
+    script.async = "async";
+    script.defer = "defer";
+    script.src = "https://sdk.scdn.co/spotify-player.js";
+    document.body.appendChild(script);
+  }
+
+  const InitializePlayer = () => {
+    console.log('initializing player');
+    let { Player } = window.Spotify;
+    testPlayer = new Player({
+        name: 'test SDK player',
+        getOAuthToken: (cb) => {
+            cb(accessToken);
+        },
+    })
+
+    // Ready
+    testPlayer.addListener('ready', ({ device_id }) => {
+      console.log('Ready with Device ID', device_id);
+    });
+
+    // Not Ready
+    testPlayer.addListener('not_ready', ({ device_id }) => {
+      console.log('Device ID has gone offline', device_id);
+    });
+
+    testPlayer.addListener('initialization_error', ({ message }) => { 
+      console.error(message);
+    });
+
+    testPlayer.addListener('authentication_error', ({ message }) => {
+      console.error(message);
+    });
+
+    testPlayer.addListener('account_error', ({ message }) => {
+      console.error(message);
+    });
+
+    testPlayer.connect();
+  }
+
+  useEffect(() => {
+    if (!accessToken) return
+    // initialize script
+    loadScript();
+
+    window.onSpotifyWebPlaybackSDKReady = () => InitializePlayer();
+    // get current state of the player
+    return () => {
+        testPlayer.disconnect();
+    }
+    // eslint-disable-next-line
+}, [accessToken])
 
   return (
     <div className='playBar'>
