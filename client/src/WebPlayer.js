@@ -1,100 +1,103 @@
 import { useContext, useState, useEffect } from 'react'
-import { TrackContext } from './TrackContext'
+// import { TrackContext } from './TrackContext'
 import { AuthContext } from './AuthContext'
 
+const track = {
+  name: "",
+  album: {
+      images: [
+          { url: "" }
+      ]
+  },
+  artists: [
+      { name: "" }
+  ]
+}
 
 export default function WebPlayer({ dispatch }) {
 
-  const trackContext = useContext(TrackContext)
+//  const trackContext = useContext(TrackContext)
   const accessToken = useContext(AuthContext)
-  const track = trackContext.currentTrack
-  const [isPlaying, setIsPlaying] = useState(false)
-  let testPlayer
+//  const track = trackContext.currentTrack
+ const [isPlaying, setIsPlaying] = useState(false)
+  
+  const [player, setPlayer] = useState(undefined)
+  const [is_paused, setPaused] = useState(false)
+  const [is_active, setActive] = useState(false)
+  const [current_track, setTrack] = useState(track)
 
-  function pageChange(pageType, pageId) {
-    if (pageType === 'artist') {
-      dispatch({
-        type: 'ARTIST_PAGE',
-        id: pageId
-      })
-    }
-    else if (pageType === 'album') {
-      dispatch({
-        type: 'ALBUM_PAGE',
-        id: pageId
-      })
-    }
-  }
-
-  const loadScript = () => {
-    const script = document.createElement("script");
-    script.id = "spotify-player";
-    script.type = "text/javascript";
-    script.async = "async";
-    script.defer = "defer";
-    script.src = "https://sdk.scdn.co/spotify-player.js";
-    document.body.appendChild(script);
-  }
-
-  const InitializePlayer = () => {
-    console.log('initializing player');
-    let { Player } = window.Spotify;
-    testPlayer = new Player({
-        name: 'test SDK player',
-        getOAuthToken: (cb) => {
-            cb(accessToken);
-        },
-    })
-
-    // Ready
-    testPlayer.addListener('ready', ({ device_id }) => {
-      console.log('Ready with Device ID', device_id);
-    });
-
-    // Not Ready
-    testPlayer.addListener('not_ready', ({ device_id }) => {
-      console.log('Device ID has gone offline', device_id);
-    });
-
-    testPlayer.addListener('initialization_error', ({ message }) => { 
-      console.error(message);
-    });
-
-    testPlayer.addListener('authentication_error', ({ message }) => {
-      console.error(message);
-    });
-
-    testPlayer.addListener('account_error', ({ message }) => {
-      console.error(message);
-    });
-
-    testPlayer.connect();
-  }
+  // function pageChange(pageType, pageId) {
+  //   if (pageType === 'artist') {
+  //     dispatch({
+  //       type: 'ARTIST_PAGE',
+  //       id: pageId
+  //     })
+  //   }
+  //   else if (pageType === 'album') {
+  //     dispatch({
+  //       type: 'ALBUM_PAGE',
+  //       id: pageId
+  //     })
+  //   }
+  // }
 
   useEffect(() => {
     if (!accessToken) return
-    // initialize script
-    loadScript();
 
-    window.onSpotifyWebPlaybackSDKReady = () => InitializePlayer();
-    // get current state of the player
-    return () => {
-        testPlayer.disconnect();
-    }
-    // eslint-disable-next-line
-}, [accessToken])
+    const script = document.createElement("script");
+    script.src = "https://sdk.scdn.co/spotify-player.js";
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    window.onSpotifyWebPlaybackSDKReady = () => {
+        const player = new window.Spotify.Player({
+            name: 'Web Playback SDK',
+            getOAuthToken: cb => { cb(accessToken); },
+            volume: 0.5
+        });
+
+    setPlayer(player);
+
+    player.addListener('ready', ({ device_id }) => {
+        console.log('Ready with Device ID', device_id);
+    });
+
+    player.addListener('not_ready', ({ device_id }) => {
+        console.log('Device ID has gone offline', device_id);
+    });
+
+    player.connect();
+
+    player.addListener('player_state_changed', ( state => {
+      if (!state) {
+          return;
+      }
+ 
+      setTrack(state.track_window.current_track);
+      setPaused(state.paused);
+  
+  
+      player.getCurrentState().then( state => { 
+          (!state)? setActive(false) : setActive(true) 
+      });
+    }))}
+  }, [accessToken]);
+
+
 
   return (
+
     <div className='playBar'>
       <div className='playingTrack'>
-        <img className='playingTrackImg' src={track.imgUrl} alt='' />
+        <img className='playingTrackImg' src={current_track.album.images[0].url} alt='' />
         <div className='playingTrackInfo'>
-          <span className='playingTrackName' onClick={() => pageChange('album', track.albumId)}>{track.name}</span>
+          <span className='playingTrackName'>{current_track.name}</span>
           <br />
-          {(track.artists)?
-            track.artists.map((artist, index, artists) =>
+          {(current_track.artists)?
+            current_track.artists.map((artist, index, artists) =>
               <span key={artist.id}> 
-                <span className='playingTrackArtist' onClick={() => pageChange('artist', artist.id)}>{artist.name}</span>
+                <span className='playingTrackArtist'>{artist.name}</span>
                 {(index < artists.length - 1)?
                   <span className='playerPunc'>, </span>
                   :
@@ -105,9 +108,10 @@ export default function WebPlayer({ dispatch }) {
           :
           <span></span>
           }
+
         </div>
       </div>
-      <div className='playButton'>
+      <div className='playButton' onClick={() => { player.togglePlay() }}>
       {(!isPlaying)?
         <div className='playIcon' onClick={() => setIsPlaying(true)}></div>
         :
@@ -117,10 +121,10 @@ export default function WebPlayer({ dispatch }) {
       <div className='playProgressBar'>
         <div className='playProgress'></div>
       </div>
-      <div className='prevBox'>
+      <div className='prevBox' onClick={() => { player.previousTrack() }}>
         <div className='prevTrackButton'></div>
       </div>
-      <div className='nextBox'>
+      <div className='nextBox' onClick={() => { player.nextTrack() }}>
         <div className='nextTrackButton'></div>
       </div>
     </div>
