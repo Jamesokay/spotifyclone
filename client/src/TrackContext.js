@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from 'react'
 import { AuthContext } from './AuthContext'
-// import SpotifyWebApi from 'spotify-web-api-node'
+import SpotifyWebApi from 'spotify-web-api-node'
 
 const TrackContext = createContext()
 
@@ -16,36 +16,21 @@ const track = {
   ]
 }
 
-// const spotifyApi = new SpotifyWebApi({
-//   clientId: localStorage.getItem('clientId')
-// })
+const spotifyApi = new SpotifyWebApi({
+  clientId: localStorage.getItem('clientId')
+})
+
 
 function TrackContextProvider({ children }) {
   const [player, setPlayer] = useState(undefined)
   const [currentTrack, setCurrentTrack] = useState(track)
   const accessToken = useContext(AuthContext)
-  const [isPlaying, setIsPlaying] = useState(false)
-  
-  // useEffect(() => {
-  //   if (!accessToken) return
-  //   spotifyApi.setAccessToken(accessToken)
-  // }, [accessToken])
 
-  // useEffect(() => {
-  //   if (!accessToken) return
+  useEffect(() => {
+    if (!accessToken) return
+    spotifyApi.setAccessToken(accessToken)
+  }, [accessToken])
 
-  //     spotifyApi.getMyCurrentPlayingTrack()
-  //     .then(data => {     
-  //       setCurrentTrack({
-  //         name: data.body.item.name,
-  //         album: data.body.item.album,
-  //         artists: data.body.item.artists
-  //       })
-  //     })
-  //     .catch(error => {
-  //       console.log(error)
-  //     })
-  // }, [accessToken])
 
   useEffect(() => {
     if (!accessToken) return
@@ -72,8 +57,7 @@ function TrackContextProvider({ children }) {
     player.addListener('not_ready', ({ device_id }) => {
         console.log('Device ID has gone offline', device_id);
     });
-
-    player.connect();
+   
 
     player.addListener('player_state_changed', ( state => {
       if (!state) {
@@ -82,21 +66,23 @@ function TrackContextProvider({ children }) {
  
        setCurrentTrack(state.track_window.current_track);
 
-    }))}
+    }))
+
+    player.connect();
+  
+  }
   }, [accessToken]);
 
   useEffect(() => {
-    if (!player) return
+    if (!accessToken) return
+    if (!currentTrack) return
 
-      player.togglePlay()
-    
-  }, [player, isPlaying])
-
- 
+    console.log(currentTrack)
+  }, [accessToken, currentTrack])
 
 
   
-  const value = {currentTrack, setCurrentTrack, isPlaying, setIsPlaying}
+  const value = {currentTrack, setCurrentTrack, player}
   return <TrackContext.Provider value={value}>{children}</TrackContext.Provider>
 }
 

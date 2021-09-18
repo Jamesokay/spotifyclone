@@ -1,9 +1,12 @@
-import { useContext } from 'react'
-import { TrackContext } from './TrackContext'
+// import { useContext } from 'react'
+// import { TrackContext } from './TrackContext'
+// import { AuthContext } from './AuthContext'
 
 export default function Panel({ content, dispatch }) {
+  
+//  const accessToken = useContext(AuthContext)
+//  const trackContext = useContext(TrackContext)
 
-  const testContextFunc = useContext(TrackContext)
     
   function pageChange(pageType, pageId) {
     if (pageType === 'artist') {
@@ -25,6 +28,35 @@ export default function Panel({ content, dispatch }) {
       })
     }
   }
+
+  // function playTrack(trackUri) {
+
+  //   const play = ({
+  //     spotify_uri,
+  //     playerInstance: {
+  //       _options: {
+  //         getOAuthToken
+  //       }
+  //     }
+  //   }) => {
+  //     getOAuthToken(access_token => {
+  //       fetch(`https://api.spotify.com/v1/me/player/play`, {
+  //         method: 'PUT',
+  //         body: JSON.stringify({ uris: [spotify_uri] }),
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'Authorization': `Bearer ${accessToken}`
+  //         },
+  //       });
+  //     });
+  //   };
+    
+    // play({
+    //   playerInstance: player,
+    //   spotify_uri: trackUri,
+    // });
+ 
+ // }
     
     return (
         <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between'}}>  
@@ -36,7 +68,7 @@ export default function Panel({ content, dispatch }) {
             <div className='cardImageBox'>
               <img className='cardImage' src={cont.imgUrl} alt='' onClick={() => pageChange(cont.type, cont.id)} />
               <div className ='cardPlayButton'
-                onClick={() => testContextFunc.setCurrentTrack(cont.firstTrack)}>
+                >
                 <div className='cardPlayIcon'></div>
               </div>
             </div>

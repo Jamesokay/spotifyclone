@@ -3,23 +3,15 @@ import { TrackContext } from './TrackContext'
 
 
 
-export default function WebPlayer({ dispatch }) {
+export default function WebPlayer() {
 
   const trackContext = useContext(TrackContext)
   const track = trackContext.currentTrack
-  
-  function togglePlay(bool) {
-    if (bool === true) {
-      trackContext.setIsPlaying(true)
-    }
-    else {
-      trackContext.setIsPlaying(false)
-    }
-  }
-//  const [player, setPlayer] = useState(undefined)
+  const player = trackContext.player
 //  const [is_paused, setPaused] = useState(false)
 //  const [isPlaying, setIsPlaying] = useState(false)
 //  const [current_track, setTrack] = useState(track)
+
 
   // function pageChange(pageType, pageId) {
   //   if (pageType === 'artist') {
@@ -63,19 +55,15 @@ export default function WebPlayer({ dispatch }) {
         </div>
       </div>
       <div className='playButton'>
-      {/* {(!playIconShow)? */}
-        <div className='playIcon' onClick={() => togglePlay(true)}></div>
-        {/* : */}
-        {/* <div className='pauseIcon' onClick={() => togglePlay(false)}></div> */}
-      {/* } */}
+        <div className='playIcon' onClick={() => player.togglePlay()}></div>
       </div>
       <div className='playProgressBar'>
         <div className='playProgress'></div>
       </div>
-      <div className='prevBox'>
+      <div className='prevBox' onClick={() => player.previousTrack()}>
         <div className='prevTrackButton'></div>
       </div>
-      <div className='nextBox'>
+      <div className='nextBox' onClick={() => player.nextTrack()}>
         <div className='nextTrackButton'></div>
       </div>
     </div>

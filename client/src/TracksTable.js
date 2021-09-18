@@ -1,17 +1,39 @@
 import { useContext } from 'react'
-import { TrackContext } from './TrackContext'
+// import { TrackContext } from './TrackContext'
+import { AuthContext } from './AuthContext'
+import axios from 'axios'
 
 export default function TracksTable({content, dispatch, page}) {
 
-    const testContextFunc = useContext(TrackContext)
+//    const testContextFunc = useContext(TrackContext)
+    const accessToken = useContext(AuthContext)
 
-    function trackChange(trackName, trackArtists, trackImage, trackAlbum) {
-      testContextFunc.setCurrentTrack({
-          name: trackName,
-          artists: trackArtists,
-          imgUrl: trackImage,
-          albumId: trackAlbum
-        })
+    function trackChange(trackUri) {
+          
+      let data = {
+        context_uri: trackUri
+      }
+
+          const options = {
+              url: 'https://api.spotify.com/v1/me/player/play',
+              method: 'PUT',
+              headers: {
+                  'Authorization': `Bearer ${accessToken}`,
+                  'Content-Type': 'application/json',
+              },
+              data
+          }
+
+          console.log(options)
+
+          axios(options)
+          .then(response => {
+            console.log(response)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+ 
     }
 
     function pageChange(pageType, pageId) {
@@ -66,7 +88,7 @@ export default function TracksTable({content, dispatch, page}) {
                   <td className='rowFirst'>
                     <span className='tableIndex'>{cont.num}</span>
                     <div className='tablePlayIcon'
-                    onClick={() => trackChange(cont.name, cont.artists, cont.trackImage, cont.albumId)}></div>
+                    onClick={() => trackChange(cont.uri)}></div>
                   </td>
                   <td>
                     <p className='tableTrackName'>{cont.name}</p>                     
