@@ -77,7 +77,8 @@ function TrackContextProvider({ children }) {
     if (!accessToken) return
     if (!currentTrack) return
 
-    console.log(currentTrack)
+      console.log(currentTrack)
+
   }, [accessToken, currentTrack])
 
 

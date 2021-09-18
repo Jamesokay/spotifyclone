@@ -11,7 +11,7 @@ export default function TracksTable({content, dispatch, page}) {
     function trackChange(trackUri) {
           
       let data = {
-        context_uri: trackUri
+        uris: [trackUri]
       }
 
           const options = {

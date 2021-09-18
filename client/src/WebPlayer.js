@@ -8,6 +8,8 @@ export default function WebPlayer() {
   const trackContext = useContext(TrackContext)
   const track = trackContext.currentTrack
   const player = trackContext.player
+
+
 //  const [is_paused, setPaused] = useState(false)
 //  const [isPlaying, setIsPlaying] = useState(false)
 //  const [current_track, setTrack] = useState(track)
