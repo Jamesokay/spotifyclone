@@ -8,10 +8,11 @@ export default function TracksTable({content, dispatch, page}) {
 //    const testContextFunc = useContext(TrackContext)
     const accessToken = useContext(AuthContext)
 
-    function trackChange(trackUri) {
+    function trackChange(trackUri, albumUri) {
           
       let data = {
-        uris: [trackUri]
+        context_uri: albumUri,
+        offset: { uri: trackUri }
       }
 
           const options = {
@@ -88,7 +89,7 @@ export default function TracksTable({content, dispatch, page}) {
                   <td className='rowFirst'>
                     <span className='tableIndex'>{cont.num}</span>
                     <div className='tablePlayIcon'
-                    onClick={() => trackChange(cont.uri)}></div>
+                    onClick={() => trackChange(cont.uri, cont.albUri)}></div>
                   </td>
                   <td>
                     <p className='tableTrackName'>{cont.name}</p>                     

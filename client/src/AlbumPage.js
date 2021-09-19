@@ -77,7 +77,7 @@ export default function AlbumPage({ id, dispatch }) {
                 type: 'ALBUM'
             })
             let albumImg = data.body.images[0].url
-            // let albumUri = data.body.uri
+            let albumUri = data.body.uri
             setCreatorObject(data.body.artists)
             setAlbumName(data.body.name)
             setArtistId(data.body.artists[0].id)
@@ -86,6 +86,7 @@ export default function AlbumPage({ id, dispatch }) {
                 return {
                   id: item.id,
                   uri: item.uri,
+                  albUri: albumUri,
                   num: item.track_number,
                   name: item.name,
                   artists: item.artists,

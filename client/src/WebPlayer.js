@@ -3,11 +3,17 @@ import { TrackContext } from './TrackContext'
 
 
 
+
 export default function WebPlayer() {
 
   const trackContext = useContext(TrackContext)
   const track = trackContext.currentTrack
   const player = trackContext.player
+  const paused = trackContext.paused
+
+
+
+  
 
 
 //  const [is_paused, setPaused] = useState(false)
@@ -56,8 +62,12 @@ export default function WebPlayer() {
 
         </div>
       </div>
-      <div className='playButton'>
-        <div className='playIcon' onClick={() => player.togglePlay()}></div>
+      <div className='playButton' onClick={() => player.togglePlay()}>
+      {(paused)?
+        <div className='playIcon'></div>
+        :
+        <div className='pauseIcon'></div>
+      }
       </div>
       <div className='playProgressBar'>
         <div className='playProgress'></div>

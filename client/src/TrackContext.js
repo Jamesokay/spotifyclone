@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from 'react'
 import { AuthContext } from './AuthContext'
-import SpotifyWebApi from 'spotify-web-api-node'
+import axios from 'axios'
 
 const TrackContext = createContext()
 
@@ -16,20 +16,14 @@ const track = {
   ]
 }
 
-const spotifyApi = new SpotifyWebApi({
-  clientId: localStorage.getItem('clientId')
-})
-
 
 function TrackContextProvider({ children }) {
   const [player, setPlayer] = useState(undefined)
   const [currentTrack, setCurrentTrack] = useState(track)
+  const [paused, setPaused] = useState(false);
+//  const [active, setActive] = useState(false)
   const accessToken = useContext(AuthContext)
-
-  useEffect(() => {
-    if (!accessToken) return
-    spotifyApi.setAccessToken(accessToken)
-  }, [accessToken])
+  const [devId, setDevId] = useState("")
 
 
   useEffect(() => {
@@ -51,6 +45,7 @@ function TrackContextProvider({ children }) {
     setPlayer(player);   
 
     player.addListener('ready', ({ device_id }) => {
+        setDevId(device_id)
         console.log('Ready with Device ID', device_id);
     });
 
@@ -66,6 +61,13 @@ function TrackContextProvider({ children }) {
  
        setCurrentTrack(state.track_window.current_track);
 
+       setPaused(state.paused);
+
+
+    //   player.getCurrentState().then( state => { 
+    //       (!state)? setActive(false) : setActive(true) 
+    //   })
+
     }))
 
     player.connect();
@@ -75,15 +77,44 @@ function TrackContextProvider({ children }) {
 
   useEffect(() => {
     if (!accessToken) return
-    if (!currentTrack) return
+    if (!devId) return
 
-      console.log(currentTrack)
+    let data = {
+      device_ids: [devId]
+    }
 
-  }, [accessToken, currentTrack])
+    const options = {
+      url: 'https://api.spotify.com/v1/me/player/',
+      method: 'PUT',
+      headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+          },
+      data
+      }
+  
+    axios(options)
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+
+
+  }, [accessToken, devId])
+
+  // useEffect(() => {
+  //   if (!accessToken) return
+  //   if (!currentTrack) return
+
+  //     console.log(currentTrack)
+
+  // }, [accessToken, currentTrack])
 
 
   
-  const value = {currentTrack, setCurrentTrack, player}
+  const value = {currentTrack, setCurrentTrack, player, paused}
   return <TrackContext.Provider value={value}>{children}</TrackContext.Provider>
 }
 
