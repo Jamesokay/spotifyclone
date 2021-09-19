@@ -15,7 +15,6 @@ export default function ArtistPage({ id, dispatch }) {
     
     const accessToken = useContext(AuthContext)
     const [artistName, setArtistName] = useState('')
-//    const [artistImgUrl, setArtistImgUrl] = useState('')
     const [artistAlbumsRaw, setArtistAlbumsRaw] = useState([])
     const [artistTracks, setArtistTracks] = useState([])
     const [alsoLike, setAlsoLike] = useState([])
@@ -70,7 +69,6 @@ export default function ArtistPage({ id, dispatch }) {
         spotifyApi.getArtist(id)
         .then(data =>{
             setArtistName(data.body.name)
-          //  setArtistImgUrl(data.body.images[0].url)
         })
         .catch(error => {
             console.log(error)
@@ -82,6 +80,7 @@ export default function ArtistPage({ id, dispatch }) {
                 return {
                     num: index + 1,
                     id: track.id,
+                    uri: track.uri,
                     name: track.name,
                     trackImage: track.album.images[0].url,
                     albumId: track.album.id,

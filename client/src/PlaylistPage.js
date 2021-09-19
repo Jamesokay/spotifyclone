@@ -52,12 +52,16 @@ export default function PlaylistPage({ id, dispatch }) {
                         + getTotalDuration(data.body.tracks.items),
                     type: 'PLAYLIST'
             })
+
+            let playlistUri = data.body.uri
             
             setTracks(data.body.tracks.items.map((item, index ) => {
               if (item.track.album.images[0]) {
                 return {
                   num: index + 1,
                   id: item.track.id,
+                  uri: item.track.uri,
+                  context: playlistUri,
                   name: item.track.name,
                   trackImage: item.track.album.images[0].url,
                   artists: item.track.artists,

@@ -1,41 +1,41 @@
 import { useContext } from 'react'
 // import { TrackContext } from './TrackContext'
 import { AuthContext } from './AuthContext'
-import axios from 'axios'
+import playTrack from './playTrack'
 
 export default function TracksTable({content, dispatch, page}) {
 
 //    const testContextFunc = useContext(TrackContext)
     const accessToken = useContext(AuthContext)
 
-    function trackChange(trackUri, albumUri) {
+    // function trackChange(trackUri, albumUri) {
           
-      let data = {
-        context_uri: albumUri,
-        offset: { uri: trackUri }
-      }
+    //   let data = {
+    //     context_uri: albumUri,
+    //     offset: { uri: trackUri }
+    //   }
 
-          const options = {
-              url: 'https://api.spotify.com/v1/me/player/play',
-              method: 'PUT',
-              headers: {
-                  'Authorization': `Bearer ${accessToken}`,
-                  'Content-Type': 'application/json',
-              },
-              data
-          }
+    //       const options = {
+    //           url: 'https://api.spotify.com/v1/me/player/play',
+    //           method: 'PUT',
+    //           headers: {
+    //               'Authorization': `Bearer ${accessToken}`,
+    //               'Content-Type': 'application/json',
+    //           },
+    //           data
+    //       }
 
-          console.log(options)
+    //       console.log(options)
 
-          axios(options)
-          .then(response => {
-            console.log(response)
-          })
-          .catch(error => {
-            console.log(error)
-          })
+    //       axios(options)
+    //       .then(response => {
+    //         console.log(response)
+    //       })
+    //       .catch(error => {
+    //         console.log(error)
+    //       })
  
-    }
+    // }
 
     function pageChange(pageType, pageId) {
         if (pageType === 'artist') {
@@ -62,7 +62,8 @@ export default function TracksTable({content, dispatch, page}) {
                 <td className='rowFirst'>
                 <span className='tableIndex'>{cont.num}</span>
                 <div className='tablePlayIcon'
-                onClick={() => trackChange(cont.name, cont.artists, cont.trackImage, cont.albumId)}></div>
+                onClick={() => playTrack(accessToken, {uris: [cont.uri]})}
+                ></div>
                 </td>
                 <td style={{width: '60px'}}><img className='tableImage' src={cont.trackImage} alt=''/></td>
                 <td>{cont.name}</td>
@@ -89,7 +90,9 @@ export default function TracksTable({content, dispatch, page}) {
                   <td className='rowFirst'>
                     <span className='tableIndex'>{cont.num}</span>
                     <div className='tablePlayIcon'
-                    onClick={() => trackChange(cont.uri, cont.albUri)}></div>
+                    onClick={() => playTrack(accessToken, 
+                    {context_uri: cont.albUri,
+                     offset: { uri: cont.uri }})}></div>
                   </td>
                   <td>
                     <p className='tableTrackName'>{cont.name}</p>                     
@@ -130,7 +133,9 @@ export default function TracksTable({content, dispatch, page}) {
                   <td className='rowFirst'>
                     <span className='tableIndex'>{cont.num}</span>
                     <div className='tablePlayIcon'
-                    onClick={() => trackChange(cont.name, cont.artists, cont.trackImage, cont.albumId)}
+                    onClick={() => playTrack(accessToken, 
+                    {context_uri: cont.context,
+                     offset: { uri: cont.uri }})}
                     ></div>
                   </td>
                   <td style={{width: '60px'}}><img className='tableImage' src={cont.trackImage} alt='' /></td>
@@ -164,7 +169,7 @@ export default function TracksTable({content, dispatch, page}) {
             <td className='rowFirst'>
               <img className='searchTableImage' src={cont.trackImage} alt='' />
               <div className='searchTablePlayIcon'
-              onClick={() => trackChange(cont.name, cont.artists, cont.trackImage, cont.albumId)}
+              onClick={() => playTrack(accessToken, {uris: [cont.uri]})}
               ></div>
             </td>
             <td className='rowSecond'>

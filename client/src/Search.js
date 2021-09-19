@@ -40,6 +40,7 @@ export default function Search({ dispatch }) {
             setTrackResults(data.body.tracks.items.map(item => {
                 return {
                     id: item.id,
+                    uri: item.uri,
                     trackImage: item.album.images[0].url,
                     name: item.name,
                     artists: item.artists,

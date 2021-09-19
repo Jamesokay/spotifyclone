@@ -1,10 +1,11 @@
-// import { useContext } from 'react'
+import { useContext } from 'react'
 // import { TrackContext } from './TrackContext'
-// import { AuthContext } from './AuthContext'
+import { AuthContext } from './AuthContext'
+import playTrack from './playTrack'
 
 export default function Panel({ content, dispatch }) {
   
-//  const accessToken = useContext(AuthContext)
+const accessToken = useContext(AuthContext)
 //  const trackContext = useContext(TrackContext)
 
     
@@ -68,7 +69,7 @@ export default function Panel({ content, dispatch }) {
             <div className='cardImageBox'>
               <img className='cardImage' src={cont.imgUrl} alt='' onClick={() => pageChange(cont.type, cont.id)} />
               <div className ='cardPlayButton'
-                >
+               onClick={() => playTrack(accessToken, {context_uri: cont.uri})} >
                 <div className='cardPlayIcon'></div>
               </div>
             </div>

@@ -8,32 +8,22 @@ export default function getDataObject(dataObject) {
         return {
           key: dataObject.id,
           id: dataObject.id,
+          uri: dataObject.uri,
           type: dataObject.type,
           name: dataObject.name,
           imgUrl: dataObject.images[0].url,
-          artists: dataObject.artists,
-          firstTrack: {
-               name: dataObject.tracks.items[0].name, 
-               artists: dataObject.tracks.items[0].artists, 
-               imgUrl: dataObject.images[0].url,
-               albumId: dataObject.id
-          }
+          artists: dataObject.artists
         }
       }
       else if (dataObject.type === 'playlist') {
         return {
           key: dataObject.id,
           id: dataObject.id,
+          uri: dataObject.uri,
           type: dataObject.type,
           name: dataObject.name,
           imgUrl: dataObject.images[0].url,
-          subtitle: dataObject.description,
-          firstTrack: {
-            name: dataObject.tracks.items[0].track.name, 
-            artists: dataObject.tracks.items[0].track.artists, 
-            imgUrl: dataObject.tracks.items[0].track.album.images[0].url,
-            albumId: dataObject.tracks.items[0].track.album.id
-          }
+          subtitle: dataObject.description
         }
       }
       else {
