@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { TrackContext } from './TrackContext'
 
 
@@ -11,8 +11,19 @@ export default function WebPlayer() {
   const player = trackContext.player
   const paused = trackContext.paused
 
+  useEffect(() => {
+    if (!player) return
+    if (!track) return
+
+    console.log(track)
+
+    if (paused) {
+      console.log('track paused')
+    }
+  }, [player, track, paused])
 
 
+  
   
 
 

@@ -33,6 +33,7 @@ export default function ArtistPage({ id, dispatch }) {
             let obj = {
                     key: data.body.id,
                     id: data.body.id,
+                    uri: data.body.uri,
                     type: 'artistAlbum',
                     name: data.body.name,
                     popularity: data.body.popularity,
