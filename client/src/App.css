@@ -177,7 +177,7 @@ body {
 }
 .playProgressBar {
     height: 5px;
-    width: 33.3%;
+    width: 480px;
     background-color: #373737;
     position: absolute;
     left: 33.3%;
@@ -188,7 +188,7 @@ body {
 
 .playProgress {
     height: 5px;
-    width: 30%;
+    width: 0%;
     background-color: grey;
     border-radius: 10px;
 }

@@ -1,5 +1,6 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useState } from 'react'
 import { TrackContext } from './TrackContext'
+import useInterval from './useInterval'
 
 
 
@@ -10,26 +11,25 @@ export default function WebPlayer() {
   const track = trackContext.currentTrack
   const player = trackContext.player
   const paused = trackContext.paused
+  const isReady = trackContext.ready
+  const [counter, setCounter] = useState(0);
+  var total = track.duration_ms
+  var percent = Math.floor((counter/total) * 100)
 
-  useEffect(() => {
-    if (!player) return
-    if (!track) return
 
-    console.log(track)
-
-    if (paused) {
-      console.log('track paused')
+  useInterval(() => {
+    if (isReady && !paused) {
+    setCounter(counter + 1000);
     }
-  }, [player, track, paused])
+  }, 1000);
+
+  // useEffect(() => {
+  //   setCounter(0)
+  // }, [track])
 
 
-  
-  
 
 
-//  const [is_paused, setPaused] = useState(false)
-//  const [isPlaying, setIsPlaying] = useState(false)
-//  const [current_track, setTrack] = useState(track)
 
 
   // function pageChange(pageType, pageId) {
@@ -80,8 +80,9 @@ export default function WebPlayer() {
         <div className='pauseIcon'></div>
       }
       </div>
+      <div style={{color: 'white'}}>{percent}</div>
       <div className='playProgressBar'>
-        <div className='playProgress'></div>
+        <div className='playProgress' style={{width: percent}}></div>
       </div>
       <div className='prevBox' onClick={() => player.previousTrack()}>
         <div className='prevTrackButton'></div>

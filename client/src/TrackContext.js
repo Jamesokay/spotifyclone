@@ -24,6 +24,7 @@ function TrackContextProvider({ children }) {
 //  const [active, setActive] = useState(false)
   const accessToken = useContext(AuthContext)
   const [devId, setDevId] = useState("")
+  const [ready, setReady] = useState(false)
 
 
   useEffect(() => {
@@ -47,6 +48,7 @@ function TrackContextProvider({ children }) {
     player.addListener('ready', ({ device_id }) => {
         setDevId(device_id)
         console.log('Ready with Device ID', device_id);
+        setReady(true)
     });
 
     player.addListener('not_ready', ({ device_id }) => {
@@ -114,7 +116,7 @@ function TrackContextProvider({ children }) {
 
 
   
-  const value = {currentTrack, setCurrentTrack, player, paused}
+  const value = {currentTrack, setCurrentTrack, player, ready, paused}
   return <TrackContext.Provider value={value}>{children}</TrackContext.Provider>
 }
 
