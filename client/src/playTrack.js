@@ -12,8 +12,6 @@ export default function playTrack(token, data) {
               data
           }
 
-          console.log(options)
-
           axios(options)
           .then(response => {
             console.log(response)

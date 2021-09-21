@@ -1,6 +1,7 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { TrackContext } from './TrackContext'
 import useInterval from './useInterval'
+import toMinsSecs from './toMinsSecs'
 
 
 
@@ -14,7 +15,9 @@ export default function WebPlayer() {
   const isReady = trackContext.ready
   const [counter, setCounter] = useState(0);
   var total = track.duration_ms
-  var percent = Math.floor((counter/total) * 100)
+  var percent = ((counter/total) * 100).toFixed(2)
+
+  
 
 
   useInterval(() => {
@@ -23,9 +26,9 @@ export default function WebPlayer() {
     }
   }, 1000);
 
-  // useEffect(() => {
-  //   setCounter(0)
-  // }, [track])
+  useEffect(() => {
+    setCounter(0)
+  }, [track.name])
 
 
 
@@ -47,7 +50,7 @@ export default function WebPlayer() {
   //   }
   // }
 
- 
+ if (isReady) {
   return (
 
     <div className='playBar'>
@@ -80,10 +83,11 @@ export default function WebPlayer() {
         <div className='pauseIcon'></div>
       }
       </div>
-      <div style={{color: 'white'}}>{percent}</div>
+      <div className='playedTime'>{toMinsSecs(counter)}</div>
       <div className='playProgressBar'>
-        <div className='playProgress' style={{width: percent}}></div>
+        <div className='playProgress' style={{width: percent + '%'}}></div>
       </div>
+      <div className='playingTimeTotal'>{toMinsSecs(total)}</div>
       <div className='prevBox' onClick={() => player.previousTrack()}>
         <div className='prevTrackButton'></div>
       </div>
@@ -92,5 +96,11 @@ export default function WebPlayer() {
       </div>
     </div>
     )
+    }
+    else {
+      return (
+        <div className='playBar'></div>
+      )
+    }
 
 }

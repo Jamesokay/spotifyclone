@@ -106,13 +106,13 @@ function TrackContextProvider({ children }) {
 
   }, [accessToken, devId])
 
-  // useEffect(() => {
-  //   if (!accessToken) return
-  //   if (!currentTrack) return
+  useEffect(() => {
+    if (!accessToken) return
+    if (!currentTrack) return
 
-  //     console.log(currentTrack)
+      console.log(currentTrack)
 
-  // }, [accessToken, currentTrack])
+  }, [accessToken, currentTrack])
 
 
   
