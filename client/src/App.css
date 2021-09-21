@@ -182,7 +182,7 @@ body {
     font-size: 8pt;
     left: 30%;
     bottom: 13px;
-    color: white;
+    color: grey;
 }
 
 .playingTimeTotal {
@@ -191,7 +191,7 @@ body {
     font-size: 8pt;
     left: 68%;
     bottom: 13px;
-    color: white;
+    color: grey;
 }
 
 .playProgressBar {
@@ -207,13 +207,26 @@ body {
 
 .playProgress {
     height: 5px;
-    width: 0%;
     background-color: grey;
     border-radius: 10px;
 }
 
+.playDrag {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    bottom: -3.5px;
+    visibility: hidden;
+}
+
 .playProgress:hover {
     background-color: #1ed760;
+}
+
+.playProgress:hover .playDrag {
+    visibility: visible;
 }
 
 .playingTrack {

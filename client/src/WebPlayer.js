@@ -14,6 +14,7 @@ export default function WebPlayer() {
   const paused = trackContext.paused
   const isReady = trackContext.ready
   const [counter, setCounter] = useState(0);
+  var image = track.album.images[0].url
   var total = track.duration_ms
   var percent = ((counter/total) * 100).toFixed(2)
 
@@ -55,7 +56,7 @@ export default function WebPlayer() {
 
     <div className='playBar'>
       <div className='playingTrack'>
-        <img className='playingTrackImg' src={track.album.images[0].url} alt='' />
+        <img className='playingTrackImg' src={image} alt='' />
         <div className='playingTrackInfo'>
           <span className='playingTrackName'>{track.name}</span>
           <br />
@@ -85,7 +86,9 @@ export default function WebPlayer() {
       </div>
       <div className='playedTime'>{toMinsSecs(counter)}</div>
       <div className='playProgressBar'>
-        <div className='playProgress' style={{width: percent + '%'}}></div>
+        <div className='playProgress' style={{width: percent + '%'}}>
+          <div className='playDrag' style={{left: (percent - 1) + '%'}}></div>
+        </div>
       </div>
       <div className='playingTimeTotal'>{toMinsSecs(total)}</div>
       <div className='prevBox' onClick={() => player.previousTrack()}>
