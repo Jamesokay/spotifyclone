@@ -194,7 +194,7 @@ body {
     color: grey;
 }
 
-.playProgressBar {
+#playProgressBar {
     height: 5px;
     width: 33.3%;
     background-color: #373737;
@@ -209,23 +209,25 @@ body {
     height: 5px;
     background-color: grey;
     border-radius: 10px;
+    position: absolute;
 }
 
-.playDrag {
+#playDrag {
+    position: relative;
     width: 12px;
     height: 12px;
     border-radius: 50%;
     background-color: white;
-    position: absolute;
-    bottom: -3.5px;
-    visibility: hidden;
+    visibility: visible;
+    z-index: 2;
+    left: 45%
 }
 
 .playProgress:hover {
     background-color: #1ed760;
 }
 
-.playProgress:hover .playDrag {
+.playProgressBar:hover .playDrag {
     visibility: visible;
 }
 

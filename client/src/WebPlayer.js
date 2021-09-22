@@ -2,6 +2,8 @@ import { useContext, useState, useEffect } from 'react'
 import { TrackContext } from './TrackContext'
 import useInterval from './useInterval'
 import toMinsSecs from './toMinsSecs'
+import playTrack from './playTrack'
+import { AuthContext } from './AuthContext'
 
 
 
@@ -9,6 +11,7 @@ import toMinsSecs from './toMinsSecs'
 export default function WebPlayer() {
 
   const trackContext = useContext(TrackContext)
+  const accessToken = useContext(AuthContext)
   const track = trackContext.currentTrack
   const player = trackContext.player
   const paused = trackContext.paused
@@ -17,6 +20,8 @@ export default function WebPlayer() {
   var image = track.album.images[0].url
   var total = track.duration_ms
   var percent = ((counter/total) * 100).toFixed(2)
+  var bar = document.getElementById('playProgressBar')
+  
 
   
 
@@ -31,6 +36,17 @@ export default function WebPlayer() {
     setCounter(0)
   }, [track.name])
 
+
+  
+  function setNewPlayback(progress) {
+    let newPosition = Math.floor((track.duration_ms / 100) * progress)
+    setCounter(newPosition)
+    let data = {
+      uris: [track.uri],
+      position_ms: newPosition
+    }
+    playTrack(accessToken, data)   
+  }
 
 
 
@@ -85,10 +101,12 @@ export default function WebPlayer() {
       }
       </div>
       <div className='playedTime'>{toMinsSecs(counter)}</div>
-      <div className='playProgressBar'>
-        <div className='playProgress' style={{width: percent + '%'}}>
-          <div className='playDrag' style={{left: (percent - 1) + '%'}}></div>
-        </div>
+      <div id='playProgressBar' onMouseUp={(e) => {
+        let progress = Math.floor(e.screenX - bar.offsetLeft)
+        let total = bar.offsetWidth
+        setNewPlayback(Math.floor((progress / total) * 100))
+      }}>
+        <div className='playProgress' style={{width: percent + '%'}}></div>
       </div>
       <div className='playingTimeTotal'>{toMinsSecs(total)}</div>
       <div className='prevBox' onClick={() => player.previousTrack()}>
