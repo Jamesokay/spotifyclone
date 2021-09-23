@@ -77,18 +77,31 @@ export default function WebPlayer() {
     <div className='playBar'
         onMouseMove={(e)=> {
         if (dragging) {
+          // implement it here
+          // let max = bar.offsetLeft + bar.offsetWidth
+          // if (e.screenX > max) {
+          //   setDragPos(bar.offsetWidth)
+          // }
+          // else if (e.screenX < bar.offsetLeft) {
+          //   setDragPos(0)
+          // }
+          // else {
+          //   setDragPos(e.screenX - bar.offsetLeft)
+          // }
+
           setDragPos(e.screenX - bar.offsetLeft)
         }}}
         onMouseUp={(e) => {
         if (dragging) {
           setDragging(false)
+          let max = bar.offsetLeft + bar.offsetWidth
           let progress = Math.floor(e.screenX - bar.offsetLeft)
           let total = bar.offsetWidth
           if (progress < 0) {
             setNewPlayback(0)
           }
-          else if (progress > bar.offsetWidth) {
-            setNewPlayback(100)
+          else if (progress > max) {
+            setNewPlayback(99)
           }
           else {
             setNewPlayback(Math.floor((progress / total) * 100))
