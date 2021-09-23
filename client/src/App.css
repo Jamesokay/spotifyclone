@@ -223,7 +223,7 @@ body {
     left: 45%
 }
 
-.playProgress:hover {
+#playProgressBar:hover .playProgress {
     background-color: #1ed760;
 }
 

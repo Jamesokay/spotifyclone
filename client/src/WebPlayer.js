@@ -21,6 +21,8 @@ export default function WebPlayer() {
   var total = track.duration_ms
   var percent = ((counter/total) * 100).toFixed(2)
   var bar = document.getElementById('playProgressBar')
+  const [dragging, setDragging] = useState(false)
+  const [dragPos, setDragPos] = useState(0)
   
 
   
@@ -47,8 +49,10 @@ export default function WebPlayer() {
     }
     playTrack(accessToken, data)   
   }
-
-
+  
+  useEffect(()=> {
+    console.log(dragging)
+  }, [dragging])
 
 
 
@@ -101,12 +105,20 @@ export default function WebPlayer() {
       }
       </div>
       <div className='playedTime'>{toMinsSecs(counter)}</div>
-      <div id='playProgressBar' onMouseUp={(e) => {
+      <div id='playProgressBar'
+      onMouseDown={()=> setDragging(true)}
+      onMouseMove={(e)=> {
+        if (dragging) {
+          setDragPos(e.screenX - bar.offsetLeft)
+        }
+      }}
+      onMouseUp={(e) => {
+        setDragging(false)
         let progress = Math.floor(e.screenX - bar.offsetLeft)
         let total = bar.offsetWidth
         setNewPlayback(Math.floor((progress / total) * 100))
       }}>
-        <div className='playProgress' style={{width: percent + '%'}}></div>
+        <div className='playProgress' style={(dragging)? {width: dragPos} : {width: percent + '%'}}></div>
       </div>
       <div className='playingTimeTotal'>{toMinsSecs(total)}</div>
       <div className='prevBox' onClick={() => player.previousTrack()}>
