@@ -74,7 +74,26 @@ export default function WebPlayer() {
  if (isReady) {
   return (
 
-    <div className='playBar'>
+    <div className='playBar'
+        onMouseMove={(e)=> {
+        if (dragging) {
+          setDragPos(e.screenX - bar.offsetLeft)
+        }}}
+        onMouseUp={(e) => {
+        if (dragging) {
+          setDragging(false)
+          let progress = Math.floor(e.screenX - bar.offsetLeft)
+          let total = bar.offsetWidth
+          if (progress < 0) {
+            setNewPlayback(0)
+          }
+          else if (progress > bar.offsetWidth) {
+            setNewPlayback(100)
+          }
+          else {
+            setNewPlayback(Math.floor((progress / total) * 100))
+          }
+        }}}>
       <div className='playingTrack'>
         <img className='playingTrackImg' src={image} alt='' />
         <div className='playingTrackInfo'>
@@ -104,21 +123,17 @@ export default function WebPlayer() {
         <div className='pauseIcon'></div>
       }
       </div>
-      <div className='playedTime'>{toMinsSecs(counter)}</div>
-      <div id='playProgressBar'
-      onMouseDown={()=> setDragging(true)}
-      onMouseMove={(e)=> {
-        if (dragging) {
-          setDragPos(e.screenX - bar.offsetLeft)
-        }
-      }}
-      onMouseUp={(e) => {
-        setDragging(false)
-        let progress = Math.floor(e.screenX - bar.offsetLeft)
-        let total = bar.offsetWidth
-        setNewPlayback(Math.floor((progress / total) * 100))
-      }}>
-        <div className='playProgress' style={(dragging)? {width: dragPos} : {width: percent + '%'}}></div>
+      <div className='playedTime'>
+        {(dragging)? 
+          toMinsSecs(Math.floor((track.duration_ms / 100) * (dragPos / bar.offsetWidth) * 100))
+        :
+          toMinsSecs(counter)}
+      </div>
+      <div id='playProgressBar' onMouseDown={()=> setDragging(true)}>
+        <div id='playDrag' 
+        onMouseDown={()=> setDragging(true)}
+        style={(dragging)? {left: dragPos, visibility: 'visible'} : {left: (percent - 1) + '%'}}></div>
+        <div className='playProgress' style={(dragging)? {width: dragPos, backgroundColor: '#1ed760'} : {width: percent + '%'}}></div>
       </div>
       <div className='playingTimeTotal'>{toMinsSecs(total)}</div>
       <div className='prevBox' onClick={() => player.previousTrack()}>
