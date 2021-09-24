@@ -210,27 +210,22 @@ body {
     height: 5px;
     background-color: grey;
     border-radius: 10px;
-    position: absolute;
     max-width: 480px;
 }
 
 #playDrag {
-    position: absolute;
+    float: right;
     width: 12px;
     height: 12px;
     border-radius: 50%;
     background-color: white;
     visibility: hidden;
     z-index: 2;
-    bottom: -3.5px;
+    margin-top: -3.5px;
 }
 
 #playProgressBar:hover .playProgress {
     background-color: #1ed760;
-}
-
-#playProgressBar:hover #playDrag {
-    visibility: visible;
 }
 
 .playingTrack {

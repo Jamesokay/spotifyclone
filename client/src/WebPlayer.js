@@ -21,8 +21,10 @@ export default function WebPlayer() {
   var total = track.duration_ms
   var percent = ((counter/total) * 100).toFixed(2)
   var bar = document.getElementById('playProgressBar')
+  const [barHover, setBarHover] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [dragPos, setDragPos] = useState(0)
+  const max = bar.offsetLeft + bar.offsetWidth
   
 
   
@@ -77,34 +79,27 @@ export default function WebPlayer() {
     <div className='playBar'
         onMouseMove={(e)=> {
         if (dragging) {
-          // implement it here
-          // let max = bar.offsetLeft + bar.offsetWidth
-          // if (e.screenX > max) {
-          //   setDragPos(bar.offsetWidth)
-          // }
-          // else if (e.screenX < bar.offsetLeft) {
-          //   setDragPos(0)
-          // }
-          // else {
-          //   setDragPos(e.screenX - bar.offsetLeft)
-          // }
-
-          setDragPos(e.screenX - bar.offsetLeft)
+          if (e.screenX < bar.offsetLeft) {
+            setDragPos(0)
+          }
+          else if (e.screenX > max) {
+            setDragPos(bar.offsetWidth)
+          }
+          else {
+            setDragPos(e.screenX - bar.offsetLeft)
+          }
         }}}
         onMouseUp={(e) => {
         if (dragging) {
           setDragging(false)
-          let max = bar.offsetLeft + bar.offsetWidth
-          let progress = Math.floor(e.screenX - bar.offsetLeft)
-          let total = bar.offsetWidth
-          if (progress < 0) {
+          if (e.screenX < bar.offsetLeft) {
             setNewPlayback(0)
           }
-          else if (progress > max) {
+          else if (e.screenX > max) {
             setNewPlayback(99)
           }
           else {
-            setNewPlayback(Math.floor((progress / total) * 100))
+            setNewPlayback(Math.floor(((e.screenX - bar.offsetLeft) / bar.offsetWidth) * 100))
           }
         }}}>
       <div className='playingTrack'>
@@ -142,11 +137,16 @@ export default function WebPlayer() {
         :
           toMinsSecs(counter)}
       </div>
-      <div id='playProgressBar' onMouseDown={()=> setDragging(true)}>
-        <div id='playDrag' 
-        onMouseDown={()=> setDragging(true)}
-        style={(dragging)? {left: dragPos, visibility: 'visible'} : {left: (percent - 1) + '%'}}></div>
-        <div className='playProgress' style={(dragging)? {width: dragPos, backgroundColor: '#1ed760'} : {width: percent + '%'}}></div>
+      <div id='playProgressBar' 
+           onMouseOver={()=> setBarHover(true)} 
+           onMouseLeave={()=> setBarHover(false)} 
+           onMouseDown={()=> setDragging(true)}>
+            <div className='playProgress' style={(dragging)? {width: dragPos, backgroundColor: '#1ed760'} : {width: percent + '%'}}>
+              <div id='playDrag' 
+                   onMouseDown={()=> setDragging(true)}
+                   style={(dragging || barHover)? {visibility: 'visible'} : {visibility: 'hidden'}}>
+              </div>
+            </div>
       </div>
       <div className='playingTimeTotal'>{toMinsSecs(total)}</div>
       <div className='prevBox' onClick={() => player.previousTrack()}>
