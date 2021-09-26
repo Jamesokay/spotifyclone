@@ -4,6 +4,7 @@ import useInterval from './useInterval'
 import toMinsSecs from './toMinsSecs'
 import playTrack from './playTrack'
 import { AuthContext } from './AuthContext'
+import axios from 'axios'
 
 
 
@@ -16,6 +17,7 @@ export default function WebPlayer() {
   const player = trackContext.player
   const paused = trackContext.paused
   const isReady = trackContext.ready
+  const [contextUri, setContextUri] = useState('')
   const [counter, setCounter] = useState(0);
   var image = track.album.images[0].url
   var total = track.duration_ms
@@ -24,7 +26,6 @@ export default function WebPlayer() {
   const [barHover, setBarHover] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [dragPos, setDragPos] = useState(0)
-  const max = bar.offsetLeft + bar.offsetWidth
   
 
   
@@ -36,25 +37,61 @@ export default function WebPlayer() {
     }
   }, 1000);
 
-  useEffect(() => {
+   useEffect(() => {
     setCounter(0)
   }, [track.name])
+
+ 
+
+  //useEffect dependent on... something
+  //getCurrentPlayback.context... everytime track.name changes? 
+
+  useEffect(() => {
+    if (!accessToken) return
+    if (!track.name) return
+
+    const options = {
+      url: 'https://api.spotify.com/v1/me/player',
+      method: 'GET',
+      headers: { 'Authorization': 'Bearer ' + accessToken },
+    }
+    
+    axios(options)
+    .then(response => {
+      console.log(response.data)
+      setContextUri(response.data.context.uri)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+
+  }, [track.name, accessToken])
+
+
 
 
   
   function setNewPlayback(progress) {
     let newPosition = Math.floor((track.duration_ms / 100) * progress)
     setCounter(newPosition)
-    let data = {
-      uris: [track.uri],
-      position_ms: newPosition
-    }
-    playTrack(accessToken, data)   
+
+    if (!contextUri) {
+      let data = {
+        uris: [track.uri],
+        position_ms: newPosition
+      }
+      playTrack(accessToken, data) 
+    } 
+    else {
+      let data = {
+        context_uri: contextUri,
+        offset: {uri: track.uri},
+        position_ms: newPosition
+      }
+      playTrack(accessToken, data)
+    } 
   }
   
-  useEffect(()=> {
-    console.log(dragging)
-  }, [dragging])
 
 
 
@@ -82,7 +119,7 @@ export default function WebPlayer() {
           if (e.screenX < bar.offsetLeft) {
             setDragPos(0)
           }
-          else if (e.screenX > max) {
+          else if (e.screenX > (bar.offsetLeft + bar.offsetWidth)) {
             setDragPos(bar.offsetWidth)
           }
           else {
@@ -95,7 +132,7 @@ export default function WebPlayer() {
           if (e.screenX < bar.offsetLeft) {
             setNewPlayback(0)
           }
-          else if (e.screenX > max) {
+          else if (e.screenX > (bar.offsetLeft + bar.offsetWidth)) {
             setNewPlayback(99)
           }
           else {
