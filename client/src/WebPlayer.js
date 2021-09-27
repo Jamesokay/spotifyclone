@@ -143,7 +143,7 @@ export default function WebPlayer() {
         <img className='playingTrackImg' src={image} alt='' />
         <div className='playingTrackInfo'>
           <span className='playingTrackName'>{track.name}</span>
-          <br />
+          <div className='trackArtists'>
           {(track.artists)?
             track.artists.map((artist, index, artists) =>
               <span key={artist.id}> 
@@ -158,6 +158,7 @@ export default function WebPlayer() {
           :
           <span></span>
           }
+          </div>
 
         </div>
       </div>

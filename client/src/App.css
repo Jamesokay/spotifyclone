@@ -242,7 +242,11 @@ body {
 }
 
 .playingTrackInfo {
-    margin: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 60px;
+    margin-left: 15px;
 }
 
 .playingTrackName {
