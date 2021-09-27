@@ -26,6 +26,8 @@ export default function WebPlayer() {
   const [barHover, setBarHover] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [dragPos, setDragPos] = useState(0)
+  const [shuffleColour, setShuffleColour] = useState('grey')
+  const [repeatIconColour, setRepeatIconColour] = useState('grey')
   
 
   
@@ -159,8 +161,21 @@ export default function WebPlayer() {
           <span></span>
           }
           </div>
+        </div>       
+      </div>
 
-        </div>
+      <div id='playFunctions'>
+      <svg className='shuffleIcon' 
+           role="img" 
+           height="16" 
+           width="16" 
+           viewBox="0 0 16 16"
+           onMouseOver={()=> setShuffleColour('white')}
+           onMouseLeave={()=> setShuffleColour('grey')}>
+            <path fill={shuffleColour} d="M4.5 6.8l.7-.8C4.1 4.7 2.5 4 .9 4v1c1.3 0 2.6.6 3.5 1.6l.1.2zm7.5 4.7c-1.2 0-2.3-.5-3.2-1.3l-.6.8c1 1 2.4 1.5 3.8 1.5V14l3.5-2-3.5-2v1.5zm0-6V7l3.5-2L12 3v1.5c-1.6 0-3.2.7-4.2 2l-3.4 3.9c-.9 1-2.2 1.6-3.5 1.6v1c1.6 0 3.2-.7 4.2-2l3.4-3.9c.9-1 2.2-1.6 3.5-1.6z"></path>
+        </svg>
+      <div className='prevBox' onClick={() => player.previousTrack()}>
+        <div className='prevTrackButton'></div>
       </div>
       <div className='playButton' onClick={() => player.togglePlay()}>
       {(paused)?
@@ -169,6 +184,21 @@ export default function WebPlayer() {
         <div className='pauseIcon'></div>
       }
       </div>
+      <div className='nextBox' onClick={() => player.nextTrack()}>
+        <div className='nextTrackButton'></div>
+      </div>
+      <svg className='repeatIcon'
+          role="img" 
+          height="16" 
+          width="16" 
+          viewBox="0 0 16 16"
+          onMouseOver={()=> setRepeatIconColour('white')}
+          onMouseLeave={()=> setRepeatIconColour('grey')}>
+            <path fill={repeatIconColour} d="M5.5 5H10v1.5l3.5-2-3.5-2V4H5.5C3 4 1 6 1 8.5c0 .6.1 1.2.4 1.8l.9-.5C2.1 9.4 2 9 2 8.5 2 6.6 3.6 5 5.5 5zm9.1 1.7l-.9.5c.2.4.3.8.3 1.3 0 1.9-1.6 3.5-3.5 3.5H6v-1.5l-3.5 2 3.5 2V13h4.5C13 13 15 11 15 8.5c0-.6-.1-1.2-.4-1.8z"></path>
+      </svg>
+      </div>
+
+
       <div className='playedTime'>
         {(dragging)? 
           toMinsSecs(Math.floor((track.duration_ms / 100) * (dragPos / bar.offsetWidth) * 100))
@@ -187,12 +217,6 @@ export default function WebPlayer() {
             </div>
       </div>
       <div className='playingTimeTotal'>{toMinsSecs(total)}</div>
-      <div className='prevBox' onClick={() => player.previousTrack()}>
-        <div className='prevTrackButton'></div>
-      </div>
-      <div className='nextBox' onClick={() => player.nextTrack()}>
-        <div className='nextTrackButton'></div>
-      </div>
     </div>
     )
     }
