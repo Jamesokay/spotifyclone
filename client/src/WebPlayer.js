@@ -26,6 +26,7 @@ export default function WebPlayer() {
   const [barHover, setBarHover] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [dragPos, setDragPos] = useState(0)
+  const [shuffling, setShuffling] = useState(false)
   const [shuffleColour, setShuffleColour] = useState('grey')
   const [repeatIconColour, setRepeatIconColour] = useState('grey')
   
@@ -60,7 +61,7 @@ export default function WebPlayer() {
     
     axios(options)
     .then(response => {
-      console.log(response.data)
+      setShuffling(response.data.shuffle_state)
       setContextUri(response.data.context.uri)
     })
     .catch(error => {
@@ -68,6 +69,32 @@ export default function WebPlayer() {
     })
 
   }, [track.name, accessToken])
+
+  useEffect(() => {
+    console.log(shuffling)
+    if (shuffling) {
+      setShuffleColour('#1ed760')
+    }
+  }, [shuffling])
+
+  function toggleShuffle(bool) {
+    const options = {
+      url: `https://api.spotify.com/v1/me/player/shuffle?state=${bool}`,
+      method: 'PUT',
+      headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+      }
+    }
+
+    axios(options)
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }
 
 
 
@@ -170,8 +197,27 @@ export default function WebPlayer() {
            height="16" 
            width="16" 
            viewBox="0 0 16 16"
-           onMouseOver={()=> setShuffleColour('white')}
-           onMouseLeave={()=> setShuffleColour('grey')}>
+           onMouseOver={()=> {
+             if (!shuffling) {
+               setShuffleColour('white')
+             }
+            }}
+           onMouseLeave={()=> {
+             if (!shuffling) {
+               setShuffleColour('grey')
+             }
+            }}
+           onClick={()=> {
+             if (shuffling) {
+               setShuffleColour('grey')
+               setShuffling(false)
+               toggleShuffle(false)
+             }
+             else {
+              setShuffling(true)
+              toggleShuffle(true)
+             }
+           }}>
             <path fill={shuffleColour} d="M4.5 6.8l.7-.8C4.1 4.7 2.5 4 .9 4v1c1.3 0 2.6.6 3.5 1.6l.1.2zm7.5 4.7c-1.2 0-2.3-.5-3.2-1.3l-.6.8c1 1 2.4 1.5 3.8 1.5V14l3.5-2-3.5-2v1.5zm0-6V7l3.5-2L12 3v1.5c-1.6 0-3.2.7-4.2 2l-3.4 3.9c-.9 1-2.2 1.6-3.5 1.6v1c1.6 0 3.2-.7 4.2-2l3.4-3.9c.9-1 2.2-1.6 3.5-1.6z"></path>
         </svg>
       <div className='prevBox' onClick={() => player.previousTrack()}>
