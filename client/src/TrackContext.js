@@ -25,6 +25,7 @@ function TrackContextProvider({ children }) {
   const accessToken = useContext(AuthContext)
   const [devId, setDevId] = useState("")
   const [ready, setReady] = useState(false)
+  
 
 
   useEffect(() => {
@@ -105,13 +106,26 @@ function TrackContextProvider({ children }) {
 
   }, [accessToken, devId])
 
-  // useEffect(() => {
-  //   if (!accessToken) return
-  //   if (!currentTrack) return
+  useEffect(() => {
+    if (!accessToken) return
+  //  if (!track.name) return
 
-  //     console.log(currentTrack)
+    const options = {
+      url: 'https://api.spotify.com/v1/me/player',
+      method: 'GET',
+      headers: { 'Authorization': 'Bearer ' + accessToken },
+    }
+    
+    axios(options)
+    .then(response => {
+      console.log(response.data.progress_ms)
+   //   setShuffling(response.data.shuffle_state)
+    })
+    .catch(error => {
+      console.log(error)
+    })
 
-  // }, [accessToken, currentTrack])
+  }, [accessToken])
 
 
   

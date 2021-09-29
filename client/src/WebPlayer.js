@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from 'react'
 import { TrackContext } from './TrackContext'
 import useInterval from './useInterval'
 import toMinsSecs from './toMinsSecs'
-import playTrack from './playTrack'
+// import playTrack from './playTrack'
 import { AuthContext } from './AuthContext'
 import axios from 'axios'
 
@@ -17,8 +17,8 @@ export default function WebPlayer() {
   const player = trackContext.player
   const paused = trackContext.paused
   const isReady = trackContext.ready
-  const [contextUri, setContextUri] = useState('')
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(0)
+  
   var image = track.album.images[0].url
   var total = track.duration_ms
   var percent = ((counter/total) * 100).toFixed(2)
@@ -44,31 +44,15 @@ export default function WebPlayer() {
     setCounter(0)
   }, [track.name])
 
+
  
 
   //useEffect dependent on... something
   //getCurrentPlayback.context... everytime track.name changes? 
 
-  useEffect(() => {
-    if (!accessToken) return
-    if (!track.name) return
 
-    const options = {
-      url: 'https://api.spotify.com/v1/me/player',
-      method: 'GET',
-      headers: { 'Authorization': 'Bearer ' + accessToken },
-    }
-    
-    axios(options)
-    .then(response => {
-      setShuffling(response.data.shuffle_state)
-      setContextUri(response.data.context.uri)
-    })
-    .catch(error => {
-      console.log(error)
-    })
 
-  }, [track.name, accessToken])
+
 
   useEffect(() => {
     console.log(shuffling)
@@ -76,6 +60,10 @@ export default function WebPlayer() {
       setShuffleColour('#1ed760')
     }
   }, [shuffling])
+
+
+
+  
 
   function toggleShuffle(bool) {
     const options = {
@@ -104,21 +92,23 @@ export default function WebPlayer() {
     let newPosition = Math.floor((track.duration_ms / 100) * progress)
     setCounter(newPosition)
 
-    if (!contextUri) {
-      let data = {
-        uris: [track.uri],
-        position_ms: newPosition
+    const options = {
+      url: `https://api.spotify.com/v1/me/player/seek?position_ms=${newPosition}`,
+      method: 'PUT',
+      headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
       }
-      playTrack(accessToken, data) 
-    } 
-    else {
-      let data = {
-        context_uri: contextUri,
-        offset: {uri: track.uri},
-        position_ms: newPosition
-      }
-      playTrack(accessToken, data)
-    } 
+    }
+
+    axios(options)
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+
   }
   
 
@@ -162,7 +152,7 @@ export default function WebPlayer() {
             setNewPlayback(0)
           }
           else if (e.screenX > (bar.offsetLeft + bar.offsetWidth)) {
-            setNewPlayback(99)
+            setNewPlayback(100)
           }
           else {
             setNewPlayback(Math.floor(((e.screenX - bar.offsetLeft) / bar.offsetWidth) * 100))
