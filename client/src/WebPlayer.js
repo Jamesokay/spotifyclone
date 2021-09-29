@@ -152,25 +152,19 @@ export default function WebPlayer() {
           }
         }}}>
       <div className='playingTrack'>
-        <img className='playingTrackImg' src={image} alt='' />
+        <img key={image} className='playingTrackImg' src={image} alt='' />
         <div className='playingTrackInfo'>
           <span className='playingTrackName'>{track.name}</span>
-          <div className='trackArtists'>
-          {(track.artists)?
-            track.artists.map((artist, index, artists) =>
-              <span key={artist.id}> 
+          {track.artists.map((artist, index, artists) =>
+            <div className='trackArtists' key={artist.id}>
                 <span className='playingTrackArtist'>{artist.name}</span>
                 {(index < artists.length - 1)?
                   <span className='playerPunc'>, </span>
                   :
                   <span></span>
                 }
-              </span>
-            )
-          :
-          <span></span>
-          }
-          </div>
+             </div>
+            )}
         </div>       
       </div>
 

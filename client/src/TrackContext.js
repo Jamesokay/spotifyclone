@@ -121,7 +121,7 @@ function TrackContextProvider({ children }) {
 
 
   
-  const value = {currentTrack, setCurrentTrack, player, ready, paused, initPlayback}
+  const value = {currentTrack, player, ready, paused, initPlayback}
   return <TrackContext.Provider value={value}>{children}</TrackContext.Provider>
 }
 
