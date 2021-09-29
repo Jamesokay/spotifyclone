@@ -17,6 +17,7 @@ const track = {
 }
 
 
+
 function TrackContextProvider({ children }) {
   const [player, setPlayer] = useState(undefined)
   const [currentTrack, setCurrentTrack] = useState(track)
@@ -25,6 +26,11 @@ function TrackContextProvider({ children }) {
   const accessToken = useContext(AuthContext)
   const [devId, setDevId] = useState("")
   const [ready, setReady] = useState(false)
+  const [initPlayback, setInitPlayback] = useState({
+    shuffle: false,
+    repeat: false,
+    position: 0
+  })
   
 
 
@@ -49,7 +55,6 @@ function TrackContextProvider({ children }) {
     player.addListener('ready', ({ device_id }) => {
         setDevId(device_id)
         console.log('Ready with Device ID', device_id);
-        setReady(true)
     });
 
     player.addListener('not_ready', ({ device_id }) => {
@@ -61,6 +66,11 @@ function TrackContextProvider({ children }) {
       if (!state) {
           return;
       }
+       setInitPlayback({
+         shuffle: state.shuffle,
+         repeat: state.repeat_mode,
+         position: state.position
+        })
        setCurrentTrack(state.track_window.current_track);
 
        setPaused(state.paused);
@@ -96,9 +106,7 @@ function TrackContextProvider({ children }) {
       }
   
     axios(options)
-    .then(response => {
-      console.log(response)
-    })
+    .then(setReady(true))
     .catch(error => {
       console.log(error)
     })
@@ -106,30 +114,14 @@ function TrackContextProvider({ children }) {
 
   }, [accessToken, devId])
 
-  useEffect(() => {
-    if (!accessToken) return
-  //  if (!track.name) return
+  // useEffect(() => {
+  //   console.log(initPlayback)
 
-    const options = {
-      url: 'https://api.spotify.com/v1/me/player',
-      method: 'GET',
-      headers: { 'Authorization': 'Bearer ' + accessToken },
-    }
-    
-    axios(options)
-    .then(response => {
-      console.log(response.data.progress_ms)
-   //   setShuffling(response.data.shuffle_state)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-
-  }, [accessToken])
+  // }, [initPlayback])
 
 
   
-  const value = {currentTrack, setCurrentTrack, player, ready, paused}
+  const value = {currentTrack, setCurrentTrack, player, ready, paused, initPlayback}
   return <TrackContext.Provider value={value}>{children}</TrackContext.Provider>
 }
 

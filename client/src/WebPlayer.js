@@ -17,7 +17,8 @@ export default function WebPlayer() {
   const player = trackContext.player
   const paused = trackContext.paused
   const isReady = trackContext.ready
-  const [counter, setCounter] = useState(0)
+  const init = trackContext.initPlayback
+  const [counter, setCounter] = useState(init.position)
   
   var image = track.album.images[0].url
   var total = track.duration_ms
@@ -26,12 +27,15 @@ export default function WebPlayer() {
   const [barHover, setBarHover] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [dragPos, setDragPos] = useState(0)
-  const [shuffling, setShuffling] = useState(false)
+  const [shuffling, setShuffling] = useState(init.shuffle)
   const [shuffleColour, setShuffleColour] = useState('grey')
   const [repeatIconColour, setRepeatIconColour] = useState('grey')
   
 
-  
+  useEffect(() => {
+    setCounter(init.position)
+    setShuffling(init.shuffle)
+  }, [track.name, init.position, init.shuffle])
 
 
   useInterval(() => {
@@ -39,17 +43,6 @@ export default function WebPlayer() {
     setCounter(counter + 1000);
     }
   }, 1000);
-
-   useEffect(() => {
-    setCounter(0)
-  }, [track.name])
-
-
- 
-
-  //useEffect dependent on... something
-  //getCurrentPlayback.context... everytime track.name changes? 
-
 
 
 
@@ -129,7 +122,7 @@ export default function WebPlayer() {
   //   }
   // }
 
- if (isReady) {
+ if (track.name) {
   return (
 
     <div className='playBar'
