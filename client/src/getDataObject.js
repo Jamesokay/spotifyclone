@@ -1,8 +1,13 @@
+import defaultProfile from './defaultProfile.png'
+
 export default function getDataObject(dataObject) {
       
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
+  
+  var imgSrc
+  (dataObject.images[0])? imgSrc = dataObject.images[0].url : imgSrc = defaultProfile
 
       if (dataObject.type === 'album') {
         return {
@@ -11,7 +16,7 @@ export default function getDataObject(dataObject) {
           uri: dataObject.uri,
           type: dataObject.type,
           name: dataObject.name,
-          imgUrl: dataObject.images[0].url,
+          imgUrl: imgSrc,
           artists: dataObject.artists
         }
       }
@@ -22,7 +27,7 @@ export default function getDataObject(dataObject) {
           uri: dataObject.uri,
           type: dataObject.type,
           name: dataObject.name,
-          imgUrl: dataObject.images[0].url,
+          imgUrl: imgSrc,
           subtitle: dataObject.description
         }
       }
@@ -32,7 +37,7 @@ export default function getDataObject(dataObject) {
           id: dataObject.id,
           type: dataObject.type,
           name: dataObject.name,
-          imgUrl: dataObject.images[0].url,
+          imgUrl: imgSrc,
           subtitle: capitalizeFirstLetter(dataObject.type)
         }
       }
