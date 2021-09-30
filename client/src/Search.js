@@ -19,7 +19,7 @@ export default function Search({ dispatch }) {
     const [trackResults, setTrackResults] = useState([])
     const [artistResults, setArtistResults] = useState([])
     const [albumResults, setAlbumResults] = useState([])
-    const [playlistResults, setPlaylistResults] = useState([])
+//    const [playlistResults, setPlaylistResults] = useState([])
 
     function filterByImage(array) {
         const result = array.filter(item => item.images.length > 0)
@@ -82,24 +82,23 @@ export default function Search({ dispatch }) {
             console.log(error)
         })
 
-        spotifyApi.searchPlaylists(search, {limit: 10})
-        .then(data => {
-            let playlistRaw = (data.body.playlists.items)
-            let playlistFiltered = filterByImage(playlistRaw)
-            playlistFiltered.forEach(item => {
-                spotifyApi.getPlaylist(item.id)
-                .then(data => {
-                    let obj = getDataObject(data.body)
-                    setPlaylistResults(playlistResults => [...playlistResults, obj])
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-            })
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        // spotifyApi.searchPlaylists(search, {limit: 10})
+        // .then(data => {
+        //     let playlistRaw = (data.body.playlists.items)
+        //     let playlistFiltered = filterByImage(playlistRaw)
+        //     playlistFiltered.forEach(item => {
+        //         spotifyApi.getPlaylist(item.id)
+        //         .then(data => {  
+        //             let obj = getDataObject(data.body)
+        //             setPlaylistResults(playlistResults => [...playlistResults, obj])
+        //         })
+        //         .catch(console.log('inner error')
+        //         )
+        //     })
+        // })
+        // .catch(error => {
+        //     console.log(error)
+        // })
 
     }, [accessToken, search])
 
@@ -121,8 +120,8 @@ export default function Search({ dispatch }) {
             <Panel content={artistResults.slice(0, 5)} dispatch={dispatch} />
             <p><span className='panelTitle'>Albums</span></p>
             <Panel content={albumResults.slice(0, 5)} dispatch={dispatch} />
-            <p><span className='panelTitle'>Playlists</span></p>
-            <Panel content={playlistResults.slice(0, 5)} dispatch={dispatch} />
+            {/* <p><span className='panelTitle'>Playlists</span></p>
+            <Panel content={playlistResults.slice(0, 5)} dispatch={dispatch} /> */}
         </div>
         )
     } else {

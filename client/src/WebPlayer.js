@@ -1,51 +1,147 @@
 import { useContext, useState, useEffect } from 'react'
-import { TrackContext } from './TrackContext'
+// import { TrackContext } from './TrackContext'
 import useInterval from './useInterval'
 import toMinsSecs from './toMinsSecs'
 // import playTrack from './playTrack'
 import { AuthContext } from './AuthContext'
 import axios from 'axios'
 
-
+const track = {
+  name: "",
+  album: {
+      images: [
+          { url: "" }
+      ]
+  },
+  artists: [
+      { name: "" }
+  ]
+}
 
 
 export default function WebPlayer() {
 
-  const trackContext = useContext(TrackContext)
+  const [player, setPlayer] = useState(undefined)
+  const [currentTrack, setCurrentTrack] = useState(track)
+  const [paused, setPaused] = useState(false);
+//  const [active, setActive] = useState(false)
   const accessToken = useContext(AuthContext)
-  const track = trackContext.currentTrack
-  const player = trackContext.player
-  const paused = trackContext.paused
-  const isReady = trackContext.ready
-  const init = trackContext.initPlayback
-  const [counter, setCounter] = useState(init.position)
+  const [devId, setDevId] = useState("")
+  const [ready, setReady] = useState(false)
+  const [initPlayback, setInitPlayback] = useState({
+    shuffle: false,
+    repeat: false,
+    position: 0
+  })
   
-  var image = track.album.images[0].url
-  var total = track.duration_ms
+  
+  const [counter, setCounter] = useState(initPlayback.position)
+  
+  var total = currentTrack.duration_ms
   var percent = ((counter/total) * 100).toFixed(2)
   var bar = document.getElementById('playProgressBar')
   const [barHover, setBarHover] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [dragPos, setDragPos] = useState(0)
-  const [shuffling, setShuffling] = useState(init.shuffle)
+  const [shuffling, setShuffling] = useState(initPlayback.shuffle)
   const [shuffleColour, setShuffleColour] = useState('grey')
   const [repeatIconColour, setRepeatIconColour] = useState('grey')
   
 
   useEffect(() => {
-    setCounter(init.position)
-    setShuffling(init.shuffle)
-  }, [track.name, init.position, init.shuffle])
+    if (!accessToken) return
+
+    const script = document.createElement("script");
+    script.src = "https://sdk.scdn.co/spotify-player.js";
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    window.onSpotifyWebPlaybackSDKReady = () => {
+        const player = new window.Spotify.Player({
+            name: 'Web Playback SDK',
+            getOAuthToken: cb => { cb(accessToken); },
+            volume: 0.5
+        });
+
+    setPlayer(player);   
+
+    player.addListener('ready', ({ device_id }) => {
+        setDevId(device_id)
+        console.log('Ready with Device ID', device_id);
+    });
+
+    player.addListener('not_ready', ({ device_id }) => {
+        console.log('Device ID has gone offline', device_id);
+    });
+   
+
+    player.addListener('player_state_changed', ( state => {
+      if (!state) {
+          return;
+      }
+       setInitPlayback({
+         shuffle: state.shuffle,
+         repeat: state.repeat_mode,
+         position: state.position
+        })
+       setCurrentTrack(state.track_window.current_track);
+
+       setPaused(state.paused);
+
+
+    //   player.getCurrentState().then( state => { 
+    //       (!state)? setActive(false) : setActive(true) 
+    //   })
+
+    }))
+
+    player.connect();
+  
+  }
+  }, [accessToken]);
+
+  useEffect(() => {
+    if (!accessToken) return
+    if (!devId) return
+
+    let data = {
+      device_ids: [devId]
+    }
+
+    const options = {
+      url: 'https://api.spotify.com/v1/me/player/',
+      method: 'PUT',
+      headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+          },
+      data
+      }
+  
+    axios(options)
+    .then(setReady(true))
+    .catch(error => {
+      console.log(error)
+    })
+
+
+  }, [accessToken, devId])
+
+
+
+
+  useEffect(() => {
+    setCounter(initPlayback.position)
+    setShuffling(initPlayback.shuffle)
+  }, [currentTrack.name, initPlayback.position, initPlayback.shuffle])
 
 
   useInterval(() => {
-    if (isReady && !paused) {
+    if (ready && !paused) {
     setCounter(counter + 1000);
     }
   }, 1000);
-
-
-
 
   useEffect(() => {
     console.log(shuffling)
@@ -82,7 +178,7 @@ export default function WebPlayer() {
 
   
   function setNewPlayback(progress) {
-    let newPosition = Math.floor((track.duration_ms / 100) * progress)
+    let newPosition = Math.floor((currentTrack.duration_ms / 100) * progress)
     setCounter(newPosition)
 
     const options = {
@@ -122,7 +218,7 @@ export default function WebPlayer() {
   //   }
   // }
 
- if (track.name) {
+ if (currentTrack.name) {
   return (
 
     <div className='playBar'
@@ -152,19 +248,21 @@ export default function WebPlayer() {
           }
         }}}>
       <div className='playingTrack'>
-        <img key={image} className='playingTrackImg' src={image} alt='' />
+        <img className='playingTrackImg' src={currentTrack.album.images[0].url} alt='' />
         <div className='playingTrackInfo'>
-          <span className='playingTrackName'>{track.name}</span>
-          {track.artists.map((artist, index, artists) =>
-            <div className='trackArtists' key={artist.id}>
+        <span className='playingTrackName'>{currentTrack.name}</span>
+        <div className='trackArtists'>
+          {currentTrack.artists.map((artist, index, artists) => 
+             <span key={artist.uri}>
                 <span className='playingTrackArtist'>{artist.name}</span>
                 {(index < artists.length - 1)?
                   <span className='playerPunc'>, </span>
                   :
                   <span></span>
                 }
-             </div>
+             </span>
             )}
+        </div>
         </div>       
       </div>
 
@@ -224,7 +322,7 @@ export default function WebPlayer() {
 
       <div className='playedTime'>
         {(dragging)? 
-          toMinsSecs(Math.floor((track.duration_ms / 100) * (dragPos / bar.offsetWidth) * 100))
+          toMinsSecs(Math.floor((currentTrack.duration_ms / 100) * (dragPos / bar.offsetWidth) * 100))
         :
           toMinsSecs(counter)}
       </div>
