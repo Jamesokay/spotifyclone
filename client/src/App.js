@@ -10,7 +10,6 @@ import { useReducer, useState, useEffect } from 'react'
 import { AuthProvider } from './AuthContext'
 import NavBar from './NavBar'
 import WebPlayer from './WebPlayer'
-// import { TrackContextProvider } from './TrackContext'
 
 
 const initialState = {
@@ -94,11 +93,9 @@ function App() {
   if (isLoggedIn === true) {
     return (
       <AuthProvider>
-
         <NavBar dispatch={dispatch} />
         <Page />
-        <WebPlayer />
-  
+        <WebPlayer /> 
       </AuthProvider>
     )
   }
