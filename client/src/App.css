@@ -180,6 +180,12 @@ body {
     user-select: none;
 }
 
+.volumeIcon {
+    position: absolute;
+    right: 160px;
+    bottom: 30px;
+}
+
 #volumeBar {
     height: 5px;
     width: 100px;
