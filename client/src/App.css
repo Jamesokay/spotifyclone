@@ -180,6 +180,23 @@ body {
     user-select: none;
 }
 
+#volumeBar {
+    height: 5px;
+    width: 100px;
+    background-color: #373737;
+    position: absolute;
+    right: 50px;
+    bottom: 40px;
+    border-radius: 10px;
+}
+
+#volume {
+    height: 5px;
+    background-color: grey;
+    border-radius: 10px;
+    max-width: 100px;
+}
+
 .playedTime {
     position: absolute;
     font-family: Verdana, sans-serif;

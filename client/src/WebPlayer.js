@@ -33,6 +33,8 @@ export default function WebPlayer() {
     repeat: false,
     position: 0
   })
+  const [volume, setVolume] = useState(0)
+  const [volDrag, setVolDrag] = useState(false)
   
   
   const [counter, setCounter] = useState(initPlayback.position)
@@ -40,6 +42,8 @@ export default function WebPlayer() {
   var total = currentTrack.duration_ms
   var percent = ((counter/total) * 100).toFixed(2)
   var bar = document.getElementById('playProgressBar')
+  var volBar = document.getElementById('volumeBar')
+  var vol = document.getElementById('volume')
   const [barHover, setBarHover] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [dragPos, setDragPos] = useState(0)
@@ -127,6 +131,16 @@ export default function WebPlayer() {
 
 
   }, [accessToken, devId])
+
+  useEffect(() => {
+    if (!ready) return
+    if (!player) return
+
+    player.getVolume().then(vol => {
+      setVolume(vol * 100)
+    })
+
+  }, [ready, player])
 
 
 
@@ -233,7 +247,13 @@ export default function WebPlayer() {
           else {
             setDragPos(e.screenX - bar.offsetLeft)
           }
-        }}}
+        }
+        // volDrag logic
+        // slightly different in that we want volume to change in-sync with drag
+        // probably a set interval
+        // since the %will be based off of width... eg volume.offsetWidth / volumeBar.offsetWidth, the 0-100 limit might
+        // already be there. If not, handle it in the function.
+        }}
         onMouseUp={(e) => {
         if (dragging) {
           setDragging(false)
@@ -338,6 +358,10 @@ export default function WebPlayer() {
             </div>
       </div>
       <div className='playingTimeTotal'>{toMinsSecs(total)}</div>
+      <div id='volumeBar' 
+           onMouseDown={()=> setVolDrag(true)}>
+        <div id='volume' style={{width: volume + '%'}}></div>
+      </div>
     </div>
     )
     }
