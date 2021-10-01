@@ -33,8 +33,9 @@ export default function WebPlayer() {
     repeat: false,
     position: 0
   })
-  const [volume, setVolume] = useState(0)
+  const [vol, setVol] = useState(0)
   const [volDrag, setVolDrag] = useState(false)
+  const [volHover, setVolHover] = useState(false)
   
   
   const [counter, setCounter] = useState(initPlayback.position)
@@ -42,8 +43,10 @@ export default function WebPlayer() {
   var total = currentTrack.duration_ms
   var percent = ((counter/total) * 100).toFixed(2)
   var bar = document.getElementById('playProgressBar')
+
   var volBar = document.getElementById('volumeBar')
-  var vol = document.getElementById('volume')
+
+
   const [barHover, setBarHover] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [dragPos, setDragPos] = useState(0)
@@ -137,7 +140,7 @@ export default function WebPlayer() {
     if (!player) return
 
     player.getVolume().then(vol => {
-      setVolume(vol * 100)
+      setVol(vol * 100)
     })
 
   }, [ready, player])
@@ -163,6 +166,15 @@ export default function WebPlayer() {
       setShuffleColour('#1ed760')
     }
   }, [shuffling])
+
+  useEffect(() => {
+    if (!ready) return
+    if (!player) return 
+
+    player.setVolume(vol / 100).then(() => {
+      console.log('Volume updated!')
+    })
+  }, [ready, player, vol])
 
 
 
@@ -248,6 +260,17 @@ export default function WebPlayer() {
             setDragPos(e.screenX - bar.offsetLeft)
           }
         }
+        if (volDrag) {
+          if (e.screenX < volBar.offsetLeft) {
+            setVol(0)
+          }
+          else if (e.screenX > (volBar.offsetLeft + volBar.offsetWidth)) {
+            setVol(100)
+          }
+          else {
+            setVol(e.screenX - volBar.offsetLeft)
+          }
+        }
         // volDrag logic
         // slightly different in that we want volume to change in-sync with drag
         // probably a set interval
@@ -266,7 +289,12 @@ export default function WebPlayer() {
           else {
             setNewPlayback(Math.floor(((e.screenX - bar.offsetLeft) / bar.offsetWidth) * 100))
           }
-        }}}>
+        }
+        if (volDrag) {
+          setVolDrag(false)
+        }
+        
+        }}>
       <div className='playingTrack'>
         <img className='playingTrackImg' src={currentTrack.album.images[0].url} alt='' />
         <div className='playingTrackInfo'>
@@ -351,16 +379,23 @@ export default function WebPlayer() {
            onMouseLeave={()=> setBarHover(false)} 
            onMouseDown={()=> setDragging(true)}>
             <div className='playProgress' style={(dragging)? {width: dragPos, backgroundColor: '#1ed760'} : {width: percent + '%'}}>
-              <div id='playDrag' 
+              <div className='drag' 
                    onMouseDown={()=> setDragging(true)}
                    style={(dragging || barHover)? {visibility: 'visible'} : {visibility: 'hidden'}}>
               </div>
             </div>
       </div>
       <div className='playingTimeTotal'>{toMinsSecs(total)}</div>
-      <div id='volumeBar' 
+      <div id='volumeBar'
+           onMouseOver={()=> setVolHover(true)} 
+           onMouseLeave={()=> setVolHover(false)}  
            onMouseDown={()=> setVolDrag(true)}>
-        <div id='volume' style={{width: volume + '%'}}></div>
+        <div id='volume' style={(volDrag)? {width: vol, backgroundColor: '#1ed760'} : {width: vol}}>
+            <div className='drag' 
+                 onMouseDown={()=> setVolDrag(true)}
+                 style={(volDrag || volHover)? {visibility: 'visible'} : {visibility: 'hidden'}}>
+            </div>
+        </div>
       </div>
     </div>
     )
