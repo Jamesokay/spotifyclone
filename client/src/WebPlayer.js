@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useRef } from 'react'
+import { useContext, useState, useEffect } from 'react'
 // import { TrackContext } from './TrackContext'
 import useInterval from './useInterval'
 import toMinsSecs from './toMinsSecs'
@@ -34,11 +34,11 @@ export default function WebPlayer() {
     position: 0
   })
   const [vol, setVol] = useState(0)
+  const [prevVol, setPrevVol] = useState(0)
   const [volDrag, setVolDrag] = useState(false)
   const [volHover, setVolHover] = useState(false)
   const [volLevel, setVolLevel] = useState("")
   const [volIconColour, setVolIconColour] = useState('grey')
-  const volRef = usePrevious(vol)
   const [mute, setMute] = useState(false)
   
   
@@ -193,17 +193,10 @@ export default function WebPlayer() {
     }
   }, [vol])
 
-  useEffect(()=> {
-    console.log('prev is ' + volRef + ' current is ' + vol) 
-  }, [volRef, vol])
+  // useEffect(()=> {
+  //   console.log('prev is ' + volRef + ' current is ' + vol) 
+  // }, [volRef, vol])
 
-  function usePrevious(value) {
-    const ref = useRef()
-    useEffect(() => {
-      ref.current = value
-    })
-    return ref.current
-  }
   
 
 
@@ -415,7 +408,9 @@ export default function WebPlayer() {
       <div id='playProgressBar' 
            onMouseOver={()=> setBarHover(true)} 
            onMouseLeave={()=> setBarHover(false)} 
-           onMouseDown={()=> setDragging(true)}>
+           onMouseDown={(e)=> {
+             setDragPos(e.screenX - bar.offsetLeft)
+             setDragging(true)}}>
             <div className='playProgress' style={(dragging)? {width: dragPos, backgroundColor: '#1ed760'} : {width: percent + '%'}}>
               <div className='drag' 
                    onMouseDown={()=> setDragging(true)}
@@ -440,10 +435,11 @@ export default function WebPlayer() {
            onClick={()=> {
              if (mute) {
                setMute(false)
-               setVol(50)
+               setVol(prevVol)
              }
              else {
                setMute(true)
+               setPrevVol(vol)
                setVol(0)
              }
            }}
@@ -455,7 +451,9 @@ export default function WebPlayer() {
       <div id='volumeBar'
            onMouseOver={()=> setVolHover(true)} 
            onMouseLeave={()=> setVolHover(false)}  
-           onMouseDown={()=> setVolDrag(true)}>
+           onMouseDown={(e)=> {
+             setVol(e.screenX - volBar.offsetLeft)
+             setVolDrag(true)}}>
         <div id='volume' style={(volDrag)? {width: vol, backgroundColor: '#1ed760'} : {width: vol}}>
             <div className='drag' 
                  onMouseDown={()=> setVolDrag(true)}
