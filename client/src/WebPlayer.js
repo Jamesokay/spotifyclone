@@ -36,6 +36,8 @@ export default function WebPlayer() {
   const [vol, setVol] = useState(0)
   const [volDrag, setVolDrag] = useState(false)
   const [volHover, setVolHover] = useState(false)
+  const [volLevel, setVolLevel] = useState("")
+  const [volIconColour, setVolIconColour] = useState('grey')
   
   
   const [counter, setCounter] = useState(initPlayback.position)
@@ -176,6 +178,18 @@ export default function WebPlayer() {
     })
   }, [ready, player, vol])
 
+  useEffect(() => {
+    if (vol < 25) {
+      setVolLevel("M14 9.5 a 5 5 0 0 1 0 5")
+    }
+    else if (vol > 25 && vol < 75) {
+      setVolLevel("M14 8.8 a 5 5 0 0 1 0 7")
+    }
+    else if (vol > 75) {
+      setVolLevel("M17 6 a10 10 0 0 1 0 12 M14 9 a4 4 0 0 1 0 6")
+    }
+  }, [vol])
+  
 
 
   
@@ -393,12 +407,15 @@ export default function WebPlayer() {
            fill="none" 
            height="24" 
            viewBox="0 0 24 24" 
-           stroke="grey" 
+           stroke={volIconColour} 
            strokeWidth="1" 
            strokeLinecap="round" 
-           strokeLinejoin="round">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-            {vol > 50 ? (<path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>) : (<path d="M19.07 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>)}
+           strokeLinejoin="round"
+           onMouseOver={()=> setVolIconColour('white')}
+          onMouseLeave={()=> setVolIconColour('grey')}>
+            <polygon points="11,6 6,9 3,9 3,15 6,15 11,18 11,6"></polygon>
+            <path d={volLevel}></path>
+                
         </svg>
       <div id='volumeBar'
            onMouseOver={()=> setVolHover(true)} 
