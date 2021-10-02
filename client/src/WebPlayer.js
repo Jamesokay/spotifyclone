@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useState, useEffect, useRef } from 'react'
 // import { TrackContext } from './TrackContext'
 import useInterval from './useInterval'
 import toMinsSecs from './toMinsSecs'
@@ -38,6 +38,8 @@ export default function WebPlayer() {
   const [volHover, setVolHover] = useState(false)
   const [volLevel, setVolLevel] = useState("")
   const [volIconColour, setVolIconColour] = useState('grey')
+  const volRef = usePrevious(vol)
+  const [mute, setMute] = useState(false)
   
   
   const [counter, setCounter] = useState(initPlayback.position)
@@ -173,13 +175,14 @@ export default function WebPlayer() {
     if (!ready) return
     if (!player) return 
 
-    player.setVolume(vol / 100).then(() => {
-      console.log('Volume updated!')
-    })
+    player.setVolume(vol / 100)
   }, [ready, player, vol])
 
   useEffect(() => {
-    if (vol < 25) {
+    if (vol === 0) {
+      setVolLevel("M14 9.5 L19 14.5 M14 14.5 L19 9.5")
+    }
+    else if (vol < 25) {
       setVolLevel("M14 9.5 a 5 5 0 0 1 0 5")
     }
     else if (vol > 25 && vol < 75) {
@@ -189,6 +192,18 @@ export default function WebPlayer() {
       setVolLevel("M17 6 a10 10 0 0 1 0 12 M14 9 a4 4 0 0 1 0 6")
     }
   }, [vol])
+
+  useEffect(()=> {
+    console.log('prev is ' + volRef + ' current is ' + vol) 
+  }, [volRef, vol])
+
+  function usePrevious(value) {
+    const ref = useRef()
+    useEffect(() => {
+      ref.current = value
+    })
+    return ref.current
+  }
   
 
 
@@ -306,6 +321,15 @@ export default function WebPlayer() {
         }
         if (volDrag) {
           setVolDrag(false)
+          if (e.screenX < volBar.offsetLeft) {
+            setVol(0)
+          }
+          else if (e.screenX > (volBar.offsetLeft + volBar.offsetWidth)) {
+            setVol(100)
+          }
+          else {
+            setVol(e.screenX - volBar.offsetLeft)
+          }
         }
         
         }}>
@@ -412,7 +436,18 @@ export default function WebPlayer() {
            strokeLinecap="round" 
            strokeLinejoin="round"
            onMouseOver={()=> setVolIconColour('white')}
-          onMouseLeave={()=> setVolIconColour('grey')}>
+           onMouseLeave={()=> setVolIconColour('grey')}
+           onClick={()=> {
+             if (mute) {
+               setMute(false)
+               setVol(50)
+             }
+             else {
+               setMute(true)
+               setVol(0)
+             }
+           }}
+           >
             <polygon points="11,6 6,9 3,9 3,15 6,15 11,18 11,6"></polygon>
             <path d={volLevel}></path>
                 
