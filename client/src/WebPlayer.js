@@ -148,8 +148,7 @@ export default function WebPlayer() {
     setCounter(initPlayback.position)
     setShuffling(initPlayback.shuffle)
     setRepeat(initPlayback.repeat)
-    console.log(initPlayback.shuffle)
-  }, [currentTrack.name, initPlayback.position, initPlayback.shuffle, initPlayback.repeat])
+  }, [initPlayback.position, initPlayback.shuffle, initPlayback.repeat])
 
 
   useInterval(() => {
@@ -165,10 +164,12 @@ export default function WebPlayer() {
   }, [shuffling])
 
   useEffect(()=> {
+    console.log(repeat)
     if (repeat >= 1) {
       setRepeatIconColour('#1ed760')
     }
   }, [repeat])
+
 
   useEffect(() => {
     if (!ready) return
@@ -198,6 +199,25 @@ export default function WebPlayer() {
   function toggleShuffle(bool) {
     const options = {
       url: `https://api.spotify.com/v1/me/player/shuffle?state=${bool}`,
+      method: 'PUT',
+      headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+      }
+    }
+
+    axios(options)
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }
+
+  function toggleRepeat(repeatState) {
+    const options = {
+      url: `https://api.spotify.com/v1/me/player/repeat?state=${repeatState}`,
       method: 'PUT',
       headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -347,7 +367,7 @@ export default function WebPlayer() {
             }}
            onClick={()=> {
              if (shuffling) {
-               setShuffleColour('grey')
+               setShuffleColour('white')
                setShuffling(false)
                toggleShuffle(false)
              }
@@ -385,15 +405,19 @@ export default function WebPlayer() {
               setRepeatIconColour('grey')
             }}}
           onClick={()=> {
+            
             if (repeat === 0) {
               setRepeat(1)
+             // toggleRepeat("context")
             }
             else if (repeat === 1) {
               setRepeat(2)
+            //  toggleRepeat("track")
             }
             else if (repeat === 2) {
-              setRepeatIconColour('grey')
               setRepeat(0)
+              setRepeatIconColour('white')
+            //  toggleRepeat("off")
             }
           }}>
             <path fill={repeatIconColour} d="M5.5 5H10v1.5l3.5-2-3.5-2V4H5.5C3 4 1 6 1 8.5c0 .6.1 1.2.4 1.8l.9-.5C2.1 9.4 2 9 2 8.5 2 6.6 3.6 5 5.5 5zm9.1 1.7l-.9.5c.2.4.3.8.3 1.3 0 1.9-1.6 3.5-3.5 3.5H6v-1.5l-3.5 2 3.5 2V13h4.5C13 13 15 11 15 8.5c0-.6-.1-1.2-.4-1.8z"></path>
