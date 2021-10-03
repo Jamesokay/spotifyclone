@@ -29,7 +29,6 @@ export default function WebPlayer() {
   const [ready, setReady] = useState(false)
   const [initPlayback, setInitPlayback] = useState({
     shuffle: false,
-    repeat: 0,
     position: 0
   })
   const [vol, setVol] = useState(0)
@@ -55,7 +54,7 @@ export default function WebPlayer() {
   const [dragPos, setDragPos] = useState(0)
   const [shuffling, setShuffling] = useState(initPlayback.shuffle)
   const [shuffleColour, setShuffleColour] = useState('grey')
-  const [repeat, setRepeat] = useState(initPlayback.repeat)
+  const [repeat, setRepeat] = useState(0)
   const [repeatIconColour, setRepeatIconColour] = useState('grey')
   
 
@@ -91,14 +90,13 @@ export default function WebPlayer() {
       if (!state) {
           return;
       }
-       setInitPlayback({
-         shuffle: state.shuffle,
-         repeat: state.repeat_mode,
-         position: state.position
-        })
-       setCurrentTrack(state.track_window.current_track);
+      setCurrentTrack(state.track_window.current_track);
+      setInitPlayback({
+        shuffle: state.shuffle,
+        position: state.position
+       })
 
-       setPaused(state.paused);
+      setPaused(state.paused);
 
     }))
 
@@ -138,6 +136,18 @@ export default function WebPlayer() {
     if (!ready) return
     if (!player) return
 
+    // player.getCurrentState().then(state => {
+    //   if (!state) {
+    //     console.log("no state")
+    //     return
+    //   }
+    //   else {
+    //     console.log("repeat = " + state.repeat_mode)
+    //     setRepeat(state.repeat_mode)
+    //   }
+    // })
+
+
     player.getVolume().then(vol => {
       setVol(vol * 100)
     })
@@ -147,8 +157,7 @@ export default function WebPlayer() {
   useEffect(() => {
     setCounter(initPlayback.position)
     setShuffling(initPlayback.shuffle)
-    setRepeat(initPlayback.repeat)
-  }, [initPlayback.position, initPlayback.shuffle, initPlayback.repeat])
+  }, [initPlayback.position, initPlayback.shuffle])
 
 
   useInterval(() => {
@@ -156,6 +165,7 @@ export default function WebPlayer() {
     setCounter(counter + 1000);
     }
   }, 1000);
+
 
   useEffect(() => {
     if (shuffling) {
@@ -169,6 +179,8 @@ export default function WebPlayer() {
       setRepeatIconColour('#1ed760')
     }
   }, [repeat])
+
+
 
 
   useEffect(() => {
@@ -215,24 +227,6 @@ export default function WebPlayer() {
     })
   }
 
-  function toggleRepeat(repeatState) {
-    const options = {
-      url: `https://api.spotify.com/v1/me/player/repeat?state=${repeatState}`,
-      method: 'PUT',
-      headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-      }
-    }
-
-    axios(options)
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  }
 
   
   function setNewPlayback(progress) {
@@ -256,6 +250,26 @@ export default function WebPlayer() {
       console.log(error)
     })
 
+  }
+
+    function toggleRepeat(repeatMode) {
+    
+    const options = {
+      url: `https://api.spotify.com/v1/me/player/repeat?state=${repeatMode}`,
+      method: 'PUT',
+      headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+      }
+    }
+
+    axios(options)
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+    })
   }
   
 
@@ -408,16 +422,16 @@ export default function WebPlayer() {
             
             if (repeat === 0) {
               setRepeat(1)
-             // toggleRepeat("context")
+              toggleRepeat("context")
             }
             else if (repeat === 1) {
               setRepeat(2)
-            //  toggleRepeat("track")
+              toggleRepeat("track")
             }
             else if (repeat === 2) {
               setRepeat(0)
               setRepeatIconColour('white')
-            //  toggleRepeat("off")
+              toggleRepeat("off")
             }
           }}>
             <path fill={repeatIconColour} d="M5.5 5H10v1.5l3.5-2-3.5-2V4H5.5C3 4 1 6 1 8.5c0 .6.1 1.2.4 1.8l.9-.5C2.1 9.4 2 9 2 8.5 2 6.6 3.6 5 5.5 5zm9.1 1.7l-.9.5c.2.4.3.8.3 1.3 0 1.9-1.6 3.5-3.5 3.5H6v-1.5l-3.5 2 3.5 2V13h4.5C13 13 15 11 15 8.5c0-.6-.1-1.2-.4-1.8z"></path>
