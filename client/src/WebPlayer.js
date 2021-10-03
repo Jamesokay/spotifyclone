@@ -24,13 +24,12 @@ export default function WebPlayer() {
   const [player, setPlayer] = useState(undefined)
   const [currentTrack, setCurrentTrack] = useState(track)
   const [paused, setPaused] = useState(false);
-//  const [active, setActive] = useState(false)
   const accessToken = useContext(AuthContext)
   const [devId, setDevId] = useState("")
   const [ready, setReady] = useState(false)
   const [initPlayback, setInitPlayback] = useState({
     shuffle: false,
-    repeat: false,
+    repeat: 0,
     position: 0
   })
   const [vol, setVol] = useState(0)
@@ -56,6 +55,7 @@ export default function WebPlayer() {
   const [dragPos, setDragPos] = useState(0)
   const [shuffling, setShuffling] = useState(initPlayback.shuffle)
   const [shuffleColour, setShuffleColour] = useState('grey')
+  const [repeat, setRepeat] = useState(initPlayback.repeat)
   const [repeatIconColour, setRepeatIconColour] = useState('grey')
   
 
@@ -100,16 +100,11 @@ export default function WebPlayer() {
 
        setPaused(state.paused);
 
-
-    //   player.getCurrentState().then( state => { 
-    //       (!state)? setActive(false) : setActive(true) 
-    //   })
-
     }))
 
     player.connect();
   
-  }
+    }
   }, [accessToken]);
 
   useEffect(() => {
@@ -149,13 +144,12 @@ export default function WebPlayer() {
 
   }, [ready, player])
 
-
-
-
   useEffect(() => {
     setCounter(initPlayback.position)
     setShuffling(initPlayback.shuffle)
-  }, [currentTrack.name, initPlayback.position, initPlayback.shuffle])
+    setRepeat(initPlayback.repeat)
+    console.log(initPlayback.shuffle)
+  }, [currentTrack.name, initPlayback.position, initPlayback.shuffle, initPlayback.repeat])
 
 
   useInterval(() => {
@@ -165,16 +159,20 @@ export default function WebPlayer() {
   }, 1000);
 
   useEffect(() => {
-    console.log(shuffling)
     if (shuffling) {
       setShuffleColour('#1ed760')
     }
   }, [shuffling])
 
+  useEffect(()=> {
+    if (repeat >= 1) {
+      setRepeatIconColour('#1ed760')
+    }
+  }, [repeat])
+
   useEffect(() => {
     if (!ready) return
     if (!player) return 
-
     player.setVolume(vol / 100)
   }, [ready, player, vol])
 
@@ -193,14 +191,9 @@ export default function WebPlayer() {
     }
   }, [vol])
 
-  // useEffect(()=> {
-  //   console.log('prev is ' + volRef + ' current is ' + vol) 
-  // }, [volRef, vol])
-
-  
 
 
-  
+  // FUNCTIONS
 
   function toggleShuffle(bool) {
     const options = {
@@ -220,9 +213,6 @@ export default function WebPlayer() {
       console.log(error)
     })
   }
-
-
-
 
   
   function setNewPlayback(progress) {
@@ -292,13 +282,7 @@ export default function WebPlayer() {
           else {
             setVol(e.screenX - volBar.offsetLeft)
           }
-        }
-        // volDrag logic
-        // slightly different in that we want volume to change in-sync with drag
-        // probably a set interval
-        // since the %will be based off of width... eg volume.offsetWidth / volumeBar.offsetWidth, the 0-100 limit might
-        // already be there. If not, handle it in the function.
-        }}
+        }}}
         onMouseUp={(e) => {
         if (dragging) {
           setDragging(false)
@@ -392,9 +376,38 @@ export default function WebPlayer() {
           height="16" 
           width="16" 
           viewBox="0 0 16 16"
-          onMouseOver={()=> setRepeatIconColour('white')}
-          onMouseLeave={()=> setRepeatIconColour('grey')}>
+          onMouseOver={()=> { 
+            if (repeat === 0) {
+             setRepeatIconColour('white')
+            }}}
+          onMouseLeave={()=> {
+            if (repeat === 0) {
+              setRepeatIconColour('grey')
+            }}}
+          onClick={()=> {
+            if (repeat === 0) {
+              setRepeat(1)
+            }
+            else if (repeat === 1) {
+              setRepeat(2)
+            }
+            else if (repeat === 2) {
+              setRepeatIconColour('grey')
+              setRepeat(0)
+            }
+          }}>
             <path fill={repeatIconColour} d="M5.5 5H10v1.5l3.5-2-3.5-2V4H5.5C3 4 1 6 1 8.5c0 .6.1 1.2.4 1.8l.9-.5C2.1 9.4 2 9 2 8.5 2 6.6 3.6 5 5.5 5zm9.1 1.7l-.9.5c.2.4.3.8.3 1.3 0 1.9-1.6 3.5-3.5 3.5H6v-1.5l-3.5 2 3.5 2V13h4.5C13 13 15 11 15 8.5c0-.6-.1-1.2-.4-1.8z"></path>
+            <circle style={(repeat === 2)? {visibility: 'visible'} : {visibility: 'hidden'}}
+                    cx="12" cy="6" r="4.5" stroke="#212121" strokeWidth="1" fill="#1ed760"/>
+            <text className="repeatOne"
+                  style={(repeat === 2)? {visibility: 'visible'} : {visibility: 'hidden'}}
+                  x="12" y="6.5" 
+                  textAnchor="middle"
+                  stroke="#212121"
+                  strokeWidth="1px"
+                  alignmentBaseline="middle"
+             >1
+            </text>
       </svg>
       </div>
 
