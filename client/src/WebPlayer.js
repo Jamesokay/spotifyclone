@@ -21,6 +21,7 @@ export default function WebPlayer() {
 
   const [player, setPlayer] = useState(undefined)
   const [currentTrack, setCurrentTrack] = useState(track)
+//  const [active, setActive] = useState(false)
   const [paused, setPaused] = useState(false);
   const accessToken = useContext(AuthContext)
   const [devId, setDevId] = useState("")
@@ -49,8 +50,10 @@ export default function WebPlayer() {
   const [dragPos, setDragPos] = useState(0)
   const [shuffling, setShuffling] = useState(false)
   const [shuffleColour, setShuffleColour] = useState('grey')
+ 
   const [repeat, setRepeat] = useState(0)
   const [repeatIconColour, setRepeatIconColour] = useState('grey')
+ 
   
 
   useEffect(() => {
@@ -85,10 +88,15 @@ export default function WebPlayer() {
       if (!state) {
           return;
       }
+      
       setCurrentTrack(state.track_window.current_track);
       setShuffling(state.shuffle)
       setCounter(state.position)
       setPaused(state.paused)
+
+      // player.getCurrentState().then( state => { 
+      //   (!state)? setActive(false) : setActive(true) 
+      // })
 
     }))
 
@@ -96,6 +104,7 @@ export default function WebPlayer() {
   
     }
   }, [accessToken]);
+
 
   useEffect(() => {
     if (!accessToken) return
@@ -166,7 +175,6 @@ export default function WebPlayer() {
   }, [shuffling])
 
   useEffect(()=> {
-    console.log(repeat)
     if (repeat >= 1) {
       setRepeatIconColour('#1ed760')
     }
@@ -244,7 +252,8 @@ export default function WebPlayer() {
 
   }
 
-  function toggleRepeat(repeatMode) {
+  function toggleRepeat(repeatMode, level) {
+    setRepeat(level)
     
     const options = {
       url: `https://api.spotify.com/v1/me/player/repeat?state=${repeatMode}`,
@@ -262,6 +271,7 @@ export default function WebPlayer() {
     .catch(error => {
       console.log(error)
     })
+    
   }
   
 
@@ -411,19 +421,20 @@ export default function WebPlayer() {
               setRepeatIconColour('grey')
             }}}
           onClick={()=> {
+            console.log("CLICK")
             
             if (repeat === 0) {
-              setRepeat(1)
-              toggleRepeat("context")
+              
+              toggleRepeat("context", 1)
             }
             else if (repeat === 1) {
-              setRepeat(2)
-              toggleRepeat("track")
+              
+              toggleRepeat("track", 2)
             }
             else if (repeat === 2) {
-              setRepeat(0)
+              
+              toggleRepeat("off", 0)
               setRepeatIconColour('white')
-              toggleRepeat("off")
             }
           }}>
             <path fill={repeatIconColour} d="M5.5 5H10v1.5l3.5-2-3.5-2V4H5.5C3 4 1 6 1 8.5c0 .6.1 1.2.4 1.8l.9-.5C2.1 9.4 2 9 2 8.5 2 6.6 3.6 5 5.5 5zm9.1 1.7l-.9.5c.2.4.3.8.3 1.3 0 1.9-1.6 3.5-3.5 3.5H6v-1.5l-3.5 2 3.5 2V13h4.5C13 13 15 11 15 8.5c0-.6-.1-1.2-.4-1.8z"></path>
