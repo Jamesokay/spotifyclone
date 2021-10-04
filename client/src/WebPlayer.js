@@ -1,8 +1,6 @@
 import { useContext, useState, useEffect } from 'react'
-// import { TrackContext } from './TrackContext'
 import useInterval from './useInterval'
 import toMinsSecs from './toMinsSecs'
-// import playTrack from './playTrack'
 import { AuthContext } from './AuthContext'
 import axios from 'axios'
 
@@ -27,10 +25,7 @@ export default function WebPlayer() {
   const accessToken = useContext(AuthContext)
   const [devId, setDevId] = useState("")
   const [ready, setReady] = useState(false)
-  const [initPlayback, setInitPlayback] = useState({
-    shuffle: false,
-    position: 0
-  })
+  
   const [vol, setVol] = useState(0)
   const [prevVol, setPrevVol] = useState(0)
   const [volDrag, setVolDrag] = useState(false)
@@ -40,7 +35,7 @@ export default function WebPlayer() {
   const [mute, setMute] = useState(false)
   
   
-  const [counter, setCounter] = useState(initPlayback.position)
+  const [counter, setCounter] = useState(0)
   
   var total = currentTrack.duration_ms
   var percent = ((counter/total) * 100).toFixed(2)
@@ -52,7 +47,7 @@ export default function WebPlayer() {
   const [barHover, setBarHover] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [dragPos, setDragPos] = useState(0)
-  const [shuffling, setShuffling] = useState(initPlayback.shuffle)
+  const [shuffling, setShuffling] = useState(false)
   const [shuffleColour, setShuffleColour] = useState('grey')
   const [repeat, setRepeat] = useState(0)
   const [repeatIconColour, setRepeatIconColour] = useState('grey')
@@ -91,12 +86,9 @@ export default function WebPlayer() {
           return;
       }
       setCurrentTrack(state.track_window.current_track);
-      setInitPlayback({
-        shuffle: state.shuffle,
-        position: state.position
-       })
-
-      setPaused(state.paused);
+      setShuffling(state.shuffle)
+      setCounter(state.position)
+      setPaused(state.paused)
 
     }))
 
@@ -129,24 +121,12 @@ export default function WebPlayer() {
       console.log(error)
     })
 
-
   }, [accessToken, devId])
+
 
   useEffect(() => {
     if (!ready) return
     if (!player) return
-
-    // player.getCurrentState().then(state => {
-    //   if (!state) {
-    //     console.log("no state")
-    //     return
-    //   }
-    //   else {
-    //     console.log("repeat = " + state.repeat_mode)
-    //     setRepeat(state.repeat_mode)
-    //   }
-    // })
-
 
     player.getVolume().then(vol => {
       setVol(vol * 100)
@@ -155,9 +135,21 @@ export default function WebPlayer() {
   }, [ready, player])
 
   useEffect(() => {
-    setCounter(initPlayback.position)
-    setShuffling(initPlayback.shuffle)
-  }, [initPlayback.position, initPlayback.shuffle])
+    if (!player) return
+    if (!currentTrack.name) return
+
+    player.getCurrentState().then(state => {
+      if (!state) {
+        console.log("no state")
+        return 
+      }
+      else {
+        setRepeat(state.repeat_mode)
+      }
+    })
+
+  }, [currentTrack.name, player])
+
 
 
   useInterval(() => {
@@ -252,7 +244,7 @@ export default function WebPlayer() {
 
   }
 
-    function toggleRepeat(repeatMode) {
+  function toggleRepeat(repeatMode) {
     
     const options = {
       url: `https://api.spotify.com/v1/me/player/repeat?state=${repeatMode}`,
