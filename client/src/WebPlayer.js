@@ -52,6 +52,8 @@ export default function WebPlayer() {
   const [shuffleColour, setShuffleColour] = useState('grey')
  
   const [repeat, setRepeat] = useState(0)
+  const [repeatCheck, setRepeatCheck] = useState(0)
+  const [repeatInit, setRepeatInit] = useState(false)
   const [repeatIconColour, setRepeatIconColour] = useState('grey')
  
   
@@ -88,7 +90,7 @@ export default function WebPlayer() {
       if (!state) {
           return;
       }
-      
+      setRepeatCheck(state.repeat_mode)
       setCurrentTrack(state.track_window.current_track);
       setShuffling(state.shuffle)
       setCounter(state.position)
@@ -154,6 +156,7 @@ export default function WebPlayer() {
       }
       else {
         setRepeat(state.repeat_mode)
+        setRepeatInit(true)
       }
     })
 
@@ -252,8 +255,21 @@ export default function WebPlayer() {
 
   }
 
-  function toggleRepeat(repeatMode, level) {
-    setRepeat(level)
+  useEffect(() => {
+    if (!accessToken) return
+    if (!repeatInit) return
+    
+    let repeatMode
+    
+    if (repeat === 0) {
+      repeatMode = "off"
+    }
+    else if (repeat === 1) {
+      repeatMode = "context"
+    }
+    else if (repeat === 2) {
+      repeatMode = "track"
+    }
     
     const options = {
       url: `https://api.spotify.com/v1/me/player/repeat?state=${repeatMode}`,
@@ -264,15 +280,18 @@ export default function WebPlayer() {
       }
     }
 
-    axios(options)
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error => {
-      console.log(error)
-    })
+    if (repeatCheck !== repeat) {
+
+      axios(options)
+      .then(response => {
+        console.log("updated " + response.status)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+   }
     
-  }
+  }, [accessToken, repeatCheck, repeat, repeatInit])
   
 
 
@@ -394,7 +413,8 @@ export default function WebPlayer() {
            }}>
             <path fill={shuffleColour} d="M4.5 6.8l.7-.8C4.1 4.7 2.5 4 .9 4v1c1.3 0 2.6.6 3.5 1.6l.1.2zm7.5 4.7c-1.2 0-2.3-.5-3.2-1.3l-.6.8c1 1 2.4 1.5 3.8 1.5V14l3.5-2-3.5-2v1.5zm0-6V7l3.5-2L12 3v1.5c-1.6 0-3.2.7-4.2 2l-3.4 3.9c-.9 1-2.2 1.6-3.5 1.6v1c1.6 0 3.2-.7 4.2-2l3.4-3.9c.9-1 2.2-1.6 3.5-1.6z"></path>
         </svg>
-      <div className='prevBox' onClick={() => player.previousTrack()}>
+      <div className='prevBox' 
+           onClick={() => player.previousTrack()}>
         <div className='prevTrackButton'></div>
       </div>
       <div className='playButton' onClick={() => player.togglePlay()}>
@@ -404,7 +424,8 @@ export default function WebPlayer() {
         <div className='pauseIcon'></div>
       }
       </div>
-      <div className='nextBox' onClick={() => player.nextTrack()}>
+      <div className='nextBox' 
+           onClick={() => player.nextTrack()}>
         <div className='nextTrackButton'></div>
       </div>
       <svg className='repeatIcon'
@@ -422,18 +443,14 @@ export default function WebPlayer() {
             }}}
           onClick={()=> {
             console.log("CLICK")
-            
             if (repeat === 0) {
-              
-              toggleRepeat("context", 1)
+              setRepeat(1)
             }
             else if (repeat === 1) {
-              
-              toggleRepeat("track", 2)
+              setRepeat(2)
             }
             else if (repeat === 2) {
-              
-              toggleRepeat("off", 0)
+              setRepeat(0)
               setRepeatIconColour('white')
             }
           }}>
