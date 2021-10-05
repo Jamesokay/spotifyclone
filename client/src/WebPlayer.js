@@ -523,7 +523,9 @@ export default function WebPlayer() {
            onMouseOver={()=> setVolHover(true)} 
            onMouseLeave={()=> setVolHover(false)}  
            onMouseDown={(e)=> {
-             setVol(e.screenX - volBar.offsetLeft)
+             if ((e.screenX - volBar.offsetLeft) >= 0 && (e.screenX - volBar.offsetLeft) <= 100) {
+               setVol(e.screenX - volBar.offsetLeft)
+             }
              setVolDrag(true)}}>
         <div id='volume' style={(volDrag)? {width: vol, backgroundColor: '#1ed760'} : {width: vol}}>
             <div className='drag' 
