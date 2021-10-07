@@ -9,7 +9,7 @@ export default function HeaderPanel({ content, creators, dispatch }) {
       })
     }
 
-    const [bg, setBg] = useState('#121212')
+    const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
     
     function getData() {
       var canvas = document.createElement('canvas');
@@ -17,10 +17,16 @@ export default function HeaderPanel({ content, creators, dispatch }) {
   
       var myImgElement = document.getElementById('headerImage');
       myImgElement.crossOrigin = ''
+      
+      canvas.height = myImgElement.naturalHeight
+      canvas.width = myImgElement.naturalWidth
       ctx.drawImage( myImgElement, 0, 0 );
+
+      var xStart = Math.floor(canvas.width * 0.2)
+      var yStart = Math.floor(canvas.height * 0.6)
   
 
-      var imgdata = ctx.getImageData(0,0,50,50);
+      var imgdata = ctx.getImageData(xStart,yStart,40,40);
       var pixels = imgdata.data;
 
       var red = 0
@@ -46,7 +52,8 @@ export default function HeaderPanel({ content, creators, dispatch }) {
 
     //  console.log('AVG red: ' + avgRed + ' AVG green: ' + avgGreen + ' AVG blue: ' + avgBlue + ' AVG alpha: ' + avgAlpha) 
 
-      setBg('rgba(' + avgRed + ',' + avgGreen + ',' + avgBlue + ',' + avgAlpha + ')')
+      let bg = 'rgba(' + avgRed + ',' + avgGreen + ',' + avgBlue + ',' + avgAlpha + ')'
+      setGradient('linear-gradient(' + bg + ', #121212)')
       
       
     }
@@ -54,7 +61,7 @@ export default function HeaderPanel({ content, creators, dispatch }) {
 
 
     return (
-        <div className='headerPanel' style={{background: bg}}>
+        <div className='headerPanel' style={{backgroundImage: gradient}}>
           <img  id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()}/>
             <div className='headerInfo'>
               <p className='headerType'>{content.type}</p>
