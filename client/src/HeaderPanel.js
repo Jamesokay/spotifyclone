@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
 
 export default function HeaderPanel({ content, creators, dispatch }) {
 
@@ -8,6 +9,25 @@ export default function HeaderPanel({ content, creators, dispatch }) {
         id: pageId
       })
     }
+
+    const [titleStyle, setTitleStyle] = useState({})
+    
+    useEffect(() => {
+      if (!content.title) return
+
+      if (content.title.length <= 20) {
+        setTitleStyle({fontSize: '70pt', whiteSpace: 'nowrap'})
+      }
+      else if (content.title.length > 20 && content.title.length < 25) {
+        setTitleStyle({fontSize: '50pt', whiteSpace: 'nowrap'})
+      }
+      else if (content.title.length > 25) {
+        setTitleStyle({fontSize: '35pt'})
+      }
+    }, [content.title])
+
+
+    
 
     const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
     
@@ -66,7 +86,7 @@ export default function HeaderPanel({ content, creators, dispatch }) {
           <img  id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()}/>
             <div className='headerInfo'>
               <span className='headerType'>{content.type}</span>
-              <span className='headerTitle'>{content.title}</span>
+              <span style={titleStyle} className='headerTitle'>{content.title}</span>
               <span>
               {creators.map((creator, index, creators) =>
                <span key={creator.id}>

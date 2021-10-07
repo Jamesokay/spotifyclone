@@ -604,6 +604,9 @@ td {
 
 .headerBody {
     margin-left: 7.5vw;
+    width: 92.5vw;
+    height: 232px;
+    position: relative;
 }
 
 .headerControls {
@@ -643,7 +646,6 @@ td {
 #headerImage {
     height: 232px;
     width: 232px;
-    padding-right: 25px;
     object-fit: cover;
 }
 
@@ -657,8 +659,8 @@ td {
     font-family: Verdana, sans-serif;
     font-weight: bold;
     color: white; 
-    font-size: 6vh;
-    letter-spacing: -4px;
+    font-size: 6.5vh;
+    letter-spacing: -0.6vw;
     margin-top: 1.5vh;
     margin-bottom: 1.5vh;
 }
@@ -681,10 +683,13 @@ td {
 }
 
 .headerInfo {
+    position: absolute;
     display: flex;
     flex-wrap: wrap;
     float: right;
     text-align: left;
-    width: 50vw;
+    width: 60vw;
     flex-direction: column;
+    left: 250px;
+    bottom: 0;
 }

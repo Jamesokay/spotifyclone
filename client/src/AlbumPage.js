@@ -6,6 +6,7 @@ import { AuthContext } from './AuthContext'
 import Panel from './Panel'
 import HeaderPanel from './HeaderPanel'
 import getTotalDuration from './getTotalDuration'
+import playTrack from './playTrack'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -69,6 +70,7 @@ export default function AlbumPage({ id, dispatch }) {
         .then(data =>{
             setAlbum({
                 title: data.body.name,
+                uri: data.body.uri,
                 imgUrl: data.body.images[0].url,
                 info: ' • ' + data.body.release_date.slice(0, 4) 
                     + ' • ' + data.body.tracks.total 
@@ -142,7 +144,8 @@ export default function AlbumPage({ id, dispatch }) {
         <HeaderPanel content={album} creators={creatorObject} dispatch={dispatch} />
         <div className='pageContainer'>
         <div className='headerControls'>
-          <div className='headerPlayButton'>
+          <div className='headerPlayButton'
+               onClick={() => playTrack(accessToken, {context_uri: album.uri})}>
             <div className='headerPlayIcon'></div>
           </div>
         </div>
