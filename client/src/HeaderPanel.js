@@ -65,9 +65,9 @@ export default function HeaderPanel({ content, creators, dispatch }) {
         <div className='headerBody'>
           <img  id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()}/>
             <div className='headerInfo'>
-              <p className='headerType'>{content.type}</p>
-              <p className='headerTitle'>{content.title}</p>
-              <p>
+              <span className='headerType'>{content.type}</span>
+              <span className='headerTitle'>{content.title}</span>
+              <span>
               {creators.map((creator, index, creators) =>
                <span key={creator.id}>
                 <span className='headerCreator' onClick={() => pageChange(creator.id)}>{creator.name}</span>
@@ -79,7 +79,7 @@ export default function HeaderPanel({ content, creators, dispatch }) {
                   </span>
                 )}  
                 <span className='headerSub'>{content.info}</span>
-              </p>
+              </span>
             </div>
           </div>
         </div>

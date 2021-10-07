@@ -596,6 +596,7 @@ td {
 
 .headerPanel {
     display: flex;
+    flex-wrap: wrap;
     cursor: default;
     padding-top: 10vh;
     height: 60vh;
@@ -656,10 +657,10 @@ td {
     font-family: Verdana, sans-serif;
     font-weight: bold;
     color: white; 
-    font-size: 5vh;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    font-size: 6vh;
     letter-spacing: -4px;
+    margin-top: 1.5vh;
+    margin-bottom: 1.5vh;
 }
 
 .headerCreator {
@@ -680,6 +681,10 @@ td {
 }
 
 .headerInfo {
+    display: flex;
+    flex-wrap: wrap;
     float: right;
     text-align: left;
+    width: 50vw;
+    flex-direction: column;
 }
