@@ -464,7 +464,7 @@ li span:hover {
 
 .trackTable {
     width: 1180px;
-    font-family: Verdana, sans-serif;
+    font-family: Arial, sans-serif;
     cursor: default;
     background: #121212;
     font-size: 11pt;
@@ -585,7 +585,7 @@ td {
     cursor: default;
 }
 
-.headerImage {
+#headerImage {
     height: 232px;
     width: 232px;
     padding-right: 25px;
@@ -605,6 +605,7 @@ td {
     font-size: 40pt;
     margin-top: 10px;
     margin-bottom: 10px;
+    letter-spacing: -4px;
 }
 
 .headerCreator {
