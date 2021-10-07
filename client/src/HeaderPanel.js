@@ -9,23 +9,44 @@ export default function HeaderPanel({ content, creators, dispatch }) {
       })
     }
 
-    const [bg, setBg] = useState('grey')
+    const [bg, setBg] = useState('#121212')
     
     function getData() {
       var canvas = document.createElement('canvas');
       var ctx    = canvas.getContext('2d');
   
-      // 2) Copy your image data into the canvas
       var myImgElement = document.getElementById('headerImage');
       myImgElement.crossOrigin = ''
       ctx.drawImage( myImgElement, 0, 0 );
   
-      // 3) Read your image data
-     // var w = myImgElement.width, h=myImgElement.height;
-      var imgdata = ctx.getImageData(100,100,50,50);
-      var rgba = imgdata.data;
-      var colorRaw = rgba.slice(0,4)
-      setBg('rgba(' + colorRaw.join() + ')')
+
+      var imgdata = ctx.getImageData(0,0,50,50);
+      var pixels = imgdata.data;
+
+      var red = 0
+      var green = 0
+      var blue = 0
+      var alpha = 0
+
+      for (let i = 0; i < pixels.length; i += 4) {
+        
+        red += pixels[i]
+        green += pixels[i + 1]
+        blue += pixels[i + 2]
+        alpha += pixels[i + 3]
+        
+      }
+
+    //  console.log('red: ' + red + ' green: ' + green + ' blue: ' + blue + ' alpha: ' + alpha) 
+
+      let avgRed = Math.floor(red / (pixels.length / 4))
+      let avgGreen = Math.floor(green / (pixels.length / 4))
+      let avgBlue = Math.floor(blue / (pixels.length / 4))
+      let avgAlpha = Math.floor(alpha / (pixels.length / 4))
+
+    //  console.log('AVG red: ' + avgRed + ' AVG green: ' + avgGreen + ' AVG blue: ' + avgBlue + ' AVG alpha: ' + avgAlpha) 
+
+      setBg('rgba(' + avgRed + ',' + avgGreen + ',' + avgBlue + ',' + avgAlpha + ')')
       
       
     }
@@ -34,7 +55,7 @@ export default function HeaderPanel({ content, creators, dispatch }) {
 
     return (
         <div className='headerPanel' style={{background: bg}}>
-          <img  id='headerImage' src={content.imgUrl} alt='' onClick={()=> getData()}/>
+          <img  id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()}/>
             <div className='headerInfo'>
               <p className='headerType'>{content.type}</p>
               <p className='headerTitle'>{content.title}</p>
