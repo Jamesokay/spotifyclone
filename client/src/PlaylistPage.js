@@ -90,9 +90,18 @@ export default function PlaylistPage({ id, dispatch }) {
 
 
     return (
-        <div className='page'>
-          <HeaderPanel content={playlist} creators={creator} />
+      <div>
+      <HeaderPanel content={playlist} creators={creator} />
+      <div className='pageContainer'>
+      <div className='headerControls'>
+          <div className='headerPlayButton'>
+            <div className='headerPlayIcon'></div>
+          </div>
+        </div>   
+        <div className='page'>      
           <TracksTable content={tracks} dispatch={dispatch} page='playlist' />
         </div>
+      </div>
+      </div>
     )
 }

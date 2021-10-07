@@ -154,18 +154,22 @@ body {
     height: 50px;
     width: 100vw;
     background: #212121;
+    opacity: 0.4;
     cursor: default;
     margin-bottom: 20px;
     border-bottom: 0.5px solid #373737;
     z-index: 2;
 }
 
+.pageContainer {
+    margin-top: -25vh;
+    background-color:rgba(0, 0, 0, 0.1);
+}
 
 .page {
     margin: auto;
-    max-width: 1200px; 
+    max-width: 85vw; 
     padding-bottom: 90px;
-    padding-top: 70px;
 }
 
 .playBar {
@@ -456,6 +460,7 @@ li span:hover {
     width: 350px;
     font-family: Verdana, sans-serif;
     padding: 20px;
+    margin-top: 10vh;
 }
 
 .searchBar:focus {
@@ -463,11 +468,11 @@ li span:hover {
 }
 
 .trackTable {
-    width: 1180px;
+    width: 85vw;
     font-family: Arial, sans-serif;
     cursor: default;
-    background: #121212;
     font-size: 11pt;
+    
 }
 
 .tableTrackName {
@@ -478,6 +483,16 @@ li span:hover {
     white-space: nowrap;
     margin-bottom: 0px;
     margin-top: 0px;
+}
+
+th {
+    color: grey;
+    text-align: left;
+    font-family: Arial, sans-serif;
+    font-weight: normal;
+    letter-spacing: 1px;
+    border-bottom: 1px solid grey;
+    padding-bottom: 10px;
 }
 
 td {
@@ -581,8 +596,47 @@ td {
 
 .headerPanel {
     display: flex;
-    padding-bottom: 25px;
     cursor: default;
+    padding-top: 10vh;
+    height: 60vh;
+}
+
+.headerBody {
+    margin-left: 7.5vw;
+}
+
+.headerControls {
+    height: 10vh;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+    margin-left: 7.5vw;
+}
+
+.headerPlayButton {
+    display: flex;
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    background: #1ed760;
+}
+
+.headerPlayIcon {
+    width: 0;
+    height: 0;
+    border-top: 12px solid transparent;
+    border-left: 18px solid white;
+    border-bottom: 12px solid transparent;
+    margin-left: 40%;
+    margin-top: 30%;
+}
+
+.headerPlayButton:hover {
+    transform: scale(1.05)
+}
+
+.headerPlayButton:hover > .headerPlayIcon {
+    transform: scale(1.05)
 }
 
 #headerImage {
@@ -602,7 +656,7 @@ td {
     font-family: Verdana, sans-serif;
     font-weight: bold;
     color: white; 
-    font-size: 40pt;
+    font-size: 5vh;
     margin-top: 10px;
     margin-bottom: 10px;
     letter-spacing: -4px;

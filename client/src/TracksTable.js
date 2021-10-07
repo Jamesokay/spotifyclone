@@ -78,13 +78,16 @@ export default function TracksTable({content, dispatch, page}) {
         return (
             <table className='trackTable' cellSpacing='0' cellPadding='0'>
             <thead>
-              <tr style={{color: 'white', textAlign: 'left'}}>
+              <tr>
                 <th style={{textAlign: 'center'}}>#</th>
                 <th>TITLE</th>
                 <th>TIME</th>
               </tr>
               </thead>
               <tbody>
+              <tr>
+                <td></td>
+              </tr>
               {content.map(cont =>
                 <tr className='trackTableRow' key={cont.id}>
                   <td className='rowFirst'>
@@ -119,7 +122,7 @@ export default function TracksTable({content, dispatch, page}) {
         return (
             <table className='trackTable' cellSpacing='0' cellPadding='0'>
               <thead>
-                <tr style={{color: 'grey', textAlign: 'left'}}>
+                <tr>
                 <th style={{textAlign: 'center'}}>#</th>
                 <th>TITLE</th>
                 <th></th>
@@ -128,6 +131,9 @@ export default function TracksTable({content, dispatch, page}) {
                 </tr>
               </thead>
               <tbody>
+              <tr>
+                <td></td>
+              </tr>
               {content.map(cont =>
                 <tr className='trackTableRow' key={cont.id}>
                   <td className='rowFirst'>

@@ -62,6 +62,7 @@ export default function HeaderPanel({ content, creators, dispatch }) {
 
     return (
         <div className='headerPanel' style={{backgroundImage: gradient}}>
+        <div className='headerBody'>
           <img  id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()}/>
             <div className='headerInfo'>
               <p className='headerType'>{content.type}</p>
@@ -80,6 +81,7 @@ export default function HeaderPanel({ content, creators, dispatch }) {
                 <span className='headerSub'>{content.info}</span>
               </p>
             </div>
+          </div>
         </div>
     )
 }

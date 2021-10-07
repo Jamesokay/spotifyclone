@@ -138,12 +138,21 @@ export default function AlbumPage({ id, dispatch }) {
 
 
     return (
+        <div>
+        <HeaderPanel content={album} creators={creatorObject} dispatch={dispatch} />
+        <div className='pageContainer'>
+        <div className='headerControls'>
+          <div className='headerPlayButton'>
+            <div className='headerPlayIcon'></div>
+          </div>
+        </div>
         <div className='page'>
-          <HeaderPanel content={album} creators={creatorObject} dispatch={dispatch} />
           <TracksTable content={tracks} dispatch={dispatch} page='album' />
           <p><span className='panelTitle'
             onClick={() => expandPanel('More by ' + artistName, moreByArtist)}>{'More by ' + artistName}</span></p>
           <Panel content={moreByArtist.slice(0, 5)} dispatch={dispatch} /> 
+        </div>
+        </div>
         </div>
     )
 }
