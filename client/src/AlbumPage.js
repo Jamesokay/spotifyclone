@@ -7,6 +7,7 @@ import Panel from './Panel'
 import HeaderPanel from './HeaderPanel'
 import getTotalDuration from './getTotalDuration'
 import playTrack from './playTrack'
+import axios from 'axios'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -22,6 +23,7 @@ export default function AlbumPage({ id, dispatch }) {
     const [artistName, setArtistName] = useState('')
     const [creatorObject, setCreatorObject] = useState([])
     const [moreByArtist, setMoreByArtist] = useState([])
+    const [paused, setPaused] = useState(true)
 
     function expandPanel(title, content) {
         dispatch({
@@ -136,6 +138,31 @@ export default function AlbumPage({ id, dispatch }) {
             })
 
     }, [accessToken, moreByArtist])
+
+    function pausePlay() {
+        setPaused(true)
+        const options = {
+            url: 'https://api.spotify.com/v1/me/player/pause',
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+                }
+            }
+        
+          axios(options)
+          .then(console.log('paused')
+          )
+          .catch(error => {
+            console.log(error)
+          })
+    }
+
+    function play() {
+        setPaused(false)
+        playTrack(accessToken, {context_uri: album.uri})
+
+    }
       
 
 
@@ -145,8 +172,17 @@ export default function AlbumPage({ id, dispatch }) {
         <div className='pageContainer'>
         <div className='headerControls'>
           <div className='headerPlayButton'
-               onClick={() => playTrack(accessToken, {context_uri: album.uri})}>
+               onClick={() => {
+                   (paused)?
+                   play()
+                   :
+                   pausePlay()
+                }}>
+            {(paused)?
             <div className='headerPlayIcon'></div>
+            :
+            <div className='headerPauseIcon'></div>
+            }
           </div>
         </div>
         <div className='page'>

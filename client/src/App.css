@@ -635,6 +635,14 @@ td {
     margin-top: 30%;
 }
 
+.headerPauseIcon {
+    width: 7.5px;
+    height: 24px;
+    border-right: 5px solid white;
+    border-left: 5px solid white;
+    margin: auto;
+}
+
 .headerPlayButton:hover {
     transform: scale(1.05)
 }

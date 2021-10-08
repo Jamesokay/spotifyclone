@@ -6,6 +6,7 @@ import { AuthContext } from './AuthContext'
 import HeaderPanel from './HeaderPanel'
 import getTotalDuration from './getTotalDuration'
 import playTrack from './playTrack'
+import axios from 'axios'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -18,6 +19,7 @@ export default function PlaylistPage({ id, dispatch }) {
     const [playlist, setPlaylist] = useState({})
     const [tracks, setTracks] = useState([])
     const [creator, setCreator] = useState([])
+    const [paused, setPaused] = useState(true)
 
 
     useEffect(() => {
@@ -90,15 +92,49 @@ export default function PlaylistPage({ id, dispatch }) {
         })
     }, [accessToken, id])
 
+    function pausePlay() {
+      setPaused(true)
+      const options = {
+          url: 'https://api.spotify.com/v1/me/player/pause',
+          method: 'PUT',
+          headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+              }
+          }
+      
+        axios(options)
+        .then(console.log('paused')
+        )
+        .catch(error => {
+          console.log(error)
+        })
+  }
+
+  function play() {
+      setPaused(false)
+      playTrack(accessToken, {context_uri: playlist.uri})
+
+  }
+
 
     return (
       <div>
       <HeaderPanel content={playlist} creators={creator} />
       <div className='pageContainer'>
       <div className='headerControls'>
-          <div className='headerPlayButton'
-               onClick={() => playTrack(accessToken, {context_uri: playlist.uri})}>
+      <div className='headerPlayButton'
+               onClick={() => {
+                   (paused)?
+                   play()
+                   :
+                   pausePlay()
+                }}>
+            {(paused)?
             <div className='headerPlayIcon'></div>
+            :
+            <div className='headerPauseIcon'></div>
+            }
           </div>
         </div>   
         <div className='page'>      
