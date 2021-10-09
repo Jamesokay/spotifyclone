@@ -206,7 +206,7 @@ export default function Dashboard({ dispatch }) {
     
     
     return (
-      <div className='page'>
+      <div id="dash">
         <p><span className='panelTitle'
           onClick={() => expandPanel('Recent', recent)}>Recent</span></p> 
         <Panel content={recent.slice(0, 5)} dispatch={dispatch} />

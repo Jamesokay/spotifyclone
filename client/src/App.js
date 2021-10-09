@@ -52,6 +52,12 @@ function reducer(state, action) {
         title: action.header,
         array: action.array
       }
+    case 'LOGOUT': {
+      return {
+        pageType: 'login',
+        pageId: null
+      }
+    }
     default:
       return state
     }
@@ -68,6 +74,12 @@ function App() {
     if (!code) return
     setIsLoggedIn(true)
   }, [code])
+
+  useEffect(() => {
+    if (store.pageType === 'login') {
+      setIsLoggedIn(false)
+    }
+  }, [store.pageType])
 
   function Page() {
     if (store.pageType === 'dashboard') {
@@ -87,6 +99,9 @@ function App() {
     }
     else if (store.pageType === 'panelExpanded') {
       return <PanelExpanded title={store.title} array={store.array} dispatch={dispatch} />
+    }
+    else if (store.pageType === 'login') {
+      return <div />
     }
   }
 

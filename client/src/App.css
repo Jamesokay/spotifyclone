@@ -5,6 +5,36 @@
     color: white; 
     font-size: 70pt;
     letter-spacing: -8px;
+    position: absolute;
+    left: 30vw;
+    top: 20vh;
+}
+
+#artistTableTitle {
+    color: white;
+    font-size: 15pt;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    margin-top: 0;
+}
+
+#artistHeader {
+    display: flex;
+    width: 100vw;
+    height: 65vh;
+    background-image: linear-gradient(grey, #121212);
+    margin-top: 50px;
+}
+
+#artistHeaderImage {
+    position: absolute;
+    left: 7.5vw;
+    border-radius: 50%;
+    height: 250px;
+    width: 250px;
+    object-fit: cover;
+    margin: 15px;
+    box-shadow: 0px 0px 10px 2px #121212;
 }
 
 body {
@@ -154,11 +184,10 @@ body {
     height: 50px;
     width: 100vw;
     background: #212121;
-    opacity: 0.4;
     cursor: default;
-    margin-bottom: 20px;
     border-bottom: 0.5px solid #373737;
     z-index: 2;
+    opacity: 0.5;
 }
 
 .pageContainer {
@@ -169,6 +198,13 @@ body {
 .page {
     margin: auto;
     max-width: 85vw; 
+    padding-bottom: 90px;
+}
+
+#dash {
+    margin: auto;
+    max-width: 85vw; 
+    padding-top: 50px;
     padding-bottom: 90px;
 }
 
@@ -418,6 +454,10 @@ body {
     font-size: 8pt;
 }
 
+#logOut {
+    position: absolute;
+    right: 0;
+}
 
 ul {
     list-style-type: none;

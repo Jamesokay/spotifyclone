@@ -15,6 +15,7 @@ export default function ArtistPage({ id, dispatch }) {
     
     const accessToken = useContext(AuthContext)
     const [artistName, setArtistName] = useState('')
+    const [artistImage, setArtistImage] = useState('')
     const [artistAlbumsRaw, setArtistAlbumsRaw] = useState([])
     const [artistTracks, setArtistTracks] = useState([])
     const [alsoLike, setAlsoLike] = useState([])
@@ -70,6 +71,7 @@ export default function ArtistPage({ id, dispatch }) {
         spotifyApi.getArtist(id)
         .then(data =>{
             setArtistName(data.body.name)
+            setArtistImage(data.body.images[0].url)
         })
         .catch(error => {
             console.log(error)
@@ -128,8 +130,22 @@ export default function ArtistPage({ id, dispatch }) {
 
 
     return (
+          
+        <div>
+
+          <div id='artistHeader'>
+            <img id='artistHeaderImage' src={artistImage} alt=''/>
+            <span className='artistTitle'>{artistName}</span>
+          </div>
+
+        <div className='pageContainer'>
+        <div className='headerControls'>
+          <div className='headerPlayButton'>         
+            <div className='headerPlayIcon'></div>
+          </div>
+        </div>
           <div className='page'>
-          <p><span className='artistTitle'>{artistName}</span></p>
+          <p id='artistTableTitle'>Popular</p>
           <TracksTable content={artistTracks.slice(0, 5)} dispatch={dispatch} page='artist' />
           <p><span className='panelTitle'
             onClick={() => expandPanel('Albums by ' + artistName, artistAlbumsRaw)}>Albums</span></p>
@@ -138,5 +154,8 @@ export default function ArtistPage({ id, dispatch }) {
             onClick={() => expandPanel('Similar to ' + artistName, alsoLike)}>{'Similar to ' + artistName}</span></p>
           <Panel content={alsoLike.slice(0, 5)} dispatch={dispatch} /> 
           </div>
+        </div>
+
+        </div>
     )
 }
