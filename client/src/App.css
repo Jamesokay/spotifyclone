@@ -3,11 +3,9 @@
     font-weight: 900;
     margin-bottom: 85px;
     color: white; 
-    font-size: 70pt;
-    letter-spacing: -8px;
-    position: absolute;
-    left: 30vw;
-    top: 20vh;
+    font-size: 10vw;
+    letter-spacing: -1.25vw;
+    margin: auto;
 }
 
 #artistTableTitle {
@@ -21,15 +19,14 @@
 #artistHeader {
     display: flex;
     width: 100vw;
-    height: 65vh;
-    background-image: linear-gradient(grey, #121212);
-    margin-top: 50px;
+    height: 20vh;
+    background: #121212;
+    padding-top: 50px;
 }
 
 #artistHeaderImage {
     position: absolute;
     left: 7.5vw;
-    border-radius: 50%;
     height: 250px;
     width: 250px;
     object-fit: cover;
