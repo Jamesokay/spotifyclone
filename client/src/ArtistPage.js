@@ -11,8 +11,8 @@ const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
  })
 
-export default function ArtistPage({ id, dispatch }) {
-    
+export default function ArtistPage({ location }) {
+    const id = location.state
     const accessToken = useContext(AuthContext)
     const [artistName, setArtistName] = useState('')
 //    const [artistImage, setArtistImage] = useState('')
@@ -20,13 +20,13 @@ export default function ArtistPage({ id, dispatch }) {
     const [artistTracks, setArtistTracks] = useState([])
     const [alsoLike, setAlsoLike] = useState([])
 
-    function expandPanel(title, content) {
-        dispatch({
-          type: 'PANEL_EXPANDED',
-          header: title,
-          array: content
-        })
-    }
+    // function expandPanel(title, content) {
+    //     dispatch({
+    //       type: 'PANEL_EXPANDED',
+    //       header: title,
+    //       array: content
+    //     })
+    // }
 
     function getAlbumObject(id) {
         spotifyApi.getAlbum(id)
@@ -147,13 +147,13 @@ export default function ArtistPage({ id, dispatch }) {
         </div>
           <div className='page'>
           <p id='artistTableTitle'>Popular</p>
-          <TracksTable content={artistTracks.slice(0, 5)} dispatch={dispatch} page='artist' />
+          <TracksTable content={artistTracks.slice(0, 5)} page='artist' />
           <p><span className='panelTitle'
-            onClick={() => expandPanel('Albums by ' + artistName, artistAlbumsRaw)}>Albums</span></p>
-          <Panel content={artistAlbumsRaw.slice(0, 5)} dispatch={dispatch} />
+            >Albums</span></p>
+          <Panel content={artistAlbumsRaw.slice(0, 5)} />
           <p><span className='panelTitle'
-            onClick={() => expandPanel('Similar to ' + artistName, alsoLike)}>{'Similar to ' + artistName}</span></p>
-          <Panel content={alsoLike.slice(0, 5)} dispatch={dispatch} /> 
+            >{'Similar to ' + artistName}</span></p>
+          <Panel content={alsoLike.slice(0, 5)} /> 
           </div>
         
 

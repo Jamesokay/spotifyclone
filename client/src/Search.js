@@ -7,7 +7,7 @@ import TracksTable from './TracksTable'
 import axios from 'axios'
 
 
-export default function Search({ dispatch }) {
+export default function Search() {
 
     const accessToken = useContext(AuthContext)
     const [search, setSearch] = useState('')
@@ -65,11 +65,11 @@ export default function Search({ dispatch }) {
               />
             </form>
             <p><span className='panelTitle'>Songs</span></p>
-            <TracksTable content={trackResults.slice(0, 5)} dispatch={dispatch} page='search' />
+            <TracksTable content={trackResults.slice(0, 5)} page='search' />
             <p><span className='panelTitle'>Artists</span></p>
-            <Panel content={artistResults.slice(0, 5)} dispatch={dispatch} />
+            <Panel content={artistResults.slice(0, 5)} />
             <p><span className='panelTitle'>Albums</span></p>
-            <Panel content={albumResults.slice(0, 5)} dispatch={dispatch} />
+            <Panel content={albumResults.slice(0, 5)} />
             {/* <p><span className='panelTitle'>Playlists</span></p>
             <Panel content={playlistResults.slice(0, 5)} dispatch={dispatch} /> */}
         </div>

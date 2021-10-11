@@ -13,8 +13,8 @@ const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
  })
 
-export default function PlaylistPage({ id, dispatch }) {
-
+export default function PlaylistPage({ location }) {
+    const id  = location.state
     const accessToken = useContext(AuthContext)
     const [playlist, setPlaylist] = useState({})
     const [tracks, setTracks] = useState([])
@@ -138,7 +138,7 @@ export default function PlaylistPage({ id, dispatch }) {
           </div>
         </div>   
         <div className='page'>      
-          <TracksTable content={tracks} dispatch={dispatch} page='playlist' />
+          <TracksTable content={tracks} page='playlist' />
         </div>
       </div>
       </div>

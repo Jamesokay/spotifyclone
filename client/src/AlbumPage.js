@@ -14,7 +14,8 @@ const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
  })
 
-export default function AlbumPage({ id, dispatch }) {
+export default function AlbumPage({ location }) {
+    const id = location.state
     const accessToken = useContext(AuthContext)
     const [album, setAlbum] = useState({})
     const [albumName, setAlbumName] = useState('')
@@ -25,13 +26,13 @@ export default function AlbumPage({ id, dispatch }) {
     const [moreByArtist, setMoreByArtist] = useState([])
     const [paused, setPaused] = useState(true)
 
-    function expandPanel(title, content) {
-        dispatch({
-          type: 'PANEL_EXPANDED',
-          header: title,
-          array: content
-        })
-    }
+    // function expandPanel(title, content) {
+    //     dispatch({
+    //       type: 'PANEL_EXPANDED',
+    //       header: title,
+    //       array: content
+    //     })
+    // }
 
     function getAlbumObject(id) {
 
@@ -168,7 +169,7 @@ export default function AlbumPage({ id, dispatch }) {
 
     return (
         <div>
-        <HeaderPanel content={album} creators={creatorObject} dispatch={dispatch} />
+        <HeaderPanel content={album} creators={creatorObject} />
         <div className='pageContainer'>
         <div className='headerControls'>
           <div className='headerPlayButton'
@@ -186,10 +187,9 @@ export default function AlbumPage({ id, dispatch }) {
           </div>
         </div>
         <div className='page'>
-          <TracksTable content={tracks} dispatch={dispatch} page='album' />
-          <p><span className='panelTitle'
-            onClick={() => expandPanel('More by ' + artistName, moreByArtist)}>{'More by ' + artistName}</span></p>
-          <Panel content={moreByArtist.slice(0, 5)} dispatch={dispatch} /> 
+          <TracksTable content={tracks} page='album' />
+          <p><span className='panelTitle'>{'More by ' + artistName}</span></p>
+          <Panel content={moreByArtist.slice(0, 5)} /> 
         </div>
         </div>
         </div>

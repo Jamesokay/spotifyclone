@@ -9,7 +9,7 @@ const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
  })
 
-export default function Dashboard({ dispatch }) {
+export default function Dashboard() {
     const accessToken = useContext(AuthContext)
     const [topArtists, setTopArtists] = useState([])
     const [recent, setRecent] = useState([])
@@ -19,13 +19,13 @@ export default function Dashboard({ dispatch }) {
     const [customArtistPanel, setCustomArtistPanel] = useState([])
     const [customArtistName, setCustomArtistName] = useState([])
 
-    function expandPanel(title, content) {
-        dispatch({
-          type: 'PANEL_EXPANDED',
-          header: title,
-          array: content
-        })
-      }
+    // function expandPanel(title, content) {
+    //     dispatch({
+    //       type: 'PANEL_EXPANDED',
+    //       header: title,
+    //       array: content
+    //     })
+    //   }
     
     function getUniqueById(array) {
         const clearUndefinedValues = array.filter(item => {
@@ -208,19 +208,19 @@ export default function Dashboard({ dispatch }) {
     return (
       <div id="dash">
         <p><span className='panelTitle'
-          onClick={() => expandPanel('Recent', recent)}>Recent</span></p> 
-        <Panel content={recent.slice(0, 5)} dispatch={dispatch} />
+          >Recent</span></p> 
+        <Panel content={recent.slice(0, 5)} />
         <p><span className='panelTitle' 
-          onClick={() => expandPanel('More like ' + relatedArtistsSeed, moreLike)}>
+          >
           {'More like ' + relatedArtistsSeed}</span></p> 
-        <Panel content={moreLike.slice(0, 5)} dispatch={dispatch} />
+        <Panel content={moreLike.slice(0, 5)} />
         <p><span className='panelTitle'
-          onClick={() => expandPanel('Recommended for you', recommend)}>Recommended for you</span></p> 
-        <Panel content={recommend.slice(0, 5)} dispatch={dispatch} />   
+          >Recommended for you</span></p> 
+        <Panel content={recommend.slice(0, 5)} />   
 
         <p><span className='panelTitle'
-          onClick={() => expandPanel('For fans of ' + topArtists[0].name, customArtistPanel)}>{'For fans of ' + customArtistName}</span></p> 
-        <Panel content={customArtistPanel.slice(0, 5)} dispatch={dispatch} />  
+          >{'For fans of ' + customArtistName}</span></p> 
+        <Panel content={customArtistPanel.slice(0, 5)} />  
       </div>
     )
 }        
