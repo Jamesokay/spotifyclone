@@ -7,7 +7,8 @@ import PlaylistPage from "./PlaylistPage"
 import Search from "./Search"
 import PanelExpanded from './PanelExpanded'
 import { useReducer, useState, useEffect } from 'react'
-import { AuthProvider } from './AuthContext'
+import { AuthContext } from './AuthContext'
+import axios from 'axios'
 import NavBar from './NavBar'
 import WebPlayer from './WebPlayer'
 
@@ -67,19 +68,24 @@ function App() {
 
   const code = new URLSearchParams(window.location.search).get("code")
   const [store, dispatch] = useReducer(reducer, initialState)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
   localStorage.setItem('clientId', 'e39d5b5b499d4088a003eb0471c537bb')
-  
-  useEffect(() => {
-    if (!code) return
-    setIsLoggedIn(true)
-  }, [code])
+
+  const [accessToken, setAccessToken] = useState(null)
 
   useEffect(() => {
-    if (store.pageType === 'login') {
-      setIsLoggedIn(false)
-    }
-  }, [store.pageType])
+    if (!code) return
+
+    axios
+      .post("/login", {code})
+      .then(res => {
+        setAccessToken(res.data.accessToken)
+        window.history.pushState({}, null, "/")
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, [code])
+  
 
   function Page() {
     if (store.pageType === 'dashboard') {
@@ -105,13 +111,13 @@ function App() {
     }
   }
 
-  if (isLoggedIn === true) {
+  if (accessToken) {
     return (
-      <AuthProvider>
+      <AuthContext.Provider value={accessToken}>
         <NavBar dispatch={dispatch} />
         <Page />
         <WebPlayer /> 
-      </AuthProvider>
+      </AuthContext.Provider>
     )
   }
   else return <Login />
