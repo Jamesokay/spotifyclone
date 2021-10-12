@@ -1,11 +1,9 @@
 .artistTitle {
     font-family: Verdana, sans-serif;
     font-weight: 900;
-    margin-bottom: 85px;
     color: white; 
     font-size: 10vw;
     letter-spacing: -1.25vw;
-    margin: auto;
 }
 
 #artistTableTitle {
@@ -14,25 +12,9 @@
     font-family: Arial, sans-serif;
     font-weight: bold;
     margin-top: 0;
+    margin-left: 5vh;
 }
 
-#artistHeader {
-    display: flex;
-    width: 100vw;
-    height: 20vh;
-    background: #121212;
-    padding-top: 50px;
-}
-
-#artistHeaderImage {
-    position: absolute;
-    left: 7.5vw;
-    height: 250px;
-    width: 250px;
-    object-fit: cover;
-    margin: 15px;
-    box-shadow: 0px 0px 10px 2px #121212;
-}
 
 body {
     margin: 0px;
@@ -179,7 +161,7 @@ body {
     position: fixed;
     top: 0;
     display: flex;
-    height: 50px;
+    height: 6vh;
     width: 100vw;
     background: #212121;
     cursor: default;
@@ -188,13 +170,19 @@ body {
 }
 
 .pageContainer {
+    margin-left: 15vw;
     margin-top: -25vh;
     background-color:rgba(0, 0, 0, 0.1);
 }
 
-.page {
-    margin: auto;
-    max-width: 85vw; 
+.page {   
+    width: 85vw; 
+    padding-bottom: 90px;
+}
+
+#artistPage {
+    margin-left: 15vw;
+    width: 85vw; 
     padding-bottom: 90px;
 }
 
@@ -207,13 +195,29 @@ body {
     cursor: default;
 }
 
-.sideBarNav {
-    font-family: Verdana, sans-serif;
+.sideBarLink {
+    text-decoration: none;
     color: grey;
+    font-family: Verdana, sans-serif;
+    height: 6vh;
+    min-height: 25px;
+    display: flex;
+    align-items: center;
 }
+
+
+
+.sideBarActive {
+    background-color: #212121;
+    width: 100%;
+    text-decoration: none;
+    color: white !important;
+}
+
 
 .sideBarIcon {
     transition: color 0.2s ease-in-out;
+    margin-left: 15px;
 }
 
 .sideBarText {
@@ -228,21 +232,14 @@ li:hover .sideBarIcon {
     color: white;
 }
 
+
 ul {
     list-style-type: none;
-    margin: 20px;
     padding-left: 0;
+    margin-left: 0;
+    margin-top: 0;
 }
 
-li {
-    font-size : 15px;
-    margin: 1em 0;
-}
-
-li > *{
-  display: inline-block;
-  vertical-align: middle;
-  }
 
 li span {
     margin-left: 10px;
@@ -530,7 +527,8 @@ li span {
 }
 
 .trackTable {
-    width: 85vw;
+    width: 80vw;
+    margin: auto;
     font-family: Arial, sans-serif;
     cursor: default;
     font-size: 11pt;
@@ -660,12 +658,14 @@ td {
     display: flex;
     flex-wrap: wrap;
     cursor: default;
-    padding-top: 10vh;
+    margin-left: 15vw;
+    width: 85vw; 
+    padding-top: 75px;
     height: 60vh;
 }
 
 .headerBody {
-    margin-left: 7.5vw;
+    margin-left: 1.5vw;
     width: 92.5vw;
     height: 232px;
     position: relative;
@@ -675,7 +675,7 @@ td {
     height: 10vh;
     padding-top: 5vh;
     padding-bottom: 5vh;
-    margin-left: 7.5vw;
+    margin-left: 1.5vw;
 }
 
 .headerPlayButton {

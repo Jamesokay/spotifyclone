@@ -133,30 +133,23 @@ export default function ArtistPage({ location }) {
 
     return (
           
-        <div>
-
-          <div id='artistHeader'>
+        <div id='artistPage'>
             <span className='artistTitle'>{artistName}</span>
-          </div>
 
-        
+          
         <div className='headerControls'>
           <div className='headerPlayButton'>         
             <div className='headerPlayIcon'></div>
           </div>
         </div>
-          <div className='page'>
+          
           <p id='artistTableTitle'>Popular</p>
           <TracksTable content={artistTracks.slice(0, 5)} page='artist' />
           <p><span className='panelTitle'
             >Albums</span></p>
           <Panel content={artistAlbumsRaw.slice(0, 5)} />
-          <p><span className='panelTitle'
-            >{'Similar to ' + artistName}</span></p>
+          <p><span className='panelTitle'>{'Similar to ' + artistName}</span></p>
           <Panel content={alsoLike.slice(0, 5)} /> 
           </div>
-        
-
-        </div>
     )
 }
