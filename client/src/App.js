@@ -6,6 +6,7 @@ import AlbumPage from "./AlbumPage"
 import PlaylistPage from "./PlaylistPage"
 import Search from "./Search"
 import PanelExpanded from './PanelExpanded'
+import SideBar from './SideBar'
 import { useState, useEffect } from 'react'
 import { AuthContext } from './AuthContext'
 import axios from 'axios'
@@ -116,6 +117,7 @@ function App() {
     return (
       <AuthContext.Provider value={accessToken}>
         <NavBar />
+        <SideBar />
         <Route path='/' exact component={(accessToken)? Dashboard : Login} />
         <Route path='/search' component={Search} />
         <Route path="/playlist/:id" component={PlaylistPage} />
