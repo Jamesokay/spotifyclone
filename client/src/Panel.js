@@ -10,7 +10,7 @@ const accessToken = useContext(AuthContext)
     return (
         <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between'}}>  
         {content.map(cont =>
-          <Link key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
+          <Link style={{textDecoration: 'none'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
           <div className='cardBody'>
             {cont.type === 'artist'?
             <img className='cardArtist' src={cont.imgUrl} alt='' />

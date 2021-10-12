@@ -54,7 +54,7 @@ export default function Search() {
 
     if (search) { 
         return (
-        <div className='page'>
+        <div id='searchPage'>
             <form>
               <input
               className='searchBar'
@@ -76,7 +76,7 @@ export default function Search() {
         )
     } else {
         return (
-            <div className='page'>
+            <div id='searchPage'>
             <form>
               <input
               className='searchBar'

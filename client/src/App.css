@@ -162,12 +162,43 @@ body {
     top: 0;
     display: flex;
     height: 6vh;
-    width: 100vw;
+    margin-left: 15vw;
+    width: 85vw;
     background: #212121;
     cursor: default;
     border-bottom: 0.5px solid #373737;
     opacity: 0.5;
+    z-index: 2;
 }
+
+.navHistory {
+    margin-left: 2vw;
+    display: flex;
+    width: 7vw;
+    justify-content: space-evenly;
+}
+
+.navButton {
+    height: 33px;
+    width: 33px;
+    border-radius: 50%;
+    background: black;
+    margin: auto;
+}
+
+.navIconRight {
+    color: white;
+    margin-top: 5px;
+    margin-left: 6px;
+}
+
+.navIconLeft {
+    color: white;
+    margin-top: 5px;
+    margin-left: 3px;
+}
+
+
 
 .pageContainer {
     margin-left: 15vw;
@@ -177,6 +208,13 @@ body {
 
 .page {   
     width: 85vw; 
+    padding-bottom: 90px;
+}
+
+#searchPage {
+    margin-left: 17.5vw;
+    max-width: 80vw; 
+    padding-top: 50px;
     padding-bottom: 90px;
 }
 
@@ -237,7 +275,7 @@ ul {
     list-style-type: none;
     padding-left: 0;
     margin-left: 0;
-    margin-top: 0;
+    margin-top: 6vh;
 }
 
 
@@ -519,7 +557,6 @@ li span {
     width: 350px;
     font-family: Verdana, sans-serif;
     padding: 20px;
-    margin-top: 10vh;
 }
 
 .searchBar:focus {
