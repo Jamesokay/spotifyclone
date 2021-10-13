@@ -15,18 +15,23 @@
     margin-left: 5vh;
 }
 
-.gridPanel {
+#gridPanel {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
     height: 30vh;
-    width: 80vw;
+    width: 100%;
+    background: linear-gradient(grey, #121212);
+    transition: background 0.5s ease-in-out;
+    padding-top: 20vh;
+    margin-top: -20vh;
+    margin-right: 0;
 }
 
 .gridCard {
     width: 19vw;
     height: 75%;
-    margin-left: 3vw;
+    
     background-color:rgba(33, 33, 33, 0.3);
     display: flex;
     align-items: center;
@@ -333,7 +338,7 @@ li span {
     max-width: 85vw; 
     padding-top: 50px;
     padding-bottom: 90px;
-    background: linear-gradient(rgb(117, 184, 238) 5%, #121212 20% 100%)
+    /* background: linear-gradient(rgb(117, 184, 238) 5%, #121212 20% 100%) */
     
 }
 
