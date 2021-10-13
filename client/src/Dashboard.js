@@ -4,6 +4,7 @@ import { AuthContext } from './AuthContext'
 import Panel from './Panel'
 import getDataObject from './getDataObject'
 import createContextArray from './createContextArray'
+import PanelGrid from './PanelGrid'
 
 const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
@@ -19,13 +20,23 @@ export default function Dashboard() {
     const [customArtistPanel, setCustomArtistPanel] = useState([])
     const [customArtistName, setCustomArtistName] = useState([])
 
-    // function expandPanel(title, content) {
-    //     dispatch({
-    //       type: 'PANEL_EXPANDED',
-    //       header: title,
-    //       array: content
-    //     })
-    //   }
+    const date = new Date()
+    const time = date.toLocaleTimeString('en-GB')
+    const timeMod = parseInt(time.replace(/:/g, ''))
+    const greeting = greetingMessage(timeMod)
+
+    function greetingMessage(time) {
+      if (time < 120000) {
+        return 'Good Morning'
+      }
+      else if (time >= 120000 && time < 175959) {
+        return 'Good Afternoon'
+      }
+      else if (time >= 180000) {
+        return 'Good Evening'
+      }
+    }
+
     
     function getUniqueById(array) {
         const clearUndefinedValues = array.filter(item => {
@@ -197,16 +208,13 @@ export default function Dashboard() {
 
     }, [accessToken, topArtists])
 
-    // useEffect(() => {
-    //   if (!accessToken) return
-    //   if (!customArtistPanel) return
-    //   console.log(customArtistPanel)
-    // }, [accessToken, customArtistPanel])
 
     
     
     return (
       <div id="dash">
+        <p className='panelTitle'>{greeting}</p>
+        <PanelGrid />
         <p><span className='panelTitle'
           >Recent</span></p> 
         <Panel content={recent.slice(0, 5)} />

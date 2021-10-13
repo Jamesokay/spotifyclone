@@ -6,70 +6,16 @@ import AlbumPage from "./AlbumPage"
 import PlaylistPage from "./PlaylistPage"
 import Search from "./Search"
 import PanelExpanded from './PanelExpanded'
-import SideBar from './SideBar'
 import { useState, useEffect } from 'react'
 import { AuthContext } from './AuthContext'
 import axios from 'axios'
-import NavBar from './NavBar'
-import WebPlayer from './WebPlayer'
 import { Route } from 'react-router-dom'
+import Layout from './Layout'
 
-
-// const initialState = {
-//   pageType: 'dashboard',
-//   pageId: null
-// }
-
-
-// function reducer(state, action) {
-//   switch(action.type) {
-//     case 'ARTIST_PAGE':
-//       return {
-//         pageType: 'artist',
-//         pageId: action.id
-//       }
-//     case 'ALBUM_PAGE':
-//       return {
-//         pageType: 'album',
-//         pageId: action.id
-//       }
-//     case 'PLAYLIST_PAGE':
-//       return {
-//         pageType: 'playlist',
-//         pageId: action.id
-//       }
-//     case 'SEARCH_PAGE':
-//       return {
-//         pageType: 'search',
-//         pageId: null
-//       }
-//     case 'DASHBOARD':
-//       return {
-//         pageType: 'dashboard',
-//         pageId: null
-//       }
-//     case 'PANEL_EXPANDED':
-//       return {
-//         pageType: 'panelExpanded',
-//         pageId: null,
-//         title: action.header,
-//         array: action.array
-//       }
-//     case 'LOGOUT': {
-//       return {
-//         pageType: 'login',
-//         pageId: null
-//       }
-//     }
-//     default:
-//       return state
-//     }
-// }
 
 function App() {
 
   const code = new URLSearchParams(window.location.search).get("code")
-//  const [store, dispatch] = useReducer(reducer, initialState)
   localStorage.setItem('clientId', 'e39d5b5b499d4088a003eb0471c537bb')
 
   const [accessToken, setAccessToken] = useState(null)
@@ -89,48 +35,18 @@ function App() {
   }, [code])
   
 
-  // function Page() {
-  //   if (store.pageType === 'dashboard') {
-  //     return <Dashboard dispatch={dispatch} />
-  //   }
-  //   else if (store.pageType === 'artist') {
-  //     return <ArtistPage id={store.pageId} dispatch={dispatch}/>
-  //   }
-  //   else if (store.pageType === 'album') {
-  //     return <AlbumPage id={store.pageId} dispatch={dispatch}/>
-  //   }
-  //   else if (store.pageType === 'playlist') {
-  //    return <PlaylistPage id={store.pageId} dispatch={dispatch} />
-  //   }
-  //   else if (store.pageType === 'search') {
-  //     return <Search dispatch={dispatch} />
-  //   }
-  //   else if (store.pageType === 'panelExpanded') {
-  //     return <PanelExpanded title={store.title} array={store.array} dispatch={dispatch} />
-  //   }
-  //   else if (store.pageType === 'login') {
-  //     return <div />
-  //   }
-  // }
-
-//  if (accessToken) {
     return (
       <AuthContext.Provider value={accessToken}>
-        <NavBar />
-        <SideBar />
+        <Layout>
         <Route path='/' exact component={(accessToken)? Dashboard : Login} />
         <Route path='/search' component={Search} />
         <Route path="/playlist/:id" component={PlaylistPage} />
         <Route path="/album/:id" component={AlbumPage} />
         <Route path="/artist/:id" component={ArtistPage} />
         <Route path="/genre/:id" component={PanelExpanded} />
-        <WebPlayer /> 
+        </Layout>
       </AuthContext.Provider>
     )
-//  }
-//  else return <Login />
-
-
 
 }
 

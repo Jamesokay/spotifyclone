@@ -15,6 +15,32 @@
     margin-left: 5vh;
 }
 
+.gridPanel {
+    display: flex;
+    height: 20vh;
+}
+
+.gridCard {
+    width: 19vw;
+    height: 10vh;
+    margin-left: 3vw;
+    background-color:rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.gridCardImage {
+    background-color: white;
+    width: 5vw;
+    height: 10vh;
+    float: left;
+}
+
+.gridCardTitle {
+    font-family: Verdana, sans-serif;
+    color: white;
+    margin-top: 4vh;
+}
+
 
 body {
     margin: 0px;
@@ -47,12 +73,12 @@ body {
     background: #212121;
     border-radius: 5px;
     margin-bottom: 25px;  
-    transition: background 0.2s ease-in-out; 
+    transition: background 0.2s ease-in-out;
 }
 
 .cardImage {
-    height: 190px;
-    width: 190px;
+    height: 63%;
+    width: 86%;
     object-fit: cover;
     margin: 15px;
     box-shadow: 0px 4px 10px 2px #121212;
@@ -109,7 +135,7 @@ body {
     overflow: hidden; 
     text-overflow: ellipsis; 
     white-space: nowrap; 
-    width: 190px;
+    width: 90%;
 }
 
 .cardSub {
@@ -285,10 +311,12 @@ li span {
 
 
 #dash {
-    margin-left: 17.5vw;
-    max-width: 80vw; 
+    margin-left: 15vw;
+    max-width: 85vw; 
     padding-top: 50px;
     padding-bottom: 90px;
+    background: linear-gradient(rgb(117, 184, 238) 5%, #121212 20% 100%)
+    
 }
 
 .playBar {
@@ -544,6 +572,7 @@ li span {
     color: white;
     margin-top: 45px;
     margin-bottom: 25px;
+    margin-left: 14px;
     cursor: default;
 }
 
