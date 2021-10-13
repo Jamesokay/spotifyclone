@@ -17,28 +17,46 @@
 
 .gridPanel {
     display: flex;
-    height: 20vh;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: 30vh;
+    width: 80vw;
 }
 
 .gridCard {
     width: 19vw;
-    height: 10vh;
+    height: 75%;
     margin-left: 3vw;
-    background-color:rgba(0, 0, 0, 0.1);
-    text-align: center;
+    background-color:rgba(33, 33, 33, 0.3);
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.gridCard:hover {
+    background-color: rgba(55, 55, 55, 0.3)
 }
 
 .gridCardImage {
     background-color: white;
-    width: 5vw;
-    height: 10vh;
+    width: 30%;
+    height: 100%;
     float: left;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 .gridCardTitle {
     font-family: Verdana, sans-serif;
     color: white;
-    margin-top: 4vh;
+    width: 50%;
+    float: right;
+    margin-left: 10px;
+
+    font-size: 10pt;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
 }
 
 

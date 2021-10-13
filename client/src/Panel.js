@@ -3,7 +3,7 @@ import { AuthContext } from './AuthContext'
 import playTrack from './playTrack'
 import { Link } from 'react-router-dom'
 
-export default function Panel({ content, dispatch }) {
+export default function Panel({ content }) {
   
 const accessToken = useContext(AuthContext)
     

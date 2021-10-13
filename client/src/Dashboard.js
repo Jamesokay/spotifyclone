@@ -208,26 +208,28 @@ export default function Dashboard() {
 
     }, [accessToken, topArtists])
 
-
+   
     
     
     return (
       <div id="dash">
+      
         <p className='panelTitle'>{greeting}</p>
-        <PanelGrid />
-        <p><span className='panelTitle'
-          >Recent</span></p> 
-        <Panel content={recent.slice(0, 5)} />
-        <p><span className='panelTitle' 
-          >
-          {'More like ' + relatedArtistsSeed}</span></p> 
+        {recent.length >= 7?
+          <PanelGrid content={recent.slice(0, 8)}/>
+          :
+          <Panel content={recent.slice(0, 5)} />
+        
+        }
+
+
+
+        <p><span className='panelTitle'>{'More like ' + relatedArtistsSeed}</span></p> 
         <Panel content={moreLike.slice(0, 5)} />
-        <p><span className='panelTitle'
-          >Recommended for you</span></p> 
+        <p><span className='panelTitle'>Recommended for you</span></p> 
         <Panel content={recommend.slice(0, 5)} />   
 
-        <p><span className='panelTitle'
-          >{'For fans of ' + customArtistName}</span></p> 
+        <p><span className='panelTitle'>{'For fans of ' + customArtistName}</span></p> 
         <Panel content={customArtistPanel.slice(0, 5)} />  
       </div>
     )
