@@ -216,7 +216,7 @@ export default function Dashboard() {
       
         <p className='panelTitle'>{greeting}</p>
         {recent.length >= 7?
-          <PanelGrid content={recent.slice(0, 8)}/>
+          <PanelGrid content={recent}/>
           :
           <Panel content={recent.slice(0, 5)} />
         

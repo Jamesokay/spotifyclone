@@ -21,16 +21,15 @@
     justify-content: space-around;
     height: 30vh;
     width: 100%;
-    background: linear-gradient(grey, #121212);
-    transition: background 0.5s ease-in-out;
     padding-top: 20vh;
     margin-top: -20vh;
     margin-right: 0;
 }
 
+
 .gridCard {
     width: 19vw;
-    height: 75%;
+    height: 11vh;
     
     background-color:rgba(33, 33, 33, 0.3);
     display: flex;
@@ -41,6 +40,7 @@
 .gridCard:hover {
     background-color: rgba(55, 55, 55, 0.3)
 }
+
 
 .gridCardImage {
     background-color: white;
