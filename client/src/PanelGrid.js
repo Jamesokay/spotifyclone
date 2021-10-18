@@ -16,8 +16,12 @@ export default function PanelGrid({ content }) {
 
         var myImgElement = new Image() 
         myImgElement.onload = function() {
+            canvas.width = myImgElement.naturalWidth
+            canvas.height = myImgElement.naturalHeight
+            var xStart = Math.floor(canvas.width / 3)
+            var yStart = Math.floor(canvas.height / 3)
             ctx.drawImage( myImgElement, 0, 0 );
-            var imgdata = ctx.getImageData(0,0,20,20);
+            var imgdata = ctx.getImageData(xStart,yStart,75,75);
             var pixels = imgdata.data;
 
 
@@ -53,9 +57,18 @@ export default function PanelGrid({ content }) {
     function changeBg(itemId) {
         var newBg = colors.filter(color => color.id === itemId)
         console.log(newBg)
-        setGradient('linear-gradient(' + newBg[0].bg + ', #121212)')
-        
+        setGradient('linear-gradient(' + newBg[0].bg + ', #121212)')      
+              
     }
+
+    useEffect(() => {
+        document.getElementById('gridPanelLower').style.opacity = 1
+        setTimeout(function(){
+            document.getElementById('gridPanel').style.background = gradient
+            document.getElementById('gridPanelLower').style.opacity = 0
+
+        }, 200)
+    }, [gradient])
  
    // 
 
@@ -85,7 +98,11 @@ export default function PanelGrid({ content }) {
 
 
     return (
-        <div id='gridPanel' style={{background: gradient}}>
+        
+        <div id='gridPanel'>
+        <div id='gridPanelLower' style={{background: gradient}}></div>
+
+        <div id='gridContent'>
         {content.slice(0, 8).map(cont =>
           <Link style={{textDecoration: 'none', width: '19vw'}} 
                 key={cont.key} 
@@ -101,7 +118,9 @@ export default function PanelGrid({ content }) {
             </div>
           </div>   
           </Link> 
-        )}       
+        )}
+        </div>
+
         </div>
     )
 }

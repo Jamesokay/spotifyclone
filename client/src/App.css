@@ -15,15 +15,42 @@
     margin-left: 5vh;
 }
 
+#dashGreeting {
+    font-size: 16pt;
+    font-family: Verdana, sans-serif;
+    color: white;
+    margin-top: 45px;
+    margin-bottom: 25px;
+    margin-left: 14px;
+    cursor: default;
+}
+
 #gridPanel {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
     height: 30vh;
     width: 100%;
     padding-top: 20vh;
     margin-top: -20vh;
-    margin-right: 0;
+    background: linear-gradient(grey, #121212);
+}
+
+#gridPanelLower {
+    position: absolute;
+    width: 100%;
+    background: linear-gradient(pink, #121212);
+    height: 30vh;
+    padding-top: 20vh;
+    margin-top: -20vh;
+    opacity: 0;
+    transition: opacity 0.2s ease-in
+}
+
+
+#gridContent {
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    height: 25vh;
 }
 
 
