@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 // import playTrack from './playTrack'
 import { Link } from 'react-router-dom'
 
-export default function PanelGrid({ content }) {
+export default function PanelGrid({ content, head }) {
     
     const [colors, setColors] = useState([])
     const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
@@ -100,8 +100,12 @@ export default function PanelGrid({ content }) {
     return (
         
         <div id='gridPanel'>
+        
         <div id='gridPanelLower' style={{background: gradient}}></div>
-
+        <div id='dashGreeting'>
+        <span>{head}</span>
+        </div>
+        
         <div id='gridContent'>
         {content.slice(0, 8).map(cont =>
           <Link style={{textDecoration: 'none', width: '19vw'}} 
@@ -115,6 +119,9 @@ export default function PanelGrid({ content }) {
                  onLoad={()=> getColor(cont.id, cont.imgUrl)} />
             <div className='gridCardTitle'>
                 <span>{cont.name}</span>
+            </div>
+            <div className='gridPlayButton'>
+                <div className='gridPlayIcon'></div>
             </div>
           </div>   
           </Link> 

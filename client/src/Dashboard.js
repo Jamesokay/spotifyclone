@@ -214,9 +214,8 @@ export default function Dashboard() {
     return (
       <div id="dash">
       
-        <p id='dashGreeting'>{greeting}</p>
         {recent.length >= 7?
-          <PanelGrid content={recent}/>
+          <PanelGrid content={recent} head={greeting}/>
           :
           <Panel content={recent.slice(0, 5)} />
         
