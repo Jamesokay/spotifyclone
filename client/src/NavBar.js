@@ -1,11 +1,22 @@
 import { useHistory } from 'react-router-dom'
+import { useState } from 'react'
 
 export default function NavBar() {
     const history = useHistory()
+    const [alpha, setAlpha] = useState(0)
+
+    
+
+    function test() {
+        var ypos = (window.pageYOffset / 100)
+        setAlpha(ypos.toFixed(1))
+      }
+  
+      window.addEventListener('scroll', test)
 
 
     return (
-        <div className='navBar'>
+        <div className='navBar' style={{backgroundColor: 'rgba(128, 128, 128,' + alpha + ')'}}>
 
         <div className='navHistory'>
         <div className='navButton' onClick={() => history.goBack()}>

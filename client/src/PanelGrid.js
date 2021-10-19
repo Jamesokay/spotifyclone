@@ -70,24 +70,6 @@ export default function PanelGrid({ content, head }) {
         }, 200)
     }, [gradient])
  
-   // 
-
-    
-    // canvas.height = myImgElement.naturalHeight
-    // canvas.width = myImgElement.naturalWidth
-   
-
-    // var xStart = Math.floor(canvas.width * 0.2)
-    // var yStart = Math.floor(canvas.height * 0.6)
-
-
-
-
-
-    useEffect(() => {
-        console.log(colors)
-    }, [colors])
-  
 
       
    useEffect(() => {

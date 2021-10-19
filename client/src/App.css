@@ -269,13 +269,12 @@ body {
     position: fixed;
     top: 0;
     display: flex;
-    height: 6vh;
+    min-height: 7.5vh;
     margin-left: 15vw;
     width: 85vw;
     background: #212121;
     cursor: default;
-    border-bottom: 0.5px solid #373737;
-    opacity: 0.5;
+    background-color:rgba(128, 128, 128, 0);
     z-index: 2;
 }
 
@@ -339,6 +338,7 @@ body {
     height: 100vh;
     background: black;
     cursor: default;
+    z-index: 2;
 }
 
 .sideBarLink {
@@ -355,9 +355,10 @@ body {
 
 .sideBarActive {
     background-color: #212121;
-    width: 100%;
+    width: 95%;
     text-decoration: none;
     color: white !important;
+    border-radius: 5px;
 }
 
 
@@ -382,8 +383,8 @@ li:hover .sideBarIcon {
 ul {
     list-style-type: none;
     padding-left: 0;
-    margin-left: 0;
-    margin-top: 6vh;
+    margin-left: 5%;
+    margin-top: 7.5vh;
 }
 
 
@@ -411,6 +412,7 @@ li span {
     bottom: 0;
     border-top: 0.5px solid #373737;
     user-select: none;
+    z-index: 3;
 }
 
 .volumeIcon {

@@ -24,6 +24,9 @@ export default function Dashboard() {
     const time = date.toLocaleTimeString('en-GB')
     const timeMod = parseInt(time.replace(/:/g, ''))
     const greeting = greetingMessage(timeMod)
+    
+
+
 
     function greetingMessage(time) {
       if (time < 120000) {
