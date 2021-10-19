@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
-// import { AuthContext } from './AuthContext'
-// import playTrack from './playTrack'
+import { useEffect, useState, useContext } from 'react'
+import { AuthContext } from './AuthContext'
+import playTrack from './playTrack'
 import { Link } from 'react-router-dom'
 
 export default function PanelGrid({ content, head }) {
     
+    const accessToken = useContext(AuthContext)
     const [colors, setColors] = useState([])
     const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
    
@@ -56,8 +57,12 @@ export default function PanelGrid({ content, head }) {
 
     function changeBg(itemId) {
         var newBg = colors.filter(color => color.id === itemId)
-        console.log(newBg)
-        setGradient('linear-gradient(' + newBg[0].bg + ', #121212)')      
+        if (newBg.length === 0) {
+            console.log('error')
+        }
+        else {
+           setGradient('linear-gradient(' + newBg[0].bg + ', #121212)') 
+        }     
               
     }
 
@@ -102,7 +107,12 @@ export default function PanelGrid({ content, head }) {
             <div className='gridCardTitle'>
                 <span>{cont.name}</span>
             </div>
-            <div className='gridPlayButton'>
+            <div className='gridPlayButton'
+                onClick={(e) => {
+                 e.preventDefault()
+                 playTrack(accessToken, {context_uri: cont.uri})} 
+               }
+            >
                 <div className='gridPlayIcon'></div>
             </div>
           </div>   

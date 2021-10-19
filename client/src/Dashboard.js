@@ -136,9 +136,11 @@ export default function Dashboard() {
       if (!accessToken) return     
       if (topArtists.length < 5) return
 
-      setRelatedArtistsSeed(topArtists[4].name)
+      var artistIndex = Math.floor(Math.random() * 4)
+
+      setRelatedArtistsSeed(topArtists[artistIndex].name)
  
-      spotifyApi.getArtistRelatedArtists(topArtists[4].key)
+      spotifyApi.getArtistRelatedArtists(topArtists[artistIndex].key)
       .then(data => {
         setMoreLike(data.body.artists.map(getDataObject))
       })
@@ -169,11 +171,13 @@ export default function Dashboard() {
     useEffect(() => {
       if (!accessToken) return
       if (topArtists.length < 5) return
+      
+      var artistIndex = Math.floor(Math.random() * 4)
 
-      setCustomArtistName(topArtists[0].name)
+      setCustomArtistName(topArtists[artistIndex].name)
       
       //Artist Playlists
-      spotifyApi.searchPlaylists(topArtists[0].name)
+      spotifyApi.searchPlaylists(topArtists[artistIndex].name)
       .then(data => {
         let playlists = data.body.playlists.items.filter(item => item.owner.display_name === 'Spotify')
         playlists.forEach(item => {
@@ -191,7 +195,7 @@ export default function Dashboard() {
         console.log(error)
       })
 
-      spotifyApi.getArtistAlbums(topArtists[0].key, {album_type: 'album', limit: 5})
+      spotifyApi.getArtistAlbums(topArtists[artistIndex].key, {album_type: 'album', limit: 5})
       .then(data => {
         data.body.items.forEach(item => {
           spotifyApi.getAlbum(item.id)
