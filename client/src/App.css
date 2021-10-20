@@ -273,9 +273,7 @@ body {
     min-height: 7.5vh;
     margin-left: 15vw;
     width: 85vw;
-    background: #212121;
     cursor: default;
-    background-color:rgba(128, 128, 128, 0);
     z-index: 2;
 }
 
@@ -652,8 +650,8 @@ li span {
 
 
 .panelTitle {
-    font-size: 16pt;
-    font-family: Verdana, sans-serif;
+    font-size: 18pt;
+    font-family: Arial, sans-serif;
     color: white;
     margin-top: 45px;
     margin-bottom: 25px;

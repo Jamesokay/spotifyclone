@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from 'react'
 import { AuthContext } from './AuthContext'
+import { ThemeContext } from './ThemeContext'
 import playTrack from './playTrack'
 import { Link } from 'react-router-dom'
 
@@ -7,7 +8,8 @@ export default function PanelGrid({ content, head }) {
     
     const accessToken = useContext(AuthContext)
     const [colors, setColors] = useState([])
-    const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
+    const [gradient, setGradient] = useState('')
+    const { setCurrentTheme } = useContext(ThemeContext)
    
  
     function getColor(itemId, imgUrl) {
@@ -47,7 +49,7 @@ export default function PanelGrid({ content, head }) {
             let obj = {}
             obj['id'] = itemId
             obj['bg'] = 'rgba(' + avgRed + ',' + avgGreen + ',' + avgBlue + ',' + avgAlpha + ')'
-             
+            obj['rgb'] = '' + avgRed + ', ' + avgGreen + ', ' + avgBlue 
 
             setColors(colors => [...colors, obj])
         }        
@@ -66,6 +68,17 @@ export default function PanelGrid({ content, head }) {
               
     }
 
+    function updateTheme(itemId) {
+        var newTheme = colors.filter(color => color.id === itemId)
+        if (newTheme.length === 0) {
+            console.log('error')
+        }
+        else {
+           setCurrentTheme(newTheme[0].rgb) 
+        }  
+
+    }
+
     useEffect(() => {
         document.getElementById('gridPanelLower').style.opacity = 1
         setTimeout(function(){
@@ -74,19 +87,17 @@ export default function PanelGrid({ content, head }) {
 
         }, 400)
     }, [gradient])
- 
 
-      
-   useEffect(() => {
-       console.log(gradient)
-   }, [gradient])
+
     
 
 
 
     return (
         
-        <div id='gridPanel'>
+        <div id='gridPanel'
+        onLoad={()=> {
+            changeBg(content[0].id)}}>
         
         <div id='gridPanelLower' style={{background: gradient}}></div>
         <div id='dashGreeting'>
@@ -100,7 +111,11 @@ export default function PanelGrid({ content, head }) {
                 to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}
                 >
           <div className='gridCard'
-               onMouseOver={()=> changeBg(cont.id)}
+               onMouseOver={()=> {
+                   updateTheme(cont.id)
+                   changeBg(cont.id)
+                }}
+               onMouseLeave={()=> changeBg(content[0].id)}
           >
             <img className='gridCardImage' src={cont.imgUrl} alt=''
                  onLoad={()=> getColor(cont.id, cont.imgUrl)} />

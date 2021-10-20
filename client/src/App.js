@@ -8,6 +8,7 @@ import Search from "./Search"
 import PanelExpanded from './PanelExpanded'
 import { useState, useEffect } from 'react'
 import { AuthContext } from './AuthContext'
+import { ThemeContext } from './ThemeContext'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
 import Layout from './Layout'
@@ -19,6 +20,9 @@ function App() {
   localStorage.setItem('clientId', 'e39d5b5b499d4088a003eb0471c537bb')
 
   const [accessToken, setAccessToken] = useState(null)
+  
+  const [currentTheme, setCurrentTheme] = useState('0, 0, 0')
+  const theme = {currentTheme, setCurrentTheme}
 
   useEffect(() => {
     if (!code) return
@@ -37,6 +41,7 @@ function App() {
 
     return (
       <AuthContext.Provider value={accessToken}>
+      <ThemeContext.Provider value={theme}>
         <Layout>
         <Route path='/' exact component={(accessToken)? Dashboard : Login} />
         <Route path='/search' component={Search} />
@@ -45,6 +50,7 @@ function App() {
         <Route path="/artist/:id" component={ArtistPage} />
         <Route path="/genre/:id" component={PanelExpanded} />
         </Layout>
+      </ThemeContext.Provider>
       </AuthContext.Provider>
     )
 

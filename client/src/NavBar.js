@@ -1,22 +1,30 @@
 import { useHistory } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useContext, useEffect } from 'react'
+import { ThemeContext } from './ThemeContext'
 
 export default function NavBar() {
     const history = useHistory()
     const [alpha, setAlpha] = useState(0)
+    const { currentTheme } = useContext(ThemeContext)
+
+    useEffect(() => {
+        console.log('rgba(' + currentTheme + ', ' + alpha + ')')
+    }, [currentTheme, alpha])
+
+
 
     
 
     function test() {
         var ypos = (window.pageYOffset / 100)
-        setAlpha(ypos.toFixed(1))
+        setAlpha(ypos.toFixed(2))
       }
   
       window.addEventListener('scroll', test)
 
 
     return (
-        <div className='navBar' style={{backgroundColor: 'rgba(128, 128, 128,' + alpha + ')'}}>
+        <div className='navBar' style={{backgroundColor: 'rgba(' + currentTheme + ', ' + alpha + ')'}}>
 
         <div className='navHistory'>
         <div className='navButton' onClick={() => history.goBack()}>

@@ -186,6 +186,7 @@ export default function Dashboard() {
        uniqueAlbumIds.forEach(id => {
          spotifyApi.getAlbum(id)
          .then(data => {
+           if (data.body.artists[0].id === topArtists[1].key || data.body.artists[0].id === topArtists[2].key || data.body.artists[0].id === topArtists[3].key || data.body.artists[0].id === topArtists[artistIndex].key) return
            let obj = getDataObject(data.body)
            setRecommend(recommend => [...recommend, obj])
          })
@@ -261,7 +262,7 @@ export default function Dashboard() {
 
         <p><span className='panelTitle'>{'More like ' + relatedArtistsSeed}</span></p> 
         <Panel content={moreLike.slice(0, 5)} />
-        <p><span className='panelTitle'>Recommended for you</span></p> 
+        <p><span className='panelTitle'>Album picks</span></p> 
         <Panel content={recommend.slice(0, 5)} />   
 
         <p><span className='panelTitle'>{'For fans of ' + customArtistName}</span></p> 
