@@ -1,16 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { ThemeContext } from './ThemeContext'
 
 
-export default function HeaderPanel({ content, creators, dispatch }) {
+export default function HeaderPanel({ content, creators }) {
 
-  function pageChange(pageId) {
-      dispatch({
-        type: 'ARTIST_PAGE',
-        id: pageId
-      })
-    }
 
     const [titleStyle, setTitleStyle] = useState({})
+    const { setCurrentTheme } = useContext(ThemeContext)
     
     useEffect(() => {
       if (!content.title) return
@@ -74,6 +70,7 @@ export default function HeaderPanel({ content, creators, dispatch }) {
 
       let bg = 'rgba(' + avgRed + ',' + avgGreen + ',' + avgBlue + ',' + avgAlpha + ')'
       setGradient('linear-gradient(' + bg + ', #121212)')
+      setCurrentTheme('' + avgRed + ', ' + avgGreen + ', ' + avgBlue)
       
       
     }
@@ -90,7 +87,7 @@ export default function HeaderPanel({ content, creators, dispatch }) {
               <span>
               {creators.map((creator, index, creators) =>
                <span key={creator.id}>
-                <span className='headerCreator' onClick={() => pageChange(creator.id)}>{creator.name}</span>
+                <span className='headerCreator'>{creator.name}</span>
                 {(index < creators.length - 1)?
                         <span style={{color: 'white'}}> • </span>
                         :

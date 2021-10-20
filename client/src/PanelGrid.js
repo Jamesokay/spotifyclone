@@ -97,6 +97,7 @@ export default function PanelGrid({ content, head }) {
         
         <div id='gridPanel'
         onLoad={()=> {
+            updateTheme(content[0].id)
             changeBg(content[0].id)}}>
         
         <div id='gridPanelLower' style={{background: gradient}}></div>
@@ -115,7 +116,10 @@ export default function PanelGrid({ content, head }) {
                    updateTheme(cont.id)
                    changeBg(cont.id)
                 }}
-               onMouseLeave={()=> changeBg(content[0].id)}
+               onMouseLeave={()=> {
+                   updateTheme(content[0].id)
+                   changeBg(content[0].id)
+                }}
           >
             <img className='gridCardImage' src={cont.imgUrl} alt=''
                  onLoad={()=> getColor(cont.id, cont.imgUrl)} />
