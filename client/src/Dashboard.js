@@ -134,9 +134,10 @@ export default function Dashboard() {
 
     useEffect(() => {
       if (!accessToken) return     
-      if (topArtists.length < 5) return
+      if (topArtists.length < 20) return
 
-      var artistIndex = Math.floor(Math.random() * 4)
+      var artistIndex = Math.floor(Math.random() * (11 - 5) + 5)
+      console.log(artistIndex)
 
       setRelatedArtistsSeed(topArtists[artistIndex].name)
  
@@ -153,6 +154,7 @@ export default function Dashboard() {
        min_popularity: 50
      })
      .then(data => {
+       console.log(data.body)
        let uniqueAlbumIds = getUniqueByAlbumId(data.body.tracks)
        uniqueAlbumIds.forEach(id => {
          spotifyApi.getAlbum(id)
