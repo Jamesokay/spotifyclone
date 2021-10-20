@@ -19,10 +19,10 @@ export default function PanelGrid({ content, head }) {
         myImgElement.onload = function() {
             canvas.width = myImgElement.naturalWidth
             canvas.height = myImgElement.naturalHeight
-            var xStart = Math.floor(canvas.width / 2)
-            var yStart = Math.floor(canvas.height / 2)
+            var x = Math.floor(canvas.width)
+            var y = Math.floor(canvas.height / 4)
             ctx.drawImage( myImgElement, 0, 0 );
-            var imgdata = ctx.getImageData(0, 0, xStart,yStart);
+            var imgdata = ctx.getImageData(0, 0, x, y);
             var pixels = imgdata.data;
 
 
@@ -72,7 +72,7 @@ export default function PanelGrid({ content, head }) {
             document.getElementById('gridPanel').style.background = gradient
             document.getElementById('gridPanelLower').style.opacity = 0
 
-        }, 200)
+        }, 400)
     }, [gradient])
  
 

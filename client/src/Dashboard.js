@@ -108,6 +108,14 @@ export default function Dashboard() {
     useEffect(() => {
       if (!accessToken) return 
 
+      // spotifyApi.getAvailableGenreSeeds()
+      // .then(data => {
+      //   console.log(data.body)
+      // })
+      // .catch(error => {
+      //   console.log(error)
+      // })
+
       spotifyApi.getMyTopArtists({limit : 20})
       .then(data => {
           setTopArtists(data.body.items.map(getDataObject))
@@ -137,24 +145,43 @@ export default function Dashboard() {
       if (topArtists.length < 20) return
 
       var artistIndex = Math.floor(Math.random() * (11 - 5) + 5)
-      console.log(artistIndex)
+      
 
       setRelatedArtistsSeed(topArtists[artistIndex].name)
  
-      spotifyApi.getArtistRelatedArtists(topArtists[artistIndex].key)
-      .then(data => {
-        setMoreLike(data.body.artists.map(getDataObject))
+    //   spotifyApi.getArtistRelatedArtists(topArtists[artistIndex].key)
+    //   .then(data => {
+    //     setMoreLike(data.body.artists.map(getDataObject))
+    //   })
+    //   .catch(error => {
+    //     console.log(error)
+    //  })
+
+     spotifyApi.getRecommendations({
+      seed_artists: [topArtists[artistIndex].key],
+      min_popularity: 50
+    })
+    .then(data => {
+      console.log(data.body)
+      let uniqueAlbumIds = getUniqueByAlbumId(data.body.tracks)
+      uniqueAlbumIds.forEach(id => {
+        spotifyApi.getAlbum(id)
+        .then(data => {
+          if (data.body.artists[0].id === topArtists[artistIndex].key) return
+          let obj = getDataObject(data.body)
+          setMoreLike(moreLike => [...moreLike, obj])
+        })
       })
-      .catch(error => {
-        console.log(error)
-     })
-      
+    })
+    .catch(error => {
+      console.log(error)
+    })
+     
      spotifyApi.getRecommendations({
        seed_artists: [topArtists[1].key, topArtists[2].key, topArtists[3].key],
        min_popularity: 50
      })
      .then(data => {
-       console.log(data.body)
        let uniqueAlbumIds = getUniqueByAlbumId(data.body.tracks)
        uniqueAlbumIds.forEach(id => {
          spotifyApi.getAlbum(id)
