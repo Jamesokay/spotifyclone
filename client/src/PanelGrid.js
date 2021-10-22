@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react'
+import { useState, useContext } from 'react'
 import { AuthContext } from './AuthContext'
 import { ThemeContext } from './ThemeContext'
 import playTrack from './playTrack'
@@ -10,7 +10,8 @@ export default function PanelGrid({ content, head }) {
     const [colors, setColors] = useState([])
     const [gradient, setGradient] = useState('')
     const { setCurrentTheme } = useContext(ThemeContext)
-   
+//    var element = document.getElementById('gridPanelLower')
+
  
     function getColor(itemId, imgUrl) {
 
@@ -58,12 +59,13 @@ export default function PanelGrid({ content, head }) {
     }
 
     function changeBg(itemId) {
+       
         var newBg = colors.filter(color => color.id === itemId)
         if (newBg.length === 0) {
             console.log('error')
         }
         else {
-           setGradient('linear-gradient(' + newBg[0].bg + ', #121212)') 
+           setGradient(newBg[0].bg) 
         }     
               
     }
@@ -79,28 +81,15 @@ export default function PanelGrid({ content, head }) {
 
     }
 
-    useEffect(() => {
-        document.getElementById('gridPanelLower').style.opacity = 1
-        setTimeout(function(){
-            document.getElementById('gridPanel').style.background = gradient
-            document.getElementById('gridPanelLower').style.opacity = 0
-
-        }, 400)
-    }, [gradient])
-
-
-    
-
 
 
     return (
         
-        <div id='gridPanel'
-        onLoad={()=> {
-            updateTheme(content[0].id)
-            changeBg(content[0].id)}}>
-        
-        <div id='gridPanelLower' style={{background: gradient}}></div>
+        <div id='gridPanel' style={{background: gradient}}
+         onLoad={()=> {
+             updateTheme(content[0].id)
+             changeBg(content[0].id)}}>
+        <div id='gridPanelLower'></div>
         <div id='dashGreeting'>
         <span>{head}</span>
         </div>
@@ -117,6 +106,7 @@ export default function PanelGrid({ content, head }) {
                    changeBg(cont.id)
                 }}
                onMouseLeave={()=> {
+                
                    updateTheme(content[0].id)
                    changeBg(content[0].id)
                 }}

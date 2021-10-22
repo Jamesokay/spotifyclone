@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router-dom'
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext } from 'react'
 import { ThemeContext } from './ThemeContext'
 
 export default function NavBar() {
@@ -7,9 +7,9 @@ export default function NavBar() {
     const [alpha, setAlpha] = useState(0)
     const { currentTheme } = useContext(ThemeContext)
 
-    useEffect(() => {
-        console.log('rgba(' + currentTheme + ', ' + alpha + ')')
-    }, [currentTheme, alpha])
+    // useEffect(() => {
+    //     console.log('rgba(' + currentTheme + ', ' + alpha + ')')
+    // }, [currentTheme, alpha])
 
 
 

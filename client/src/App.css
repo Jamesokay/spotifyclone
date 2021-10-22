@@ -31,6 +31,7 @@
     width: 100%;
     padding-top: 20vh;
     margin-top: -20vh;
+    transition: background 0.3s ease-in
 }
 
 #gridPanelLower {
@@ -39,8 +40,7 @@
     height: 40vh;
     padding-top: 20vh;
     margin-top: -20vh;
-    opacity: 0;
-    transition: opacity 0.4s ease-in
+    background-image: linear-gradient(transparent, #121212)
 }
 
 
@@ -57,11 +57,11 @@
 .gridCard {
     width: 19vw;
     height: 11vh;
-    
-    background-color:rgba(33, 33, 33, 0.3);
+    background-color:rgb(128, 128, 128, 0.2);
     display: flex;
     align-items: center;
     border-radius: 5px;
+    transition: background-color 0.2s ease-in-out;
 }
 
 .gridCard:hover .gridPlayButton {
@@ -90,7 +90,7 @@
 }
 
 .gridCard:hover {
-    background-color: rgba(55, 55, 55, 0.3)
+    background-color: rgba(128, 128, 128, 0.7)
 }
 
 
