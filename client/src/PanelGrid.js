@@ -62,7 +62,7 @@ export default function PanelGrid({ content, head }) {
        
         var newBg = colors.filter(color => color.id === itemId)
         if (newBg.length === 0) {
-            console.log('error')
+            return
         }
         else {
            setGradient(newBg[0].bg) 
@@ -73,7 +73,7 @@ export default function PanelGrid({ content, head }) {
     function updateTheme(itemId) {
         var newTheme = colors.filter(color => color.id === itemId)
         if (newTheme.length === 0) {
-            console.log('error')
+            return
         }
         else {
            setCurrentTheme(newTheme[0].rgb) 

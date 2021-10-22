@@ -13,6 +13,7 @@ const spotifyApi = new SpotifyWebApi({
 export default function Dashboard() {
     const accessToken = useContext(AuthContext)
     const [topArtists, setTopArtists] = useState([])
+    const [topTracks, setTopTracks] = useState([])
     const [recent, setRecent] = useState([])
     const [moreLike, setMoreLike] = useState([])
     const [recommend, setRecommend] = useState([])
@@ -108,13 +109,13 @@ export default function Dashboard() {
     useEffect(() => {
       if (!accessToken) return 
 
-      // spotifyApi.getAvailableGenreSeeds()
-      // .then(data => {
-      //   console.log(data.body)
-      // })
-      // .catch(error => {
-      //   console.log(error)
-      // })
+      spotifyApi.getMyTopTracks()
+      .then(data => {
+        setTopTracks(data.body.items.map(item => item.id))
+      })
+      .catch(error => {
+        console.log(error)
+      })
 
       spotifyApi.getMyTopArtists({limit : 20})
       .then(data => {
@@ -162,7 +163,6 @@ export default function Dashboard() {
       min_popularity: 50
     })
     .then(data => {
-      console.log(data.body)
       let uniqueAlbumIds = getUniqueByAlbumId(data.body.tracks)
       uniqueAlbumIds.forEach(id => {
         spotifyApi.getAlbum(id)
@@ -244,6 +244,27 @@ export default function Dashboard() {
       })
 
     }, [accessToken, topArtists])
+
+    useEffect(() => {
+      if (topTracks.length < 20) return
+
+      // spotifyApi.getAudioAnalysisForTrack(topTracks[0])
+      // .then(data => {
+      //   console.log(data.body)
+      // })
+      // .catch(error => {
+      //   console.log(error)
+      // })
+
+      spotifyApi.getAudioFeaturesForTracks(topTracks)
+      .then(data => {
+        console.log(data.body.audio_features)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+      
+    }, [topTracks])
 
    
     
