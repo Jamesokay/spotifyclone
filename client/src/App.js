@@ -5,7 +5,9 @@ import ArtistPage from "./ArtistPage"
 import AlbumPage from "./AlbumPage"
 import PlaylistPage from "./PlaylistPage"
 import Search from "./Search"
-import Collection from './Collection'
+import CollectionPlaylist from './CollectionPlaylist'
+import CollectionAlbum from './CollectionAlbum'
+import CollectionArtist from './CollectionArtist'
 import PanelExpanded from './PanelExpanded'
 import { useState, useEffect } from 'react'
 import { AuthContext } from './AuthContext'
@@ -50,7 +52,9 @@ function App() {
         <Route path="/album/:id" component={AlbumPage} />
         <Route path="/artist/:id" component={ArtistPage} />
         <Route path="/genre/:id" component={PanelExpanded} />
-        <Route path="/collection" component={Collection} />
+        <Route path="/collection/playlists" component={CollectionPlaylist} />
+        <Route path="/collection/artists" component={CollectionArtist} />
+        <Route path="/collection/albums" component={CollectionAlbum} />
         </Layout>
       </ThemeContext.Provider>
       </AuthContext.Provider>
