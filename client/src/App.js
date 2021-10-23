@@ -5,6 +5,7 @@ import ArtistPage from "./ArtistPage"
 import AlbumPage from "./AlbumPage"
 import PlaylistPage from "./PlaylistPage"
 import Search from "./Search"
+import Collection from './Collection'
 import PanelExpanded from './PanelExpanded'
 import { useState, useEffect } from 'react'
 import { AuthContext } from './AuthContext'
@@ -20,7 +21,7 @@ function App() {
   localStorage.setItem('clientId', 'e39d5b5b499d4088a003eb0471c537bb')
 
   const [accessToken, setAccessToken] = useState(null)
-  
+
   const [currentTheme, setCurrentTheme] = useState('0, 0, 0')
   const theme = {currentTheme, setCurrentTheme}
 
@@ -49,6 +50,7 @@ function App() {
         <Route path="/album/:id" component={AlbumPage} />
         <Route path="/artist/:id" component={ArtistPage} />
         <Route path="/genre/:id" component={PanelExpanded} />
+        <Route path="/collection" component={Collection} />
         </Layout>
       </ThemeContext.Provider>
       </AuthContext.Provider>

@@ -61,9 +61,11 @@ export default function Search() {
               type='search'
               placeholder='Search albums, artists and playlists'
               value={search}
+              spellCheck='false'
               onChange={e => setSearch(e.target.value)}
               />
             </form>
+            <div id='searchResults'>
             <p><span className='panelTitle'>Songs</span></p>
             <TracksTable content={trackResults.slice(0, 5)} page='search' />
             <p><span className='panelTitle'>Artists</span></p>
@@ -72,6 +74,7 @@ export default function Search() {
             <Panel content={albumResults.slice(0, 5)} />
             {/* <p><span className='panelTitle'>Playlists</span></p>
             <Panel content={playlistResults.slice(0, 5)} dispatch={dispatch} /> */}
+            </div>
         </div>
         )
     } else {
