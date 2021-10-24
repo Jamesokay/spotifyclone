@@ -70,7 +70,7 @@ export default function CollectionPlaylist() {
     return (
     <div id='collectionPage'>
      <CollectionNav />
-      <div id='collectionContent'>  
+     <span className='collectionTitle'>Playlists</span> 
         <div id='likedSongsCard'>
            <span id='lsCardPreview'>
             {preview.map(prev =>
@@ -107,7 +107,6 @@ export default function CollectionPlaylist() {
         </div>
         </Link>
       )}
-      </div>
     </div>
     )
 }

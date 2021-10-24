@@ -3,15 +3,18 @@ import { AuthContext } from './AuthContext'
 import playTrack from './playTrack'
 import { Link } from 'react-router-dom'
 
-export default function Panel({ content }) {
+export default function Panel({ content, panelVariant }) {
   
 const accessToken = useContext(AuthContext)
     
     return (
-        <div style={{display: 'flex', justifyContent: 'space-around'}}>  
+        <div style={(panelVariant)? 
+          {display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap'} 
+          : 
+          {display: 'flex', justifyContent: 'space-evenly'}}>  
         {content.map(cont =>
           <Link style={{textDecoration: 'none'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
-          <div className='cardBody'>
+          <div className='cardBody' style={(panelVariant)? {marginRight: '15px'} : {marginRight: '0'}}>
             {cont.type === 'artist'?
             <img className='cardArtist' src={cont.imgUrl} alt='' />
             :

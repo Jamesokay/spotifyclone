@@ -15,12 +15,6 @@
     margin-left: 5vh;
 }
 
-#collectionContent {
-    margin-top: 10vh;
-    margin-left: 2vw;
-    display: flex;
-}
-
 #likedSongsCard {
     cursor: pointer;
     width: 450px; 
@@ -235,6 +229,17 @@ body {
     margin-top: 0;
     margin-left: 15vw;
     width: 85vw;
+    padding-left: 2vw;
+    padding-top: 18vh;
+    display: flex;
+}
+
+.collectionTitle {
+    color: white;
+    position: absolute;
+    font-family: Arial, sans-serif;
+    top: 12%;
+    font-size: 18pt;
 }
 
 #collectionList {
@@ -277,7 +282,7 @@ body {
     cursor: default;
     background: #212121;
     border-radius: 5px;
-    margin-bottom: 25px;  
+    margin-bottom: 25px;
     transition: background 0.2s ease-in-out;
 }
 
