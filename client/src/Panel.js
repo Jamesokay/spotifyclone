@@ -8,7 +8,7 @@ export default function Panel({ content }) {
 const accessToken = useContext(AuthContext)
     
     return (
-        <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>  
+        <div style={{display: 'flex', justifyContent: 'space-around'}}>  
         {content.map(cont =>
           <Link style={{textDecoration: 'none'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
           <div className='cardBody'>
