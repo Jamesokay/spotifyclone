@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import likedSongs from './likedSongs.png'
 
 export default function SideBar() {
     return (
@@ -29,6 +30,15 @@ export default function SideBar() {
         </svg>
            <span className='sideBarText'>Your Library</span>
           </NavLink>
+         </li>
+         <li>
+         <li>
+           <div style={{height: '4vh'}}></div>
+         </li>
+         <NavLink className='sideBarLink' draggable="false" to="/collection/tracks" activeClassName="sideBarPlaylistActive">
+           <img className='sideBarImg' src={likedSongs} alt=''/>
+           <span className='sideBarText'>Liked Songs</span>
+         </NavLink>
          </li>
         </ul>
         

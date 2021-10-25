@@ -15,6 +15,7 @@ import { ThemeContext } from './ThemeContext'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
 import Layout from './Layout'
+import CollectionTrack from './CollectionTrack'
 
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
         <Route path="/collection/playlists" component={CollectionPlaylist} />
         <Route path="/collection/artists" component={CollectionArtist} />
         <Route path="/collection/albums" component={CollectionAlbum} />
+        <Route path="/collection/tracks" component={CollectionTrack} />
         </Layout>
       </ThemeContext.Provider>
       </AuthContext.Provider>

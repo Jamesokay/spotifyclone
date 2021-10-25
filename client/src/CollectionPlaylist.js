@@ -27,6 +27,7 @@ export default function CollectionPlaylist() {
 
     spotifyApi.getMySavedTracks()
     .then(data => {
+      console.log(data.body)
       setPreview(data.body.items.map(item => {
         return {
           id: item.track.id,
@@ -71,6 +72,7 @@ export default function CollectionPlaylist() {
     <div id='collectionPage'>
      <CollectionNav />
      <span className='collectionTitle'>Playlists</span> 
+     <Link to={{pathname:'/collection/tracks'}}>
         <div id='likedSongsCard'>
            <span id='lsCardPreview'>
             {preview.map(prev =>
@@ -86,6 +88,7 @@ export default function CollectionPlaylist() {
               <div id='lsPlayIcon'></div>
             </div>
       </div>
+      </Link>
       {playlists.map(cont =>
         <Link style={{textDecoration: 'none', marginRight: '15px'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
         <div className='cardBody'>

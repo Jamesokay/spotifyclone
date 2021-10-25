@@ -494,10 +494,22 @@ body {
     border-radius: 5px;
 }
 
+.sideBarPlaylistActive {
+    text-decoration: none;
+    color: white !important;
+}
+
 
 .sideBarIcon {
     transition: color 0.2s ease-in-out;
     margin-left: 15px;
+}
+
+.sideBarImg {
+    width: 25px;
+    height: 25px;
+    margin-left: 15px;
+    border-radius: 2px;
 }
 
 .sideBarText {
