@@ -26,32 +26,20 @@ export default function AlbumPage({ location }) {
     const [moreByArtist, setMoreByArtist] = useState([])
     const [paused, setPaused] = useState(true)
 
-    // function expandPanel(title, content) {
-    //     dispatch({
-    //       type: 'PANEL_EXPANDED',
-    //       header: title,
-    //       array: content
-    //     })
-    // }
 
     function getAlbumObject(id) {
 
         spotifyApi.getAlbum(id)
         .then(data => {
               let obj = {
+                    onAlbumPage: true,
                     key: data.body.id,
                     id: data.body.id,
-                    type: 'artistAlbum',
+                    type: 'album',
                     name: data.body.name,
                     popularity: data.body.popularity,
                     imgUrl: data.body.images[0].url,
                     subtitle: data.body.release_date.slice(0, 4),
-                    firstTrack: {
-                        name: data.body.tracks.items[0].name, 
-                        artists: data.body.tracks.items[0].artists, 
-                        imgUrl: data.body.images[0].url,
-                        albumId: data.body.id
-                    }
               }
               setMoreByArtist(moreByArtist => [...moreByArtist, obj])
         })
@@ -104,6 +92,15 @@ export default function AlbumPage({ location }) {
         .catch(error => {
             console.log(error)
         })
+
+        return function cleanUp() {
+            setAlbum({})
+            setCreatorObject([])
+            setAlbumName('')
+            setArtistId('')
+            setArtistName('')
+            setTracks([])
+        }
     }, [accessToken, id])
 
     useEffect(() => {
@@ -127,6 +124,8 @@ export default function AlbumPage({ location }) {
         .catch(error => {
             console.log(error)
         })
+
+        return setMoreByArtist([])
 
     }, [accessToken, artistId, albumName])
 

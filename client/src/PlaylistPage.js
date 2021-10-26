@@ -41,6 +41,9 @@ export default function PlaylistPage({ location }) {
         .catch(error => {
           console.log(error)
         })
+
+        return setCreator([])
+        
       }, [accessToken, id])
 
     useEffect(() => {
@@ -93,6 +96,11 @@ export default function PlaylistPage({ location }) {
         .catch(error => {
             console.log(error)
         })
+
+        return function cleanUp() {
+          setPlaylist({})
+          setTracks([])
+        }
     }, [accessToken, id])
 
     function pausePlay() {

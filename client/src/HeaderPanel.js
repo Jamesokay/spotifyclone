@@ -84,6 +84,7 @@ export default function HeaderPanel({ content, creators }) {
             <div className='headerInfo'>
               <span className='headerType'>{content.type}</span>
               <span style={titleStyle} className='headerTitle'>{content.title}</span>
+              
               <span>
               {creators.map((creator, index, creators) =>
                <span key={creator.id}>
@@ -97,6 +98,8 @@ export default function HeaderPanel({ content, creators }) {
                 )}  
                 <span className='headerSub'>{content.info}</span>
               </span>
+
+              
             </div>
           </div>
         </div>

@@ -61,12 +61,19 @@ export default function SideBar() {
          <li>
            <div style={{height: '3vh'}}></div>
          </li>
+
+         <li className='sideBarLink'>
+           <div className='sideBarImg' style={{backgroundColor: 'white'}}></div>
+           <span className='sideBarText'>Create Playlist</span>
+         </li>
+
          <li>
          <NavLink className='sideBarLink' draggable="false" to="/collection/tracks" activeClassName="sideBarPlaylistActive">
            <img className='sideBarImg' src={likedSongs} alt=''/>
            <span className='sideBarText'>Liked Songs</span>
          </NavLink>
          </li>
+
     
          <hr style={{width: '95%', float: 'left', border: 'none', backgroundColor: '#212121', height: '0.5px', marginBottom: '15px'}}/>
     
