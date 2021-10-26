@@ -477,8 +477,7 @@ body {
 .sideBarLink {
     text-decoration: none;
     color: grey;
-    font-family: Verdana, sans-serif;
-    height: 6vh;
+    height: 5.5vh;
     min-height: 25px;
     display: flex;
     align-items: center;
@@ -510,9 +509,12 @@ body {
     height: 25px;
     margin-left: 15px;
     border-radius: 2px;
+    opacity: 0.6;
+    transition: opacity 0.2s ease-in-out;
 }
 
 .sideBarText {
+    font-size: 11pt;
     margin-left: 10px;
     transition: color 0.2s ease-in-out;
 }
@@ -525,12 +527,28 @@ li:hover .sideBarIcon {
     color: white;
 }
 
+li:hover .sideBarPlaylist {
+    color: white;
+}
+
+li:hover .sideBarImg {
+    opacity: 1;
+}
+
+.sideBarPlaylist {
+    color: grey;
+    text-decoration: none;
+    margin-left: 15px;
+    font-size: smaller;
+}
+
 
 #sideBarList {
     list-style-type: none;
     padding-left: 0;
     margin-left: 5%;
     margin-top: 8vh;
+    font-family: Arial, sans-serif;
 }
 
 

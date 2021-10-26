@@ -1,11 +1,38 @@
 import { NavLink } from 'react-router-dom'
 import likedSongs from './likedSongs.png'
+import { AuthContext } from './AuthContext'
+import { useState, useEffect, useContext } from 'react'
+import axios from 'axios'
+import getDataObject from './getDataObject'
 
 export default function SideBar() {
+    const accessToken = useContext(AuthContext)
+    const [playlists, setPlaylists] = useState([])
+
+    useEffect(() => {
+      if (!accessToken) return
+
+      const options = {
+        url: 'https://api.spotify.com/v1/me/playlists',
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+            }
+        }
+    
+      axios(options)
+      .then(response => {
+         setPlaylists(response.data.items.map(getDataObject))
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+    }, [accessToken])
+
     return (
         <div className='sideBar'>
-        
-        
         <ul id='sideBarList'>
           <li>
           <NavLink className='sideBarLink' draggable="false" to="/" exact={true} activeClassName="sideBarActive">
@@ -32,14 +59,24 @@ export default function SideBar() {
           </NavLink>
          </li>
          <li>
-         <li>
-           <div style={{height: '4vh'}}></div>
+           <div style={{height: '3vh'}}></div>
          </li>
+         <li>
          <NavLink className='sideBarLink' draggable="false" to="/collection/tracks" activeClassName="sideBarPlaylistActive">
            <img className='sideBarImg' src={likedSongs} alt=''/>
            <span className='sideBarText'>Liked Songs</span>
          </NavLink>
          </li>
+    
+         <hr style={{width: '95%', float: 'left', border: 'none', backgroundColor: '#212121', height: '0.5px', marginBottom: '15px'}}/>
+    
+         {playlists.map(playlist => 
+         <li key={playlist.key} style={{marginBottom: '15px'}}>
+          <NavLink className='sideBarPlaylist' draggable="false" to={{pathname: `/playlist/${playlist.id}`, state: playlist.id }} activeClassName="sideBarPlaylistActive">
+           <span>{playlist.name}</span>
+          </NavLink>
+          </li>
+         )}
         </ul>
         
             

@@ -32,18 +32,21 @@ export default function PlaylistPage({ location }) {
 
         spotifyApi.getPlaylist(id)
         .then(data => {
-            spotifyApi.getUser(data.body.owner.id)
-            .then(data => {
               let obj = {
-                name: data.body.display_name,
-                id: data.body.id
+                name: data.body.owner.display_name,
+                id: data.body.owner.id
               }
               setCreator(creator => [...creator, obj])
-            })
-            .catch(error => {
-              console.log(error)
-            })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      }, [accessToken, id])
 
+    useEffect(() => {
+       if (!accessToken) return
+       spotifyApi.getPlaylist(id)
+       .then(data => {
             setPlaylist({
                     title: data.body.name,
                     imgUrl: data.body.images[0].url,
