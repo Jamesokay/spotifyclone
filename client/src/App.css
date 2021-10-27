@@ -1088,8 +1088,8 @@ td {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     opacity: 0;
-    transition: opacity 0.2s ease-in-out;
 }
 
 #headerImageChange:hover {

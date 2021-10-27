@@ -97,7 +97,20 @@ export default function HeaderPanel({ content, creators }) {
                 />
           {(isOwner)?
           <div id='headerImageChange'>
-            <span>Choose photo</span>
+          <svg
+           width="50" 
+           fill="none" 
+           height="50" 
+           viewBox="0 0 50 50" 
+           stroke="white" 
+           strokeWidth="2"
+           strokeLinejoin="miter" 
+            
+           >
+            <path d="M12 37, L40 9, L47 16, L19 44, L7 49, L12 37, L19 44"></path>
+                
+        </svg>
+            <span style={{marginTop: '10px'}}>Choose photo</span>
           </div>
           :
           <div></div>
