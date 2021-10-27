@@ -12,6 +12,7 @@ import PanelExpanded from './PanelExpanded'
 import { useState, useEffect } from 'react'
 import { AuthContext } from './AuthContext'
 import { ThemeContext } from './ThemeContext'
+import { UserContext } from './UserContext'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
 import Layout from './Layout'
@@ -24,6 +25,7 @@ function App() {
   localStorage.setItem('clientId', 'e39d5b5b499d4088a003eb0471c537bb')
 
   const [accessToken, setAccessToken] = useState(null)
+  const [user, setUser] = useState(null)
 
   const [currentTheme, setCurrentTheme] = useState('0, 0, 0')
   const theme = {currentTheme, setCurrentTheme}
@@ -41,11 +43,35 @@ function App() {
         console.log(error)
       })
   }, [code])
+
+  useEffect(() => {
+    if (!accessToken) return
+
+    const options = {
+      url: 'https://api.spotify.com/v1/me',
+      method: 'GET',
+      headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+          }
+      }
+  
+    axios(options)
+    .then(response => {
+       console.log(response.data)
+       setUser(response.data)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+
+  }, [accessToken])
   
 
     return (
       <AuthContext.Provider value={accessToken}>
       <ThemeContext.Provider value={theme}>
+      <UserContext.Provider value={user}>
         <Layout>
         <Route path='/' exact component={(accessToken)? Dashboard : Login} />
         <Route path='/search' component={Search} />
@@ -58,6 +84,7 @@ function App() {
         <Route path="/collection/albums" component={CollectionAlbum} />
         <Route path="/collection/tracks" component={CollectionTrack} />
         </Layout>
+      </UserContext.Provider>
       </ThemeContext.Provider>
       </AuthContext.Provider>
     )

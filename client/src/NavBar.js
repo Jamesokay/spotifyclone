@@ -1,15 +1,21 @@
 import { useHistory } from 'react-router-dom'
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { ThemeContext } from './ThemeContext'
+import { UserContext } from './UserContext'
+import defaultUser from './defaultUser.png'
 
 export default function NavBar() {
     const history = useHistory()
     const [alpha, setAlpha] = useState(0)
     const { currentTheme } = useContext(ThemeContext)
+    const user = useContext(UserContext)  
+    const [name, setName] = useState('')
 
-    // useEffect(() => {
-    //     console.log('rgba(' + currentTheme + ', ' + alpha + ')')
-    // }, [currentTheme, alpha])
+    useEffect(() => {
+       if (!user) return
+       setName(user.display_name)
+        
+    }, [user])
 
 
 
@@ -41,6 +47,10 @@ export default function NavBar() {
         </div>
         </div>
 
+        <div id='user'>
+            <img id='userImg' src={defaultUser} alt=''></img>
+            <span id='userName'>{name}</span>
+        </div>
         </div>
     )
 }
