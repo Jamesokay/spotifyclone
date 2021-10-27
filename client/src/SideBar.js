@@ -63,7 +63,8 @@ export default function SideBar() {
          </li>
 
          <li className='sideBarLink'>
-           <div className='sideBarImg' style={{backgroundColor: 'white'}}></div>
+           <div className='sideBarImg' style={{backgroundColor: 'white'}}>
+           </div>
            <span className='sideBarText'>Create Playlist</span>
          </li>
 

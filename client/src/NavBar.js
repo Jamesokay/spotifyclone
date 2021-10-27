@@ -50,6 +50,9 @@ export default function NavBar() {
         <div id='user'>
             <img id='userImg' src={defaultUser} alt=''></img>
             <span id='userName'>{name}</span>
+            <svg style={{marginRight: 'auto'}} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="1" strokeLinecap="square" strokeLinejoin="miter">
+            <polyline points="8 9, 12 14, 16 9, 8 9" />
+        </svg>
         </div>
         </div>
     )

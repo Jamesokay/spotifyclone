@@ -403,7 +403,8 @@ body {
     position: fixed;
     top: 0;
     display: flex;
-    height: 8vh;
+    height: 8%;
+    min-height: 50px;
     margin-left: 15vw;
     width: 85vw;
     cursor: default;
@@ -425,8 +426,8 @@ body {
 
 #userImg {
     background-color: grey;
-    width: 28px;
-    height: 28px;
+    width: 17%;
+    height: 90%;
     border-radius: 50%;
     margin-left: 1%;
     object-fit: cover;
@@ -436,6 +437,7 @@ body {
     color: white;
     font-family: Arial, sans-serif;
     margin: auto;
+    font-size: 90%;
 }
 
 .navHistory {
@@ -1073,6 +1075,25 @@ td {
     height: 232px;
     width: 232px;
     object-fit: cover;
+}
+
+#headerImageChange {
+    height: 232px;
+    width: 232px;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    top: 0%;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+#headerImageChange:hover {
+    opacity: 1;
 }
 
 .headerType {

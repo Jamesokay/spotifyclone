@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import { ThemeContext } from './ThemeContext'
+import { UserContext } from './UserContext'
 
 
 export default function HeaderPanel({ content, creators }) {
@@ -7,6 +8,8 @@ export default function HeaderPanel({ content, creators }) {
 
     const [titleStyle, setTitleStyle] = useState({})
     const { setCurrentTheme } = useContext(ThemeContext)
+    const user = useContext(UserContext)
+    const [isOwner, setIsOwner] = useState(false)
     
     useEffect(() => {
       if (!content.title) return
@@ -26,6 +29,15 @@ export default function HeaderPanel({ content, creators }) {
     
 
     const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
+
+    useEffect(() => {
+      if (!creators[0]) return
+      if (!user) return
+
+      if (creators[0].id === user.id) {
+        setIsOwner(true)
+      }
+    }, [creators, user])
     
     function getData() {
       var canvas = document.createElement('canvas');
@@ -80,7 +92,16 @@ export default function HeaderPanel({ content, creators }) {
     return (
         <div className='headerPanel' style={{backgroundImage: gradient, transition: 'background 0.3s ease-in-out'}}>
         <div className='headerBody'>
-          <img  id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()}/>
+          <img id='headerImage' src={content.imgUrl} alt='' 
+                onLoad={()=> getData()}
+                />
+          {(isOwner)?
+          <div id='headerImageChange'>
+            <span>Choose photo</span>
+          </div>
+          :
+          <div></div>
+          }
             <div className='headerInfo'>
               <span className='headerType'>{content.type}</span>
               <span style={titleStyle} className='headerTitle'>{content.title}</span>
