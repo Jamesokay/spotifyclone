@@ -166,6 +166,39 @@ export default function TracksTable({content, dispatch, page}) {
             </table>
         )
     }
+    else if (page === 'playlistRecommend') {
+      return (
+        <table className='trackTable' cellSpacing='0' cellPadding='0'>
+        <tbody>
+        {content.map(cont =>
+        <tr className='trackTableRow' key={cont.id}>
+          <td className='rowFirst'>
+            <img className='searchTableImage' src={cont.trackImage} alt='' />
+            <div className='searchTablePlayIcon'
+            onClick={() => playTrack(accessToken, {uris: [cont.uri]})}
+            ></div>
+          </td>
+          <td className='rowSecond'>
+          <p className='tableTrackName'>{cont.name}</p>
+          {cont.artists.map((artist, index, artists) => 
+                <span key={artist.id} >                 
+                <span className='tableLink' onClick={() => pageChange('artist', artist.id)}>{artist.name}</span>
+                {(index < artists.length - 1)?
+                <span>, </span>
+                :
+                <span></span>
+                }
+                </span>
+          )}
+          </td>
+          <td className='rowLast'>{cont.duration}</td>
+        </tr>
+        )}
+        </tbody>
+      </table>
+
+      )
+  }
     else if (page === 'search') {
       return (
         <table className='trackTable' cellSpacing='0' cellPadding='0'>

@@ -477,7 +477,7 @@ body {
 
 .page {   
     width: 85vw; 
-    padding-bottom: 90px;
+    padding-bottom: 100px;
 }
 
 #searchPage {
@@ -885,7 +885,7 @@ li:hover .sideBarImg {
 }
 
 .trackTable {
-    width: 80vw;
+    width: 82.5vw;
     margin: auto;
     font-family: Arial, sans-serif;
     cursor: default;
@@ -909,7 +909,7 @@ th {
     font-family: Arial, sans-serif;
     font-weight: normal;
     letter-spacing: 1px;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid rgb(105, 105, 105, 0.3);
     padding-bottom: 10px;
 }
 
@@ -1030,17 +1030,16 @@ td {
 }
 
 .headerControls {
-    height: 10vh;
-    padding-top: 5vh;
-    padding-bottom: 5vh;
+    height: 15vh;
     margin-left: 1.5vw;
+    display: flex;
 }
 
 .headerPlayButton {
+    margin-top: 25px;
     display: flex;
-    position: absolute;
-    height: 60px;
-    width: 60px;
+    height: 55px;
+    width: 55px;
     border-radius: 50%;
     background: #1ed760;
 }
@@ -1139,4 +1138,23 @@ td {
     flex-direction: column;
     left: 250px;
     bottom: 0;
+}
+
+.playlistLowerHeading {
+    margin-top: 7.5vh;
+    margin-bottom: 2.5vh;
+}
+
+.playlistLowerTitle {
+    font-family: Arial, sans-serif;
+    font-size: 16pt;
+    color: white;
+    margin-left: 1.25vw;
+}
+
+.playlistLowerSub {
+    font-family: Arial, sans-serif;
+    font-size: 11pt;
+    color: grey;
+    margin-left: 1.25vw;
 }

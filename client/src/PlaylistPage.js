@@ -166,6 +166,12 @@ export default function PlaylistPage({ location }) {
         </div>   
         <div className='page'>      
           <TracksTable content={tracks} page='playlist' />
+          <div className='playlistLowerHeading'>
+            <span className='playlistLowerTitle'>Recommended</span>
+            <br/>
+            <span className='playlistLowerSub'>Based on what's in this playlist</span>
+          </div>
+          <TracksTable content={tracks} page='playlistRecommend' />
         </div>
       </div>
       </div>
