@@ -885,8 +885,8 @@ li:hover .sideBarImg {
 }
 
 .trackTable {
-    width: 82.5vw;
-    margin: auto;
+    width: 80vw;
+    margin-left: 1.25vw;
     font-family: Arial, sans-serif;
     cursor: default;
     font-size: 11pt;
@@ -998,10 +998,10 @@ td {
 
 .rowSecond {
     padding-left: 10px;
+    width: 50%;
 }
 
 .rowLast {
-    width: 50px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
@@ -1157,4 +1157,25 @@ td {
     font-size: 11pt;
     color: grey;
     margin-left: 1.25vw;
+}
+
+.addTrack {
+    float: right;
+    margin-right: 10%;
+    width: 100px;
+    height: 35px;
+    border-radius: 30px;
+    border-style: solid;
+    border-color: grey;
+    border-width: thin;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10pt;
+    letter-spacing: 1.5px;
+    color: white;
+}
+
+.addTrack:hover {
+    transform: scale(1.05)
 }

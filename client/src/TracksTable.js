@@ -191,7 +191,15 @@ export default function TracksTable({content, dispatch, page}) {
                 </span>
           )}
           </td>
-          <td className='rowLast'>{cont.duration}</td>
+          <td>
+            {cont.albumName}
+          </td>
+
+          <td className='rowLast'>
+            <div className='addTrack'>
+              <span>ADD</span>
+            </div>
+          </td>
         </tr>
         )}
         </tbody>
