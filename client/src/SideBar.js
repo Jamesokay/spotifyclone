@@ -1,13 +1,18 @@
 import { NavLink } from 'react-router-dom'
 import likedSongs from './likedSongs.png'
 import { AuthContext } from './AuthContext'
+import { UserContext } from './UserContext'
 import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import getDataObject from './getDataObject'
+import { useHistory } from 'react-router-dom'
 
 export default function SideBar() {
+    const history = useHistory()
     const accessToken = useContext(AuthContext)
+    const user = useContext(UserContext)
     const [playlists, setPlaylists] = useState([])
+    const [newPL, setNewPL] = useState('')
 
     useEffect(() => {
       if (!accessToken) return
@@ -29,7 +34,38 @@ export default function SideBar() {
         console.log(error)
       })
 
-    }, [accessToken])
+    }, [accessToken, newPL])
+
+    function createPlaylist() {
+
+        let data = {
+          name: 'My Playlist #' + (playlists.length + 1)
+        }
+
+        const options = {
+          url: `https://api.spotify.com/v1/users/${user.id}/playlists`,
+          method: 'POST',
+          headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+              },
+          data
+          }
+      
+        axios(options)
+        .then(response => {
+           setNewPL(response.data.id)
+           let location = {
+            pathname: '/playlist/' + response.data.id,
+            state: response.data.id
+          }
+           history.push(location)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+
+    }
 
     return (
         <div className='sideBar'>
@@ -45,7 +81,7 @@ export default function SideBar() {
           <li>
           <NavLink className='sideBarLink' draggable="false" to="/search" activeClassName="sideBarActive">
           <svg className='sideBarIcon' viewBox="0 0 512 512" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M349.714 347.937l93.714 109.969-16.254 13.969-93.969-109.969q-48.508 36.825-109.207 36.825-36.826 0-70.476-14.349t-57.905-38.603-38.603-57.905-14.349-70.476 14.349-70.476 38.603-57.905 57.905-38.603 70.476-14.349 70.476 14.349 57.905 38.603 38.603 57.905 14.349 70.476q0 37.841-14.73 71.619t-40.889 58.921zM224 377.397q43.428 0 80.254-21.461t58.286-58.286 21.461-80.254-21.461-80.254-58.286-58.285-80.254-21.46-80.254 21.46-58.285 58.285-21.46 80.254 21.46 80.254 58.285 58.286 80.254 21.461z" fill="currentColor" fillRule="evenodd"></path>
+            <path d="M349.714 347.937l93.714 109.969-16.254 13.969-93.969-109.969q-48.508 36.825-109.207 36.825-36.826 0-70.476-14.349t-57.905-38.603-38.603-57.905-14.349-70.476 14.349-70.476 38.603-57.905 57.905-38.603 70.476-14.349 70.476 14.349 57.905 38.603 38.603 57.905 14.349 70.476q0 37.841-14.73 71.619t-40.889 58.921zM224 377.397q43.428 0 80.254-21.461t58.286-58.286 21.461-80.254-21.461-80.254-58.286-58.285-80.254-21.46-80.254 21.46-58.285 58.285-21.46 80.254 21.46 80.254 58.285 58.286 80.254 21.461z" fill="currentColor"></path>
         </svg>          
          <span className='sideBarText'>Search</span>
          </NavLink>
@@ -62,7 +98,7 @@ export default function SideBar() {
            <div style={{height: '3vh'}}></div>
          </li>
 
-         <li className='sideBarLink'>
+         <li className='sideBarLink' onClick={()=> createPlaylist()}>
            <div className='sideBarImg' style={{backgroundColor: 'white'}}>
            </div>
            <span className='sideBarText'>Create Playlist</span>

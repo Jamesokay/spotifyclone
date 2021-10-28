@@ -7,6 +7,7 @@ import HeaderPanel from './HeaderPanel'
 import getTotalDuration from './getTotalDuration'
 import playTrack from './playTrack'
 import axios from 'axios'
+import defaultPlaylist from './defaultPlaylist.png'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -46,10 +47,12 @@ export default function PlaylistPage({ location }) {
         
       }, [accessToken, id])
 
+
     useEffect(() => {
        if (!accessToken) return
        spotifyApi.getPlaylist(id)
        .then(data => {
+            if (data.body.images[0]) {
             setPlaylist({
                     title: data.body.name,
                     imgUrl: data.body.images[0].url,
@@ -62,6 +65,14 @@ export default function PlaylistPage({ location }) {
                         + getTotalDuration(data.body.tracks.items),
                     type: 'PLAYLIST'
             })
+          } else {
+            setPlaylist({
+              title: data.body.name,
+              imgUrl: defaultPlaylist,
+              uri: data.body.uri,
+              type: 'PLAYLIST'
+          })
+        }
 
             let playlistUri = data.body.uri
             
@@ -103,6 +114,10 @@ export default function PlaylistPage({ location }) {
         }
     }, [accessToken, id])
 
+    useEffect(() => {
+      console.log(playlist)
+    }, [playlist])
+
     function pausePlay() {
       setPaused(true)
       const options = {
@@ -128,7 +143,8 @@ export default function PlaylistPage({ location }) {
 
   }
 
-
+  // isOwner logic, render conditionally based on that
+  // somehow discern whether new PL
     return (
       <div>
       <HeaderPanel content={playlist} creators={creator} />

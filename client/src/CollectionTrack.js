@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
 import { AuthContext } from './AuthContext'
+import { UserContext } from './UserContext'
 import toMinsSecs from './toMinsSecs'
 import likedSongs from './likedSongs.png'
 import TracksTable from './TracksTable'
@@ -12,6 +13,7 @@ const spotifyApi = new SpotifyWebApi({
 
 export default function CollectionTrack() {
     const accessToken = useContext(AuthContext)
+    const user = useContext(UserContext)
     const [tracks, setTracks] = useState([])
     const likedSongsObj = {
         title: 'Liked Songs',
@@ -21,9 +23,9 @@ export default function CollectionTrack() {
         info: '',
         type: 'PLAYLIST'
       }
-    const user = [{
-        name: 'me',
-        id: 4
+    const profile = [{
+        name: user.display_name,
+        id: user.id
     }]
 
     useEffect(() => {
@@ -72,7 +74,7 @@ export default function CollectionTrack() {
 
     return (
         <div>
-        <HeaderPanel content={likedSongsObj} creators={user}/>
+        <HeaderPanel content={likedSongsObj} creators={profile}/>
         <div className='pageContainer'>
         <div className='headerControls'>
         <div className='headerPlayButton'>

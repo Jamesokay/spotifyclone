@@ -3,6 +3,7 @@ import { ThemeContext } from './ThemeContext'
 import { UserContext } from './UserContext'
 
 
+
 export default function HeaderPanel({ content, creators }) {
 
 
@@ -31,13 +32,15 @@ export default function HeaderPanel({ content, creators }) {
     const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
 
     useEffect(() => {
+      if (!content.title) return
       if (!creators[0]) return
       if (!user) return
 
-      if (creators[0].id === user.id) {
+      if (creators[0].id === user.id && content.title !== 'Liked Songs') {
         setIsOwner(true)
       }
-    }, [creators, user])
+
+    }, [creators, content.title, user])
     
     function getData() {
       var canvas = document.createElement('canvas');
