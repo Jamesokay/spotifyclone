@@ -8,6 +8,7 @@ import getTotalDuration from './getTotalDuration'
 import playTrack from './playTrack'
 import axios from 'axios'
 import defaultPlaylist from './defaultPlaylist.png'
+import { UserContext } from './UserContext'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -17,9 +18,12 @@ const spotifyApi = new SpotifyWebApi({
 export default function PlaylistPage({ location }) {
     const id  = location.state
     const accessToken = useContext(AuthContext)
+    const user = useContext(UserContext)
+
     const [playlist, setPlaylist] = useState({})
     const [tracks, setTracks] = useState([])
     const [creator, setCreator] = useState([])
+    const [recommendations, setRecommendations] = useState([])
     const [paused, setPaused] = useState(true)
 
 
@@ -115,8 +119,66 @@ export default function PlaylistPage({ location }) {
     }, [accessToken, id])
 
     useEffect(() => {
-      console.log(playlist)
-    }, [playlist])
+      if (!accessToken) return
+      if (!user) return
+      if (!creator[0]) return
+      if (user.id !== creator[0].id) return
+
+      var seeds = getSeeds(tracks)
+
+      spotifyApi.getRecommendations({
+        seed_tracks: seeds,
+        min_popularity: 50
+      })
+      .then(data => {
+        setRecommendations(data.body.tracks.map((track, index ) => {
+          if (track.album.images[0]) {
+            return {
+              num: index + 1,
+              id: track.id,
+              uri: track.uri,
+              context: '',
+              name: track.name,
+              trackImage: track.album.images[0].url,
+              artists: track.artists,
+              albumName: track.album.name,
+              albumId: track.album.id,
+              duration: toMinsSecs(track.duration_ms)
+            }
+          } else {
+            return {
+              num: index + 1,
+              id: index,
+              name: '',
+              artists: [],
+              albumName: '',
+              albumId: index + 3,
+              duration: ''
+            }
+          }
+
+        }))
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+      
+    }, [accessToken, user, creator, tracks])
+
+    useEffect(() => {
+      console.log(recommendations)
+    }, [recommendations])
+
+    function getSeeds(array) {
+      if (array.length > 5) {
+        return array.slice(0, 5).map(item => item.id)
+      }
+      else {
+        return array.map(item => item.id)
+      }
+
+    }
 
     function pausePlay() {
       setPaused(true)
@@ -171,7 +233,7 @@ export default function PlaylistPage({ location }) {
             <br/>
             <span className='playlistLowerSub'>Based on what's in this playlist</span>
           </div>
-          <TracksTable content={tracks} page='playlistRecommend' />
+          <TracksTable content={recommendations} page='playlistRecommend' />
         </div>
       </div>
       </div>
