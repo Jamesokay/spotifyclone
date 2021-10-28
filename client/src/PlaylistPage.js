@@ -9,6 +9,7 @@ import playTrack from './playTrack'
 import axios from 'axios'
 import defaultPlaylist from './defaultPlaylist.png'
 import { UserContext } from './UserContext'
+import PlaylistSearch from './PlaylistSearch'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -24,6 +25,7 @@ export default function PlaylistPage({ location }) {
     const [tracks, setTracks] = useState([])
     const [creator, setCreator] = useState([])
     const [recommendations, setRecommendations] = useState([])
+    const [isOwner, setIsOwner] = useState(false)
     const [paused, setPaused] = useState(true)
 
 
@@ -119,15 +121,30 @@ export default function PlaylistPage({ location }) {
     }, [accessToken, id])
 
     useEffect(() => {
+      if (!user) return
+      if (!creator[0]) return
+      if (user.id === creator[0].id) {
+        setIsOwner(true)
+      }
+      else {
+        setIsOwner(false)
+      }
+
+      return function cleanUp() {
+        setIsOwner(false)
+      }
+
+    }, [user, creator])
+
+    useEffect(() => {
       if (!accessToken) return
       if (!user) return
       if (!creator[0]) return
       if (user.id !== creator[0].id) return
-
-      var seeds = getSeeds(tracks)
+      if (tracks.length === 0) return
 
       spotifyApi.getRecommendations({
-        seed_tracks: seeds,
+        seed_tracks: getSeeds(tracks),
         min_popularity: 50
       })
       .then(data => {
@@ -163,12 +180,16 @@ export default function PlaylistPage({ location }) {
         console.log(error)
       })
 
+      return function cleanUp() {
+        setRecommendations([])
+      }
+
       
     }, [accessToken, user, creator, tracks])
 
     useEffect(() => {
-      console.log(recommendations)
-    }, [recommendations])
+      console.log(isOwner)
+    }, [isOwner])
 
     function getSeeds(array) {
       if (array.length > 5) {
@@ -212,7 +233,8 @@ export default function PlaylistPage({ location }) {
       <HeaderPanel content={playlist} creators={creator} />
       <div className='pageContainer'>
       <div className='headerControls'>
-      <div className='headerPlayButton'
+      {(tracks.length !== 0)? 
+        <div className='headerPlayButton'
                onClick={() => {
                    (paused)?
                    play()
@@ -224,17 +246,47 @@ export default function PlaylistPage({ location }) {
             :
             <div className='headerPauseIcon'></div>
             }
-          </div>
-        </div>   
-        <div className='page'>      
-          <TracksTable content={tracks} page='playlist' />
-          <div className='playlistLowerHeading'>
-            <span className='playlistLowerTitle'>Recommended</span>
-            <br/>
-            <span className='playlistLowerSub'>Based on what's in this playlist</span>
-          </div>
-          <TracksTable content={recommendations} page='playlistRecommend' />
         </div>
+        :
+        <div></div>
+      }
+        </div>   
+      <div className='page'>
+        {(tracks.length !== 0)?      
+          <TracksTable content={tracks} page='playlist' />
+          :
+          <div></div>
+        }
+        
+        {(isOwner)?
+          <div>
+          {(tracks.length !== 0)? 
+            <div>
+              <div className='playlistLowerHeading'>
+                <span className='playlistLowerTitle'>Recommended</span>
+                <br/>
+                <span className='playlistLowerSub'>Based on what's in this playlist</span>
+              </div>
+              <TracksTable content={recommendations.slice(0, 10)} page='playlistRecommend' />
+              <div className='playlistLowerHeading'>
+                <span className='playlistLowerTitle'>Let's find something for your playlist</span>
+              </div>
+              <PlaylistSearch />
+            </div>
+          :
+          <div>
+            <div className='playlistLowerHeading'>
+              <span className='playlistLowerTitle'>Let's find something for your playlist</span>
+            </div>
+            <PlaylistSearch />
+          </div>
+          }
+          </div>
+          :
+          <div></div>
+        }
+
+      </div>
       </div>
       </div>
     )

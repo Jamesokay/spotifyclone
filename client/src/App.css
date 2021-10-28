@@ -1159,6 +1159,26 @@ td {
     margin-left: 1.25vw;
 }
 
+.playlistSearchBar {
+    border-radius: 10px;
+    margin-left: 1.25vw;
+    height: 6vh;
+    width: 27.5%;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    border-style: hidden;
+    background-color: #212121;
+    color: white;
+}
+
+.playlistSearchBar:focus {
+    outline: none;
+}
+
+.playlistSearchBar:focus::placeholder {
+    color: transparent;
+}
+
 .addTrack {
     float: right;
     margin-right: 10%;
@@ -1178,4 +1198,8 @@ td {
 
 .addTrack:hover {
     transform: scale(1.05)
+}
+
+.trackTableRow:hover .addTrack {
+    border-color: white;
 }
