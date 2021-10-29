@@ -2,13 +2,16 @@ import { useHistory } from 'react-router-dom'
 import { useState, useContext, useEffect } from 'react'
 import { ThemeContext } from './ThemeContext'
 import { UserContext } from './UserContext'
+import { PageContext } from './PageContext'
 import defaultUser from './defaultUser.png'
+
 
 export default function NavBar() {
     const history = useHistory()
     const [alpha, setAlpha] = useState(0)
     const { currentTheme } = useContext(ThemeContext)
-    const user = useContext(UserContext)  
+    const user = useContext(UserContext)
+    const { currentPage } = useContext(PageContext)
     const [name, setName] = useState('')
 
     useEffect(() => {
@@ -16,6 +19,15 @@ export default function NavBar() {
        setName(user.display_name)
         
     }, [user])
+
+    useEffect(() => {
+        if (alpha >= 2.5) {
+          document.getElementById('navCurrentPage').style.opacity = 1
+        }
+        else {
+          document.getElementById('navCurrentPage').style.opacity = 0
+        }
+    }, [alpha])
 
 
 
@@ -45,6 +57,13 @@ export default function NavBar() {
             </polyline>
         </svg>
         </div>
+        </div>
+        
+        <div id='navCurrentPage'>
+        <div id='navPlayButton'>
+            <div id='navPlayIcon'></div>
+        </div>
+        <span id='navCurrentTitle'>{currentPage}</span>
         </div>
 
         <div id='user'>

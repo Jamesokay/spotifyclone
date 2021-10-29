@@ -54,7 +54,7 @@ export default function Search() {
 
     if (search) { 
         return (
-        <div>
+        <div style={{height: '50vh'}}>
             <form>
               <input
               className='playlistSearchBar'
@@ -72,7 +72,7 @@ export default function Search() {
         )
     } else {
         return (
-            <div>
+            <div style={{height: '50vh'}}>
             <form>
               <input
               className='playlistSearchBar'

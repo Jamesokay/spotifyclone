@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { ThemeContext } from './ThemeContext'
 import { UserContext } from './UserContext'
+import { PageContext } from './PageContext'
 
 
 
@@ -9,8 +10,11 @@ export default function HeaderPanel({ content, creators }) {
 
     const [titleStyle, setTitleStyle] = useState({})
     const { setCurrentTheme } = useContext(ThemeContext)
+    const { setCurrentPage } = useContext(PageContext)
     const user = useContext(UserContext)
     const [isOwner, setIsOwner] = useState(false)
+
+    
     
     useEffect(() => {
       if (!content.title) return
@@ -41,6 +45,13 @@ export default function HeaderPanel({ content, creators }) {
       }
 
     }, [creators, content.title, user])
+
+    useEffect(() => {
+      if (!content.title) return
+      setCurrentPage(content.title)
+    }, [content, content.title, setCurrentPage])
+
+
     
     function getData() {
       var canvas = document.createElement('canvas');
@@ -57,7 +68,7 @@ export default function HeaderPanel({ content, creators }) {
       var yStart = Math.floor(canvas.height * 0.6)
   
 
-      var imgdata = ctx.getImageData(xStart,yStart,40,40);
+      var imgdata = ctx.getImageData(xStart,yStart,100,50);
       var pixels = imgdata.data;
 
       var red = 0
@@ -120,7 +131,9 @@ export default function HeaderPanel({ content, creators }) {
           }
             <div className='headerInfo'>
               <span className='headerType'>{content.type}</span>
-              <span style={titleStyle} className='headerTitle'>{content.title}</span>
+              <span style={titleStyle} 
+                    className='headerTitle'
+                    >{content.title}</span>
               
               <span>
               {creators.map((creator, index, creators) =>

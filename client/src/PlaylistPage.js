@@ -232,8 +232,8 @@ export default function PlaylistPage({ location }) {
       <div>
       <HeaderPanel content={playlist} creators={creator} />
       <div className='pageContainer'>
-      <div className='headerControls'>
-      {(tracks.length !== 0)? 
+      {(tracks.length !== 0)?
+      <div className='headerControls'> 
         <div className='headerPlayButton'
                onClick={() => {
                    (paused)?
@@ -247,10 +247,10 @@ export default function PlaylistPage({ location }) {
             <div className='headerPauseIcon'></div>
             }
         </div>
+      </div>
         :
-        <div></div>
+        <div></div>              
       }
-        </div>   
       <div className='page'>
         {(tracks.length !== 0)?      
           <TracksTable content={tracks} page='playlist' />

@@ -440,10 +440,60 @@ body {
     font-size: 90%;
 }
 
+#navCurrentPage {
+    color: white;
+    font-family: Arial, sans-serif;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 150%;
+    letter-spacing: -0.5px;
+    margin-left: 0.5%;
+    width: 24%;
+    justify-content: space-between;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+#navPlayButton {
+    display: flex;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background: #1ed760;
+}
+
+#navPlayButton:hover {
+    transform: scale(1.05)
+}
+
+#navPlayButton:hover > .playIcon {
+    transform: scale(1.05)
+}
+
+#navPlayIcon {
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-left: 10px solid white;
+    border-bottom: 7px solid transparent;
+    margin-left: 17px;
+    margin-top: 14px;
+}
+
+#navPauseIcon {
+    width: 4px;
+    height: 12px;
+    border-right: 3.5px solid white;
+    border-left: 3.5px solid white;
+    margin: auto;
+}
+
+
 .navHistory {
     margin-left: 1.5vw;
     display: flex;
-    width: 7vw;
+    width: 8%;
     justify-content: space-evenly;
 }
 
@@ -497,6 +547,7 @@ body {
     left: 0;
     top: 0;
     width: 15vw;
+    min-width: 215px;
     height: 100vh;
     background: black;
     cursor: default;
@@ -1017,9 +1068,10 @@ td {
     flex-wrap: wrap;
     cursor: default;
     margin-left: 15vw;
-    width: 85vw; 
+    width: 85vw;
+    min-width: 1000px; 
     padding-top: 75px;
-    height: 60vh;
+    height: 436px;
 }
 
 .headerBody {
@@ -1031,6 +1083,7 @@ td {
 
 .headerControls {
     height: 15vh;
+    min-height: 110px;
     margin-left: 1.5vw;
     display: flex;
 }

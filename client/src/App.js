@@ -13,6 +13,7 @@ import { useState, useEffect } from 'react'
 import { AuthContext } from './AuthContext'
 import { ThemeContext } from './ThemeContext'
 import { UserContext } from './UserContext'
+import { PageContext } from './PageContext'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
 import Layout from './Layout'
@@ -29,6 +30,9 @@ function App() {
 
   const [currentTheme, setCurrentTheme] = useState('0, 0, 0')
   const theme = {currentTheme, setCurrentTheme}
+
+  const [currentPage, setCurrentPage] = useState('')
+  const page = {currentPage, setCurrentPage}
 
   useEffect(() => {
     if (!code) return
@@ -72,6 +76,7 @@ function App() {
       <AuthContext.Provider value={accessToken}>
       <ThemeContext.Provider value={theme}>
       <UserContext.Provider value={user}>
+      <PageContext.Provider value={page}>
         <Layout>
         <Route path='/' exact component={(accessToken)? Dashboard : Login} />
         <Route path='/search' component={Search} />
@@ -84,6 +89,7 @@ function App() {
         <Route path="/collection/albums" component={CollectionAlbum} />
         <Route path="/collection/tracks" component={CollectionTrack} />
         </Layout>
+      </PageContext.Provider>
       </UserContext.Provider>
       </ThemeContext.Provider>
       </AuthContext.Provider>
