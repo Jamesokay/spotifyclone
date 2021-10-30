@@ -1,56 +1,37 @@
 import { useContext } from 'react'
-// import { TrackContext } from './TrackContext'
 import { AuthContext } from './AuthContext'
 import playTrack from './playTrack'
 
-export default function TracksTable({content, dispatch, page}) {
+export default function TracksTable({content, page}) {
 
-//    const testContextFunc = useContext(TrackContext)
     const accessToken = useContext(AuthContext)
+    // const [scroll, setScroll] = useState(0)
+    // const tableTop = document.getElementById('page').offsetTop
+    // const tableHead = document.getElementsByTagName('th')
 
-    // function trackChange(trackUri, albumUri) {
-          
-    //   let data = {
-    //     context_uri: albumUri,
-    //     offset: { uri: trackUri }
+    // useEffect(() => {
+    //   if (!tableTop) return
+    //   if (!tableHead) return
+
+    //   if (scroll >= (tableTop - 61)) {
+    //     for (var i = 0; i < tableHead.length; i++) {
+    //       tableHead[i].style.backgroundColor = 'red';
+    //     }
     //   }
+    //   else {
+    //     for (var j = 0; j < tableHead.length; j++) {
+    //       tableHead[j].style.backgroundColor = 'transparent';
+    //     }
+    //   }
+    // }, [tableTop, scroll, tableHead])
 
-    //       const options = {
-    //           url: 'https://api.spotify.com/v1/me/player/play',
-    //           method: 'PUT',
-    //           headers: {
-    //               'Authorization': `Bearer ${accessToken}`,
-    //               'Content-Type': 'application/json',
-    //           },
-    //           data
-    //       }
-
-    //       console.log(options)
-
-    //       axios(options)
-    //       .then(response => {
-    //         console.log(response)
-    //       })
-    //       .catch(error => {
-    //         console.log(error)
-    //       })
- 
+    // function test() {
+    //   setScroll(window.pageYOffset)
+          
     // }
 
-    function pageChange(pageType, pageId) {
-        if (pageType === 'artist') {
-          dispatch({
-            type: 'ARTIST_PAGE',
-            id: pageId
-          })
-        }
-        else if (pageType === 'album') {
-          dispatch({
-            type: 'ALBUM_PAGE',
-            id: pageId
-          })
-        }
-      }
+    // window.addEventListener('scroll', test)
+
 
 
     if (page === 'artist') {
@@ -101,7 +82,7 @@ export default function TracksTable({content, dispatch, page}) {
                     <p className='tableTrackName'>{cont.name}</p>                     
                       {cont.artists.map((artist, index, artists) => 
                       <span key={artist.id} >                 
-                        <span className='tableLink' onClick={() => pageChange('artist', artist.id)}>{artist.name}</span>
+                        <span className='tableLink'>{artist.name}</span>
                         {(index < artists.length - 1)?
                         <span>, </span>
                         :
@@ -149,7 +130,7 @@ export default function TracksTable({content, dispatch, page}) {
                     <p className='tableTrackName'>{cont.name}</p> 
                     {cont.artists.map((artist, index, artists) => 
                       <span key={artist.id} >                 
-                        <span className='tableLink' onClick={() => pageChange('artist', artist.id)}>{artist.name}</span>
+                        <span className='tableLink'>{artist.name}</span>
                         {(index < artists.length - 1)?
                         <span>, </span>
                         :
@@ -158,7 +139,7 @@ export default function TracksTable({content, dispatch, page}) {
                       </span>
                       )}
                   </td>
-                  <td style={{width: '505px'}}><span className='tableLink' onClick={() => pageChange('album', cont.albumId)}>{cont.albumName}</span></td>
+                  <td style={{width: '505px'}}><span className='tableLink'>{cont.albumName}</span></td>
                   <td className='rowLast'>{cont.duration}</td>
                 </tr>
               )}
@@ -182,7 +163,7 @@ export default function TracksTable({content, dispatch, page}) {
           <p className='tableTrackName'>{cont.name}</p>
           {cont.artists.map((artist, index, artists) => 
                 <span key={artist.id} >                 
-                <span className='tableLink' onClick={() => pageChange('artist', artist.id)}>{artist.name}</span>
+                <span className='tableLink'>{artist.name}</span>
                 {(index < artists.length - 1)?
                 <span>, </span>
                 :
@@ -223,7 +204,7 @@ export default function TracksTable({content, dispatch, page}) {
             <p className='tableTrackName'>{cont.name}</p>
             {cont.artists.map((artist, index, artists) => 
                   <span key={artist.id} >                 
-                  <span className='tableLink' onClick={() => pageChange('artist', artist.id)}>{artist.name}</span>
+                  <span className='tableLink'>{artist.name}</span>
                   {(index < artists.length - 1)?
                   <span>, </span>
                   :

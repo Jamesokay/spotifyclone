@@ -30,12 +30,11 @@ export default function NavBar() {
     }, [alpha])
 
 
-
     
 
     function test() {
         var ypos = (window.pageYOffset / 100)
-        setAlpha(ypos.toFixed(2))
+        setAlpha(ypos.toFixed(2))     
       }
   
       window.addEventListener('scroll', test)
@@ -60,10 +59,10 @@ export default function NavBar() {
         </div>
         
         <div id='navCurrentPage'>
-        <div id='navPlayButton'>
+          <div id='navPlayButton'>
             <div id='navPlayIcon'></div>
-        </div>
-        <span id='navCurrentTitle'>{currentPage}</span>
+          </div>
+          <span id='navCurrentTitle'>{currentPage}</span>
         </div>
 
         <div id='user'>

@@ -27,6 +27,8 @@ export default function PlaylistPage({ location }) {
     const [recommendations, setRecommendations] = useState([])
     const [isOwner, setIsOwner] = useState(false)
     const [paused, setPaused] = useState(true)
+    
+
 
 
     useEffect(() => {
@@ -226,8 +228,7 @@ export default function PlaylistPage({ location }) {
 
   }
 
-  // isOwner logic, render conditionally based on that
-  // somehow discern whether new PL
+ 
     return (
       <div>
       <HeaderPanel content={playlist} creators={creator} />
@@ -251,7 +252,7 @@ export default function PlaylistPage({ location }) {
         :
         <div></div>              
       }
-      <div className='page'>
+      <div id='page'>
         {(tracks.length !== 0)?      
           <TracksTable content={tracks} page='playlist' />
           :
