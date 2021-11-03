@@ -951,18 +951,22 @@ li:hover .sideBarImg {
 }
 
 .trackTable {
-    width: 80vw;
-    margin-left: 1.25vw;
+    width: 85vw;
     font-family: Arial, sans-serif;
     cursor: default;
     font-size: 11pt;    
+}
+
+.empty {
+    width: 2.5vw;
+    border-bottom: none;
 }
 
 
 #tableHeader {
     width: 100%;
     height: 1px;
-    background-color: violet;
+    background-color: transparent;
 } 
 
 #tableTop {
@@ -990,7 +994,7 @@ th {
     letter-spacing: 1px;
     border-bottom: 1px solid rgb(105, 105, 105, 0.3);
     padding-top: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 6px;
 }
 
 
@@ -1091,6 +1095,10 @@ td {
 .trackTableRow:hover {
     color: white;
     background: #212121;
+}
+
+.trackTableRow:hover .emptyCell{
+    visibility: hidden;
 }
 
 
