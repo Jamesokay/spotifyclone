@@ -22,19 +22,11 @@ export default function TracksTable({content, page}) {
         }
     
         function navTableHead(entries) {
-          if (entries[0].isIntersecting) {
-            tableTop.style.backgroundColor = 'transparent'
+          if (entries[0].isIntersecting) {           
             setScrolling(false)
-            // for (let i = 0; i < 2; i++) {
-            //   tableTopEdges[i].style.borderBottom = 'none'
-            // }
           }
-          else {
-            tableTop.style.backgroundColor = '#212121'
+          else {           
             setScrolling(true)
-            // for (let i = 0; i < 2; i++) {
-            //   tableTopEdges[i].style.borderBottom = '1px solid rgb(105, 105, 105, 0.3)'
-            // }
           }
         }
      
@@ -75,11 +67,15 @@ export default function TracksTable({content, page}) {
            <div id='tableHeader'></div>
             <table className='trackTable' cellSpacing='0' cellPadding='0'>
             <thead>
-              <tr id='tableTop'>
+              <tr id='tableTop' style={(scrolling)? {backgroundColor:'#212121'} : {backgroundColor: 'transparent'}}>
                 <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
                 <th style={{textAlign: 'center'}}>#</th>
                 <th>TITLE</th>
-                <th>TIME</th>
+                <th>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M7.999 3H6.999V7V8H7.999H9.999V7H7.999V3ZM7.5 0C3.358 0 0 3.358 0 7.5C0 11.642 3.358 15 7.5 15C11.642 15 15 11.642 15 7.5C15 3.358 11.642 0 7.5 0ZM7.5 14C3.916 14 1 11.084 1 7.5C1 3.916 3.916 1 7.5 1C11.084 1 14 3.916 14 7.5C14 11.084 11.084 14 7.5 14Z" fill="currentColor"></path>
+                  </svg>
+                </th>
                 <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
               </tr>
               </thead>
@@ -126,13 +122,17 @@ export default function TracksTable({content, page}) {
             <div id='tableHeader'></div>
             <table className='trackTable' cellSpacing='0' cellPadding='0'>
               <thead>
-                <tr id='tableTop'>
+                <tr id='tableTop' style={(scrolling)? {backgroundColor:'#212121'} : {backgroundColor: 'transparent'}}>
                 <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
                 <th style={{textAlign: 'center'}}>#</th>
                 <th>TITLE</th>
                 <th></th>
                 <th>ALBUM</th>
-                <th>TIME</th>
+                <th>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M7.999 3H6.999V7V8H7.999H9.999V7H7.999V3ZM7.5 0C3.358 0 0 3.358 0 7.5C0 11.642 3.358 15 7.5 15C11.642 15 15 11.642 15 7.5C15 3.358 11.642 0 7.5 0ZM7.5 14C3.916 14 1 11.084 1 7.5C1 3.916 3.916 1 7.5 1C11.084 1 14 3.916 14 7.5C14 11.084 11.084 14 7.5 14Z" fill="currentColor"></path>
+                </svg>
+                </th>
                 <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
                 </tr>
               </thead>
