@@ -40,8 +40,10 @@ export default function NavBar() {
       window.addEventListener('scroll', test)
 
 
+
     return (
-        <div className='navBar' style={{backgroundColor: 'rgba(' + currentTheme + ', ' + alpha + ')'}}>
+    
+        <div id='navBar' style={{backgroundColor: 'rgba(' + currentTheme + ', ' + alpha + ')'}}>
 
         <div className='navHistory'>
         <div className='navButton' onClick={() => history.goBack()}>
@@ -73,5 +75,6 @@ export default function NavBar() {
         </svg>
         </div>
         </div>
+      
     )
 }

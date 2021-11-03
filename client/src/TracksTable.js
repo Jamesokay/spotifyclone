@@ -1,36 +1,39 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { AuthContext } from './AuthContext'
 import playTrack from './playTrack'
 
 export default function TracksTable({content, page}) {
 
     const accessToken = useContext(AuthContext)
-    // const [scroll, setScroll] = useState(0)
-    // const tableTop = document.getElementById('page').offsetTop
-    // const tableHead = document.getElementsByTagName('th')
+    const tableTop = document.getElementById('tableTop')
 
-    // useEffect(() => {
-    //   if (!tableTop) return
-    //   if (!tableHead) return
 
-    //   if (scroll >= (tableTop - 61)) {
-    //     for (var i = 0; i < tableHead.length; i++) {
-    //       tableHead[i].style.backgroundColor = 'red';
-    //     }
-    //   }
-    //   else {
-    //     for (var j = 0; j < tableHead.length; j++) {
-    //       tableHead[j].style.backgroundColor = 'transparent';
-    //     }
-    //   }
-    // }, [tableTop, scroll, tableHead])
 
-    // function test() {
-    //   setScroll(window.pageYOffset)
+      useEffect(() => {
+        if (!tableTop) return
+
+        let options = {
+          root: null,
+          rootMargin: '-8% 0% 0% 0%',
+          threshold: [0, 1]
+        }
+    
+        function navTableHead(entries) {
+          if (entries[0].isIntersecting) {
+            tableTop.style.backgroundColor = 'transparent'
+          }
+          else {
+            tableTop.style.backgroundColor = 'red'
+          }
+        }
+     
+          let observer = new IntersectionObserver(navTableHead, options)
+          let target = document.getElementById('tableHeader')
           
-    // }
 
-    // window.addEventListener('scroll', test)
+        observer.observe(target)
+      }, [tableTop])
+
 
 
 
@@ -101,9 +104,11 @@ export default function TracksTable({content, page}) {
     }
     else if (page === 'playlist') {
         return (
+          <div>
+            <div id='tableHeader'></div>
             <table className='trackTable' cellSpacing='0' cellPadding='0'>
               <thead>
-                <tr>
+                <tr id='tableTop'>
                 <th style={{textAlign: 'center'}}>#</th>
                 <th>TITLE</th>
                 <th></th>
@@ -145,6 +150,7 @@ export default function TracksTable({content, page}) {
               )}
               </tbody>
             </table>
+          </div>
         )
     }
     else if (page === 'playlistRecommend') {

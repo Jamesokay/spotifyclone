@@ -170,7 +170,7 @@ export default function AlbumPage({ location }) {
         <div>
         <HeaderPanel content={album} creators={creatorObject} />
         <div className='pageContainer'>
-        <div className='headerControls'>
+        <div id='headerControls'>
           <div className='headerPlayButton'
                onClick={() => {
                    (paused)?

@@ -27,9 +27,6 @@ export default function PlaylistPage({ location }) {
     const [recommendations, setRecommendations] = useState([])
     const [isOwner, setIsOwner] = useState(false)
     const [paused, setPaused] = useState(true)
-    
-
-
 
     useEffect(() => {
         if (!accessToken) return
@@ -189,9 +186,9 @@ export default function PlaylistPage({ location }) {
       
     }, [accessToken, user, creator, tracks])
 
-    useEffect(() => {
-      console.log(isOwner)
-    }, [isOwner])
+    // useEffect(() => {
+    //   console.log(isOwner)
+    // }, [isOwner])
 
     function getSeeds(array) {
       if (array.length > 5) {
@@ -234,7 +231,7 @@ export default function PlaylistPage({ location }) {
       <HeaderPanel content={playlist} creators={creator} />
       <div className='pageContainer'>
       {(tracks.length !== 0)?
-      <div className='headerControls'> 
+      <div id='headerControls'> 
         <div className='headerPlayButton'
                onClick={() => {
                    (paused)?
