@@ -71,12 +71,16 @@ export default function TracksTable({content, page}) {
     }
     else if (page === 'album') {
         return (
+          <div>
+           <div id='tableHeader'></div>
             <table className='trackTable' cellSpacing='0' cellPadding='0'>
             <thead>
-              <tr>
+              <tr id='tableTop'>
+                <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
                 <th style={{textAlign: 'center'}}>#</th>
                 <th>TITLE</th>
                 <th>TIME</th>
+                <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
               </tr>
               </thead>
               <tbody>
@@ -85,6 +89,7 @@ export default function TracksTable({content, page}) {
               </tr>
               {content.map(cont =>
                 <tr className='trackTableRow' key={cont.id}>
+                <td className='emptyCell'></td>
                   <td className='rowFirst'>
                     <span className='tableIndex'>{cont.num}</span>
                     <div className='tablePlayIcon'
@@ -107,10 +112,12 @@ export default function TracksTable({content, page}) {
                     
                   </td>
                   <td className='rowLast'>{cont.duration}</td>
+                  <td className='emptyCell'></td>
                 </tr>
                )}
                </tbody>
             </table>
+          </div>
         )
     }
     else if (page === 'playlist') {

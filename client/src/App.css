@@ -1114,7 +1114,7 @@ td {
 }
 
 .headerBody {
-    margin-left: 1.5vw;
+    margin-left: 2.5vw;
     width: 92.5vw;
     height: 232px;
     position: relative;
@@ -1123,7 +1123,7 @@ td {
 #headerControls {
     height: 15vh;
     min-height: 110px;
-    margin-left: 1.5vw;
+    margin-left: 2.5vw;
     display: flex;
 }
 
