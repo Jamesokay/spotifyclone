@@ -5,14 +5,14 @@ import playTrack from './playTrack'
 export default function TracksTable({content, page}) {
 
     const accessToken = useContext(AuthContext)
-    const tableTop = document.getElementById('tableTop')
+//    const tableTop = document.getElementById('tableTop')
 //    const tableTopEdges = document.getElementsByClassName('empty')
     const [scrolling, setScrolling] = useState(false)
 
 
 
       useEffect(() => {
-        if (!tableTop) return
+ //       if (!tableTop) return
  //       if (!tableTopEdges) return
 
         let options = {
@@ -35,13 +35,15 @@ export default function TracksTable({content, page}) {
           
 
         observer.observe(target)
-      }, [tableTop])
+      }, [])
 
 
 
 
     if (page === 'artist') {
         return (
+          <div>
+            <div id='tableHeader'></div>        
             <table className='trackTable' cellSpacing='0' cellPadding='0'>
             <tbody>
             {content.map(cont =>
@@ -59,6 +61,7 @@ export default function TracksTable({content, page}) {
             )}
             </tbody>
             </table>
+          </div>
         )
     }
     else if (page === 'album') {
@@ -218,6 +221,8 @@ export default function TracksTable({content, page}) {
   }
     else if (page === 'search') {
       return (
+       <div>
+        <div id='tableHeader'></div>
         <table className='trackTable' cellSpacing='0' cellPadding='0'>
           <tbody>
           {content.map(cont =>
@@ -246,6 +251,8 @@ export default function TracksTable({content, page}) {
           )}
           </tbody>
         </table>
+
+        </div>
       )
     }
 }

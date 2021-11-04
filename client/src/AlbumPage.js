@@ -125,7 +125,6 @@ export default function AlbumPage({ location }) {
             console.log(error)
         })
 
-        return setMoreByArtist([])
 
     }, [accessToken, artistId, albumName])
 
@@ -185,7 +184,7 @@ export default function AlbumPage({ location }) {
             }
           </div>
         </div>
-        <div className='page'>
+        <div id='page'>
           <TracksTable content={tracks} page='album' />
           <p><span className='panelTitle'>{'More by ' + artistName}</span></p>
           <Panel content={moreByArtist.slice(0, 5)} /> 

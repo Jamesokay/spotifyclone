@@ -4,6 +4,7 @@ import { ThemeContext } from './ThemeContext'
 import { UserContext } from './UserContext'
 import { PageContext } from './PageContext'
 import defaultUser from './defaultUser.png'
+import { useLocation } from 'react-router-dom'
 
 
 export default function NavBar() {
@@ -13,6 +14,8 @@ export default function NavBar() {
     const user = useContext(UserContext)
     const { currentPage } = useContext(PageContext)
     const [name, setName] = useState('')
+    const location = useLocation()
+    const [navPlayer, setNavPlayer] = useState(false)
 
     useEffect(() => {
        if (!user) return
@@ -21,16 +24,23 @@ export default function NavBar() {
     }, [user])
 
     useEffect(() => {
+      if (location.pathname === '/') {
+        setNavPlayer(false)
+      }
+      else {
+        setNavPlayer(true)
+      }
+    }, [location])
+
+    useEffect(() => {
+      if (!navPlayer) return
         if (alpha >= 2.5) {
           document.getElementById('navCurrentPage').style.opacity = 1
         }
         else {
           document.getElementById('navCurrentPage').style.opacity = 0
         }
-    }, [alpha])
-
-
-    
+    }, [alpha, navPlayer])
 
     function test() {
         var ypos = (window.pageYOffset / 100)
@@ -60,12 +70,16 @@ export default function NavBar() {
         </div>
         </div>
         
+        {(navPlayer)?
         <div id='navCurrentPage'>
           <div id='navPlayButton'>
             <div id='navPlayIcon'></div>
           </div>
           <span id='navCurrentTitle'>{currentPage}</span>
         </div>
+        :
+        <div></div>
+        }
 
         <div id='user'>
             <img id='userImg' src={defaultUser} alt=''></img>

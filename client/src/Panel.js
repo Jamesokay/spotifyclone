@@ -33,7 +33,7 @@ const accessToken = useContext(AuthContext)
             <span className='cardTitle'>{cont.name}</span>
             <br /> 
             <span className='cardSub'>        
-            {(cont.type === 'album' && !cont.onAlbumPage)?
+            {(cont.type === 'album' && !cont.onAlbumPage && !cont.onArtistPage)?
             cont.artists.map((artist, index, artists) =>
             <span key={artist.id}>
               <span className='cardSubLink'>{artist.name}</span>
