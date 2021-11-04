@@ -125,6 +125,8 @@ export default function AlbumPage({ location }) {
             console.log(error)
         })
 
+        return setMoreByArtist([])
+
 
     }, [accessToken, artistId, albumName])
 

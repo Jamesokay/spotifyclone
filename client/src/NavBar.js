@@ -18,29 +18,21 @@ export default function NavBar() {
     const [navPlayer, setNavPlayer] = useState(false)
 
     useEffect(() => {
-       if (!user) return
-       setName(user.display_name)
-        
-    }, [user])
-
-    useEffect(() => {
       if (location.pathname === '/') {
         setNavPlayer(false)
       }
       else {
         setNavPlayer(true)
       }
+
     }, [location])
 
     useEffect(() => {
-      if (!navPlayer) return
-        if (alpha >= 2.5) {
-          document.getElementById('navCurrentPage').style.opacity = 1
-        }
-        else {
-          document.getElementById('navCurrentPage').style.opacity = 0
-        }
-    }, [alpha, navPlayer])
+       if (!user) return
+       setName(user.display_name)
+        
+    }, [user])
+
 
     function test() {
         var ypos = (window.pageYOffset / 100)
@@ -71,7 +63,7 @@ export default function NavBar() {
         </div>
         
         {(navPlayer)?
-        <div id='navCurrentPage'>
+        <div id='navCurrentPage' style={(alpha >= 2.5)? {opacity: '1'}:{opacity: '0'}}>
           <div id='navPlayButton'>
             <div id='navPlayIcon'></div>
           </div>

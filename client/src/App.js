@@ -18,7 +18,7 @@ import axios from 'axios'
 import { Route } from 'react-router-dom'
 import Layout from './Layout'
 import CollectionTrack from './CollectionTrack'
-// import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
 
   const [currentPage, setCurrentPage] = useState('')
   const page = {currentPage, setCurrentPage}
-//  const { pathname } = useLocation()
+  const { pathname } = useLocation()
 
 
   useEffect(() => {
@@ -74,9 +74,9 @@ function App() {
 
   }, [accessToken])
 
-  // useEffect(() => {
-  //   setCurrentPage('')
-  // }, [pathname])
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
   
 
     return (
