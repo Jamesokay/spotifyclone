@@ -1,19 +1,16 @@
 import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from './AuthContext'
 import playTrack from './playTrack'
+import { useHistory } from 'react-router-dom'
 
 export default function TracksTable({content, page}) {
 
     const accessToken = useContext(AuthContext)
-//    const tableTop = document.getElementById('tableTop')
-//    const tableTopEdges = document.getElementsByClassName('empty')
+    const history = useHistory()
     const [scrolling, setScrolling] = useState(false)
 
 
-
       useEffect(() => {
- //       if (!tableTop) return
- //       if (!tableTopEdges) return
 
         let options = {
           root: null,
@@ -100,7 +97,16 @@ export default function TracksTable({content, page}) {
                     <p className='tableTrackName'>{cont.name}</p>                     
                       {cont.artists.map((artist, index, artists) => 
                       <span key={artist.id} >                 
-                        <span className='tableLink'>{artist.name}</span>
+                        <span className='tableLink'
+                            onClick={(e) => {
+                             e.preventDefault()
+                             history.push({
+                               pathname: `/artist/${artist.id}`,
+                               search: '', 
+                               state: artist.id
+                             })
+                          }}
+                        >{artist.name}</span>
                         {(index < artists.length - 1)?
                         <span>, </span>
                         :
@@ -159,7 +165,15 @@ export default function TracksTable({content, page}) {
                     <p className='tableTrackName'>{cont.name}</p> 
                     {cont.artists.map((artist, index, artists) => 
                       <span key={artist.id} >                 
-                        <span className='tableLink'>{artist.name}</span>
+                        <span className='tableLink'
+                              onClick={(e) => {
+                                e.preventDefault()
+                                history.push({
+                                  pathname: `/artist/${artist.id}`,
+                                  search: '', 
+                                  state: artist.id
+                                })
+                              }}>{artist.name}</span>
                         {(index < artists.length - 1)?
                         <span>, </span>
                         :
@@ -168,7 +182,17 @@ export default function TracksTable({content, page}) {
                       </span>
                       )}
                   </td>
-                  <td style={{width: '505px'}}><span className='tableLink'>{cont.albumName}</span></td>
+                  <td style={{width: '505px'}}>
+                    <span className='tableLink'
+                          onClick={(e) => {
+                             e.preventDefault()
+                             history.push({
+                               pathname: `/album/${cont.albumId}`,
+                               search: '', 
+                               state: cont.albumId
+                             })
+                          }}>{cont.albumName}</span>
+                  </td>
                   <td className='rowLast'>{cont.duration}</td>
                   <td className='emptyCell'></td>
                 </tr>
@@ -237,7 +261,16 @@ export default function TracksTable({content, page}) {
             <p className='tableTrackName'>{cont.name}</p>
             {cont.artists.map((artist, index, artists) => 
                   <span key={artist.id} >                 
-                  <span className='tableLink'>{artist.name}</span>
+                  <span className='tableLink'
+                        onClick={(e) => {
+                             e.preventDefault()
+                             history.push({
+                               pathname: `/artist/${artist.id}`,
+                               search: '', 
+                               state: artist.id
+                             })
+                        }}
+                  >{artist.name}</span>
                   {(index < artists.length - 1)?
                   <span>, </span>
                   :

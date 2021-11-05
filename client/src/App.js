@@ -34,7 +34,11 @@ function App() {
 
   const [currentPage, setCurrentPage] = useState('')
   const page = {currentPage, setCurrentPage}
-  const { pathname } = useLocation()
+  
+//  const [navPlayerShow, setNavPlayerShow] = useState(false)
+//  const navPlayer = {navPlayerShow, setNavPlayerShow}
+  
+  const location = useLocation()
 
 
   useEffect(() => {
@@ -76,7 +80,15 @@ function App() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [pathname])
+
+    // if (location.pathname === '/playlist/' + location.state || location.pathname === '/album/' + location.state) {
+    //   setNavPlayerShow(true)
+    // }
+    // else {
+    //   setNavPlayerShow(false)
+    // }
+    
+  }, [location])
   
 
     return (
@@ -84,6 +96,7 @@ function App() {
       <ThemeContext.Provider value={theme}>
       <UserContext.Provider value={user}>
       <PageContext.Provider value={page}>
+      
         <Layout>
         <Route path='/' exact component={(accessToken)? Dashboard : Login} />
         <Route path='/search' component={Search} />
@@ -96,6 +109,7 @@ function App() {
         <Route path="/collection/albums" component={CollectionAlbum} />
         <Route path="/collection/tracks" component={CollectionTrack} />
         </Layout>
+
       </PageContext.Provider>
       </UserContext.Provider>
       </ThemeContext.Provider>

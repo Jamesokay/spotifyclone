@@ -2,10 +2,12 @@ import { useContext } from 'react'
 import { AuthContext } from './AuthContext'
 import playTrack from './playTrack'
 import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 export default function Panel({ content, panelVariant }) {
   
 const accessToken = useContext(AuthContext)
+const history = useHistory()
     
     return (
         <div style={(panelVariant)? 
@@ -36,7 +38,14 @@ const accessToken = useContext(AuthContext)
             {(cont.type === 'album' && !cont.onAlbumPage && !cont.onArtistPage)?
             cont.artists.map((artist, index, artists) =>
             <span key={artist.id}>
-              <span className='cardSubLink'>{artist.name}</span>
+              <span className='cardSubLink' onClick={(e) => {
+                e.preventDefault()
+                history.push({
+                  pathname: `/artist/${artist.id}`,
+                  search: '', 
+                  state: artist.id
+                })
+              }}>{artist.name}</span>
               {(index < artists.length - 1)?
               <span className='cardPunc'>, </span>
               :

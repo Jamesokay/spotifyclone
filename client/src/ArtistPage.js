@@ -4,6 +4,8 @@ import Panel from './Panel'
 import getDataObject from './getDataObject'
 import TracksTable from './TracksTable'
 import { AuthContext } from './AuthContext'
+import { PageContext } from './PageContext'
+import { ThemeContext } from './ThemeContext'
 import toMinsSecs from './toMinsSecs'
 
 
@@ -19,6 +21,8 @@ export default function ArtistPage({ location }) {
     const [artistAlbumsRaw, setArtistAlbumsRaw] = useState([])
     const [artistTracks, setArtistTracks] = useState([])
     const [alsoLike, setAlsoLike] = useState([])
+    const { setCurrentPage } = useContext(PageContext)
+    const { setCurrentTheme } = useContext(ThemeContext)
 
     // function expandPanel(title, content) {
     //     dispatch({
@@ -63,9 +67,12 @@ export default function ArtistPage({ location }) {
     useEffect(() => {
         if (!accessToken) return
 
+        setCurrentTheme('0, 0, 0')
+
         spotifyApi.getArtist(id)
         .then(data =>{
             setArtistName(data.body.name)
+            setCurrentPage(data.body.name)
 //            setArtistImage(data.body.images[0].url)
         })
         .catch(error => {
@@ -110,7 +117,7 @@ export default function ArtistPage({ location }) {
         })
       
 
-    }, [accessToken, id])
+    }, [accessToken, id, setCurrentPage, setCurrentTheme])
 
     useEffect(() => {
         if (!accessToken) return

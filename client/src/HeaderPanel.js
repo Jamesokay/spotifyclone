@@ -14,7 +14,10 @@ export default function HeaderPanel({ content, creators }) {
     const user = useContext(UserContext)
     const [isOwner, setIsOwner] = useState(false)
 
-    
+    useEffect(() => {
+      if (!content.title) return
+      setCurrentPage(content.title)
+    }, [content, content.title, setCurrentPage])
     
     useEffect(() => {
       if (!content.title) return
@@ -46,10 +49,7 @@ export default function HeaderPanel({ content, creators }) {
 
     }, [creators, content.title, user])
 
-    useEffect(() => {
-      if (!content.title) return
-      setCurrentPage(content.title)
-    }, [content, content.title, setCurrentPage])
+
 
 
     

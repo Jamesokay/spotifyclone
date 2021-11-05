@@ -461,6 +461,7 @@ body {
     letter-spacing: -0.5px;
     margin-left: 0.5%;
     opacity: 0;
+    transition: opacity 0.2s ease-in-out;
 }
 
 #navPlayButton {

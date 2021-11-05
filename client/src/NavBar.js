@@ -14,32 +14,30 @@ export default function NavBar() {
     const user = useContext(UserContext)
     const { currentPage } = useContext(PageContext)
     const [name, setName] = useState('')
+    const [navPlayerShow, setNavPlayerShow] = useState(false)
     const location = useLocation()
-    const [navPlayer, setNavPlayer] = useState(false)
 
+    
     useEffect(() => {
       if (location.pathname === '/') {
-        setNavPlayer(false)
+        setNavPlayerShow(false)
       }
       else {
-        setNavPlayer(true)
+        setNavPlayerShow(true)
       }
-
-    }, [location])
+    }, [location, setNavPlayerShow])
 
     useEffect(() => {
        if (!user) return
-       setName(user.display_name)
-        
+       setName(user.display_name)      
     }, [user])
-
 
     function test() {
         var ypos = (window.pageYOffset / 100)
         setAlpha(ypos.toFixed(2))     
-      }
+    }
   
-      window.addEventListener('scroll', test)
+    window.addEventListener('scroll', test)
 
 
 
@@ -62,7 +60,7 @@ export default function NavBar() {
         </div>
         </div>
         
-        {(navPlayer)?
+        {(navPlayerShow)?
         <div id='navCurrentPage' style={(alpha >= 2.5)? {opacity: '1'}:{opacity: '0'}}>
           <div id='navPlayButton'>
             <div id='navPlayIcon'></div>

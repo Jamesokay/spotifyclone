@@ -3,6 +3,7 @@ import useInterval from './useInterval'
 import toMinsSecs from './toMinsSecs'
 import { AuthContext } from './AuthContext'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 const track = {
   name: "",
@@ -295,22 +296,6 @@ export default function WebPlayer() {
   
 
 
-
-  // function pageChange(pageType, pageId) {
-  //   if (pageType === 'artist') {
-  //     dispatch({
-  //       type: 'ARTIST_PAGE',
-  //       id: pageId
-  //     })
-  //   }
-  //   else if (pageType === 'album') {
-  //     dispatch({
-  //       type: 'ALBUM_PAGE',
-  //       id: pageId
-  //     })
-  //   }
-  // }
-
  if (currentTrack.name) {
   return (
 
@@ -372,7 +357,9 @@ export default function WebPlayer() {
         <div className='trackArtists'>
           {currentTrack.artists.map((artist, index, artists) => 
              <span key={artist.uri}>
+             <Link style={{textDecoration: 'none'}} to={{pathname: `/artist/${artist.uri.slice(15)}`, state: artist.uri.slice(15) }}>
                 <span className='playingTrackArtist'>{artist.name}</span>
+              </Link>
                 {(index < artists.length - 1)?
                   <span className='playerPunc'>, </span>
                   :
