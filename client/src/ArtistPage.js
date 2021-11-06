@@ -71,6 +71,7 @@ export default function ArtistPage({ location }) {
 
         spotifyApi.getArtist(id)
         .then(data =>{
+            console.log(data.body)
             setArtistName(data.body.name)
             setCurrentPage(data.body.name)
 //            setArtistImage(data.body.images[0].url)
@@ -115,6 +116,13 @@ export default function ArtistPage({ location }) {
         .catch(error => {
           console.log(error)
         })
+
+        return function cleanUp() {
+            setArtistName('')
+            setArtistAlbumsRaw([])
+            setArtistTracks([])
+            setAlsoLike([])
+        }
       
 
     }, [accessToken, id, setCurrentPage, setCurrentTheme])
@@ -135,16 +143,16 @@ export default function ArtistPage({ location }) {
 
     return (
           
-        <div id='artistPage'>
-            <span className='artistTitle'>{artistName}</span>
-
+        <div className='pageContainer'>
+            {/* <span className='artistTitle'>{artistName}</span> */}
+        <div style={{width: '100%', height: '436px'}}></div>
           
-        <div className='headerControls'>
+        <div id='headerControls'>
           <div className='headerPlayButton'>         
             <div className='headerPlayIcon'></div>
           </div>
         </div>
-          
+        <div id='page'>
           <p id='artistTableTitle'>Popular</p>
           <TracksTable content={artistTracks.slice(0, 5)} page='artist' />
           <p><span className='panelTitle'
@@ -152,6 +160,8 @@ export default function ArtistPage({ location }) {
           <Panel content={artistAlbumsRaw.slice(0, 5)} />
           <p><span className='panelTitle'>{'Similar to ' + artistName}</span></p>
           <Panel content={alsoLike.slice(0, 5)} /> 
-          </div>
+        </div>  
+        
+        </div>
     )
 }

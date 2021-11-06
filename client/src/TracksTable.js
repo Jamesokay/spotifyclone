@@ -41,10 +41,11 @@ export default function TracksTable({content, page}) {
         return (
           <div>
             <div id='tableHeader'></div>        
-            <table className='trackTable' cellSpacing='0' cellPadding='0'>
+            <table className='trackTableArtist' cellSpacing='0' cellPadding='0'>
             <tbody>
             {content.map(cont =>
               <tr className='trackTableRow' key={cont.id} style={{color: 'white'}}>
+              
                 <td className='rowFirst'>
                 <span className='tableIndex'>{cont.num}</span>
                 <div className='tablePlayIcon'
@@ -54,6 +55,7 @@ export default function TracksTable({content, page}) {
                 <td style={{width: '60px'}}><img className='tableImage' src={cont.trackImage} alt=''/></td>
                 <td>{cont.name}</td>
                 <td className='rowLast'>{cont.duration}</td>
+                
               </tr>
             )}
             </tbody>
