@@ -19,7 +19,7 @@ export default function NavBar() {
 
     
     useEffect(() => {
-      if (location.pathname === '/') {
+      if (location.pathname === '/' || location.pathname === '/search') {
         setNavPlayerShow(false)
       }
       else {

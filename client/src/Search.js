@@ -3,6 +3,7 @@ import Panel from './Panel'
 import getDataObject from './getDataObject'
 import toMinsSecs from './toMinsSecs'
 import { AuthContext } from './AuthContext'
+import { ThemeContext } from './ThemeContext'
 import TracksTable from './TracksTable'
 import axios from 'axios'
 
@@ -14,6 +15,14 @@ export default function Search() {
     const [trackResults, setTrackResults] = useState([])
     const [artistResults, setArtistResults] = useState([])
     const [albumResults, setAlbumResults] = useState([])
+    const [topResult, setTopResult] = useState({
+        name: '',
+        creator: '',
+        imgUrl: '',
+        type:''
+    })
+    const { setCurrentTheme } = useContext(ThemeContext)
+    setCurrentTheme('0,0,0')
 
 
     useEffect(()=> {
@@ -45,6 +54,12 @@ export default function Search() {
               }))
               setArtistResults(response.data.artists.items.map(getDataObject))
               setAlbumResults(response.data.albums.items.map(getDataObject))
+              setTopResult({
+                  name: response.data.albums.items[0].name,
+                  creator: response.data.albums.items[0].artists[0].name,
+                  imgUrl: response.data.albums.items[0].images[0].url,                  
+                  type: 'ALBUM'
+              })
           })
           .catch(error => {
             console.log(error)
@@ -69,10 +84,10 @@ export default function Search() {
             
             <div id='searchResultsHead'>
             <div id='topResult'>
-                <div id='topResultImage'></div>
-                <p id='topResultTitle'>Result Title</p>               
-                <span id='topResultSub'>Result subtitle</span>
-                <div id='topResultsType'><span>TYPE</span></div>
+                <img id='topResultImage' src={topResult.imgUrl} alt=''></img>
+                <p id='topResultTitle'>{topResult.name}</p>               
+                <span id='topResultSub'>{topResult.creator}</span>
+                <div id='topResultsType'><span>{topResult.type}</span></div>
             </div>
             <TracksTable content={trackResults.slice(0, 4)} page='search' />
             </div>

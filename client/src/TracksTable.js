@@ -162,7 +162,7 @@ export default function TracksTable({content, page}) {
                      offset: { uri: cont.uri }})}
                     ></div>
                   </td>
-                  <td className='tdReg'><img className='tableImage' src={cont.trackImage} alt='' /></td>
+                  <td className='tableImgCol tdReg'><img className='tableImage' src={cont.trackImage} alt='' /></td>
                   <td className='tdReg'>
                     <p className='tableTrackName'>{cont.name}</p> 
                     {cont.artists.map((artist, index, artists) => 
