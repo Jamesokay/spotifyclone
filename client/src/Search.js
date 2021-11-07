@@ -66,8 +66,18 @@ export default function Search() {
               />
             </form>
             <div id='searchResults'>
-            <p><span className='panelTitle'>Songs</span></p>
-            <TracksTable content={trackResults.slice(0, 5)} page='search' />
+            
+            <div id='searchResultsHead'>
+            <div id='topResult'>
+                <div id='topResultImage'></div>
+                <p id='topResultTitle'>Result Title</p>               
+                <span id='topResultSub'>Result subtitle</span>
+                <div id='topResultsType'><span>TYPE</span></div>
+            </div>
+            <TracksTable content={trackResults.slice(0, 4)} page='search' />
+            </div>
+
+
             <p><span className='panelTitle'>Artists</span></p>
             <Panel content={artistResults.slice(0, 5)} />
             <p><span className='panelTitle'>Albums</span></p>

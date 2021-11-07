@@ -551,8 +551,8 @@ body {
 }
 
 #searchPage {
-    margin-left: 17.5vw;
-    max-width: 80vw; 
+    margin-left: 15vw;
+    width: 85vw; 
     padding-bottom: 90px;
 }
 
@@ -957,6 +957,82 @@ li:hover .sideBarImg {
   padding-top: 7.5vh;
 }
 
+#searchResultsHead {
+    display: flex;
+    padding-top: 7.5vh;
+    min-width: 85vw;
+}
+
+#topResult {
+    background-color: #212121;
+    height: 230px;
+    width: 37.5%;
+    margin-left: 1.75vw;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+#topResult:hover {
+    background-color: #373737;
+}
+
+#topResultImage {
+    height: 95px;
+    width: 95px;
+    background-color: violet;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 5px 10px 2px #121212;
+}
+
+#topResultTitle {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    font-size: 20pt;
+    margin-left: 20px;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+#topResultSub {
+    font-family: Arial, Helvetica, sans-serif;
+    color: grey;
+    font-size: 12pt;
+    margin-left: 20px;
+    margin-right: 10px;
+    margin-top: 10px;
+    float: left;
+}
+
+#topResultsType {
+    margin-top: 5px;
+    border-radius: 20px;
+    width: auto;
+    float: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #121212;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12pt;
+}
+
+.trackTableSearch {
+    width: 690px;
+    font-family: Arial, sans-serif;
+    cursor: default;
+    font-size: 11pt;  
+    margin-left: 1.75vw; 
+}
+
+/* .trackTableSearchCell {
+   padding-top: 5px !important;
+   padding-bottom: 5px !important;
+} */
+
 .trackTable {
     width: 85vw;
     font-family: Arial, sans-serif;
@@ -1012,11 +1088,20 @@ th {
     padding-bottom: 6px;
 }
 
+.blankHead {
+    visibility: hidden;
+}
 
 
-td {
+
+.tdReg {
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+.tdSmall {
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .tableLink {
@@ -1036,9 +1121,9 @@ td {
 
 .searchTableImage {
     height: 40px; 
-    width: 40px;
-    margin-left: 10px; 
+    width: 40px; 
     object-fit: cover;
+    margin-top: 5px;
 }
 
 .trackTableRow:hover .searchTableImage {
@@ -1052,7 +1137,7 @@ td {
     border-left: 10px solid white;
     border-bottom: 7px solid transparent;
     position: absolute;
-    right: 27.5%;
+    left: 42.5%;
     top: 37.5%;
     visibility: hidden;
 }
@@ -1100,6 +1185,11 @@ td {
 .rowSecond {
     padding-left: 10px;
     width: 50%;
+}
+
+.rowSecondSearch {
+    padding-left: 10px;
+    width: 80%;
 }
 
 .rowLast {
