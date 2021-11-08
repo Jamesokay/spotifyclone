@@ -32,6 +32,10 @@ export default function TracksTable({content, page}) {
           
 
         observer.observe(target)
+
+        return function cleanUp() {
+          observer.disconnect()
+        }
       }, [])
 
 

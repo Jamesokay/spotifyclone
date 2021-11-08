@@ -22,7 +22,11 @@ export default function Search() {
         type:''
     })
     const { setCurrentTheme } = useContext(ThemeContext)
-    setCurrentTheme('0,0,0')
+
+    useEffect(() => {
+        setCurrentTheme('0,0,0')
+    }, [setCurrentTheme])
+    
 
 
     useEffect(()=> {
@@ -41,6 +45,7 @@ export default function Search() {
         
           axios(options)
           .then(response => {
+              console.log(response.data )
               setTrackResults(
                   response.data.tracks.items.map(item => {
                         return {
@@ -64,6 +69,13 @@ export default function Search() {
           .catch(error => {
             console.log(error)
           })
+
+        return function cleanUp() {
+            setTrackResults([])
+            setArtistResults([])
+            setAlbumResults([])
+            setTopResult({})
+        }
     }, [search, accessToken])
 
 
