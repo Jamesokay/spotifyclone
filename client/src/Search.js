@@ -25,6 +25,7 @@ export default function Search() {
     const { setCurrentTheme } = useContext(ThemeContext)
 
     const [userArtists, setUserArtists] = useState([])
+    const [featuringArtist, setFeaturingArtist] = useState([])
 
     useEffect(() => {
         setCurrentTheme('0,0,0')
@@ -152,11 +153,16 @@ export default function Search() {
                 }
             axios(options)
             .then(response => {
-                console.log(response.data.playlists.items.filter(item => item.owner.id === 'spotify'))
+                let playlists = response.data.playlists.items.filter(item => item.owner.id === 'spotify')
+                setFeaturingArtist(playlists.map(getDataObject))
             })
             .catch(error => {
                 console.log(error)
             })          
+        }
+
+        return function cleanUp() {
+            setFeaturingArtist([])
         }
 
     }, [topResult, accessToken])
@@ -179,15 +185,21 @@ export default function Search() {
             
             <div id='searchResultsHead'>
             <div id='topResult'>
-                <img id='topResultImage' src={topResult.imgUrl} alt=''></img>
+                <img id={(topResult.type === 'ARTIST')? 'topResultImageArtist' : 'topResultImage'} src={topResult.imgUrl} alt=''></img>
                 <p id='topResultTitle'>{topResult.name}</p>               
                 <span id='topResultSub'>{topResult.creator}</span>
                 <div id='topResultsType'><span>{topResult.type}</span></div>
             </div>
             <TracksTable content={trackResults.slice(0, 4)} page='search' />
             </div>
-
-
+            {(featuringArtist.length > 0)?
+            <div>
+              <p><span className='panelTitle'>Featuring {topResult.name}</span></p>
+              <Panel content={featuringArtist} panelVariant='true'/> 
+            </div>
+            :
+            <div></div>
+            }
             <p><span className='panelTitle'>Artists</span></p>
             <Panel content={artistResults.slice(0, 5)} />
             <p><span className='panelTitle'>Albums</span></p>

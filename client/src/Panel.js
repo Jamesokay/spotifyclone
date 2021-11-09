@@ -10,13 +10,10 @@ const accessToken = useContext(AuthContext)
 const history = useHistory()
     
     return (
-        <div style={(panelVariant)? 
-          {display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap'} 
-          : 
-          {display: 'flex', justifyContent: 'space-evenly'}}>  
+        <div style={{display: 'flex', justifyContent: 'flex-start', marginLeft: '1.75vw', flexWrap: 'wrap'}}>  
         {content.map(cont =>
-          <Link style={{textDecoration: 'none'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
-          <div className='cardBody' style={(panelVariant)? {marginRight: '15px'} : {marginRight: '0'}}>
+          <Link style={{textDecoration: 'none', marginRight: '1.5vw'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
+          <div className='cardBody'>
             {cont.type === 'artist'?
             <img className='cardArtist' src={cont.imgUrl} alt='' />
             :

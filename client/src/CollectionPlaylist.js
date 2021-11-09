@@ -72,6 +72,7 @@ export default function CollectionPlaylist() {
     <div id='collectionPage'>
      <CollectionNav />
      <span className='collectionTitle'>Playlists</span> 
+     <div style={{marginLeft: '1.75vw', display: 'flex', flexWrap: 'wrap', marginBottom: '90px'}}>
      <Link to={{pathname:'/collection/tracks'}}>
         <div id='likedSongsCard'>
            <span id='lsCardPreview'>
@@ -110,6 +111,7 @@ export default function CollectionPlaylist() {
         </div>
         </Link>
       )}
+      </div>
     </div>
     )
 }
