@@ -23,14 +23,102 @@ export default function Search() {
     })
     const { setCurrentTheme } = useContext(ThemeContext)
 
+    const [userArtists, setUserArtists] = useState([])
+  //  const [userAlbums, setUserAlbums] = useState([])
+  //  const [userTracks, setUserTracks] = useState([])
+
     useEffect(() => {
         setCurrentTheme('0,0,0')
     }, [setCurrentTheme])
+
+    useEffect(() => {
+        const options = {
+            url: `https://api.spotify.com/v1/me/top/artists`,
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+                }
+            }
+        
+        axios(options)
+        .then(response => {
+            console.log(response.data)
+            setUserArtists(response.data.items.map(item => item.id))
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }, [accessToken])
+
+
+
+    // useEffect(() => {
+    //     const options = {
+    //         url: `https://api.spotify.com/v1/me/top/tracks`,
+    //         method: 'GET',
+    //         headers: {
+    //             'Authorization': `Bearer ${accessToken}`,
+    //             'Content-Type': 'application/json',
+    //             }
+    //         }
+        
+    //     axios(options)
+    //     .then(response => {
+    //         console.log(response.data)
+    //     })
+    //     .catch(error => {
+    //         console.log(error)
+    //     })
+    // }, [accessToken])
     
 
 
     useEffect(()=> {
         if (!search) return
+
+        function getTopResult(artists, albums, tracks) {
+        
+            for (let i = 0; i < artists.length; i ++) {
+                if (userArtists.includes(artists[i].id)) {
+                    return({
+                        name: artists[i].name,
+                        creator: '',
+                        imgUrl: artists[i].images[0].url,                  
+                        type: 'ARTIST'
+                    })
+                }
+            }
+
+            for (let i = 0; i < albums.length; i ++) {
+                if (userArtists.includes(albums[i].artists[0].id)) {
+                    return({
+                        name: albums[i].name,
+                        creator: albums[i].artists[0].name,
+                        imgUrl: albums[i].images[0].url,                  
+                        type: 'ALBUM'
+                    })
+                }
+            }
+
+            for (let i = 0; i < tracks.length; i ++) {
+                if (userArtists.includes(tracks[i].artists[0].id)) {
+                    return({
+                        name: tracks[i].name,
+                        creator: tracks[i].artists[0].name,
+                        imgUrl: tracks[i].album.images[0].url,                  
+                        type: 'TRACK'
+                    })
+                }
+            }
+
+        return({
+            name: artists[0].name,
+            creator: '',
+            imgUrl: artists[0].images[0].url,
+            type: 'ARTIST'
+        })
+        }
 
         let query = search.replace(/ /g, '+')
 
@@ -45,7 +133,6 @@ export default function Search() {
         
           axios(options)
           .then(response => {
-              console.log(response.data )
               setTrackResults(
                   response.data.tracks.items.map(item => {
                         return {
@@ -57,14 +144,9 @@ export default function Search() {
                             duration: toMinsSecs(item.duration_ms)
                         }
               }))
+              setTopResult(getTopResult(response.data.artists.items, response.data.albums.items, response.data.tracks.items))
               setArtistResults(response.data.artists.items.map(getDataObject))
               setAlbumResults(response.data.albums.items.map(getDataObject))
-              setTopResult({
-                  name: response.data.albums.items[0].name,
-                  creator: response.data.albums.items[0].artists[0].name,
-                  imgUrl: response.data.albums.items[0].images[0].url,                  
-                  type: 'ALBUM'
-              })
           })
           .catch(error => {
             console.log(error)
@@ -76,7 +158,7 @@ export default function Search() {
             setAlbumResults([])
             setTopResult({})
         }
-    }, [search, accessToken])
+    }, [search, accessToken, userArtists])
 
 
     if (search) { 
