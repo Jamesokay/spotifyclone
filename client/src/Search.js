@@ -15,6 +15,7 @@ export default function Search() {
     const [trackResults, setTrackResults] = useState([])
     const [artistResults, setArtistResults] = useState([])
     const [albumResults, setAlbumResults] = useState([])
+    const [playlistResults, setPlaylistResults] = useState([])
     const [topResult, setTopResult] = useState({
         name: '',
         creator: '',
@@ -24,8 +25,6 @@ export default function Search() {
     const { setCurrentTheme } = useContext(ThemeContext)
 
     const [userArtists, setUserArtists] = useState([])
-  //  const [userAlbums, setUserAlbums] = useState([])
-  //  const [userTracks, setUserTracks] = useState([])
 
     useEffect(() => {
         setCurrentTheme('0,0,0')
@@ -50,28 +49,6 @@ export default function Search() {
             console.log(error)
         })
     }, [accessToken])
-
-
-
-    // useEffect(() => {
-    //     const options = {
-    //         url: `https://api.spotify.com/v1/me/top/tracks`,
-    //         method: 'GET',
-    //         headers: {
-    //             'Authorization': `Bearer ${accessToken}`,
-    //             'Content-Type': 'application/json',
-    //             }
-    //         }
-        
-    //     axios(options)
-    //     .then(response => {
-    //         console.log(response.data)
-    //     })
-    //     .catch(error => {
-    //         console.log(error)
-    //     })
-    // }, [accessToken])
-    
 
 
     useEffect(()=> {
@@ -123,7 +100,7 @@ export default function Search() {
         let query = search.replace(/ /g, '+')
 
         const options = {
-            url: `https://api.spotify.com/v1/search?q=${query}&type=track,artist,album`,
+            url: `https://api.spotify.com/v1/search?q=${query}&type=track,artist,album,playlist`,
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
@@ -133,6 +110,7 @@ export default function Search() {
         
           axios(options)
           .then(response => {
+              console.log(response.data)
               setTrackResults(
                   response.data.tracks.items.map(item => {
                         return {
@@ -147,6 +125,7 @@ export default function Search() {
               setTopResult(getTopResult(response.data.artists.items, response.data.albums.items, response.data.tracks.items))
               setArtistResults(response.data.artists.items.map(getDataObject))
               setAlbumResults(response.data.albums.items.map(getDataObject))
+              setPlaylistResults(response.data.playlists.items.map(getDataObject))
           })
           .catch(error => {
             console.log(error)
@@ -156,9 +135,31 @@ export default function Search() {
             setTrackResults([])
             setArtistResults([])
             setAlbumResults([])
+            setPlaylistResults([])
             setTopResult({})
         }
     }, [search, accessToken, userArtists])
+
+    useEffect(() => {
+        if (topResult.type === 'ARTIST') {
+            const options = {
+                url: `https://api.spotify.com/v1/search?q=${topResult.name}&type=playlist`,
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    }
+                }
+            axios(options)
+            .then(response => {
+                console.log(response.data.playlists.items.filter(item => item.owner.id === 'spotify'))
+            })
+            .catch(error => {
+                console.log(error)
+            })          
+        }
+
+    }, [topResult, accessToken])
 
 
     if (search) { 
@@ -191,8 +192,8 @@ export default function Search() {
             <Panel content={artistResults.slice(0, 5)} />
             <p><span className='panelTitle'>Albums</span></p>
             <Panel content={albumResults.slice(0, 5)} />
-            {/* <p><span className='panelTitle'>Playlists</span></p>
-            <Panel content={playlistResults.slice(0, 5)} dispatch={dispatch} /> */}
+            <p><span className='panelTitle'>Playlists</span></p>
+            <Panel content={playlistResults.slice(0, 5)} />
             </div>
         </div>
         )
