@@ -189,6 +189,9 @@ export default function Search() {
                 <p id='topResultTitle'>{topResult.name}</p>               
                 <span id='topResultSub'>{topResult.creator}</span>
                 <div id='topResultsType'><span>{topResult.type}</span></div>
+                <div id='topResultPlayButton'>
+                    <div id='topResultPlayIcon'></div>
+                </div>
             </div>
             <TracksTable content={trackResults.slice(0, 4)} page='search' />
             </div>

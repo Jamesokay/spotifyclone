@@ -76,7 +76,7 @@ export default function CollectionTrack() {
         <div>
         <HeaderPanel content={likedSongsObj} creators={profile}/>
         <div className='pageContainer'>
-        <div className='headerControls'>
+        <div id='headerControls'>
         <div className='headerPlayButton'>
               <div className='headerPlayIcon'></div>
             </div>
