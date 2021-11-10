@@ -8,7 +8,7 @@ import { PageContext } from './PageContext'
 export default function HeaderPanel({ content, creators }) {
 
 
-    const [titleStyle, setTitleStyle] = useState({})
+//    const [titleStyle, setTitleStyle] = useState({})
     const { setCurrentTheme } = useContext(ThemeContext)
     const { setCurrentPage } = useContext(PageContext)
     const user = useContext(UserContext)
@@ -18,23 +18,7 @@ export default function HeaderPanel({ content, creators }) {
       if (!content.title) return
       setCurrentPage(content.title)
     }, [content, content.title, setCurrentPage])
-    
-    useEffect(() => {
-      if (!content.title) return
-
-      if (content.title.length <= 20) {
-        setTitleStyle({fontSize: '70pt', whiteSpace: 'nowrap'})
-      }
-      else if (content.title.length > 20 && content.title.length < 25) {
-        setTitleStyle({fontSize: '50pt', whiteSpace: 'nowrap'})
-      }
-      else if (content.title.length > 25) {
-        setTitleStyle({fontSize: '35pt'})
-      }
-    }, [content.title])
-
-
-    
+      
 
     const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
 
@@ -64,11 +48,11 @@ export default function HeaderPanel({ content, creators }) {
       canvas.width = myImgElement.naturalWidth
       ctx.drawImage( myImgElement, 0, 0 );
 
-      var xStart = Math.floor(canvas.width * 0.2)
-      var yStart = Math.floor(canvas.height * 0.6)
+     
+      var yStart = Math.floor(canvas.height * 0.5)
   
 
-      var imgdata = ctx.getImageData(xStart,yStart,100,50);
+      var imgdata = ctx.getImageData(0,yStart,50,50);
       var pixels = imgdata.data;
 
       var red = 0
@@ -131,9 +115,7 @@ export default function HeaderPanel({ content, creators }) {
           }
             <div className='headerInfo'>
               <span className='headerType'>{content.type}</span>
-              <span style={titleStyle} 
-                    className='headerTitle'
-                    >{content.title}</span>
+              <span className='headerTitle'>{content.title}</span>
               
               <span>
               {creators.map((creator, index, creators) =>

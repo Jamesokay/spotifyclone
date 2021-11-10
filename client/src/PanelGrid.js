@@ -22,10 +22,10 @@ export default function PanelGrid({ content, head }) {
         myImgElement.onload = function() {
             canvas.width = myImgElement.naturalWidth
             canvas.height = myImgElement.naturalHeight
-            var x = Math.floor(canvas.width)
-            var y = Math.floor(canvas.height / 4)
+    
+            var yStart = Math.floor(canvas.height * 0.5)
             ctx.drawImage( myImgElement, 0, 0 );
-            var imgdata = ctx.getImageData(0, 0, x, y);
+            var imgdata = ctx.getImageData(0, yStart, 50, 50);
             var pixels = imgdata.data;
 
 

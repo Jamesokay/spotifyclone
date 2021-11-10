@@ -99,8 +99,12 @@ export default function SideBar() {
          </li>
 
          <li className='sideBarLink' onClick={()=> createPlaylist()}>
-           <div className='sideBarImg' style={{backgroundColor: 'white'}}>
-           </div>
+           {/* <div className='sideBarImg' style={{backgroundColor: 'white'}}></div> */}
+           <svg className='sideBarImg' viewBox="0 0 24 24" width="24" height="24" style={{borderRadius: '2px'}} xmlns="http://www.w3.org/2000/svg">
+           <rect width='24' height='24' fill='white'></rect>
+            <path d="M7 12, L17 12, M12 7, L12 17 " stroke="black" fill='none' strokeWidth='2'></path>
+            
+           </svg>
            <span className='sideBarText'>Create Playlist</span>
          </li>
 
