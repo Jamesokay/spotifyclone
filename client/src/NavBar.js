@@ -16,6 +16,7 @@ export default function NavBar() {
     const [name, setName] = useState('')
     const [navPlayerShow, setNavPlayerShow] = useState(false)
     const location = useLocation()
+    const [toggle, setToggle] = useState(false)
 
     
     useEffect(() => {
@@ -74,9 +75,33 @@ export default function NavBar() {
         <div id='user'>
             <img id='userImg' src={defaultUser} alt=''></img>
             <span id='userName'>{name}</span>
-            <svg style={{marginRight: 'auto'}} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="1" strokeLinecap="square" strokeLinejoin="miter">
+        <svg style={{marginRight: 'auto'}} xmlns="http://www.w3.org/2000/svg" 
+             width="24" height="24" 
+             viewBox="0 0 24 24" 
+             fill="white" 
+             stroke="white" 
+             strokeWidth="1" 
+             strokeLinecap="square" 
+             strokeLinejoin="miter"
+             onClick={() => {
+               if (toggle) {
+                 setToggle(false)
+               }
+               else {
+                 setToggle(true)
+               }
+             }}>
             <polyline points="8 9, 12 14, 16 9, 8 9" />
         </svg>
+        </div>
+        <div id='userMenu' style={(toggle)? {visibility: 'visible'} : {visibility: 'hidden'}}>
+         
+          <ul id='userMenuOptions'>
+            <li className='userMenuOpt'>Account</li>
+            <li className='userMenuOpt'>Profile</li>
+            <li className='userMenuOpt'>Log Out</li>
+          </ul>
+          
         </div>
         </div>
       

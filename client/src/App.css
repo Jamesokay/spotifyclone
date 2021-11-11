@@ -469,6 +469,42 @@ body {
     font-size: 90%;
 }
 
+#userMenu {
+    position: absolute;
+    display: flex;
+    width: 16.25%;
+    background-color: #373737;
+    top: 95%;
+    right: 2.5%;
+    border-radius: 5px;
+    box-shadow: 0px 5px 10px 2px #121212
+}
+
+#userMenuOptions {
+    color: white;
+    list-style: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11pt;
+    padding-left: 0;
+    margin-top: 2.5%;
+    margin-left: 2.5%;
+    margin-bottom: 2.5%;
+    width: 100%;
+}
+
+.userMenuOpt {
+    background-color: #373737;
+    width: 92.5%;
+    padding-left: 5%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    border-radius: 5px;
+}
+
+.userMenuOpt:hover {
+    background-color: grey;
+}
+
 #navCurrentPage {
     color: white;
     font-family: Arial, sans-serif;
