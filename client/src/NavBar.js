@@ -72,7 +72,7 @@ export default function NavBar() {
         <div></div>
         }
 
-        <div id='user'>
+        <div id='user' style={(toggle)? {backgroundColor: '#373737'} : {backgroundColor: '#121212'}}>
             <img id='userImg' src={defaultUser} alt=''></img>
             <span id='userName'>{name}</span>
         <svg style={{marginRight: 'auto'}} xmlns="http://www.w3.org/2000/svg" 
@@ -99,7 +99,9 @@ export default function NavBar() {
           <ul id='userMenuOptions'>
             <li className='userMenuOpt'>Account</li>
             <li className='userMenuOpt'>Profile</li>
+            <a id='logOut' href='https://www.spotify.com/logout/'>
             <li className='userMenuOpt'>Log Out</li>
+            </a>
           </ul>
           
         </div>

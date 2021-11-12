@@ -453,6 +453,10 @@ body {
     align-items: center;
 }
 
+#user:hover {
+    background-color: #373737 !important;
+}
+
 #userImg {
     background-color: grey;
     width: 17%;
@@ -503,6 +507,11 @@ body {
 
 .userMenuOpt:hover {
     background-color: grey;
+}
+
+#logOut {
+    text-decoration: none;
+    color: white;
 }
 
 #navCurrentPage {
