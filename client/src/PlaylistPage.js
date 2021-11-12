@@ -9,7 +9,9 @@ import playTrack from './playTrack'
 import axios from 'axios'
 import defaultPlaylist from './defaultPlaylist.png'
 import { UserContext } from './UserContext'
+
 import PlaylistSearch from './PlaylistSearch'
+import { PlaylistContext } from './PlaylistContext'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -27,6 +29,9 @@ export default function PlaylistPage({ location }) {
     const [recommendations, setRecommendations] = useState([])
     const [isOwner, setIsOwner] = useState(false)
     const [paused, setPaused] = useState(true)
+    const {newTrack} = useContext(PlaylistContext)
+
+
 
     useEffect(() => {
         if (!accessToken) return
@@ -78,7 +83,22 @@ export default function PlaylistPage({ location }) {
               type: 'PLAYLIST'
           })
         }
+       })
+       .catch(error => {
+         console.log(error)
+       })
 
+       return function cleanUp() {
+        setPlaylist({})
+       }
+
+    }, [id, accessToken])
+
+
+    useEffect(() => {
+      if (!accessToken) return
+      spotifyApi.getPlaylist(id)
+      .then(data => {
             let playlistUri = data.body.uri
             
             setTracks(data.body.tracks.items.map((item, index ) => {
@@ -114,10 +134,9 @@ export default function PlaylistPage({ location }) {
         })
 
         return function cleanUp() {
-          setPlaylist({})
           setTracks([])
         }
-    }, [accessToken, id])
+    }, [accessToken, id, newTrack])
 
     useEffect(() => {
       if (!user) return
@@ -250,7 +269,7 @@ export default function PlaylistPage({ location }) {
         <div></div>              
       }
       <div id='page'>
-        {(tracks.length !== 0)?      
+        {(tracks.length !== 0)?    
           <TracksTable content={tracks} page='playlist' />
           :
           <div></div>
