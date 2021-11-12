@@ -38,6 +38,7 @@ export default function Search() {
                             id: item.id,
                             uri: item.uri,
                             trackImage: item.album.images[0].url,
+                            albumName: item.album.name,
                             name: item.name,
                             artists: item.artists,
                             duration: toMinsSecs(item.duration_ms)

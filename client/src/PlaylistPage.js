@@ -265,7 +265,7 @@ export default function PlaylistPage({ location }) {
                 <br/>
                 <span className='playlistLowerSub'>Based on what's in this playlist</span>
               </div>
-              <TracksTable content={recommendations.slice(0, 10)} page='playlistRecommend' />
+              <TracksTable content={recommendations.slice(0, 10)} page='playlistRecommend' id={id}/>
               <div className='playlistLowerHeading'>
                 <span className='playlistLowerTitle'>Let's find something for your playlist</span>
               </div>

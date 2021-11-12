@@ -2,8 +2,9 @@ import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from './AuthContext'
 import playTrack from './playTrack'
 import { useHistory } from 'react-router-dom'
+import axios from 'axios'
 
-export default function TracksTable({content, page}) {
+export default function TracksTable({content, page, id}) {
 
     const accessToken = useContext(AuthContext)
     const history = useHistory()
@@ -37,6 +38,26 @@ export default function TracksTable({content, page}) {
           observer.disconnect()
         }
       }, [])
+
+      function addTrack(data) {
+        const options = {
+          url: `https://api.spotify.com/v1/playlists/${id}/tracks`,
+          method: 'POST',
+          headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+              },
+          data
+          }
+      
+        axios(options)
+        .then(response => {
+           console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      }
 
 
 
@@ -250,7 +271,7 @@ export default function TracksTable({content, page}) {
 
           <td className='rowLast tdReg'>
             <div className='addTrack'>
-              <span>ADD</span>
+              <span onClick={() => addTrack({uris: [cont.uri]})}>ADD</span>
             </div>
           </td>
           <td className='emptyCell tdReg'></td>
