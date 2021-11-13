@@ -30,6 +30,7 @@ export default function PlaylistPage({ location }) {
     const [isOwner, setIsOwner] = useState(false)
     const [paused, setPaused] = useState(true)
     const {newTrack} = useContext(PlaylistContext)
+    const [tracksSample, setTracksSample] = useState([])
 
 
 
@@ -100,6 +101,34 @@ export default function PlaylistPage({ location }) {
       spotifyApi.getPlaylist(id)
       .then(data => {
             let playlistUri = data.body.uri
+
+            setTracksSample(data.body.tracks.items.slice(0, 5).map((item, index ) => {
+              if (item.track.album.images[0]) {
+                return {
+                  num: index + 1,
+                  id: item.track.id,
+                  uri: item.track.uri,
+                  context: playlistUri,
+                  name: item.track.name,
+                  trackImage: item.track.album.images[0].url,
+                  artists: item.track.artists,
+                  albumName: item.track.album.name,
+                  albumId: item.track.album.id,
+                  duration: toMinsSecs(item.track.duration_ms)
+                }
+              } else {
+                return {
+                  num: index + 1,
+                  id: index,
+                  name: '',
+                  artists: [],
+                  albumName: '',
+                  albumId: index + 3,
+                  duration: ''
+                }
+              }
+
+            }))
             
             setTracks(data.body.tracks.items.map((item, index ) => {
               if (item.track.album.images[0]) {
@@ -159,10 +188,10 @@ export default function PlaylistPage({ location }) {
       if (!user) return
       if (!creator[0]) return
       if (user.id !== creator[0].id) return
-      if (tracks.length === 0) return
+      if (tracksSample.length === 0) return
 
       spotifyApi.getRecommendations({
-        seed_tracks: getSeeds(tracks),
+        seed_tracks: getSeeds(tracksSample),
         min_popularity: 50
       })
       .then(data => {
@@ -203,7 +232,7 @@ export default function PlaylistPage({ location }) {
       }
 
       
-    }, [accessToken, user, creator, tracks])
+    }, [accessToken, user, creator, tracksSample])
 
     // useEffect(() => {
     //   console.log(isOwner)
@@ -213,6 +242,8 @@ export default function PlaylistPage({ location }) {
       if (!newTrack) return
       if (!newTrack.name) return
       setTracks(tracks => [...tracks, {...newTrack, num: tracks.length + 1}])
+      setRecommendations(recommendations => recommendations.filter(item => item.id !== newTrack.id))
+      
     }, [newTrack, newTrack.name])
 
     function getSeeds(array) {
