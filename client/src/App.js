@@ -36,7 +36,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState('')
   const page = {currentPage, setCurrentPage}
 
-  const [newTrack, setNewTrack] = useState('')
+  const [newTrack, setNewTrack] = useState({})
   const track = {newTrack, setNewTrack}
   
 //  const [navPlayerShow, setNavPlayerShow] = useState(false)

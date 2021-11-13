@@ -136,7 +136,7 @@ export default function PlaylistPage({ location }) {
         return function cleanUp() {
           setTracks([])
         }
-    }, [accessToken, id, newTrack])
+    }, [accessToken, id])
 
     useEffect(() => {
       if (!user) return
@@ -208,6 +208,12 @@ export default function PlaylistPage({ location }) {
     // useEffect(() => {
     //   console.log(isOwner)
     // }, [isOwner])
+
+    useEffect(() => {
+      if (!newTrack) return
+      if (!newTrack.name) return
+      setTracks(tracks => [...tracks, {...newTrack, num: tracks.length + 1}])
+    }, [newTrack, newTrack.name])
 
     function getSeeds(array) {
       if (array.length > 5) {
@@ -284,7 +290,7 @@ export default function PlaylistPage({ location }) {
                 <br/>
                 <span className='playlistLowerSub'>Based on what's in this playlist</span>
               </div>
-              <TracksTable content={recommendations.slice(0, 10)} page='playlistRecommend' id={id}/>
+              <TracksTable content={recommendations} page='playlistRecommend' id={id}/>
               <div className='playlistLowerHeading'>
                 <span className='playlistLowerTitle'>Let's find something for your playlist</span>
               </div>

@@ -11,7 +11,6 @@ export default function TracksTable({content, page, id}) {
     const history = useHistory()
     const [scrolling, setScrolling] = useState(false)
     const {setNewTrack} = useContext(PlaylistContext)
-
   
 
 
@@ -43,7 +42,7 @@ export default function TracksTable({content, page, id}) {
         }
       }, [])
 
-      function addTrack(data, trackName) {
+      function addTrack(data, trackObj) {
         const options = {
           url: `https://api.spotify.com/v1/playlists/${id}/tracks`,
           method: 'POST',
@@ -57,7 +56,8 @@ export default function TracksTable({content, page, id}) {
         axios(options)
         .then(response => {
            console.log(response)
-           setNewTrack(trackName)
+           setNewTrack(trackObj)
+    
         })
         .catch(error => {
           console.log(error)
@@ -248,7 +248,7 @@ export default function TracksTable({content, page, id}) {
           </tr>
         </thead>
         <tbody>
-        {content.map(cont =>
+        {content.slice(0, 10).map(cont =>
         <tr className='trackTableRow' key={cont.id}>
         <td className='emptyCell tdReg'></td>
           <td className='rowFirst tdReg'>
@@ -276,7 +276,10 @@ export default function TracksTable({content, page, id}) {
 
           <td className='rowLast tdReg'>
             <div className='addTrack'>
-              <span onClick={() => addTrack({uris: [cont.uri]}, cont.name)}>ADD</span>
+              <span onClick={() => {
+                addTrack({uris: [cont.uri]}, cont)
+              }
+                }>ADD</span>
             </div>
           </td>
           <td className='emptyCell tdReg'></td>
