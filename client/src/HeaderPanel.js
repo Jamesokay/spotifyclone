@@ -5,7 +5,7 @@ import { PageContext } from './PageContext'
 
 
 
-export default function HeaderPanel({ content, creators }) {
+export default function HeaderPanel({ content, creators, id }) {
 
 
 //    const [titleStyle, setTitleStyle] = useState({})
@@ -16,8 +16,13 @@ export default function HeaderPanel({ content, creators }) {
 
     useEffect(() => {
       if (!content.title) return
-      setCurrentPage(content.title)
-    }, [content, content.title, setCurrentPage])
+      console.log({pageName: content.title,
+                   pageId: id
+      })
+      setCurrentPage({pageName: content.title,
+                      pageId: id
+      })
+    }, [content, content.title, id, setCurrentPage])
       
 
     const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')

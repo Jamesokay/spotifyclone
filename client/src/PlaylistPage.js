@@ -284,7 +284,7 @@ export default function PlaylistPage({ location }) {
  
     return (
       <div>
-      <HeaderPanel content={playlist} creators={creator} />
+      <HeaderPanel content={playlist} creators={creator} id={id}/>
       <div className='pageContainer'>
       {(tracks.length !== 0)?
       <div id='headerControls'> 
@@ -321,7 +321,7 @@ export default function PlaylistPage({ location }) {
                 <br/>
                 <span className='playlistLowerSub'>Based on what's in this playlist</span>
               </div>
-              <TracksTable content={recommendations} page='playlistRecommend' id={id}/>
+              <TracksTable content={recommendations} page='playlistRecommend'/>
               <div className='playlistLowerHeading'>
                 <span className='playlistLowerTitle'>Let's find something for your playlist</span>
               </div>

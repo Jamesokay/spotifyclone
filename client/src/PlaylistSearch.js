@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 // import getDataObject from './getDataObject'
 import toMinsSecs from './toMinsSecs'
 import { AuthContext } from './AuthContext'
+import { PlaylistContext } from './PlaylistContext'
 import TracksTable from './TracksTable'
 import axios from 'axios'
 
@@ -13,6 +14,8 @@ export default function Search() {
     const [trackResults, setTrackResults] = useState([])
 //    const [artistResults, setArtistResults] = useState([])
 //    const [albumResults, setAlbumResults] = useState([])
+    const { newTrack } = useContext(PlaylistContext)
+    
 
 
     useEffect(()=> {
@@ -52,10 +55,18 @@ export default function Search() {
           })
     }, [search, accessToken])
 
+    useEffect(() => {
+        if (!newTrack) return
+        if (!newTrack.name) return
+        
+        setTrackResults(trackResults => trackResults.filter(item => item.id !== newTrack.id))
+        
+      }, [newTrack, newTrack.name])
+
 
     if (search) { 
         return (
-        <div style={{height: '50vh'}}>
+        <div style={{minHeight: '50vh'}}>
             <form>
               <input
               className='playlistSearchBar'
@@ -67,13 +78,13 @@ export default function Search() {
               />
             </form>
             <div id='searchResults'>
-            <TracksTable content={trackResults.slice(0, 10)} page='playlistRecommend' />
+            <TracksTable content={trackResults} page='playlistRecommend' />
             </div>
         </div>
         )
     } else {
         return (
-            <div style={{height: '50vh'}}>
+            <div style={{minHeight: '50vh'}}>
             <form>
               <input
               className='playlistSearchBar'

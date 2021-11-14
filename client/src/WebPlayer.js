@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from 'react'
 import useInterval from './useInterval'
 import toMinsSecs from './toMinsSecs'
 import { AuthContext } from './AuthContext'
+import { TrackContext } from './TrackContext'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
@@ -56,6 +57,8 @@ export default function WebPlayer() {
   const [repeatCheck, setRepeatCheck] = useState(0)
   const [repeatInit, setRepeatInit] = useState(false)
   const [repeatIconColour, setRepeatIconColour] = useState('grey')
+
+  const {setTrackId} = useContext(TrackContext)
  
   
 
@@ -207,6 +210,12 @@ export default function WebPlayer() {
       setVolLevel("M17 6 a10 10 0 0 1 0 12 M14 9 a4 4 0 0 1 0 6")
     }
   }, [vol])
+
+
+
+  useEffect(() => {
+    setTrackId(currentTrack.id)
+  }, [currentTrack.id, setTrackId])
 
 
 

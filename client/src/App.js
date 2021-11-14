@@ -15,6 +15,7 @@ import { ThemeContext } from './ThemeContext'
 import { UserContext } from './UserContext'
 import { PageContext } from './PageContext'
 import { PlaylistContext } from './PlaylistContext'
+import { TrackContext } from './TrackContext'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
 import Layout from './Layout'
@@ -33,11 +34,15 @@ function App() {
   const [currentTheme, setCurrentTheme] = useState('0, 0, 0')
   const theme = {currentTheme, setCurrentTheme}
 
-  const [currentPage, setCurrentPage] = useState('')
+  const [currentPage, setCurrentPage] = useState({pageName: '',
+                                                  pageId: ''})
   const page = {currentPage, setCurrentPage}
 
   const [newTrack, setNewTrack] = useState({})
   const track = {newTrack, setNewTrack}
+
+  const [trackId, setTrackId] = useState('')
+  const currentTrack = {trackId, setTrackId}
   
 //  const [navPlayerShow, setNavPlayerShow] = useState(false)
 //  const navPlayer = {navPlayerShow, setNavPlayerShow}
@@ -101,6 +106,7 @@ function App() {
       <UserContext.Provider value={user}>
       <PageContext.Provider value={page}>
       <PlaylistContext.Provider value={track}>
+      <TrackContext.Provider value={currentTrack}>
       
         <Layout>
         <Route path='/' exact component={(accessToken)? Dashboard : Login} />
@@ -115,6 +121,7 @@ function App() {
         <Route path="/collection/tracks" component={CollectionTrack} />
         </Layout>
       
+      </TrackContext.Provider>
       </PlaylistContext.Provider>
       </PageContext.Provider>
       </UserContext.Provider>

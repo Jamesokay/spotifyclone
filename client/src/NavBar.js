@@ -66,7 +66,7 @@ export default function NavBar() {
           <div id='navPlayButton'>
             <div id='navPlayIcon'></div>
           </div>
-          <span id='navCurrentTitle'>{currentPage}</span>
+          <span id='navCurrentTitle'>{currentPage.pageName}</span>
         </div>
         :
         <div></div>
