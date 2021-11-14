@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react'
 import { AuthContext } from './AuthContext'
 import { ThemeContext } from './ThemeContext'
+import { TrackContext } from './TrackContext'
 import playTrack from './playTrack'
 import { Link } from 'react-router-dom'
 
@@ -10,7 +11,8 @@ export default function PanelGrid({ content, head }) {
     const [colors, setColors] = useState([])
     const [gradient, setGradient] = useState('')
     const { setCurrentTheme } = useContext(ThemeContext)
-//    var element = document.getElementById('gridPanelLower')
+    const { nowPlaying } = useContext(TrackContext)
+
 
  
     function getColor(itemId, imgUrl) {
@@ -117,12 +119,13 @@ export default function PanelGrid({ content, head }) {
                 <span>{cont.name}</span>
             </div>
             <div className='gridPlayButton'
+                style={(cont.uri === nowPlaying.contextUri)? {opacity: '1'} : {opacity: '0'}}
                 onClick={(e) => {
                  e.preventDefault()
                  playTrack(accessToken, {context_uri: cont.uri})} 
                }
             >
-                <div className='gridPlayIcon'></div>
+                <div className={(!nowPlaying.isPaused && cont.uri === nowPlaying.contextUri)? 'cardPauseIcon' : 'cardPlayIcon'}></div>
             </div>
           </div>   
           </Link> 

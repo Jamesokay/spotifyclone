@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { AuthContext } from './AuthContext'
+import { TrackContext } from './TrackContext'
 import playTrack from './playTrack'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
@@ -7,6 +8,7 @@ import { useHistory } from 'react-router-dom'
 export default function Panel({ content, panelVariant }) {
   
 const accessToken = useContext(AuthContext)
+const { nowPlaying } = useContext(TrackContext)
 const history = useHistory()
     
     return (
@@ -20,11 +22,12 @@ const history = useHistory()
             <div className='cardImageBox'>
               <img className='cardImage' src={cont.imgUrl} alt='' />
               <div className ='cardPlayButton'
+                   style={(cont.uri === nowPlaying.contextUri)? {opacity: '1', bottom: '27px'} : {opacity: '0'}}
                onClick={(e) => {
                  e.preventDefault()
                  playTrack(accessToken, {context_uri: cont.uri})} 
                }>
-                <div className='cardPlayIcon'></div>
+                <div className={(!nowPlaying.isPaused && cont.uri === nowPlaying.contextUri)? 'cardPauseIcon' : 'cardPlayIcon'}></div>
               </div>
             </div>
             }

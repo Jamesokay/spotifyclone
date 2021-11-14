@@ -41,8 +41,10 @@ function App() {
   const [newTrack, setNewTrack] = useState({})
   const track = {newTrack, setNewTrack}
 
-  const [trackId, setTrackId] = useState('')
-  const currentTrack = {trackId, setTrackId}
+  const [nowPlaying, setNowPlaying] = useState({contextUri: '',
+                                                trackUri: '',
+                                                isPaused: false})
+  const currentTrack = {nowPlaying, setNowPlaying}
   
 //  const [navPlayerShow, setNavPlayerShow] = useState(false)
 //  const navPlayer = {navPlayerShow, setNavPlayerShow}

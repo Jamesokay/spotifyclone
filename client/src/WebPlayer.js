@@ -58,7 +58,7 @@ export default function WebPlayer() {
   const [repeatInit, setRepeatInit] = useState(false)
   const [repeatIconColour, setRepeatIconColour] = useState('grey')
 
-  const {setTrackId} = useContext(TrackContext)
+  const {nowPlaying, setNowPlaying} = useContext(TrackContext)
  
   
 
@@ -214,8 +214,24 @@ export default function WebPlayer() {
 
 
   useEffect(() => {
-    setTrackId(currentTrack.id)
-  }, [currentTrack.id, setTrackId])
+    if (!player) return
+    if (!currentTrack.name) return
+    player.getCurrentState()
+    .then(res => {
+      setNowPlaying({contextUri: res.context.uri,
+                     trackUri: res.track_window.current_track.uri,
+                     isPaused: paused})
+    })
+    .catch(error => {
+      console.log(error)
+    })
+
+  }, [player, currentTrack.name, setNowPlaying, paused])
+
+
+  useEffect(() => {
+    console.log(nowPlaying)
+  }, [nowPlaying])
 
 
 

@@ -155,7 +155,7 @@
 }
 
 .gridCard:hover .gridPlayButton {
-    opacity: 1;
+    opacity: 1 !important;
 }
 
 .gridPlayButton {
@@ -329,7 +329,7 @@ body {
 
 .cardBody:hover .cardPlayButton {
     bottom: 27px;
-    opacity: 1;
+    opacity: 1 !important;
 }
 
 .cardPlayButton:hover {
@@ -344,6 +344,14 @@ body {
     border-top: 7px solid transparent;
     border-left: 10px solid white;
     border-bottom: 7px solid transparent;
+}
+
+.cardPauseIcon {
+    width: 4px;
+    height: 12px;
+    border-right: 3.5px solid white;
+    border-left: 3.5px solid white;
+    margin: auto;
 }
 
 .cardArtist {

@@ -1,7 +1,9 @@
 import { createContext } from 'react'
 
 export const TrackContext = createContext({
-    trackId: '',
-    setTrackId: () => { }
+    nowPlaying: {contextUri: '',
+                 trackUri: '',
+                 isPaused: false},
+    setNowPlaying: () => { }
 })
 
