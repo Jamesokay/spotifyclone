@@ -1283,6 +1283,50 @@ th {
     visibility: hidden;
 }
 
+.tablePlayingBox {
+    height: 16px;
+    width: 16px;
+    position: relative;
+    margin: auto;
+}
+
+.tablePlayingBar1 {
+    position: absolute;
+    width: 2px;
+    height: 16px;
+    left: 1px;
+    bottom: 0;
+    background-color: #1ed760;
+}
+
+.tablePlayingBar2 {
+    position: absolute;
+    width: 2px;
+    height: 7px;
+    left: 5px;
+    bottom: 0;
+    background-color: #1ed760;
+}
+
+.tablePlayingBar3 {
+    position: absolute;
+    width: 2px;
+    height: 12px;
+    left: 9px;
+    bottom: 0;
+    background-color: #1ed760;
+}
+
+.tablePlayingBar4 {
+    position: absolute;
+    width: 2px;
+    height: 3px;
+    left: 13px;
+    bottom: 0;
+    margin-right: 0;
+    background-color: #1ed760;
+}
+
 .trackTableRow:hover .tableIndex {
     visibility: hidden;
 }
