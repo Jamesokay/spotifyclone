@@ -1,10 +1,14 @@
 import { useHistory } from 'react-router-dom'
 import { useState, useContext, useEffect } from 'react'
+import { AuthContext } from './AuthContext'
 import { ThemeContext } from './ThemeContext'
 import { UserContext } from './UserContext'
 import { PageContext } from './PageContext'
+import { TrackContext } from './TrackContext'
 import defaultUser from './defaultUser.png'
 import { useLocation } from 'react-router-dom'
+import playTrack from './playTrack'
+import pauseTrack from './pauseTrack'
 
 
 export default function NavBar() {
@@ -12,7 +16,9 @@ export default function NavBar() {
     const [alpha, setAlpha] = useState(0)
     const { currentTheme } = useContext(ThemeContext)
     const user = useContext(UserContext)
+    const accessToken = useContext(AuthContext)
     const { currentPage } = useContext(PageContext)
+    const { nowPlaying } = useContext(TrackContext)
     const [name, setName] = useState('')
     const [navPlayerShow, setNavPlayerShow] = useState(false)
     const location = useLocation()
@@ -63,8 +69,20 @@ export default function NavBar() {
         
         {(navPlayerShow)?
         <div id='navCurrentPage' style={(alpha >= 2.5)? {opacity: '1'}:{opacity: '0'}}>
-          <div id='navPlayButton'>
-            <div id='navPlayIcon'></div>
+          <div id='navPlayButton'
+               onClick={(e) => {
+                e.preventDefault()
+                 if (currentPage.pageUri === nowPlaying.contextUri && !nowPlaying.isPaused) {
+                     pauseTrack(accessToken)
+                 }
+                 else if (currentPage.pageUri === nowPlaying.contextUri && nowPlaying.isPaused) {
+                     playTrack(accessToken)
+                 }
+                 else {
+                 playTrack(accessToken, {context_uri: currentPage.pageUri})} 
+                }
+               }>
+            <div className={(!nowPlaying.isPaused && currentPage.pageUri === nowPlaying.contextUri)? 'navPauseIcon' : 'navPlayIcon'}></div>
           </div>
           <span id='navCurrentTitle'>{currentPage.pageName}</span>
         </div>

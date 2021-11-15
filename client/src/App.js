@@ -35,7 +35,7 @@ function App() {
   const theme = {currentTheme, setCurrentTheme}
 
   const [currentPage, setCurrentPage] = useState({pageName: '',
-                                                  pageId: ''})
+                                                  pageUri: ''})
   const page = {currentPage, setCurrentPage}
 
   const [newTrack, setNewTrack] = useState({})

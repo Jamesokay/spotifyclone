@@ -5,6 +5,7 @@ import playTrack from './playTrack'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { PageContext } from './PageContext'
+import { TrackContext } from './TrackContext'
 
 export default function TracksTable({content, page }) {
 
@@ -13,7 +14,8 @@ export default function TracksTable({content, page }) {
     const [scrolling, setScrolling] = useState(false)
     const {setNewTrack} = useContext(PlaylistContext)
     const {currentPage} = useContext(PageContext)
-    const playlistId = currentPage.pageId
+    const playlistId = currentPage.pageUri.slice(17)
+    const { nowPlaying } = useContext(TrackContext)
   
       useEffect(() => {
         setNewTrack({})
@@ -131,7 +133,8 @@ export default function TracksTable({content, page }) {
                      offset: { uri: cont.uri }})}></div>
                   </td>
                   <td className='tdReg'>
-                    <p className='tableTrackName'>{cont.name}</p>                     
+                    <p className='tableTrackName' 
+                       style={(cont.albUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p>                     
                       {cont.artists.map((artist, index, artists) => 
                       <span key={artist.id} >                 
                         <span className='tableLink'
@@ -199,7 +202,8 @@ export default function TracksTable({content, page }) {
                   </td>
                   <td className='tableImgCol tdReg'><img className='tableImage' src={cont.trackImage} alt='' /></td>
                   <td className='tdReg'>
-                    <p className='tableTrackName'>{cont.name}</p> 
+                    <p className='tableTrackName'
+                       style={(cont.context === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p> 
                     {cont.artists.map((artist, index, artists) => 
                       <span key={artist.id} >                 
                         <span className='tableLink'
@@ -241,6 +245,8 @@ export default function TracksTable({content, page }) {
     }
     else if (page === 'playlistRecommend') {
       return (
+        <div>
+        <div id='tableHeader'></div>
         <table className='trackTable' cellSpacing='0' cellPadding='0'>
         <thead>
           <tr>
@@ -289,7 +295,7 @@ export default function TracksTable({content, page }) {
         )}
         </tbody>
       </table>
-
+      </div>
       )
   }
     else if (page === 'search') {

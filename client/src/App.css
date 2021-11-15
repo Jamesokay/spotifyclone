@@ -537,6 +537,7 @@ body {
 #navPlayButton {
     height: 40px;
     width: 40px;
+    display: flex;
     border-radius: 50%;
     background: #1ed760;
 }
@@ -549,7 +550,7 @@ body {
     transform: scale(1.05)
 }
 
-#navPlayIcon {
+.navPlayIcon {
     width: 0;
     height: 0;
     border-top: 7px solid transparent;
@@ -559,7 +560,7 @@ body {
     margin-top: 14px;
 }
 
-#navPauseIcon {
+.navPauseIcon {
     width: 4px;
     height: 12px;
     border-right: 3.5px solid white;
