@@ -6,9 +6,10 @@ import { AuthContext } from './AuthContext'
 import HeaderPanel from './HeaderPanel'
 import getTotalDuration from './getTotalDuration'
 import playTrack from './playTrack'
-import axios from 'axios'
+import pauseTrack from './pauseTrack'
 import defaultPlaylist from './defaultPlaylist.png'
 import { UserContext } from './UserContext'
+import { TrackContext } from './TrackContext'
 
 import PlaylistSearch from './PlaylistSearch'
 import { PlaylistContext } from './PlaylistContext'
@@ -28,9 +29,9 @@ export default function PlaylistPage({ location }) {
     const [creator, setCreator] = useState([])
     const [recommendations, setRecommendations] = useState([])
     const [isOwner, setIsOwner] = useState(false)
-    const [paused, setPaused] = useState(true)
     const {newTrack} = useContext(PlaylistContext)
     const [tracksSample, setTracksSample] = useState([])
+    const { nowPlaying } = useContext(TrackContext)
 
 
 
@@ -256,31 +257,6 @@ export default function PlaylistPage({ location }) {
 
     }
 
-    function pausePlay() {
-      setPaused(true)
-      const options = {
-          url: 'https://api.spotify.com/v1/me/player/pause',
-          method: 'PUT',
-          headers: {
-              'Authorization': `Bearer ${accessToken}`,
-              'Content-Type': 'application/json',
-              }
-          }
-      
-        axios(options)
-        .then(console.log('paused')
-        )
-        .catch(error => {
-          console.log(error)
-        })
-  }
-
-  function play() {
-      setPaused(false)
-      playTrack(accessToken, {context_uri: playlist.uri})
-
-  }
-
  
     return (
       <div>
@@ -289,17 +265,19 @@ export default function PlaylistPage({ location }) {
       {(tracks.length !== 0)?
       <div id='headerControls'> 
         <div className='headerPlayButton'
-               onClick={() => {
-                   (paused)?
-                   play()
-                   :
-                   pausePlay()
-                }}>
-            {(paused)?
-            <div className='headerPlayIcon'></div>
-            :
-            <div className='headerPauseIcon'></div>
-            }
+             onClick={(e) => {
+                e.preventDefault()
+                 if (playlist.uri === nowPlaying.contextUri && !nowPlaying.isPaused) {
+                     pauseTrack(accessToken)
+                 }
+                 else if (playlist.uri === nowPlaying.contextUri && nowPlaying.isPaused) {
+                     playTrack(accessToken)
+                 }
+                 else {
+                 playTrack(accessToken, {context_uri: playlist.uri})} 
+                }
+               }>
+            <div className={(!nowPlaying.isPaused && playlist.uri === nowPlaying.contextUri)?'headerPauseIcon': 'headerPlayIcon'}></div>   
         </div>
       </div>
         :

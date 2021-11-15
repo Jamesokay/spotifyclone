@@ -3,11 +3,13 @@ import SpotifyWebApi from 'spotify-web-api-node'
 import toMinsSecs from './toMinsSecs'
 import TracksTable from './TracksTable'
 import { AuthContext } from './AuthContext'
+import { TrackContext } from './TrackContext'
 import Panel from './Panel'
 import HeaderPanel from './HeaderPanel'
 import getTotalDuration from './getTotalDuration'
 import playTrack from './playTrack'
-import axios from 'axios'
+import pauseTrack from './pauseTrack' 
+
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -24,7 +26,7 @@ export default function AlbumPage({ location }) {
     const [artistName, setArtistName] = useState('')
     const [creatorObject, setCreatorObject] = useState([])
     const [moreByArtist, setMoreByArtist] = useState([])
-    const [paused, setPaused] = useState(true)
+    const { nowPlaying } = useContext(TrackContext)
 
 
     function getAlbumObject(id) {
@@ -140,30 +142,6 @@ export default function AlbumPage({ location }) {
 
     }, [accessToken, moreByArtist])
 
-    function pausePlay() {
-        setPaused(true)
-        const options = {
-            url: 'https://api.spotify.com/v1/me/player/pause',
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json',
-                }
-            }
-        
-          axios(options)
-          .then(console.log('paused')
-          )
-          .catch(error => {
-            console.log(error)
-          })
-    }
-
-    function play() {
-        setPaused(false)
-        playTrack(accessToken, {context_uri: album.uri})
-
-    }
       
 
 
@@ -173,17 +151,20 @@ export default function AlbumPage({ location }) {
         <div className='pageContainer'>
         <div id='headerControls'>
           <div className='headerPlayButton'
-               onClick={() => {
-                   (paused)?
-                   play()
-                   :
-                   pausePlay()
-                }}>
-            {(paused)?
-            <div className='headerPlayIcon'></div>
-            :
-            <div className='headerPauseIcon'></div>
-            }
+               onClick={(e) => {
+                e.preventDefault()
+                 if (album.uri === nowPlaying.contextUri && !nowPlaying.isPaused) {
+                     pauseTrack(accessToken)
+                 }
+                 else if (album.uri === nowPlaying.contextUri && nowPlaying.isPaused) {
+                     playTrack(accessToken)
+                 }
+                 else {
+                 playTrack(accessToken, {context_uri: album.uri})} 
+                }
+               }>
+
+            <div className={(!nowPlaying.isPaused && album.uri === nowPlaying.contextUri)? 'headerPauseIcon': 'headerPlayIcon'}></div>
           </div>
         </div>
         <div id='page'>

@@ -3,6 +3,7 @@ import { AuthContext } from './AuthContext'
 import { ThemeContext } from './ThemeContext'
 import { TrackContext } from './TrackContext'
 import playTrack from './playTrack'
+import pauseTrack from './pauseTrack'
 import { Link } from 'react-router-dom'
 
 export default function PanelGrid({ content, head }) {
@@ -122,7 +123,15 @@ export default function PanelGrid({ content, head }) {
                 style={(cont.uri === nowPlaying.contextUri)? {opacity: '1'} : {opacity: '0'}}
                 onClick={(e) => {
                  e.preventDefault()
+                 if (cont.uri === nowPlaying.contextUri && !nowPlaying.isPaused) {
+                     pauseTrack(accessToken)
+                 }
+                 else if (cont.uri === nowPlaying.contextUri && nowPlaying.isPaused) {
+                     playTrack(accessToken)
+                 }
+                 else {
                  playTrack(accessToken, {context_uri: cont.uri})} 
+                }
                }
             >
                 <div className={(!nowPlaying.isPaused && cont.uri === nowPlaying.contextUri)? 'cardPauseIcon' : 'cardPlayIcon'}></div>

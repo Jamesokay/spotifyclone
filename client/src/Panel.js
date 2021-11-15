@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { AuthContext } from './AuthContext'
 import { TrackContext } from './TrackContext'
 import playTrack from './playTrack'
+import pauseTrack from './pauseTrack'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 
@@ -24,8 +25,16 @@ const history = useHistory()
               <div className ='cardPlayButton'
                    style={(cont.uri === nowPlaying.contextUri)? {opacity: '1', bottom: '27px'} : {opacity: '0'}}
                onClick={(e) => {
-                 e.preventDefault()
+                e.preventDefault()
+                 if (cont.uri === nowPlaying.contextUri && !nowPlaying.isPaused) {
+                     pauseTrack(accessToken)
+                 }
+                 else if (cont.uri === nowPlaying.contextUri && nowPlaying.isPaused) {
+                     playTrack(accessToken)
+                 }
+                 else {
                  playTrack(accessToken, {context_uri: cont.uri})} 
+                }
                }>
                 <div className={(!nowPlaying.isPaused && cont.uri === nowPlaying.contextUri)? 'cardPauseIcon' : 'cardPlayIcon'}></div>
               </div>
