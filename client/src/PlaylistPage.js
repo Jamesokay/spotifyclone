@@ -99,10 +99,10 @@ export default function PlaylistPage({ location }) {
 
     useEffect(() => {
       if (!accessToken) return
-      spotifyApi.getPlaylist(id)
+      spotifyApi.getPlaylist(id, 'AU')
       .then(data => {
             let playlistUri = data.body.uri
-
+            
             setTracksSample(data.body.tracks.items.slice(0, 5).map((item, index ) => {
               if (item.track.album.images[0]) {
                 return {
@@ -256,6 +256,7 @@ export default function PlaylistPage({ location }) {
       }
 
     }
+    
 
  
     return (

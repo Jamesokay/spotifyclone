@@ -220,6 +220,7 @@ export default function WebPlayer() {
     .then(res => {
       setNowPlaying({contextUri: res.context.uri,
                      trackUri: res.track_window.current_track.uri,
+                     trackName: res.track_window.current_track.name,
                      isPaused: paused})
     })
     .catch(error => {

@@ -43,6 +43,7 @@ function App() {
 
   const [nowPlaying, setNowPlaying] = useState({contextUri: '',
                                                 trackUri: '',
+                                                trackName: '',
                                                 isPaused: false})
   const currentTrack = {nowPlaying, setNowPlaying}
   

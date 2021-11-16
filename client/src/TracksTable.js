@@ -203,7 +203,7 @@ export default function TracksTable({content, page }) {
               {content.map(cont =>
                 <tr className='trackTableRow' key={cont.id}>
                 <td className='emptyCell tdReg'></td>
-                {(cont.context === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri && !nowPlaying.isPaused)?
+                {(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName && !nowPlaying.isPaused)?
                   <td className='rowFirst tdReg'>
                     <div className='tablePlayingBox'>
                       <div className='tablePlayingBar1'/>
@@ -216,7 +216,8 @@ export default function TracksTable({content, page }) {
                   <td className='rowFirst tdReg'>
                     <span className='tableIndex'>{cont.num}</span>
                     <div className='tablePlayIcon'
-                    onClick={() => playTrack(accessToken, 
+                    onClick={() => 
+                      playTrack(accessToken, 
                     {context_uri: cont.context,
                      offset: { uri: cont.uri }})}
                     ></div>
@@ -225,7 +226,7 @@ export default function TracksTable({content, page }) {
                   <td className='tableImgCol tdReg'><img className='tableImage' src={cont.trackImage} alt='' /></td>
                   <td className='tdReg'>
                     <p className='tableTrackName'
-                       style={(cont.context === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p> 
+                       style={(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p> 
                     {cont.artists.map((artist, index, artists) => 
                       <span key={artist.id} >                 
                         <span className='tableLink'
