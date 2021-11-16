@@ -1293,38 +1293,72 @@ th {
 .tablePlayingBar1 {
     position: absolute;
     width: 2px;
-    height: 16px;
+    height: 1px;
     left: 1px;
     bottom: 0;
     background-color: #1ed760;
+    animation-name: pulse;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.1s;
 }
 
 .tablePlayingBar2 {
     position: absolute;
     width: 2px;
-    height: 7px;
+    height: 1px;
     left: 5px;
     bottom: 0;
     background-color: #1ed760;
+    animation-name: pulse;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.2s;
 }
 
 .tablePlayingBar3 {
     position: absolute;
     width: 2px;
-    height: 12px;
+    height: 1px;
     left: 9px;
     bottom: 0;
     background-color: #1ed760;
+    animation-name: pulse;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.5s;
 }
 
 .tablePlayingBar4 {
     position: absolute;
     width: 2px;
-    height: 3px;
+    height: 1px;
     left: 13px;
     bottom: 0;
     margin-right: 0;
     background-color: #1ed760;
+    animation-name: pulse;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.3s;
+}
+
+@keyframes pulse {
+    0% {
+        height: 1px;
+    }
+    25% {
+        height: 8px;
+    }
+    50% {
+        height: 16px;
+    }
+    75% {
+        height: 8px;
+    }
+    100% {
+        height: 1px;
+    }
 }
 
 .trackTableRow:hover .tableIndex {

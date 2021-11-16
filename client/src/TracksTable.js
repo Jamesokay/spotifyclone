@@ -125,6 +125,16 @@ export default function TracksTable({content, page }) {
               {content.map(cont =>
                 <tr className='trackTableRow' key={cont.id}>
                 <td className='emptyCell tdReg'></td>
+                {(cont.albUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri && !nowPlaying.isPaused)?
+                  <td className='rowFirst tdReg'>
+                    <div className='tablePlayingBox'>
+                      <div className='tablePlayingBar1'/>
+                      <div className='tablePlayingBar2'/>
+                      <div className='tablePlayingBar3'/>
+                      <div className='tablePlayingBar4'/>
+                    </div>
+                  </td>
+                  :
                   <td className='rowFirst tdReg'>
                     <span className='tableIndex'>{cont.num}</span>
                     <div className='tablePlayIcon'
@@ -132,6 +142,7 @@ export default function TracksTable({content, page }) {
                     {context_uri: cont.albUri,
                      offset: { uri: cont.uri }})}></div>
                   </td>
+                 } 
                   <td className='tdReg'>
                     <p className='tableTrackName' 
                        style={(cont.albUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p>                     
