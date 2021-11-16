@@ -56,7 +56,7 @@ export default function Search() {
         if (!search) return
 
         function getTopResult(artists, albums, tracks) {
-        
+
             for (let i = 0; i < artists.length; i ++) {
                 if (userArtists.includes(artists[i].id)) {
                     return({
@@ -79,6 +79,7 @@ export default function Search() {
                 }
             }
 
+
             for (let i = 0; i < tracks.length; i ++) {
                 if (userArtists.includes(tracks[i].artists[0].id)) {
                     return({
@@ -91,10 +92,10 @@ export default function Search() {
             }
 
         return({
-            name: artists[0].name,
-            creator: '',
-            imgUrl: artists[0].images[0].url,
-            type: 'ARTIST'
+            name: tracks[0].name,
+            creator: tracks[0].artists[0].name,
+            imgUrl: tracks[0].album.images[0].url,
+            type: 'TRACK'
         })
         }
 
@@ -187,7 +188,7 @@ export default function Search() {
             <div id='topResult'>
                 <img id={(topResult.type === 'ARTIST')? 'topResultImageArtist' : 'topResultImage'} src={topResult.imgUrl} alt=''></img>
                 <p id='topResultTitle'>{topResult.name}</p>               
-                <span id='topResultSub'>{topResult.creator}</span>
+                <span id='topResultSub' style={(topResult.type === 'ARTIST')? {marginLeft: '10px'} : {marginLeft: '20px'}}>{topResult.creator}</span>
                 <div id='topResultsType'><span>{topResult.type}</span></div>
                 <div id='topResultPlayButton'>
                     <div id='topResultPlayIcon'></div>

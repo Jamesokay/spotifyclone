@@ -14,7 +14,6 @@ export default function TracksTable({content, page }) {
     const [scrolling, setScrolling] = useState(false)
     const {setNewTrack} = useContext(PlaylistContext)
     const {currentPage} = useContext(PageContext)
-    const playlistId = currentPage.pageUri.slice(17)
     const { nowPlaying } = useContext(TrackContext)
   
       useEffect(() => {
@@ -50,6 +49,7 @@ export default function TracksTable({content, page }) {
       }, [])
 
       function addTrack(data, trackObj) {
+        let playlistId = currentPage.pageUri.slice(17)
         const options = {
           url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
           method: 'POST',

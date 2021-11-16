@@ -1103,10 +1103,14 @@ li:hover .sideBarImg {
 #topResultTitle {
     font-family: Arial, Helvetica, sans-serif;
     color: white;
-    font-size: 20pt;
+    font-size: 22pt;
     margin-left: 20px;
     margin-bottom: 0;
     margin-top: 0;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+    max-width: 85%;
 }
 
 #topResultSub {
