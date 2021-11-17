@@ -1060,15 +1060,15 @@ li:hover .sideBarImg {
 }
 
 #topResult:hover #topResultPlayButton {
-    bottom: 20px;
-    opacity: 1;
+    bottom: 20px !important;
+    opacity: 1 !important;
 }
 
 #topResultPlayButton:hover {
     transform: scale(1.05)
 }
 
-#topResultPlayIcon {
+.topResultPlayIcon {
     width: 0;
     height: 0;
     margin: auto;
@@ -1076,6 +1076,14 @@ li:hover .sideBarImg {
     border-top: 10px solid transparent;
     border-left: 16px solid white;
     border-bottom: 10px solid transparent;
+}
+
+.topResultPauseIcon {
+    width: 7px;
+    height: 22px;
+    border-right: 5px solid white;
+    border-left: 5px solid white;
+    margin: auto;
 }
 
 #topResultImage {

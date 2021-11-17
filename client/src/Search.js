@@ -6,6 +6,8 @@ import { AuthContext } from './AuthContext'
 import { ThemeContext } from './ThemeContext'
 import TracksTable from './TracksTable'
 import axios from 'axios'
+import { TrackContext } from './TrackContext'
+import playTrack from './playTrack'
 
 
 export default function Search() {
@@ -23,6 +25,7 @@ export default function Search() {
         type:''
     })
     const { setCurrentTheme } = useContext(ThemeContext)
+    const { nowPlaying } = useContext(TrackContext)
 
     const [userArtists, setUserArtists] = useState([])
     const [featuringArtist, setFeaturingArtist] = useState([])
@@ -74,7 +77,9 @@ export default function Search() {
                         name: albums[i].name,
                         creator: albums[i].artists[0].name,
                         imgUrl: albums[i].images[0].url,                  
-                        type: 'ALBUM'
+                        type: 'ALBUM',
+                        data: {context_uri: albums[i].uri},
+                        context: albums[i].uri
                     })
                 }
             }
@@ -86,7 +91,11 @@ export default function Search() {
                         name: tracks[i].name,
                         creator: tracks[i].artists[0].name,
                         imgUrl: tracks[i].album.images[0].url,                  
-                        type: 'TRACK'
+                        type: 'TRACK',
+                        data: {context_uri: tracks[i].album.uri,
+                               offset: { uri: tracks[i].uri }},  
+                        context: tracks[i].album.uri,
+                        uri: tracks[i].uri               
                     })
                 }
             }
@@ -95,7 +104,11 @@ export default function Search() {
             name: tracks[0].name,
             creator: tracks[0].artists[0].name,
             imgUrl: tracks[0].album.images[0].url,
-            type: 'TRACK'
+            type: 'TRACK',
+            data: {context_uri: tracks[0].album.uri,
+                offset: { uri: tracks[0].uri }},  
+            context: tracks[0].album.uri,
+            uri: tracks[0].uri  
         })
         }
 
@@ -190,9 +203,21 @@ export default function Search() {
                 <p id='topResultTitle'>{topResult.name}</p>               
                 <span id='topResultSub' style={(topResult.type === 'ARTIST')? {marginLeft: '10px'} : {marginLeft: '20px'}}>{topResult.creator}</span>
                 <div id='topResultsType'><span>{topResult.type}</span></div>
-                <div id='topResultPlayButton'>
-                    <div id='topResultPlayIcon'></div>
+
+                {(topResult.type === 'TRACK')?
+                <div id='topResultPlayButton'
+                    onClick={() => playTrack(accessToken, topResult.data)}
+                    style={(topResult.uri === nowPlaying.trackUri)? {opacity: '1', bottom: '20px'} : {opacity: '0'}}>    
+                    <div className={(!nowPlaying.isPaused && topResult.uri === nowPlaying.trackUri)? 'topResultPauseIcon' : 'topResultPlayIcon'}></div>
                 </div>
+                 : 
+                <div id='topResultPlayButton'
+                    onClick={() => playTrack(accessToken, topResult.data)}
+                    style={(topResult.context === nowPlaying.contextUri)? {opacity: '1', bottom: '20px'} : {opacity: '0'}}>    
+                    <div className={(!nowPlaying.isPaused && topResult.context === nowPlaying.contextUri)? 'topResultPauseIcon' : 'topResultPlayIcon'}></div>
+                </div>
+                }
+
             </div>
             <TracksTable content={trackResults.slice(0, 4)} page='search' />
             </div>
