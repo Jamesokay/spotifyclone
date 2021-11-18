@@ -128,7 +128,7 @@
     height: 40vh;
     padding-top: 20vh;
     margin-top: -20vh;
-    background-image: linear-gradient(transparent, #121212)
+    background-image: linear-gradient(transparent, #121212 85%)
 }
 
 
@@ -726,8 +726,53 @@ li:hover .sideBarImg {
     margin-left: 15vw;
     width: 85vw; 
     padding-top: 50px;
-    padding-bottom: 90px;
-    /* background: linear-gradient(rgb(117, 184, 238) 5%, #121212 20% 100%) */
+    padding-bottom: 90px;   
+}
+
+#loader {
+    margin-left: 45%;
+    margin-top: 35vh;
+    width: 5%;
+    height: 10%;
+    display: inline-flex;
+    justify-content: space-around;
+}
+
+#loading1 {
+    height: 10px;
+    width: 10px;
+    border-radius: 100%;
+    background-color: #212121;
+    animation: dash-loading 2s infinite;
+}
+
+#loading2 {
+    height: 10px;
+    width: 10px;
+    border-radius: 100%;
+    background-color: #212121;
+    animation: dash-loading 2s infinite;
+    animation-delay: 0.6s;
+}
+
+#loading3 {
+    height: 10px;
+    width: 10px;
+    border-radius: 100%;
+    background-color: #212121;
+    animation: dash-loading 2s infinite;
+    animation-delay: 1.2s;
+}
+
+@keyframes dash-loading {
+    0% {
+        background-color: grey;
+        transform: scale(1.25)
+    }
+    30%, 60%, 100% {
+        background-color: #212121;
+        transform: scale(1)
+    }
     
 }
 

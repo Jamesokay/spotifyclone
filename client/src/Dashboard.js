@@ -5,6 +5,7 @@ import Panel from './Panel'
 import getDataObject from './getDataObject'
 import createContextArray from './createContextArray'
 import PanelGrid from './PanelGrid'
+import Loader from './Loader'
 
 const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
@@ -13,13 +14,14 @@ const spotifyApi = new SpotifyWebApi({
 export default function Dashboard() {
     const accessToken = useContext(AuthContext)
     const [topArtists, setTopArtists] = useState([])
-    const [topTracks, setTopTracks] = useState([])
+//    const [topTracks, setTopTracks] = useState([])
     const [recent, setRecent] = useState([])
     const [moreLike, setMoreLike] = useState([])
     const [recommend, setRecommend] = useState([])
     const [relatedArtistsSeed, setRelatedArtistsSeed] = useState('')
     const [customArtistPanel, setCustomArtistPanel] = useState([])
     const [customArtistName, setCustomArtistName] = useState([])
+    const [loading, setLoading] = useState(true)
 
     const date = new Date()
     const time = date.toLocaleTimeString('en-GB')
@@ -109,13 +111,13 @@ export default function Dashboard() {
     useEffect(() => {
       if (!accessToken) return 
 
-      spotifyApi.getMyTopTracks()
-      .then(data => {
-        setTopTracks(data.body.items.map(item => item.id))
-      })
-      .catch(error => {
-        console.log(error)
-      })
+      // spotifyApi.getMyTopTracks()
+      // .then(data => {
+      //   setTopTracks(data.body.items.map(item => item.id))
+      // })
+      // .catch(error => {
+      //   console.log(error)
+      // })
 
       spotifyApi.getMyTopArtists({limit : 20})
       .then(data => {
@@ -246,30 +248,23 @@ export default function Dashboard() {
     }, [accessToken, topArtists])
 
     useEffect(() => {
-      if (topTracks.length < 20) return
+      if (recent.length < 5) return
+      if (moreLike.length < 5) return
+      if (recommend.length < 5) return
+      if (customArtistPanel.length < 5) return
 
-      // spotifyApi.getAudioAnalysisForTrack(topTracks[0])
-      // .then(data => {
-      //   console.log(data.body)
-      // })
-      // .catch(error => {
-      //   console.log(error)
-      // })
+      setLoading(false)
 
-      spotifyApi.getAudioFeaturesForTracks(topTracks)
-      .then(data => {
-        console.log(data.body.audio_features)
-      })
-      .catch(error => {
-        console.log(error)
-      })
+      return function cleanUp() {
+        setLoading(true)
+      }
       
-    }, [topTracks])
+    }, [recent, moreLike, recommend, customArtistPanel])
 
    
     
     
-    return (
+    return loading? <Loader /> : (
       <div id="dash">
       
         {recent.length > 7?
