@@ -30,6 +30,8 @@ export default function Search() {
     const [userArtists, setUserArtists] = useState([])
     const [featuringArtist, setFeaturingArtist] = useState([])
 
+    const [loading, setLoading] = useState(true)
+
     useEffect(() => {
         setCurrentTheme('0,0,0')
     }, [setCurrentTheme])
@@ -192,14 +194,20 @@ export default function Search() {
               placeholder='Search albums, artists and playlists'
               value={search}
               spellCheck='false'
-              onChange={e => setSearch(e.target.value)}
+              onChange={e => {
+                  setSearch(e.target.value)
+                  setLoading(true)}}
               />
             </form>
-            <div id='searchResults'>
             
+            <div id='searchResults'
+                     style={(loading)? {visibility: 'hidden'} : {visibility: 'visible'}}
+                     onLoad={() => setLoading(false)}>        
             <div id='searchResultsHead'>
             <div id='topResult'>
-                <img id={(topResult.type === 'ARTIST')? 'topResultImageArtist' : 'topResultImage'} src={topResult.imgUrl} alt=''></img>
+                <img id={(topResult.type === 'ARTIST')? 'topResultImageArtist' : 'topResultImage'} 
+                     src={topResult.imgUrl} 
+                     alt=''></img>
                 <p id='topResultTitle'>{topResult.name}</p>               
                 <span id='topResultSub' style={(topResult.type === 'ARTIST')? {marginLeft: '10px'} : {marginLeft: '20px'}}>{topResult.creator}</span>
                 <div id='topResultsType'><span>{topResult.type}</span></div>
@@ -236,6 +244,7 @@ export default function Search() {
             <p><span className='panelTitle'>Playlists</span></p>
             <Panel content={playlistResults.slice(0, 5)} />
             </div>
+
         </div>
         )
     } else {
