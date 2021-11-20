@@ -110,6 +110,7 @@ export default function TracksTable({content, page }) {
                 <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
                 <th style={{textAlign: 'center'}}>#</th>
                 <th>TITLE</th>
+                <th style={{width: '5%'}}></th>
                 <th>
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M7.999 3H6.999V7V8H7.999H9.999V7H7.999V3ZM7.5 0C3.358 0 0 3.358 0 7.5C0 11.642 3.358 15 7.5 15C11.642 15 15 11.642 15 7.5C15 3.358 11.642 0 7.5 0ZM7.5 14C3.916 14 1 11.084 1 7.5C1 3.916 3.916 1 7.5 1C11.084 1 14 3.916 14 7.5C14 11.084 11.084 14 7.5 14Z" fill="currentColor"></path>
@@ -167,6 +168,13 @@ export default function TracksTable({content, page }) {
                       )}
                     
                   </td>
+
+                  <td>
+                    <svg className='tableLike' viewBox="0 0 32 32" stroke="none" fill="none">
+                      <path d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
+                    </svg>                 
+                  </td>
+
                   <td className='rowLast tdReg'>{cont.duration}</td>
                   <td className='emptyCell tdReg'></td>
                 </tr>

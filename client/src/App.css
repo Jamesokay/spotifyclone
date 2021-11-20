@@ -1463,6 +1463,14 @@ th {
     border-bottom-right-radius: 5px;
 }
 
+.tableLike {
+    transform: scale(0.25);
+}
+
+.trackTableRow:hover .tableLike {
+    stroke: white;
+}
+
 .trackTableRow:hover {
     color: white;
     background: #212121;
