@@ -13,6 +13,7 @@ import { TrackContext } from './TrackContext'
 
 import PlaylistSearch from './PlaylistSearch'
 import { PlaylistContext } from './PlaylistContext'
+//import Loader from './Loader'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -32,6 +33,7 @@ export default function PlaylistPage({ location }) {
     const {newTrack} = useContext(PlaylistContext)
     const [tracksSample, setTracksSample] = useState([])
     const { nowPlaying } = useContext(TrackContext)
+    const [loading, setLoading] = useState(true)
 
 
 
@@ -40,28 +42,10 @@ export default function PlaylistPage({ location }) {
         spotifyApi.setAccessToken(accessToken)
       }, [accessToken])
 
-    useEffect(() => {
-        if (!accessToken) return
-
-        spotifyApi.getPlaylist(id)
-        .then(data => {
-              let obj = {
-                name: data.body.owner.display_name,
-                id: data.body.owner.id
-              }
-              setCreator(creator => [...creator, obj])
-        })
-        .catch(error => {
-          console.log(error)
-        })
-
-        return setCreator([])
-        
-      }, [accessToken, id])
-
 
     useEffect(() => {
        if (!accessToken) return
+       
        spotifyApi.getPlaylist(id)
        .then(data => {
             if (data.body.images[0]) {
@@ -90,11 +74,31 @@ export default function PlaylistPage({ location }) {
          console.log(error)
        })
 
+
        return function cleanUp() {
         setPlaylist({})
        }
 
     }, [id, accessToken])
+
+    useEffect(() => {
+      if (!accessToken) return
+
+      spotifyApi.getPlaylist(id)
+      .then(data => {
+            let obj = {
+              name: data.body.owner.display_name,
+              id: data.body.owner.id
+            }
+            setCreator(creator => [...creator, obj])
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+      return setCreator([])
+      
+    }, [accessToken, id])
 
 
     useEffect(() => {
@@ -156,8 +160,8 @@ export default function PlaylistPage({ location }) {
                   duration: ''
                 }
               }
-
             }))
+            setLoading(false)
         })
         .catch(error => {
             console.log(error)
@@ -165,6 +169,7 @@ export default function PlaylistPage({ location }) {
 
         return function cleanUp() {
           setTracks([])
+          setLoading(true)
         }
     }, [accessToken, id])
 
@@ -235,9 +240,6 @@ export default function PlaylistPage({ location }) {
       
     }, [accessToken, user, creator, tracksSample])
 
-    // useEffect(() => {
-    //   console.log(isOwner)
-    // }, [isOwner])
 
     useEffect(() => {
       if (!newTrack) return
@@ -259,7 +261,7 @@ export default function PlaylistPage({ location }) {
     
 
  
-    return (
+    return loading? <div/> : (
       <div>
       <HeaderPanel content={playlist} creators={creator} id={id}/>
       <div className='pageContainer'>

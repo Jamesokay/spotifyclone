@@ -16,6 +16,8 @@ export default function Dashboard() {
     const [topArtists, setTopArtists] = useState([])
 //    const [topTracks, setTopTracks] = useState([])
     const [recent, setRecent] = useState([])
+    const [recentSeeds, setRecentSeeds] = useState([])
+    const [forToday, setForToday] = useState([])
     const [moreLike, setMoreLike] = useState([])
     const [recommend, setRecommend] = useState([])
     const [relatedArtistsSeed, setRelatedArtistsSeed] = useState('')
@@ -133,6 +135,7 @@ export default function Dashboard() {
  
       spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
       .then(data => {
+        setRecentSeeds(data.body.items.slice(0, 5).map(item => item.track.id))
         let recentRaw = data.body.items.map(createContextArray)
         let recentFiltered = getUniqueById(recentRaw)
         recentFiltered.forEach(spotifyContextQuery)
@@ -140,6 +143,10 @@ export default function Dashboard() {
       .catch(error => {
         console.log(error)
       })
+
+      return function cleanUp() {
+        setRecentSeeds([])
+      }
 
     }, [accessToken])
 
@@ -248,6 +255,27 @@ export default function Dashboard() {
     }, [accessToken, topArtists])
 
     useEffect(() => {
+      if (recentSeeds.length === 0) return
+
+      spotifyApi.getRecommendations({
+        seed_tracks: recentSeeds,
+        min_popularity: 50
+      })
+      .then(data => {
+        setForToday(data.body.tracks.map(track => getDataObject(track.album)))
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+      return function cleanUp() {
+        setForToday([])
+      }
+
+
+    }, [recentSeeds])
+
+    useEffect(() => {
       if (recent.length < 5) return
       if (moreLike.length < 5) return
       if (recommend.length < 5) return
@@ -260,8 +288,6 @@ export default function Dashboard() {
       }
       
     }, [recent, moreLike, recommend, customArtistPanel])
-
-   
     
     
     return loading? <Loader /> : (
@@ -280,9 +306,11 @@ export default function Dashboard() {
         <Panel content={moreLike.slice(0, 5)} />
         <p><span className='panelTitle'>Album picks</span></p> 
         <Panel content={recommend.slice(0, 5)} />   
-
         <p><span className='panelTitle'>{'For fans of ' + customArtistName}</span></p> 
-        <Panel content={customArtistPanel.slice(0, 5)} />  
+        <Panel content={customArtistPanel.slice(0, 5)} /> 
+        <p><span className='panelTitle'>Recommended for today</span></p>
+        <Panel content={forToday.slice(0, 5)} />
+
       </div>
     )
 }        

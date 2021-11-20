@@ -13,16 +13,17 @@ export default function HeaderPanel({ content, creators }) {
     const { setCurrentPage } = useContext(PageContext)
     const user = useContext(UserContext)
     const [isOwner, setIsOwner] = useState(false)
+//    const [loading, setLoading] = useState(true)
+
 
     useEffect(() => {
       if (!content.title) return
       if (content.title === 'Liked Songs') return
-      console.log({pageName: content.title,
-                   pageUri: content.uri
-      })
+
       setCurrentPage({pageName: content.title,
                       pageUri: content.uri
       })
+
     }, [content, content.title, content.uri, setCurrentPage])
       
 
@@ -35,6 +36,10 @@ export default function HeaderPanel({ content, creators }) {
 
       if (creators[0].id === user.id && content.title !== 'Liked Songs') {
         setIsOwner(true)
+      }
+
+      return function cleanUp() {
+        setIsOwner(false)
       }
 
     }, [creators, content.title, user])
@@ -87,6 +92,7 @@ export default function HeaderPanel({ content, creators }) {
       let bg = 'rgba(' + avgRed + ',' + avgGreen + ',' + avgBlue + ',' + avgAlpha + ')'
       setGradient('linear-gradient(' + bg + ', #121212)')
       setCurrentTheme('' + avgRed + ', ' + avgGreen + ', ' + avgBlue)
+    //  setLoading(false)
       
       
     }
@@ -94,11 +100,9 @@ export default function HeaderPanel({ content, creators }) {
 
 
     return (
-        <div id='headerPanel' style={{backgroundImage: gradient, transition: 'background 0.3s ease-in-out'}}>
+        <div id='headerPanel' style={{backgroundImage: gradient}}>
         <div className='headerBody'>
-          <img id='headerImage' src={content.imgUrl} alt='' 
-                onLoad={()=> getData()}
-                />
+          <img id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()}/>
           {(isOwner)?
           <div id='headerImageChange'>
           <svg

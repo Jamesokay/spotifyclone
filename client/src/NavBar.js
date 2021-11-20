@@ -32,6 +32,10 @@ export default function NavBar() {
       else {
         setNavPlayerShow(true)
       }
+
+      return function cleanUp() {
+        setNavPlayerShow(false)
+      }
     }, [location, setNavPlayerShow])
 
     useEffect(() => {

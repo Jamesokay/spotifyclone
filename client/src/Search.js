@@ -103,15 +103,11 @@ export default function Search() {
             }
 
         return({
-            name: tracks[0].name,
-            creator: tracks[0].artists[0].name,
-            imgUrl: tracks[0].album.images[0].url,
-            type: 'TRACK',
-            data: {context_uri: tracks[0].album.uri,
-                offset: { uri: tracks[0].uri }},  
-            context: tracks[0].album.uri,
-            uri: tracks[0].uri  
-        })
+                name: artists[0].name,
+                creator: '',
+                imgUrl: artists[0].images[0].url,                  
+                type: 'ARTIST'
+            })
         }
 
         let query = search.replace(/ /g, '+')
@@ -204,6 +200,9 @@ export default function Search() {
                      style={(loading)? {visibility: 'hidden'} : {visibility: 'visible'}}
                      onLoad={() => setLoading(false)}>        
             <div id='searchResultsHead'>
+            
+            <div id='topResultContainer'>
+            <p><span className='panelTitle'>Top result</span></p>
             <div id='topResult'>
                 <img id={(topResult.type === 'ARTIST')? 'topResultImageArtist' : 'topResultImage'} 
                      src={topResult.imgUrl} 
@@ -225,9 +224,14 @@ export default function Search() {
                     <div className={(!nowPlaying.isPaused && topResult.context === nowPlaying.contextUri)? 'topResultPauseIcon' : 'topResultPlayIcon'}></div>
                 </div>
                 }
-
             </div>
-            <TracksTable content={trackResults.slice(0, 4)} page='search' />
+            </div>
+            
+            <div id='trackResultsContainer'>
+            <p><span className='panelTitle'>Songs</span></p>
+              <TracksTable content={trackResults.slice(0, 4)} page='search' />
+            </div>
+
             </div>
             {(featuringArtist.length > 0)?
             <div>

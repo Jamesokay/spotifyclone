@@ -1066,20 +1066,28 @@ li:hover .sideBarImg {
 }
 
 #searchResults {
-  padding-top: 7.5vh;
+  padding-top: 8vh;
 }
 
 #searchResultsHead {
     display: flex;
-    padding-top: 7.5vh;
     min-width: 85vw;
+    justify-content: space-around;
+}
+
+#topResultContainer {
+    width: 37.5%;
+}
+
+#trackResultsContainer {
+    width: 60%;
 }
 
 #topResult {
     position: relative;
     background-color: #212121;
     height: 230px;
-    width: 37.5%;
+    width: 100%;
     margin-left: 1.75vw;
     border-radius: 5px;
     transition: background-color 0.2s ease-in-out;
@@ -1193,7 +1201,7 @@ li:hover .sideBarImg {
 }
 
 .trackTableSearch {
-    width: 690px;
+    width: 100%;
     font-family: Arial, sans-serif;
     cursor: default;
     font-size: 11pt;  
@@ -1488,6 +1496,23 @@ th {
     min-height: 110px;
     margin-left: 2.5vw;
     display: flex;
+}
+
+#headerLike {
+    transform: scale(0.3);
+    stroke: grey;
+    fill: none;
+}
+
+
+#headerLike:hover {
+    stroke: white;
+}
+
+#headerLiked {
+    transform: scale(0.3);
+    stroke: #1ed760;
+    fill: #1ed760
 }
 
 .headerPlayButton {

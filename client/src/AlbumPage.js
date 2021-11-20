@@ -9,6 +9,9 @@ import HeaderPanel from './HeaderPanel'
 import getTotalDuration from './getTotalDuration'
 import playTrack from './playTrack'
 import pauseTrack from './pauseTrack' 
+import like from './like'
+import unlike from './unlike'
+import axios from 'axios'
 
 
 
@@ -27,6 +30,7 @@ export default function AlbumPage({ location }) {
     const [creatorObject, setCreatorObject] = useState([])
     const [moreByArtist, setMoreByArtist] = useState([])
     const { nowPlaying } = useContext(TrackContext)
+    const [liked, setLiked] = useState(false)
 
 
     function getAlbumObject(id) {
@@ -55,6 +59,32 @@ export default function AlbumPage({ location }) {
         if (!accessToken) return
         spotifyApi.setAccessToken(accessToken)
       }, [accessToken])
+
+      useEffect(() => {
+        if (!accessToken) return
+
+        const options = {
+            url: `https://api.spotify.com/v1/me/albums/contains?ids=${id}`,
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+            }
+        }
+
+        axios(options)
+        .then(response => {
+          setLiked(response.data[0])
+        })
+        .catch(error => {
+          console.log(error)
+        })
+
+        return function cleanUp() {
+            setLiked(false)
+        }
+
+    }, [id, accessToken])
 
     useEffect(() => {
         if (!accessToken) return
@@ -166,6 +196,22 @@ export default function AlbumPage({ location }) {
 
             <div className={(!nowPlaying.isPaused && album.uri === nowPlaying.contextUri)? 'headerPauseIcon': 'headerPlayIcon'}></div>
           </div>
+        
+          <svg id={(liked)?'headerLiked':'headerLike'} viewBox="0 0 32 32" stroke="white" 
+               onClick={() => {
+                   if (liked) {
+                       unlike(accessToken, id)
+                       setLiked(false)
+                   }
+                   else {
+                       like(accessToken, id)
+                       setLiked(true)
+                   }
+                   
+                }}>
+            <path d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
+          </svg>
+
         </div>
         <div id='page'>
           <TracksTable content={tracks} page='album' />
