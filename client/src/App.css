@@ -1279,8 +1279,12 @@ th {
 
 
 .tdReg {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+}
+
+.tdTime {
+    float: right;
 }
 
 .tdSmall {
@@ -1343,7 +1347,7 @@ th {
     border-left: 10px solid white;
     border-bottom: 7px solid transparent;
     position: absolute;
-    left: 40%;
+    left: 45%;
     top: 40%;
     visibility: hidden;
 }
@@ -1464,11 +1468,34 @@ th {
 }
 
 .tableLike {
-    transform: scale(0.25);
+    transform: scale(0.35);
 }
 
 .trackTableRow:hover .tableLike {
-    stroke: white;
+    stroke: grey;
+}
+
+.tableLike:hover {
+    stroke: white !important;
+}
+
+.trackTableRow:hover .trackOptions {
+    visibility: visible;
+}
+
+.trackOptions {
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    width: 25%;
+    visibility: hidden;
+}
+
+.dot {
+    height: 3px;
+    width: 3px;
+    background-color: white;
+    border-radius: 50%;
 }
 
 .trackTableRow:hover {

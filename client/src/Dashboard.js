@@ -296,7 +296,10 @@ export default function Dashboard() {
         {recent.length > 7?
           <PanelGrid content={recent} head={greeting}/>
           :
+          <div>
+          <p><span className='panelTitle'>{greeting}</span></p>
           <Panel content={recent.slice(0, 5)} />
+          </div>
         
         }
 

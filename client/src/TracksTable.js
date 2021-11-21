@@ -109,13 +109,14 @@ export default function TracksTable({content, page }) {
               <tr id='tableTop' style={(scrolling)? {backgroundColor:'#212121'} : {backgroundColor: 'transparent'}}>
                 <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
                 <th style={{textAlign: 'center'}}>#</th>
-                <th>TITLE</th>
-                <th style={{width: '5%'}}></th>
-                <th>
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <th style={{width: '76%'}}>TITLE</th>
+                <th style={{width: '4%'}}></th>
+                <th style={{width: '2.5%'}}>
+                  <svg style={{float: 'right'}} width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M7.999 3H6.999V7V8H7.999H9.999V7H7.999V3ZM7.5 0C3.358 0 0 3.358 0 7.5C0 11.642 3.358 15 7.5 15C11.642 15 15 11.642 15 7.5C15 3.358 11.642 0 7.5 0ZM7.5 14C3.916 14 1 11.084 1 7.5C1 3.916 3.916 1 7.5 1C11.084 1 14 3.916 14 7.5C14 11.084 11.084 14 7.5 14Z" fill="currentColor"></path>
                   </svg>
                 </th>
+                <th style={{width: '5%'}}></th>
                 <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
               </tr>
               </thead>
@@ -175,7 +176,14 @@ export default function TracksTable({content, page }) {
                     </svg>                 
                   </td>
 
-                  <td className='rowLast tdReg'>{cont.duration}</td>
+                  <td className='tdReg'><span className='tdTime'>{cont.duration}</span></td>
+                  <td className='tdReg rowLast'>
+                   <div className='trackOptions'>
+                    <div className='dot'/>
+                    <div className='dot'/>
+                    <div className='dot'/>
+                   </div>
+                  </td>
                   <td className='emptyCell tdReg'></td>
                 </tr>
                )}
