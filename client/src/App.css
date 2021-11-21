@@ -1471,6 +1471,13 @@ th {
     transform: scale(0.35);
 }
 
+.tableLiked {
+    transform: scale(0.35);
+    stroke: #1ed760;
+    fill:#1ed760;
+    visibility: visible;
+}
+
 .trackTableRow:hover .tableLike {
     stroke: grey;
 }

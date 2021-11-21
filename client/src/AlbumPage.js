@@ -25,6 +25,8 @@ export default function AlbumPage({ location }) {
     const [album, setAlbum] = useState({})
     const [albumName, setAlbumName] = useState('')
     const [tracks, setTracks] = useState([])
+    const [tracksFinal, setTracksFinal] = useState([])
+    const [savedArray, setSavedArray] = useState([])
     const [artistId, setArtistId] = useState('')
     const [artistName, setArtistName] = useState('')
     const [creatorObject, setCreatorObject] = useState([])
@@ -52,6 +54,15 @@ export default function AlbumPage({ location }) {
         .catch(error => {
             console.log(error)
         })
+    }
+
+    function flagSavedTracks(tracksArr, savedArr) {
+        let newArr = []
+        for (let i = 0; i < tracksArr.length; i++) {
+            let obj = {...tracksArr[i], saved: savedArr[i]}
+            newArr.push(obj)
+        }
+        return newArr
     }
 
 
@@ -137,6 +148,28 @@ export default function AlbumPage({ location }) {
 
     useEffect(() => {
         if (!accessToken) return
+        if (tracks.length === 0) return
+
+        let trax = tracks.map(item => item.id)
+
+        spotifyApi.containsMySavedTracks(trax)
+        .then(data => {
+          setSavedArray(data.body)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+        
+    }, [tracks, accessToken])
+
+    useEffect(() => {
+        if (tracks.length === 0) return
+        if (savedArray.length === 0) return
+        setTracksFinal(flagSavedTracks(tracks, savedArray))
+    }, [tracks, savedArray])
+
+    useEffect(() => {
+        if (!accessToken) return
         if (!albumName) return
         if (!artistId) return
 
@@ -171,6 +204,7 @@ export default function AlbumPage({ location }) {
             })
 
     }, [accessToken, moreByArtist])
+
 
       
 
@@ -214,7 +248,7 @@ export default function AlbumPage({ location }) {
 
         </div>
         <div id='page'>
-          <TracksTable content={tracks} page='album' />
+          <TracksTable content={tracksFinal} page='album' />
           <p><span className='panelTitle'>{'More by ' + artistName}</span></p>
           <Panel content={moreByArtist.slice(0, 5)} /> 
         </div>
