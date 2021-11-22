@@ -16,6 +16,8 @@ import PlaylistSearch from './PlaylistSearch'
 import { PlaylistContext } from './PlaylistContext'
 import like from './like'
 import unlike from './unlike'
+import { SidebarContext } from './SidebarContext'
+import getDataObject from './getDataObject'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -28,6 +30,7 @@ export default function PlaylistPage({ location }) {
     const user = useContext(UserContext)
 
     const [playlist, setPlaylist] = useState({})
+    const [playlistObj, setPlaylistObj] = useState({})
     const [tracks, setTracks] = useState([])
     const [savedArray, setSavedArray] = useState([])
     const [tracksFinal, setTracksFinal] = useState([])
@@ -39,6 +42,7 @@ export default function PlaylistPage({ location }) {
     const { nowPlaying } = useContext(TrackContext)
     const [loading, setLoading] = useState(true)
     const [liked, setLiked] = useState(false)
+    const {setUserPlaylists} = useContext(SidebarContext)
 
 
 
@@ -93,6 +97,7 @@ export default function PlaylistPage({ location }) {
                         + getTotalDuration(data.body.tracks.items),
                     type: 'PLAYLIST'
             })
+            setPlaylistObj(getDataObject(data.body))
           } else {
             setPlaylist({
               title: data.body.name,
@@ -109,6 +114,7 @@ export default function PlaylistPage({ location }) {
 
        return function cleanUp() {
         setPlaylist({})
+        setPlaylistObj({})
        }
 
     }, [id, accessToken])
@@ -351,11 +357,12 @@ export default function PlaylistPage({ location }) {
         <svg id={(liked)?'headerLiked':'headerLike'} viewBox="0 0 32 32" stroke="white" 
                onClick={() => {
                    if (liked) {
-                       unlike(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`)
+                       unlike(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`)                     
                        setLiked(false)
                    }
                    else {
                        like(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`)
+                       setUserPlaylists(userPlaylists => [...userPlaylists, playlistObj])
                        setLiked(true)
                    }
                    

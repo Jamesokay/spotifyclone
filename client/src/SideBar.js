@@ -2,44 +2,23 @@ import { NavLink } from 'react-router-dom'
 import likedSongs from './likedSongs.png'
 import { AuthContext } from './AuthContext'
 import { UserContext } from './UserContext'
-import { useState, useEffect, useContext } from 'react'
+import { useContext } from 'react'
 import axios from 'axios'
-import getDataObject from './getDataObject'
 import { useHistory } from 'react-router-dom'
+import { SidebarContext } from './SidebarContext'
+import getDataObject from './getDataObject'
 
 export default function SideBar() {
     const history = useHistory()
     const accessToken = useContext(AuthContext)
     const user = useContext(UserContext)
-    const [playlists, setPlaylists] = useState([])
-    const [newPL, setNewPL] = useState('')
+    const {userPlaylists, setUserPlaylists} = useContext(SidebarContext)
 
-    useEffect(() => {
-      if (!accessToken) return
-
-      const options = {
-        url: 'https://api.spotify.com/v1/me/playlists',
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-            }
-        }
-    
-      axios(options)
-      .then(response => {
-         setPlaylists(response.data.items.map(getDataObject))
-      })
-      .catch(error => {
-        console.log(error)
-      })
-
-    }, [accessToken, newPL])
 
     function createPlaylist() {
 
         let data = {
-          name: 'My Playlist #' + (playlists.length + 1)
+          name: 'My Playlist #' + (userPlaylists.length + 1)
         }
 
         const options = {
@@ -54,7 +33,7 @@ export default function SideBar() {
       
         axios(options)
         .then(response => {
-           setNewPL(response.data.id)
+           setUserPlaylists(userPlaylists => [...userPlaylists, getDataObject(response.data)])
            let location = {
             pathname: '/playlist/' + response.data.id,
             state: response.data.id
@@ -119,7 +98,7 @@ export default function SideBar() {
          <hr style={{width: '80%', float: 'left', border: 'none', backgroundColor: '#212121', height: '0.5px', marginLeft: '15px', marginBottom: '20px'}}/>
          
     
-         {playlists.map(playlist => 
+         {userPlaylists.map(playlist => 
          <li key={playlist.key}>
           <NavLink className='sideBarPlaylist' draggable="false" to={{pathname: `/playlist/${playlist.id}`, state: playlist.id }} activeClassName="sideBarPlaylistActive">
            <span>{playlist.name}</span>

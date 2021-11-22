@@ -16,11 +16,13 @@ import { UserContext } from './UserContext'
 import { PageContext } from './PageContext'
 import { PlaylistContext } from './PlaylistContext'
 import { TrackContext } from './TrackContext'
+import { SidebarContext } from './SidebarContext'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
 import Layout from './Layout'
 import CollectionTrack from './CollectionTrack'
 import { useLocation } from 'react-router-dom'
+import getDataObject from './getDataObject'
 
 
 function App() {
@@ -46,6 +48,9 @@ function App() {
                                                 trackName: '',
                                                 isPaused: false})
   const currentTrack = {nowPlaying, setNowPlaying}
+
+  const [userPlaylists, setUserPlaylists] = useState([])
+  const sidebarPlaylists = {userPlaylists, setUserPlaylists}
   
 //  const [navPlayerShow, setNavPlayerShow] = useState(false)
 //  const navPlayer = {navPlayerShow, setNavPlayerShow}
@@ -91,15 +96,30 @@ function App() {
   }, [accessToken])
 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    if (!accessToken) return
 
-    // if (location.pathname === '/playlist/' + location.state || location.pathname === '/album/' + location.state) {
-    //   setNavPlayerShow(true)
-    // }
-    // else {
-    //   setNavPlayerShow(false)
-    // }
-    
+    const options = {
+      url: 'https://api.spotify.com/v1/me/playlists',
+      method: 'GET',
+      headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+          }
+      }
+  
+    axios(options)
+    .then(response => {
+       setUserPlaylists(response.data.items.map(getDataObject))
+    })
+    .catch(error => {
+      console.log(error)
+    })
+
+  }, [accessToken])
+
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
   }, [location])
   
 
@@ -110,6 +130,7 @@ function App() {
       <PageContext.Provider value={page}>
       <PlaylistContext.Provider value={track}>
       <TrackContext.Provider value={currentTrack}>
+      <SidebarContext.Provider value={sidebarPlaylists}>
       
         <Layout>
         <Route path='/' exact component={(accessToken)? Dashboard : Login} />
@@ -123,7 +144,8 @@ function App() {
         <Route path="/collection/albums" component={CollectionAlbum} />
         <Route path="/collection/tracks" component={CollectionTrack} />
         </Layout>
-      
+
+      </SidebarContext.Provider>
       </TrackContext.Provider>
       </PlaylistContext.Provider>
       </PageContext.Provider>
