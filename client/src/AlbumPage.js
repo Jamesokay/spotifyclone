@@ -12,6 +12,7 @@ import pauseTrack from './pauseTrack'
 import like from './like'
 import unlike from './unlike'
 import axios from 'axios'
+import flagSavedTracks from './flagSavedTracks'
 
 
 
@@ -54,15 +55,6 @@ export default function AlbumPage({ location }) {
         .catch(error => {
             console.log(error)
         })
-    }
-
-    function flagSavedTracks(tracksArr, savedArr) {
-        let newArr = []
-        for (let i = 0; i < tracksArr.length; i++) {
-            let obj = {...tracksArr[i], saved: savedArr[i]}
-            newArr.push(obj)
-        }
-        return newArr
     }
 
 
@@ -159,13 +151,22 @@ export default function AlbumPage({ location }) {
         .catch(error => {
             console.log(error)
         })
+
+        return function cleanUp() {
+            setSavedArray([])
+        }
         
     }, [tracks, accessToken])
 
     useEffect(() => {
         if (tracks.length === 0) return
         if (savedArray.length === 0) return
+
         setTracksFinal(flagSavedTracks(tracks, savedArray))
+
+        return function cleanUp() {
+            setTracksFinal([])
+        }
     }, [tracks, savedArray])
 
     useEffect(() => {
@@ -234,11 +235,11 @@ export default function AlbumPage({ location }) {
           <svg id={(liked)?'headerLiked':'headerLike'} viewBox="0 0 32 32" stroke="white" 
                onClick={() => {
                    if (liked) {
-                       unlike(accessToken, id)
+                       unlike(accessToken, 'albums', id)
                        setLiked(false)
                    }
                    else {
-                       like(accessToken, id)
+                       like(accessToken, 'albums', id)
                        setLiked(true)
                    }
                    

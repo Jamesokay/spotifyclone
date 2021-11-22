@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-export default function unlike(token, id) {
+export default function unlike(token, type, id) {
           const options = {
-              url: `https://api.spotify.com/v1/me/albums?ids=${id}`,
+              url: `https://api.spotify.com/v1/me/${type}?ids=${id}`,
               method: 'DELETE',
               headers: {
                   'Authorization': `Bearer ${token}`,
