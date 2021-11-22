@@ -16,6 +16,22 @@ export default function TracksTable({content, page }) {
     const {currentPage} = useContext(PageContext)
     const { nowPlaying } = useContext(TrackContext)
     const [likedTracks, setLikedTracks] = useState([])
+
+    function getLikedIds(arr) {
+      let newArr = []
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].saved) {
+          newArr.push(arr[i].id)
+        }
+      }
+      console.log(newArr)
+      return newArr
+    }
+     
+    useEffect(() => {
+      if (content.length === 0) return
+      setLikedTracks(getLikedIds(content))
+    }, [content])
   
       useEffect(() => {
         setNewTrack({})
@@ -216,9 +232,9 @@ export default function TracksTable({content, page }) {
                   </td>
 
                   <td>
-                    <svg className={(cont.saved || likedTracks.includes(cont.id))? 'tableLiked' : 'tableLike'} viewBox="0 0 32 32" stroke="none" fill="none"
+                    <svg className={(likedTracks.includes(cont.id))? 'tableLiked' : 'tableLike'} viewBox="0 0 32 32" stroke="none" fill="none"
                          onClick={() => {
-                           if (cont.saved || likedTracks.includes(cont.id)) {
+                           if (likedTracks.includes(cont.id)) {
                              unlikeSong(cont.id)
                            }
                            else {
