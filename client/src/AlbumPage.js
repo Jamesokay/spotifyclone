@@ -235,11 +235,11 @@ export default function AlbumPage({ location }) {
           <svg id={(liked)?'headerLiked':'headerLike'} viewBox="0 0 32 32" stroke="white" 
                onClick={() => {
                    if (liked) {
-                       unlike(accessToken, 'albums', id)
+                       unlike(accessToken, `https://api.spotify.com/v1/me/albums?ids=${id}`)
                        setLiked(false)
                    }
                    else {
-                       like(accessToken, 'albums', id)
+                       like(accessToken, `https://api.spotify.com/v1/me/albums?ids=${id}`)
                        setLiked(true)
                    }
                    

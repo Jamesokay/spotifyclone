@@ -116,10 +116,11 @@ export default function SideBar() {
          </li>
 
     
-         <hr style={{width: '95%', float: 'left', border: 'none', backgroundColor: '#212121', height: '0.5px', marginBottom: '15px'}}/>
+         <hr style={{width: '80%', float: 'left', border: 'none', backgroundColor: '#212121', height: '0.5px', marginLeft: '15px', marginBottom: '20px'}}/>
+         
     
          {playlists.map(playlist => 
-         <li key={playlist.key} style={{marginBottom: '15px'}}>
+         <li key={playlist.key}>
           <NavLink className='sideBarPlaylist' draggable="false" to={{pathname: `/playlist/${playlist.id}`, state: playlist.id }} activeClassName="sideBarPlaylistActive">
            <span>{playlist.name}</span>
           </NavLink>

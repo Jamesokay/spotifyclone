@@ -51,7 +51,7 @@ export default function PlaylistPage({ location }) {
         if (!accessToken) return
 
         const options = {
-            url: `https://api.spotify.com/v1/me/playlists/contains?ids=${id}`,
+            url: `https://api.spotify.com/v1/playlists/${id}/followers/contains?ids=${user.id}`,
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
@@ -61,6 +61,7 @@ export default function PlaylistPage({ location }) {
 
         axios(options)
         .then(response => {
+          console.log(response.data)
           setLiked(response.data[0])
         })
         .catch(error => {
@@ -71,7 +72,7 @@ export default function PlaylistPage({ location }) {
             setLiked(false)
         }
 
-    }, [id, accessToken])
+    }, [id, user.id, accessToken])
 
 
     useEffect(() => {
@@ -350,11 +351,11 @@ export default function PlaylistPage({ location }) {
         <svg id={(liked)?'headerLiked':'headerLike'} viewBox="0 0 32 32" stroke="white" 
                onClick={() => {
                    if (liked) {
-                    //   unlike(accessToken, 'playlists', id)
+                       unlike(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`)
                        setLiked(false)
                    }
                    else {
-                    //   like(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`)
+                       like(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`)
                        setLiked(true)
                    }
                    

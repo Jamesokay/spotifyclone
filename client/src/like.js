@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-export default function like(token, type, id) {
+export default function like(token, URL) {
           const options = {
-              url: `https://api.spotify.com/v1/me/${type}?ids=${id}`,
+              url: URL,
               method: 'PUT',
               headers: {
                   'Authorization': `Bearer ${token}`,

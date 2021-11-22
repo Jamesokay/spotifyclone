@@ -707,8 +707,14 @@ li:hover .sideBarImg {
 .sideBarPlaylist {
     color: grey;
     text-decoration: none;
+    font-size: 10pt;
     margin-left: 15px;
-    font-size: smaller;
+    display: block;
+    width: 160px;
+    height: 32px;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap;
 }
 
 
