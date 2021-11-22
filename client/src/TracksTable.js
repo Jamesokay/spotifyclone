@@ -15,6 +15,7 @@ export default function TracksTable({content, page }) {
     const {setNewTrack} = useContext(PlaylistContext)
     const {currentPage} = useContext(PageContext)
     const { nowPlaying } = useContext(TrackContext)
+    const [likedTracks, setLikedTracks] = useState([])
   
       useEffect(() => {
         setNewTrack({})
@@ -71,24 +72,49 @@ export default function TracksTable({content, page }) {
         })
       }
 
-    //  function likeSong(id) {
-    //     const options = {
-    //         url: `https://api.spotify.com/v1/me/tracks?ids=${id}`,
-    //         method: 'PUT',
-    //         headers: {
-    //             'Authorization': `Bearer ${accessToken}`,
-    //             'Content-Type': 'application/json',
-    //         }
-    //     }
+     function likeSong(id) {
+        setLikedTracks(likedTracks => [...likedTracks, id])
+        const options = {
+            url: `https://api.spotify.com/v1/me/tracks?ids=${id}`,
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+            }
+        }
 
-    //     axios(options)
-    //     .then(response => {
-    //       console.log(response)
-    //     })
-    //     .catch(error => {
-    //       console.log(error)
-    //     })
-    //  }
+        axios(options)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+     }
+
+     function unlikeSong(id) {
+      setLikedTracks(likedTracks => likedTracks.filter(item => item !== id))
+      const options = {
+          url: `https://api.spotify.com/v1/me/tracks?ids=${id}`,
+          method: 'DELETE',
+          headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+          }
+      }
+
+      axios(options)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+   }
+
+   useEffect(() => {
+     console.log(likedTracks.length)
+   }, [likedTracks])
 
 
 
@@ -190,7 +216,15 @@ export default function TracksTable({content, page }) {
                   </td>
 
                   <td>
-                    <svg className={(cont.saved)? 'tableLiked' : 'tableLike'} viewBox="0 0 32 32" stroke="none" fill="none">
+                    <svg className={(cont.saved || likedTracks.includes(cont.id))? 'tableLiked' : 'tableLike'} viewBox="0 0 32 32" stroke="none" fill="none"
+                         onClick={() => {
+                           if (cont.saved || likedTracks.includes(cont.id)) {
+                             unlikeSong(cont.id)
+                           }
+                           else {
+                             likeSong(cont.id)
+                           }
+                         }}>
                       <path d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
                     </svg>                 
                   </td>
