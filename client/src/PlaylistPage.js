@@ -357,7 +357,8 @@ export default function PlaylistPage({ location }) {
         <svg id={(liked)?'headerLiked':'headerLike'} viewBox="0 0 32 32" stroke="white" 
                onClick={() => {
                    if (liked) {
-                       unlike(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`)                     
+                       unlike(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`) 
+                       setUserPlaylists(userPlaylists => userPlaylists.filter(item => item.id !== id))                    
                        setLiked(false)
                    }
                    else {

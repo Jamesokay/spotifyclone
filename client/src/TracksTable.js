@@ -174,7 +174,7 @@ export default function TracksTable({content, page }) {
               <tr id='tableTop' style={(scrolling)? {backgroundColor:'#212121'} : {backgroundColor: 'transparent'}}>
                 <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
                 <th style={{textAlign: 'center'}}>#</th>
-                <th style={{width: '76%'}}>TITLE</th>
+                <th>TITLE</th>
                 <th style={{width: '4%'}}></th>
                 <th style={{width: '2.5%'}}>
                   <svg style={{float: 'right'}} width="16" height="16" viewBox="0 0 16 16" fill="none">
