@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import likedSongs from './likedSongs.png'
 import { AuthContext } from './AuthContext'
 import { UserContext } from './UserContext'
-import { useContext } from 'react'
+import { useContext, useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { SidebarContext } from './SidebarContext'
@@ -13,10 +13,36 @@ export default function SideBar() {
     const accessToken = useContext(AuthContext)
     const user = useContext(UserContext)
     const {userPlaylists, setUserPlaylists} = useContext(SidebarContext)
+    const [anchorPoint, setAnchorPoint] = useState({x: 0, y: 0})
+    const [showMenu, setShowMenu] = useState(false)
+
+    const handleContextMenu = useCallback(
+      (event) => {
+        event.preventDefault()
+        console.log(event.target)
+        setAnchorPoint({ x: event.pageX, y: event.pageY })
+        setShowMenu(true)
+      },
+      [setAnchorPoint]
+    )
+  
+    const handleClick = useCallback(() => (showMenu ? setShowMenu(false) : null), [showMenu])
+  
+    useEffect(() => {
+      document.addEventListener("click", handleClick);
+      document.addEventListener("contextmenu", handleContextMenu)
+      return () => {
+        document.removeEventListener("click", handleClick)
+        document.removeEventListener("contextmenu", handleContextMenu)
+      }
+    })
 
 
+    
+    
+    
+    
     function createPlaylist() {
-
         let data = {
           name: 'My Playlist #' + (userPlaylists.length + 1)
         }
@@ -43,7 +69,6 @@ export default function SideBar() {
         .catch(error => {
           console.log(error)
         })
-
     }
 
     return (
@@ -95,11 +120,14 @@ export default function SideBar() {
          </li>
 
     
-         <hr style={{width: '80%', float: 'left', border: 'none', backgroundColor: '#212121', height: '0.5px', marginLeft: '15px', marginBottom: '20px'}}/>
-         
-    
+         <hr style={{width: '80%', float: 'left', border: 'none', backgroundColor: '#212121', height: '0.5px', marginLeft: '15px', marginBottom: '20px'}}/>    
          {userPlaylists.map(playlist => 
          <li key={playlist.key}>
+         {(showMenu)?
+          <div className='contextMenuSB' style={{top: anchorPoint.y, left: anchorPoint.x}}/>
+          :
+          <></>
+          }
           <NavLink className='sideBarPlaylist' draggable="false" to={{pathname: `/playlist/${playlist.id}`, state: playlist.id }} activeClassName="sideBarPlaylistActive">
            <span>{playlist.name}</span>
           </NavLink>

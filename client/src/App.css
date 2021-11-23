@@ -726,6 +726,18 @@ li:hover .sideBarImg {
     font-family: Arial, sans-serif;
 }
 
+.contextMenuSB {
+    position: absolute;
+    display: flex;
+    height: 200px;
+    width: 150px;
+    background-color: #373737;
+    top: 0;
+    left: 0;
+    border-radius: 5px;
+    box-shadow: 0px 5px 10px 2px #121212
+}
+
 
 
 #dash {
