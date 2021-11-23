@@ -15,32 +15,61 @@ export default function SideBar() {
     const {userPlaylists, setUserPlaylists} = useContext(SidebarContext)
     const [anchorPoint, setAnchorPoint] = useState({x: 0, y: 0})
     const [showMenu, setShowMenu] = useState(false)
+    const [rightClicked, setRightClicked] = useState('')
+    const [scrolled, setScrolled] = useState(0)
+
+    // function handleContextMenu(pageX, pageY, id) {
+    //     setRightClicked(id)
+    //     setAnchorPoint({ x: pageX, y: pageY })
+    //     setShowMenu(true)
+    //   }
+    
+    // document.addEventListener('click', (event) => {
+    //   event.preventDefault()
+    //   if (showMenu) {
+    //     setShowMenu(false)
+    //     setRightClicked('')
+    //   }
+    // })
 
     const handleContextMenu = useCallback(
       (event) => {
-        event.preventDefault()
-        console.log(event.target)
-        setAnchorPoint({ x: event.pageX, y: event.pageY })
-        setShowMenu(true)
+        event.preventDefault();
+        if (event.target.className === 'playlistLi' || event.target.className === 'sideBarPlaylist' || event.target.className === 'sideBarPlaylist sideBarPlaylistActive' || event.target.className === 'playlistTitle') {
+          console.log('callback')
+          setAnchorPoint({ x: event.pageX, y: event.pageY - scrolled});
+          setShowMenu(true);
+        }
+        else return
       },
-      [setAnchorPoint]
-    )
+      [setAnchorPoint, scrolled]
+    );
   
-    const handleClick = useCallback(() => (showMenu ? setShowMenu(false) : null), [showMenu])
+    const handleClick = useCallback(() => {
+      if (showMenu) { 
+        setRightClicked('')
+        setShowMenu(false)
+       }
+      else {
+         return
+      }
+    }, [showMenu]);
   
     useEffect(() => {
       document.addEventListener("click", handleClick);
-      document.addEventListener("contextmenu", handleContextMenu)
+      document.addEventListener("contextmenu", handleContextMenu);
+      window.addEventListener('scroll', getScrollDistance)
       return () => {
-        document.removeEventListener("click", handleClick)
-        document.removeEventListener("contextmenu", handleContextMenu)
-      }
-    })
+        document.removeEventListener("click", handleClick);
+        document.removeEventListener("contextmenu", handleContextMenu);
+        window.removeEventListener('scroll', getScrollDistance)
+      };
+    });
 
-
-    
-    
-    
+    function getScrollDistance() {
+      setScrolled(window.pageYOffset)
+    }
+      
     
     function createPlaylist() {
         let data = {
@@ -72,7 +101,7 @@ export default function SideBar() {
     }
 
     return (
-        <div className='sideBar'>
+        <div className='sideBar' onContextMenu={(e) => e.preventDefault()}>
         <ul id='sideBarList'>
           <li>
           <NavLink className='sideBarLink' draggable="false" to="/" exact={true} activeClassName="sideBarActive">
@@ -118,18 +147,17 @@ export default function SideBar() {
            <span className='sideBarText'>Liked Songs</span>
          </NavLink>
          </li>
-
-    
-         <hr style={{width: '80%', float: 'left', border: 'none', backgroundColor: '#212121', height: '0.5px', marginLeft: '15px', marginBottom: '20px'}}/>    
-         {userPlaylists.map(playlist => 
-         <li key={playlist.key}>
          {(showMenu)?
           <div className='contextMenuSB' style={{top: anchorPoint.y, left: anchorPoint.x}}/>
           :
           <></>
           }
-          <NavLink className='sideBarPlaylist' draggable="false" to={{pathname: `/playlist/${playlist.id}`, state: playlist.id }} activeClassName="sideBarPlaylistActive">
-           <span>{playlist.name}</span>
+    
+         <hr style={{width: '80%', float: 'left', border: 'none', backgroundColor: '#212121', height: '0.5px', marginLeft: '15px', marginBottom: '20px'}}/>    
+         {userPlaylists.map(playlist => 
+         <li key={playlist.key} className='playlistLi' onContextMenu={() => setRightClicked(playlist.id)}>
+          <NavLink className='sideBarPlaylist' draggable="false" to={{pathname: `/playlist/${playlist.id}`, state: playlist.id }} activeClassName="sideBarPlaylistActive" onContextMenu={() => setRightClicked(playlist.id)}>
+           <span className='playlistTitle' style={(rightClicked === playlist.id)? {color: 'white'} : {}}>{playlist.name}</span>
           </NavLink>
           </li>
          )}
