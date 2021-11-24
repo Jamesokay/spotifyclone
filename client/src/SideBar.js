@@ -148,7 +148,20 @@ export default function SideBar() {
          </NavLink>
          </li>
          {(showMenu)?
-          <div className='contextMenuSB' style={{top: anchorPoint.y, left: anchorPoint.x}}/>
+          <div className='contextMenuSB' style={{top: anchorPoint.y, left: anchorPoint.x}}>
+            <ul className='contextMenuOptions'>
+              <li className='contextMenuOpt'>Add to queue</li>
+              <li className='contextMenuOpt'>Go to playlist radio</li>
+              <hr className='contextMenuDivider'/>
+              <li className='contextMenuOpt'>Add to profile</li>
+              <hr className='contextMenuDivider'/>
+              <li className='contextMenuOpt'>Remove from your library</li>
+              <li className='contextMenuOpt'>Create playlist</li>
+              <li className='contextMenuOpt'>Create folder</li>
+              <hr className='contextMenuDivider'/>
+              <li className='contextMenuOpt'>Share</li>
+            </ul>
+          </div>
           :
           <></>
           }
