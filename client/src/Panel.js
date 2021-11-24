@@ -12,9 +12,11 @@ const accessToken = useContext(AuthContext)
 const { nowPlaying } = useContext(TrackContext)
 const history = useHistory()
 
+
+
     
     return (
-        <div className='panel'>  
+        <div className='panel'> 
         {content.map(cont =>
           <Link className='cardLink' style={{textDecoration: 'none', marginRight: '1.5vw'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
           <div className='cardBody'>

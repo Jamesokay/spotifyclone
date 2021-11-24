@@ -1,5 +1,5 @@
 import SpotifyWebApi from 'spotify-web-api-node'
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useCallback } from 'react'
 import { AuthContext } from './AuthContext'
 import Panel from './Panel'
 import getDataObject from './getDataObject'
@@ -30,6 +30,42 @@ export default function Dashboard() {
     const timeMod = parseInt(time.replace(/:/g, ''))
     const greeting = greetingMessage(timeMod)
     
+    const [anchorPoint, setAnchorPoint] = useState({x: 0, y: 0})
+    const [showMenu, setShowMenu] = useState(false)
+
+
+    const handleContextMenu = useCallback(
+      (event) => {
+        event.preventDefault()
+        if (event.target.className === 'panel' || event.target.className === 'panelTitle' || event.target.className === 'panelText' || event.target.id === 'gridPanelLower' || event.target.id === 'dashGreeting' || event.target.id === 'gridContent' || event.target.id === 'dash') {
+          return
+        }
+        else {
+          setAnchorPoint({ x: event.pageX, y: event.pageY})
+          setShowMenu(true)
+        }
+      },
+      [setAnchorPoint]
+    )
+
+    const handleClick = useCallback(() => {
+      if (showMenu) { 
+        setShowMenu(false)
+      }
+      else {
+        return
+      }
+    }, [showMenu])
+
+    useEffect(() => {
+      document.addEventListener("click", handleClick)
+      document.addEventListener("contextmenu", handleContextMenu)
+
+      return () => {
+        document.removeEventListener("click", handleClick)
+        document.removeEventListener("contextmenu", handleContextMenu)
+      }
+    })
 
 
 
@@ -291,7 +327,22 @@ export default function Dashboard() {
     
     
     return loading? <Loader /> : (
-      <div id="dash">
+      <div id="dash" onContextMenu={(e) => e.preventDefault()}>
+                {(showMenu)?
+          <div className='contextMenuDash' style={{top: anchorPoint.y, left: anchorPoint.x}}>
+            <ul className='contextMenuOptions'>
+              <li className='contextMenuOpt'>Add to queue</li>
+              <li className='contextMenuOpt'>Go to playlist radio</li>
+              <hr className='contextMenuDivider'/>
+              <li className='contextMenuOpt'>Add to Your Library</li>
+              <li className='contextMenuOpt'>Add to playlist</li>
+              <hr className='contextMenuDivider'/>
+              <li className='contextMenuOpt'>Share</li>
+            </ul>
+          </div>
+          :
+          <></>
+          } 
       
         {recent.length > 7?
           <PanelGrid content={recent} head={greeting}/>
@@ -305,13 +356,13 @@ export default function Dashboard() {
 
 
 
-        <p><span className='panelTitle'>{'More like ' + relatedArtistsSeed}</span></p> 
+        <p className='panelText'><span className='panelTitle'>{'More like ' + relatedArtistsSeed}</span></p> 
         <Panel content={moreLike.slice(0, 5)} />
-        <p><span className='panelTitle'>Album picks</span></p> 
+        <p className='panelText'><span className='panelTitle'>Album picks</span></p> 
         <Panel content={recommend.slice(0, 5)} />   
-        <p><span className='panelTitle'>{'For fans of ' + customArtistName}</span></p> 
+        <p className='panelText'><span className='panelTitle'>{'For fans of ' + customArtistName}</span></p> 
         <Panel content={customArtistPanel.slice(0, 5)} /> 
-        <p><span className='panelTitle'>Recommended for today</span></p>
+        <p className='panelText'><span className='panelTitle'>Recommended for today</span></p>
         <Panel content={forToday.slice(0, 5)} />
 
       </div>

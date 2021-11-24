@@ -94,7 +94,7 @@ export default function PanelGrid({ content, head }) {
              changeBg(content[0].id)}}>
         <div id='gridPanelLower'></div>
         <div id='dashGreeting'>
-        <span>{head}</span>
+        {head}
         </div>
         
         <div id='gridContent'>
