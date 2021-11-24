@@ -6,16 +6,17 @@ import pauseTrack from './pauseTrack'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 
-export default function Panel({ content, panelVariant }) {
+export default function Panel({ content }) {
   
 const accessToken = useContext(AuthContext)
 const { nowPlaying } = useContext(TrackContext)
 const history = useHistory()
+
     
     return (
-        <div style={{display: 'flex', justifyContent: 'flex-start', marginLeft: '1.75vw', flexWrap: 'wrap'}}>  
+        <div className='panel'>  
         {content.map(cont =>
-          <Link style={{textDecoration: 'none', marginRight: '1.5vw'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
+          <Link className='cardLink' style={{textDecoration: 'none', marginRight: '1.5vw'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
           <div className='cardBody'>
             {cont.type === 'artist'?
             <img className='cardArtist' src={cont.imgUrl} alt='' />
@@ -58,7 +59,7 @@ const history = useHistory()
               {(index < artists.length - 1)?
               <span className='cardPunc'>, </span>
               :
-              <span></span>
+              <></>
               }
             </span>
             )

@@ -288,7 +288,12 @@ body {
 }
 
 
-
+.panel {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 1.75vw;
+    flex-wrap: wrap;
+}
 
 .cardBody  {    
     width: 15vw; 
@@ -637,10 +642,10 @@ body {
     top: 0;
     width: 15vw;
     min-width: 215px;
-    height: 100vh;
+    height: 87.25%;
     background: black;
     cursor: default;
-    z-index: 2;
+    z-index: 3;
 }
 
 .sideBarLink {
@@ -734,7 +739,8 @@ li:hover .sideBarImg {
     top: 0;
     left: 0;
     border-radius: 5px;
-    box-shadow: 0px 5px 10px 2px #121212
+    box-shadow: 0px 5px 10px 2px #121212;
+    z-index: 5;
 }
 
 .contextMenuOptions {
@@ -832,14 +838,14 @@ li:hover .sideBarImg {
 .playBar {
     position: fixed;
     display: flex;
-    height: 90px;
+    height: 12.5%;
     width: 100vw;
     background: #212121;
     cursor: default;
     bottom: 0;
     border-top: 0.5px solid #373737;
     user-select: none;
-    z-index: 3;
+    z-index: 2;
 }
 
 .volumeIcon {

@@ -18,19 +18,6 @@ export default function SideBar() {
     const [rightClicked, setRightClicked] = useState('')
     const [scrolled, setScrolled] = useState(0)
 
-    // function handleContextMenu(pageX, pageY, id) {
-    //     setRightClicked(id)
-    //     setAnchorPoint({ x: pageX, y: pageY })
-    //     setShowMenu(true)
-    //   }
-    
-    // document.addEventListener('click', (event) => {
-    //   event.preventDefault()
-    //   if (showMenu) {
-    //     setShowMenu(false)
-    //     setRightClicked('')
-    //   }
-    // })
 
     const handleContextMenu = useCallback(
       (event) => {
