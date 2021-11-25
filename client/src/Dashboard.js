@@ -47,7 +47,7 @@ export default function Dashboard() {
           return
         }
         else {
-          setAnchorPoint({ x: event.pageX, y: event.pageY})
+          setAnchorPoint({ x: event.pageX + 5, y: event.pageY + 5})
           setShowMenu(true)
         }
       },
