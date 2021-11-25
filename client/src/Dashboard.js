@@ -1,5 +1,5 @@
 import SpotifyWebApi from 'spotify-web-api-node'
-import React, { useState, useEffect, useContext, useCallback } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { AuthContext } from './AuthContext'
 import Panel from './Panel'
 import getDataObject from './getDataObject'
@@ -7,6 +7,7 @@ import createContextArray from './createContextArray'
 import PanelGrid from './PanelGrid'
 import Loader from './Loader'
 import { RightClickContext } from './RightClickContext'
+import useContextMenu from './useContextMenu'
 
 const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
@@ -30,50 +31,14 @@ export default function Dashboard() {
     const time = date.toLocaleTimeString('en-GB')
     const timeMod = parseInt(time.replace(/:/g, ''))
     const greeting = greetingMessage(timeMod)
-    
-    const [anchorPoint, setAnchorPoint] = useState({x: 0, y: 0})
-    const [showMenu, setShowMenu] = useState(false)
-    const { rightClick, setRightClick } = useContext(RightClickContext)
+    const { anchorPoint, showMenu } = useContextMenu()
+    const { rightClick } = useContext(RightClickContext)
 
     useEffect(() => {
       console.log(rightClick)
     }, [rightClick])
 
-
-    const handleContextMenu = useCallback(
-      (event) => {
-        event.preventDefault()
-        if (event.target.className === 'panel' || event.target.className === 'panelTitle' || event.target.className === 'panelText' || event.target.id === 'gridPanelLower' || event.target.id === 'dashGreeting' || event.target.id === 'gridContent' || event.target.id === 'dash') {
-          return
-        }
-        else {
-          setAnchorPoint({ x: event.pageX + 5, y: event.pageY + 5})
-          setShowMenu(true)
-        }
-      },
-      [setAnchorPoint]
-    )
-
-    const handleClick = useCallback(() => {
-      if (showMenu) { 
-        setShowMenu(false)
-        setRightClick({type: '', id: ''})
-      }
-      else {
-        return
-      }
-    }, [showMenu, setRightClick])
-
-    useEffect(() => {
-      document.addEventListener("click", handleClick)
-      document.addEventListener("contextmenu", handleContextMenu)
-
-      return () => {
-        document.removeEventListener("click", handleClick)
-        document.removeEventListener("contextmenu", handleContextMenu)
-      }
-    })
-
+    
 
 
     function greetingMessage(time) {

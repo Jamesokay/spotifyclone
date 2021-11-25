@@ -101,7 +101,7 @@ export default function PanelGrid({ content, head }) {
         
         <div id='gridContent'>
         {content.slice(0, 8).map(cont =>
-          <Link className='gridLink' style={{textDecoration: 'none', width: '19vw'}} 
+          <Link className='gridCardLink' style={{textDecoration: 'none', width: '19vw'}} 
                 key={cont.key} 
                 to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}
                 onContextMenu={() => setRightClick({type: cont.type, id: cont.id})}
@@ -120,9 +120,7 @@ export default function PanelGrid({ content, head }) {
           >
             <img className='gridCardImage' src={cont.imgUrl} alt=''
                  onLoad={()=> getColor(cont.id, cont.imgUrl)} />
-            <div className='gridCardTitle' style={(rightClick.id === cont.id)? {textDecoration: 'underline'} : {}}>
-                <span>{cont.name}</span>
-            </div>
+            <div className='gridCardTitle' style={(rightClick.id === cont.id)? {textDecoration: 'underline'} : {}}>{cont.name}</div>
             <div className='gridPlayButton'
                 style={(cont.uri === nowPlaying.contextUri)? {opacity: '1'} : {opacity: '0'}}
                 onClick={(e) => {

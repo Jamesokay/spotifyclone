@@ -154,7 +154,7 @@
     transition: background-color 0.2s ease-in-out;
 }
 
-.gridLink {
+.gridCardLink {
     width: 19vw;
     height: 11vh;
 }
