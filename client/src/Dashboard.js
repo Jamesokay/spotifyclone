@@ -6,6 +6,7 @@ import getDataObject from './getDataObject'
 import createContextArray from './createContextArray'
 import PanelGrid from './PanelGrid'
 import Loader from './Loader'
+import { RightClickContext } from './RightClickContext'
 
 const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
@@ -32,6 +33,11 @@ export default function Dashboard() {
     
     const [anchorPoint, setAnchorPoint] = useState({x: 0, y: 0})
     const [showMenu, setShowMenu] = useState(false)
+    const { rightClick, setRightClick } = useContext(RightClickContext)
+
+    useEffect(() => {
+      console.log(rightClick)
+    }, [rightClick])
 
 
     const handleContextMenu = useCallback(
@@ -51,11 +57,12 @@ export default function Dashboard() {
     const handleClick = useCallback(() => {
       if (showMenu) { 
         setShowMenu(false)
+        setRightClick({type: '', id: ''})
       }
       else {
         return
       }
-    }, [showMenu])
+    }, [showMenu, setRightClick])
 
     useEffect(() => {
       document.addEventListener("click", handleClick)
@@ -327,12 +334,16 @@ export default function Dashboard() {
     
     
     return loading? <Loader /> : (
-      <div id="dash" onContextMenu={(e) => e.preventDefault()}>
+      <div id="dash">
                 {(showMenu)?
           <div className='contextMenuDash' style={{top: anchorPoint.y, left: anchorPoint.x}}>
             <ul className='contextMenuOptions'>
               <li className='contextMenuOpt'>Add to queue</li>
+              {(rightClick.type === 'playlist')?
               <li className='contextMenuOpt'>Go to playlist radio</li>
+              :
+              <li className='contextMenuOpt'>Go to artist radio</li>
+              }
               <hr className='contextMenuDivider'/>
               <li className='contextMenuOpt'>Add to Your Library</li>
               <li className='contextMenuOpt'>Add to playlist</li>

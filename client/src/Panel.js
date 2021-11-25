@@ -5,12 +5,14 @@ import playTrack from './playTrack'
 import pauseTrack from './pauseTrack'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
+import { RightClickContext } from './RightClickContext'
 
 export default function Panel({ content }) {
   
 const accessToken = useContext(AuthContext)
 const { nowPlaying } = useContext(TrackContext)
 const history = useHistory()
+const { rightClick, setRightClick } = useContext(RightClickContext)
 
 
 
@@ -18,8 +20,9 @@ const history = useHistory()
     return (
         <div className='panel'> 
         {content.map(cont =>
-          <Link className='cardLink' style={{textDecoration: 'none', marginRight: '1.5vw'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
-          <div className='cardBody'>
+          <Link className='cardLink' style={{textDecoration: 'none', marginRight: '1.5vw'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}
+                onContextMenu={() => setRightClick({type: cont.type, id: cont.id})}>
+          <div className='cardBody' style={(rightClick.id === cont.id)? {background: '#373737'} : {}}>
             {cont.type === 'artist'?
             <img className='cardArtist' src={cont.imgUrl} alt='' />
             :
@@ -44,12 +47,12 @@ const history = useHistory()
             </div>
             }
             <div className='cardText'>
-            <span className='cardTitle'>{cont.name}</span>
+            <span className='cardTitle' style={(rightClick.id === cont.id)? {textDecoration: 'underline'} : {}}>{cont.name}</span>
             <br /> 
             <span className='cardSub'>        
             {(cont.type === 'album' && !cont.onAlbumPage && !cont.onArtistPage)?
             cont.artists.map((artist, index, artists) =>
-            <span key={artist.id}>
+            <span key={artist.id} style={(rightClick.id === cont.id)? {textDecoration: 'underline'} : {}}>
               <span className='cardSubLink' onClick={(e) => {
                 e.preventDefault()
                 history.push({

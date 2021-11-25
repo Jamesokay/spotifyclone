@@ -17,6 +17,7 @@ import { PageContext } from './PageContext'
 import { PlaylistContext } from './PlaylistContext'
 import { TrackContext } from './TrackContext'
 import { SidebarContext } from './SidebarContext'
+import { RightClickContext } from './RightClickContext'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
 import Layout from './Layout'
@@ -52,8 +53,9 @@ function App() {
   const [userPlaylists, setUserPlaylists] = useState([])
   const sidebarPlaylists = {userPlaylists, setUserPlaylists}
   
-//  const [navPlayerShow, setNavPlayerShow] = useState(false)
-//  const navPlayer = {navPlayerShow, setNavPlayerShow}
+  const [rightClick, setRightClick] = useState({type: '',
+                                                id: ''})
+  const rightClickedEl = {rightClick, setRightClick}
   
   const location = useLocation()
 
@@ -131,6 +133,7 @@ function App() {
       <PlaylistContext.Provider value={track}>
       <TrackContext.Provider value={currentTrack}>
       <SidebarContext.Provider value={sidebarPlaylists}>
+      <RightClickContext.Provider value={rightClickedEl}>
       
         <Layout>
         <Route path='/' exact component={(accessToken)? Dashboard : Login} />
@@ -144,7 +147,8 @@ function App() {
         <Route path="/collection/albums" component={CollectionAlbum} />
         <Route path="/collection/tracks" component={CollectionTrack} />
         </Layout>
-
+      
+      </RightClickContext.Provider>
       </SidebarContext.Provider>
       </TrackContext.Provider>
       </PlaylistContext.Provider>

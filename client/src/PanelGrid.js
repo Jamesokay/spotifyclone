@@ -2,6 +2,7 @@ import { useState, useContext } from 'react'
 import { AuthContext } from './AuthContext'
 import { ThemeContext } from './ThemeContext'
 import { TrackContext } from './TrackContext'
+import { RightClickContext } from './RightClickContext'
 import playTrack from './playTrack'
 import pauseTrack from './pauseTrack'
 import { Link } from 'react-router-dom'
@@ -13,6 +14,7 @@ export default function PanelGrid({ content, head }) {
     const [gradient, setGradient] = useState('')
     const { setCurrentTheme } = useContext(ThemeContext)
     const { nowPlaying } = useContext(TrackContext)
+    const { rightClick, setRightClick } = useContext(RightClickContext)
 
 
  
@@ -99,11 +101,13 @@ export default function PanelGrid({ content, head }) {
         
         <div id='gridContent'>
         {content.slice(0, 8).map(cont =>
-          <Link style={{textDecoration: 'none', width: '19vw'}} 
+          <Link className='gridLink' style={{textDecoration: 'none', width: '19vw'}} 
                 key={cont.key} 
                 to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}
+                onContextMenu={() => setRightClick({type: cont.type, id: cont.id})}
                 >
           <div className='gridCard'
+               style={(rightClick.id === cont.id)? {backgroundColor: 'rgba(128, 128, 128, 0.7)'} : {}}
                onMouseOver={()=> {
                    updateTheme(cont.id)
                    changeBg(cont.id)
@@ -116,7 +120,7 @@ export default function PanelGrid({ content, head }) {
           >
             <img className='gridCardImage' src={cont.imgUrl} alt=''
                  onLoad={()=> getColor(cont.id, cont.imgUrl)} />
-            <div className='gridCardTitle'>
+            <div className='gridCardTitle' style={(rightClick.id === cont.id)? {textDecoration: 'underline'} : {}}>
                 <span>{cont.name}</span>
             </div>
             <div className='gridPlayButton'
