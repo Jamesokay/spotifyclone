@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { PageContext } from './PageContext'
 import { TrackContext } from './TrackContext'
+import { RightClickContext } from './RightClickContext'
 
 export default function TracksTable({content, page }) {
 
@@ -16,6 +17,7 @@ export default function TracksTable({content, page }) {
     const {currentPage} = useContext(PageContext)
     const { nowPlaying } = useContext(TrackContext)
     const [likedTracks, setLikedTracks] = useState([])
+    const { rightClick, setRightClick } = useContext(RightClickContext)
 
     function getLikedIds(arr) {
       let newArr = []
@@ -292,7 +294,10 @@ export default function TracksTable({content, page }) {
                 <td className='tdRegTrack'></td>
               </tr>
               {content.map(cont =>
-                <tr className='trackTableRow' key={cont.id}>
+                <tr className='trackTableRow' 
+                    style={(rightClick.id === cont.id)? {background: 'grey'} : {}} 
+                    key={cont.id}
+                    onContextMenu={() => setRightClick({id: cont.id, type: 'track'})}  >
                 <td className='emptyCell'></td>
                 {(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName && !nowPlaying.isPaused)?
                   <td className='rowFirst tdRegTrack'>
@@ -307,6 +312,7 @@ export default function TracksTable({content, page }) {
                   <td className='rowFirst tdRegTrack'>
                     <span className='trackTableIndex'>{cont.num}</span>
                     <div className='trackTablePlayIcon'
+                    style={(rightClick.id === cont.id)? {visibility: 'visible'} : {}}
                     onClick={() => 
                       playTrack(accessToken, 
                     {context_uri: cont.context,
@@ -321,6 +327,7 @@ export default function TracksTable({content, page }) {
                     {cont.artists.map((artist, index, artists) => 
                       <span key={artist.id} className='trackTableArtist'>                 
                         <span className='trackTableLink'
+                              style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                               onClick={(e) => {
                                 e.preventDefault()
                                 history.push({
@@ -339,6 +346,7 @@ export default function TracksTable({content, page }) {
                   </td>
                   <td className='tdRegTrack' style={{width: '505px'}}>
                     <span className='trackTableLink'
+                          style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                           onClick={(e) => {
                              e.preventDefault()
                              history.push({
