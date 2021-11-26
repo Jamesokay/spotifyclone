@@ -232,7 +232,7 @@ export default function AlbumPage({ location }) {
             <div className={(!nowPlaying.isPaused && album.uri === nowPlaying.contextUri)? 'headerPauseIcon': 'headerPlayIcon'}></div>
           </div>
         
-          <svg id={(liked)?'headerLiked':'headerLike'} viewBox="0 0 32 32" stroke="white" 
+          <svg className={(liked)?'headerLiked':'headerLike'} viewBox="0 0 32 32" stroke="white" 
                onClick={() => {
                    if (liked) {
                        unlike(accessToken, `https://api.spotify.com/v1/me/albums?ids=${id}`)
@@ -244,7 +244,7 @@ export default function AlbumPage({ location }) {
                    }
                    
                 }}>
-            <path d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
+            <path className='headerHeartIcon' d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
           </svg>
 
         </div>

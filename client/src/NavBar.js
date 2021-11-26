@@ -59,14 +59,13 @@ export default function NavBar() {
         <div className='navHistory'>
         <div className='navButton' onClick={() => history.goBack()}>
         <svg className='navIconLeft' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
+            <polyline className='goBack' points="15 18 9 12 15 6"></polyline>
         </svg>
         </div>
 
         <div className='navButton' onClick={() => history.goForward()}>
         <svg className='navIconRight' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="9 18 15 12 9 6">
-            </polyline>
+            <polyline className='goForward' points="9 18 15 12 9 6"></polyline>
         </svg>
         </div>
         </div>
@@ -97,7 +96,8 @@ export default function NavBar() {
         <div id='user' style={(toggle)? {backgroundColor: '#373737'} : {backgroundColor: '#121212'}}>
             <img id='userImg' src={defaultUser} alt=''></img>
             <span id='userName'>{name}</span>
-        <svg style={{marginRight: 'auto'}} xmlns="http://www.w3.org/2000/svg" 
+        <svg className='userToggle'
+             style={{marginRight: 'auto'}} xmlns="http://www.w3.org/2000/svg" 
              width="24" height="24" 
              viewBox="0 0 24 24" 
              fill="white" 
@@ -113,7 +113,7 @@ export default function NavBar() {
                  setToggle(true)
                }
              }}>
-            <polyline points="8 9, 12 14, 16 9, 8 9" />
+            <polyline className='downIcon' points="8 9, 12 14, 16 9, 8 9" />
         </svg>
         </div>
         <div id='userMenu' style={(toggle)? {visibility: 'visible'} : {visibility: 'hidden'}}>

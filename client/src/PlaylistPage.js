@@ -17,7 +17,9 @@ import { PlaylistContext } from './PlaylistContext'
 import like from './like'
 import unlike from './unlike'
 import { SidebarContext } from './SidebarContext'
+import { RightClickContext } from './RightClickContext'
 import getDataObject from './getDataObject'
+import useContextMenu from './useContextMenu'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -43,6 +45,8 @@ export default function PlaylistPage({ location }) {
     const [loading, setLoading] = useState(true)
     const [liked, setLiked] = useState(false)
     const {setUserPlaylists} = useContext(SidebarContext)
+    const { anchorPoint, showMenu } = useContextMenu()
+    const { rightClick } = useContext(RightClickContext)
 
 
 
@@ -332,6 +336,25 @@ export default function PlaylistPage({ location }) {
  
     return loading? <div/> : (
       <div>
+      {(showMenu)?
+          <div className='contextMenuDash' style={{top: anchorPoint.y, left: anchorPoint.x}}>
+            <ul className='contextMenuOptions'>
+              <li className='contextMenuOpt'>Add to queue</li>
+              {(rightClick.type === 'playlist')?
+              <li className='contextMenuOpt'>Go to playlist radio</li>
+              :
+              <li className='contextMenuOpt'>Go to artist radio</li>
+              }
+              <hr className='contextMenuDivider'/>
+              <li className='contextMenuOpt'>Add to Your Library</li>
+              <li className='contextMenuOpt'>Add to playlist</li>
+              <hr className='contextMenuDivider'/>
+              <li className='contextMenuOpt'>Share</li>
+            </ul>
+          </div>
+          :
+          <></>
+          } 
       <HeaderPanel content={playlist} creators={creator} id={id}/>
       <div className='pageContainer'>
       {(tracksFinal.length !== 0)?
@@ -354,7 +377,7 @@ export default function PlaylistPage({ location }) {
         {(isOwner)?
         <div/>
         :
-        <svg id={(liked)?'headerLiked':'headerLike'} viewBox="0 0 32 32" stroke="white" 
+        <svg className={(liked)?'headerLiked':'headerLike'} viewBox="0 0 32 32" stroke="white" 
                onClick={() => {
                    if (liked) {
                        unlike(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`) 
@@ -368,7 +391,7 @@ export default function PlaylistPage({ location }) {
                    }
                    
                 }}>
-            <path d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
+            <path className='headerHeartIcon' d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
           </svg> 
         }
       </div>

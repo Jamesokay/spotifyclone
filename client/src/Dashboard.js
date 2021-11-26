@@ -34,12 +34,6 @@ export default function Dashboard() {
     const { anchorPoint, showMenu } = useContextMenu()
     const { rightClick } = useContext(RightClickContext)
 
-    useEffect(() => {
-      console.log(rightClick)
-    }, [rightClick])
-
-    
-
 
     function greetingMessage(time) {
       if (time < 120000) {

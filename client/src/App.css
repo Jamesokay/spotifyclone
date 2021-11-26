@@ -1282,7 +1282,7 @@ li:hover .sideBarImg {
     letter-spacing: 1px;
 }
 
-.trackTableSearch {
+.searchTable {
     width: 100%;
     font-family: Arial, sans-serif;
     cursor: default;
@@ -1295,14 +1295,14 @@ li:hover .sideBarImg {
    padding-bottom: 5px !important;
 } */
 
-.trackTable {
+.tableReg {
     width: 85vw;
     font-family: Arial, sans-serif;
     cursor: default;
     font-size: 11pt;    
 }
 
-.trackTableArtist {
+.artistTable {
     width: 81.75vw;
     margin-left: 1.75vw;
     font-family: Arial, Helvetica, sans-serif;
@@ -1360,7 +1360,7 @@ th {
 
 
 
-.tdReg {
+.tdRegTrack {
     padding-top: 11px;
     padding-bottom: 11px;
 }
@@ -1369,38 +1369,38 @@ th {
     float: right;
 }
 
-.tdSmall {
+.tdSmallTrack {
     padding-top: 5px;
     padding-bottom: 5px;
 }
 
-.tableLink {
+.trackTableLink {
     font-size: 10pt;
 }
 
-.tableLink:hover {
+.trackTableLink:hover {
     color: white;
     text-decoration: underline;
 }
 
-.tableImage {
+.trackTableImage {
     height: 40px; 
     width: 40px; 
     object-fit: cover;
 }
 
-.searchTableImage {
+.searchTableTrackImage {
     height: 40px; 
     width: 40px; 
     object-fit: cover;
     margin-top: 5px;
 }
 
-.trackTableRow:hover .searchTableImage {
+.trackTableRow:hover .searchTableTrackImage {
     opacity: 0.5;
 }
 
-.searchTablePlayIcon {
+.searchTableTrackPlayIcon {
     width: 0;
     height: 0;
     border-top: 7px solid transparent;
@@ -1412,7 +1412,7 @@ th {
     visibility: hidden;
 }
 
-.trackTableRow:hover .searchTablePlayIcon {
+.trackTableRow:hover .searchTableTrackPlayIcon {
     visibility: visible;
 }
 
@@ -1422,7 +1422,7 @@ th {
     color: grey;
 }
 
-.tablePlayIcon {
+.trackTablePlayIcon {
     width: 0;
     height: 0;
     border-top: 7px solid transparent;
@@ -1512,12 +1512,12 @@ th {
     }
 }
 
-.trackTableRow:hover .tableIndex {
+.trackTableRow:hover .trackTableIndex {
     visibility: hidden;
 }
 
 
-.trackTableRow:hover .tablePlayIcon {
+.trackTableRow:hover .trackTablePlayIcon {
     visibility: visible;
 }
 
@@ -1549,22 +1549,22 @@ th {
     border-bottom-right-radius: 5px;
 }
 
-.tableLike {
+.trackTableLike {
     transform: scale(0.35);
 }
 
-.tableLiked {
+.trackTableLiked {
     transform: scale(0.35);
     stroke: #1ed760;
     fill:#1ed760;
     visibility: visible;
 }
 
-.trackTableRow:hover .tableLike {
+.trackTableRow:hover .trackTableLike {
     stroke: grey;
 }
 
-.tableLike:hover {
+.trackTableLike:hover {
     stroke: white !important;
 }
 
@@ -1622,18 +1622,18 @@ th {
     display: flex;
 }
 
-#headerLike {
+.headerLike {
     transform: scale(0.3);
     stroke: grey;
     fill: none;
 }
 
 
-#headerLike:hover {
+.headerLike:hover {
     stroke: white;
 }
 
-#headerLiked {
+.headerLiked {
     transform: scale(0.3);
     stroke: #1ed760;
     fill: #1ed760

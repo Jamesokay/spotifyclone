@@ -9,7 +9,16 @@ export default function useContextMenu() {
     const handleContextMenu = useCallback(
       (event) => {
         event.preventDefault()
-        if (event.target.className.toLowerCase().includes('card')) {
+        if (event.target.className.baseVal) {
+            if (event.target.className.baseVal.toLowerCase().includes('track')) {
+            setAnchorPoint({ x: event.pageX + 5, y: event.pageY + 5})
+            setShowMenu(true)  
+            }
+            else {
+                return
+            }
+        }
+        else if (event.target.className.toLowerCase().includes('card') || event.target.className.toLowerCase().includes('track')) {
             setAnchorPoint({ x: event.pageX + 5, y: event.pageY + 5})
             setShowMenu(true)         
         }

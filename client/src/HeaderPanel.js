@@ -105,7 +105,7 @@ export default function HeaderPanel({ content, creators }) {
           <img id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()}/>
           {(isOwner)?
           <div id='headerImageChange'>
-          <svg
+          <svg className='editPlaylistImage'
            width="50" 
            fill="none" 
            height="50" 
@@ -115,7 +115,7 @@ export default function HeaderPanel({ content, creators }) {
            strokeLinejoin="miter" 
             
            >
-            <path d="M12 37, L40 9, L47 16, L19 44, L7 49, L12 37, L19 44"></path>
+            <path className='pencilIcon' d="M12 37, L40 9, L47 16, L19 44, L7 49, L12 37, L19 44"></path>
                 
         </svg>
             <span style={{marginTop: '10px'}}>Choose photo</span>

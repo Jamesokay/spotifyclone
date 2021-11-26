@@ -143,20 +143,20 @@ export default function TracksTable({content, page }) {
         return (
           <div>
             <div id='tableHeader'></div>        
-            <table className='trackTableArtist' cellSpacing='0' cellPadding='0'>
+            <table className='artistTable' cellSpacing='0' cellPadding='0'>
             <tbody>
             {content.map(cont =>
               <tr className='trackTableRow' key={cont.id} style={{color: 'white'}}>
               
-                <td className='rowFirst tdReg'>
-                <span className='tableIndex'>{cont.num}</span>
-                <div className='tablePlayIcon'
+                <td className='rowFirst tdRegTrack'>
+                <span className='trackTableIndex'>{cont.num}</span>
+                <div className='trackTablePlayIcon'
                 onClick={() => playTrack(accessToken, {uris: [cont.uri]})}
                 ></div>
                 </td>
-                <td className='tdReg'><img className='tableImage' src={cont.trackImage} alt=''/></td>
-                <td className='tdReg'>{cont.name}</td>
-                <td className='rowLast tdReg'>{cont.duration}</td>
+                <td className='tdRegTrack'><img className='trackTableImage' src={cont.trackImage} alt=''/></td>
+                <td className='tdRegTrack'>{cont.name}</td>
+                <td className='rowLast tdRegTrack'>{cont.duration}</td>
                 
               </tr>
             )}
@@ -169,7 +169,7 @@ export default function TracksTable({content, page }) {
         return (
           <div>
            <div id='tableHeader'></div>
-            <table className='trackTable' cellSpacing='0' cellPadding='0'>
+            <table className='tableReg' cellSpacing='0' cellPadding='0'>
             <thead>
               <tr id='tableTop' style={(scrolling)? {backgroundColor:'#212121'} : {backgroundColor: 'transparent'}}>
                 <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
@@ -177,8 +177,8 @@ export default function TracksTable({content, page }) {
                 <th>TITLE</th>
                 <th style={{width: '4%'}}></th>
                 <th style={{width: '2.5%'}}>
-                  <svg style={{float: 'right'}} width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M7.999 3H6.999V7V8H7.999H9.999V7H7.999V3ZM7.5 0C3.358 0 0 3.358 0 7.5C0 11.642 3.358 15 7.5 15C11.642 15 15 11.642 15 7.5C15 3.358 11.642 0 7.5 0ZM7.5 14C3.916 14 1 11.084 1 7.5C1 3.916 3.916 1 7.5 1C11.084 1 14 3.916 14 7.5C14 11.084 11.084 14 7.5 14Z" fill="currentColor"></path>
+                  <svg className='timeIcon' style={{float: 'right'}} width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path className='clock' d="M7.999 3H6.999V7V8H7.999H9.999V7H7.999V3ZM7.5 0C3.358 0 0 3.358 0 7.5C0 11.642 3.358 15 7.5 15C11.642 15 15 11.642 15 7.5C15 3.358 11.642 0 7.5 0ZM7.5 14C3.916 14 1 11.084 1 7.5C1 3.916 3.916 1 7.5 1C11.084 1 14 3.916 14 7.5C14 11.084 11.084 14 7.5 14Z" fill="currentColor"></path>
                   </svg>
                 </th>
                 <th style={{width: '5%'}}></th>
@@ -187,13 +187,13 @@ export default function TracksTable({content, page }) {
               </thead>
               <tbody>
               <tr>
-                <td className='tdReg'></td>
+                <td className='tdRegTrack'></td>
               </tr>            
               {content.map(cont =>
                 <tr className='trackTableRow' key={cont.id}>
-                <td className='emptyCell tdReg'></td>
+                <td className='emptyCell'></td>
                 {(cont.albUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri && !nowPlaying.isPaused)?
-                  <td className='rowFirst tdReg'>
+                  <td className='rowFirst tdRegTrack'>
                     <div className='tablePlayingBox'>
                       <div className='tablePlayingBar1'/>
                       <div className='tablePlayingBar2'/>
@@ -202,20 +202,20 @@ export default function TracksTable({content, page }) {
                     </div>
                   </td>
                   :
-                  <td className='rowFirst tdReg'>
-                    <span className='tableIndex'>{cont.num}</span>
-                    <div className='tablePlayIcon'
+                  <td className='rowFirst tdRegTrack'>
+                    <span className='trackTableIndex'>{cont.num}</span>
+                    <div className='trackTablePlayIcon'
                     onClick={() => playTrack(accessToken, 
                     {context_uri: cont.albUri,
                      offset: { uri: cont.uri }})}></div>
                   </td>
                  } 
-                  <td className='tdReg'>
+                  <td className='tdRegTrack'>
                     <p className='tableTrackName' 
                        style={(cont.albUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p>                     
                       {cont.artists.map((artist, index, artists) => 
-                      <span key={artist.id} >                 
-                        <span className='tableLink'
+                      <span key={artist.id} className='trackTableArtist'>                 
+                        <span className='trackTableLink'
                             onClick={(e) => {
                              e.preventDefault()
                              history.push({
@@ -236,7 +236,7 @@ export default function TracksTable({content, page }) {
                   </td>
 
                   <td>
-                    <svg className={(likedTracks.includes(cont.id))? 'tableLiked' : 'tableLike'} viewBox="0 0 32 32" stroke="none" fill="none"
+                    <svg className={(likedTracks.includes(cont.id))? 'trackTableLiked' : 'trackTableLike'} viewBox="0 0 32 32" stroke="none" fill="none"
                          onClick={() => {
                            if (likedTracks.includes(cont.id)) {
                              unlikeSong(cont.id)
@@ -245,19 +245,19 @@ export default function TracksTable({content, page }) {
                              likeSong(cont.id)
                            }
                          }}>
-                      <path d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
+                      <path className='tableHeartIcon' d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
                     </svg>                 
                   </td>
 
-                  <td className='tdReg'><span className='tdTime'>{cont.duration}</span></td>
-                  <td className='tdReg rowLast'>
+                  <td className='tdRegTrack'><span className='tdTime'>{cont.duration}</span></td>
+                  <td className='tdRegTrack rowLast'>
                    <div className='trackOptions'>
                     <div className='dot'/>
                     <div className='dot'/>
                     <div className='dot'/>
                    </div>
                   </td>
-                  <td className='emptyCell tdReg'></td>
+                  <td className='emptyCell'></td>
                 </tr>
                )}
                </tbody>
@@ -269,7 +269,7 @@ export default function TracksTable({content, page }) {
         return (
           <div>
             <div id='tableHeader'></div>
-            <table className='trackTable' cellSpacing='0' cellPadding='0'>
+            <table className='tableReg' cellSpacing='0' cellPadding='0'>
               <thead>
                 <tr id='tableTop' style={(scrolling)? {backgroundColor:'#212121'} : {backgroundColor: 'transparent'}}>
                 <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
@@ -279,8 +279,8 @@ export default function TracksTable({content, page }) {
                 <th>ALBUM</th>
                 <th style={{width: '4%'}}></th>
                 <th style={{width: '2.5%'}}>
-                <svg style={{float: 'right'}} width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M7.999 3H6.999V7V8H7.999H9.999V7H7.999V3ZM7.5 0C3.358 0 0 3.358 0 7.5C0 11.642 3.358 15 7.5 15C11.642 15 15 11.642 15 7.5C15 3.358 11.642 0 7.5 0ZM7.5 14C3.916 14 1 11.084 1 7.5C1 3.916 3.916 1 7.5 1C11.084 1 14 3.916 14 7.5C14 11.084 11.084 14 7.5 14Z" fill="currentColor"></path>
+                <svg className='timeIcon' style={{float: 'right'}} width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path className='clock' d="M7.999 3H6.999V7V8H7.999H9.999V7H7.999V3ZM7.5 0C3.358 0 0 3.358 0 7.5C0 11.642 3.358 15 7.5 15C11.642 15 15 11.642 15 7.5C15 3.358 11.642 0 7.5 0ZM7.5 14C3.916 14 1 11.084 1 7.5C1 3.916 3.916 1 7.5 1C11.084 1 14 3.916 14 7.5C14 11.084 11.084 14 7.5 14Z" fill="currentColor"></path>
                 </svg>
                 </th>
                 <th style={{width: '5%'}}></th>
@@ -289,13 +289,13 @@ export default function TracksTable({content, page }) {
               </thead>
               <tbody>
               <tr>
-                <td className='tdReg'></td>
+                <td className='tdRegTrack'></td>
               </tr>
               {content.map(cont =>
                 <tr className='trackTableRow' key={cont.id}>
-                <td className='emptyCell tdReg'></td>
+                <td className='emptyCell'></td>
                 {(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName && !nowPlaying.isPaused)?
-                  <td className='rowFirst tdReg'>
+                  <td className='rowFirst tdRegTrack'>
                     <div className='tablePlayingBox'>
                       <div className='tablePlayingBar1'/>
                       <div className='tablePlayingBar2'/>
@@ -304,9 +304,9 @@ export default function TracksTable({content, page }) {
                     </div>
                   </td>
                   :
-                  <td className='rowFirst tdReg'>
-                    <span className='tableIndex'>{cont.num}</span>
-                    <div className='tablePlayIcon'
+                  <td className='rowFirst tdRegTrack'>
+                    <span className='trackTableIndex'>{cont.num}</span>
+                    <div className='trackTablePlayIcon'
                     onClick={() => 
                       playTrack(accessToken, 
                     {context_uri: cont.context,
@@ -314,13 +314,13 @@ export default function TracksTable({content, page }) {
                     ></div>
                   </td>
                 }
-                  <td className='tableImgCol tdReg'><img className='tableImage' src={cont.trackImage} alt='' /></td>
-                  <td className='tdReg'>
+                  <td className='tableImgCol tdRegTrack'><img className='trackTableImage' src={cont.trackImage} alt='' /></td>
+                  <td className='tdRegTrack'>
                     <p className='tableTrackName'
                        style={(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p> 
                     {cont.artists.map((artist, index, artists) => 
-                      <span key={artist.id} >                 
-                        <span className='tableLink'
+                      <span key={artist.id} className='trackTableArtist'>                 
+                        <span className='trackTableLink'
                               onClick={(e) => {
                                 e.preventDefault()
                                 history.push({
@@ -337,8 +337,8 @@ export default function TracksTable({content, page }) {
                       </span>
                       )}
                   </td>
-                  <td className='tdReg' style={{width: '505px'}}>
-                    <span className='tableLink'
+                  <td className='tdRegTrack' style={{width: '505px'}}>
+                    <span className='trackTableLink'
                           onClick={(e) => {
                              e.preventDefault()
                              history.push({
@@ -349,7 +349,7 @@ export default function TracksTable({content, page }) {
                           }}>{cont.albumName}</span>
                   </td>
                   <td>
-                    <svg className={(likedTracks.includes(cont.id))? 'tableLiked' : 'tableLike'} viewBox="0 0 32 32" stroke="none" fill="none"
+                    <svg className={(likedTracks.includes(cont.id))? 'trackTableLiked' : 'trackTableLike'} viewBox="0 0 32 32" stroke="none" fill="none"
                          onClick={() => {
                            if (likedTracks.includes(cont.id)) {
                              unlikeSong(cont.id)
@@ -358,18 +358,18 @@ export default function TracksTable({content, page }) {
                              likeSong(cont.id)
                            }
                          }}>
-                      <path d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
+                      <path className='trackTableHeartIcon' d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
                     </svg> 
                   </td>
-                  <td className='tdReg'><span className='tdTime'>{cont.duration}</span></td>
-                  <td className='tdReg rowLast'>
+                  <td className='tdRegTrack'><span className='tdTime'>{cont.duration}</span></td>
+                  <td className='tdRegTrack rowLast'>
                    <div className='trackOptions'>
                     <div className='dot'/>
                     <div className='dot'/>
                     <div className='dot'/>
                    </div>
                   </td>
-                  <td className='emptyCell tdReg'></td>
+                  <td className='emptyCell'></td>
                 </tr>
               )}
               </tbody>
@@ -381,7 +381,7 @@ export default function TracksTable({content, page }) {
       return (
         <div>
         <div id='tableHeader'></div>
-        <table className='trackTable' cellSpacing='0' cellPadding='0'>
+        <table className='tableReg' cellSpacing='0' cellPadding='0'>
         <thead>
           <tr>
             <th className='empty'></th>
@@ -395,18 +395,18 @@ export default function TracksTable({content, page }) {
         <tbody>
         {content.slice(0, 10).map(cont =>
         <tr className='trackTableRow' key={cont.id}>
-        <td className='emptyCell tdReg'></td>
-          <td className='rowFirst tdReg'>
-            <img className='searchTableImage' src={cont.trackImage} alt='' />
-            <div className='searchTablePlayIcon'
+        <td className='emptyCell'></td>
+          <td className='rowFirst tdRegTrack'>
+            <img className='searchTableTrackImage' src={cont.trackImage} alt='' />
+            <div className='searchTableTrackPlayIcon'
             onClick={() => playTrack(accessToken, {uris: [cont.uri]})}
             ></div>
           </td>
-          <td className='rowSecond tdReg'>
+          <td className='rowSecond tdRegTrack'>
           <p className='tableTrackName'>{cont.name}</p>
           {cont.artists.map((artist, index, artists) => 
-                <span key={artist.id} >                 
-                <span className='tableLink'>{artist.name}</span>
+                <span key={artist.id} className='trackTableArtist'>                 
+                <span className='trackTableLink'>{artist.name}</span>
                 {(index < artists.length - 1)?
                 <span>, </span>
                 :
@@ -415,16 +415,16 @@ export default function TracksTable({content, page }) {
                 </span>
           )}
           </td>
-          <td className='tdReg'>
+          <td className='tdRegTrack'>
             {cont.albumName}
           </td>
 
-          <td className='rowLast tdReg'>
+          <td className='rowLast tdRegTrack'>
             <div className='addTrack' onClick={() => addTrack({uris: [cont.uri]}, cont)}>
               <span>ADD</span>
             </div>
           </td>
-          <td className='emptyCell tdReg'></td>
+          <td className='emptyCell'></td>
         </tr>
         )}
         </tbody>
@@ -436,21 +436,21 @@ export default function TracksTable({content, page }) {
       return (
        <div>
         <div id='tableHeader'></div>
-        <table className='trackTableSearch' cellSpacing='0' cellPadding='3'>
+        <table className='searchTable' cellSpacing='0' cellPadding='3'>
           <tbody>
           {content.map(cont =>
           <tr className='trackTableRow' key={cont.id}>
-            <td className='rowFirst tdSmall'>
-              <img className='searchTableImage' src={cont.trackImage} alt='' />
-              <div className='searchTablePlayIcon'
+            <td className='rowFirst tdSmallTrack'>
+              <img className='searchTableTrackImage' src={cont.trackImage} alt='' />
+              <div className='searchTableTrackPlayIcon'
               onClick={() => playTrack(accessToken, {uris: [cont.uri]})}
               ></div>
             </td>
-            <td className='rowSecondSearch tdSmall'>
+            <td className='rowSecondSearch tdSmallTrack'>
             <p className='tableTrackName'>{cont.name}</p>
             {cont.artists.map((artist, index, artists) => 
-                  <span key={artist.id} >                 
-                  <span className='tableLink'
+                  <span key={artist.id} className='trackTableArtist'>                 
+                  <span className='trackTableLink'
                         onClick={(e) => {
                              e.preventDefault()
                              history.push({
@@ -468,7 +468,7 @@ export default function TracksTable({content, page }) {
                   </span>
             )}
             </td>
-            <td className='rowLast tdSmall'>{cont.duration}</td>
+            <td className='rowLast tdSmallTrack'>{cont.duration}</td>
           </tr>
           )}
           </tbody>
