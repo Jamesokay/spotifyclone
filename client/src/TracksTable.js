@@ -18,6 +18,11 @@ export default function TracksTable({content, page }) {
     const { nowPlaying } = useContext(TrackContext)
     const [likedTracks, setLikedTracks] = useState([])
     const { rightClick, setRightClick } = useContext(RightClickContext)
+    const [preventProp, setPreventProp] = useState(false)
+
+    useEffect(() => {
+      console.log(rightClick)
+  }, [rightClick])
 
     function getLikedIds(arr) {
       let newArr = []
@@ -295,9 +300,16 @@ export default function TracksTable({content, page }) {
               </tr>
               {content.map(cont =>
                 <tr className='trackTableRow' 
+                    onContextMenu={() => {
+                      if (!preventProp) {
+                        setRightClick({id: cont.id, type: 'track'})
+                      }
+                      else return
+                    }
+                    }
                     style={(rightClick.id === cont.id)? {background: 'grey'} : {}} 
                     key={cont.id}
-                    onContextMenu={() => setRightClick({id: cont.id, type: 'track'})}  >
+                    >
                 <td className='emptyCell'></td>
                 {(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName && !nowPlaying.isPaused)?
                   <td className='rowFirst tdRegTrack'>
@@ -328,6 +340,9 @@ export default function TracksTable({content, page }) {
                       <span key={artist.id} className='trackTableArtist'>                 
                         <span className='trackTableLink'
                               style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
+                              onMouseEnter={() => setPreventProp(true)}
+                              onMouseLeave={() => setPreventProp(false)}
+                              onContextMenu={() => setRightClick({id: cont.id, type: 'artist'})}
                               onClick={(e) => {
                                 e.preventDefault()
                                 history.push({
@@ -347,8 +362,10 @@ export default function TracksTable({content, page }) {
                   <td className='tdRegTrack' style={{width: '505px'}}>
                     <span className='trackTableLink'
                           style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
-                          onClick={(e) => {
-                             e.preventDefault()
+                          onMouseEnter={() => setPreventProp(true)}
+                          onMouseLeave={() => setPreventProp(false)}
+                          onContextMenu={() => setRightClick({id: cont.id, type: 'album'})}
+                          onClick={() => {        
                              history.push({
                                pathname: `/album/${cont.albumId}`,
                                search: '', 

@@ -17,9 +17,10 @@ import { PlaylistContext } from './PlaylistContext'
 import like from './like'
 import unlike from './unlike'
 import { SidebarContext } from './SidebarContext'
-import { RightClickContext } from './RightClickContext'
+// import { RightClickContext } from './RightClickContext'
 import getDataObject from './getDataObject'
-import useContextMenu from './useContextMenu'
+// import useContextMenu from './useContextMenu'
+import Menu from './Menu'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -45,8 +46,8 @@ export default function PlaylistPage({ location }) {
     const [loading, setLoading] = useState(true)
     const [liked, setLiked] = useState(false)
     const {setUserPlaylists} = useContext(SidebarContext)
-    const { anchorPoint, showMenu } = useContextMenu()
-    const { rightClick } = useContext(RightClickContext)
+    // const { anchorPoint, showMenu } = useContextMenu()
+    // const { rightClick } = useContext(RightClickContext)
 
 
 
@@ -336,25 +337,7 @@ export default function PlaylistPage({ location }) {
  
     return loading? <div/> : (
       <div>
-      {(showMenu)?
-          <div className='contextMenuDash' style={{top: anchorPoint.y, left: anchorPoint.x}}>
-            <ul className='contextMenuOptions'>
-              <li className='contextMenuOpt'>Add to queue</li>
-              {(rightClick.type === 'playlist')?
-              <li className='contextMenuOpt'>Go to playlist radio</li>
-              :
-              <li className='contextMenuOpt'>Go to artist radio</li>
-              }
-              <hr className='contextMenuDivider'/>
-              <li className='contextMenuOpt'>Add to Your Library</li>
-              <li className='contextMenuOpt'>Add to playlist</li>
-              <hr className='contextMenuDivider'/>
-              <li className='contextMenuOpt'>Share</li>
-            </ul>
-          </div>
-          :
-          <></>
-          } 
+      <Menu />
       <HeaderPanel content={playlist} creators={creator} id={id}/>
       <div className='pageContainer'>
       {(tracksFinal.length !== 0)?
