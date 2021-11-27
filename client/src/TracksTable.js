@@ -197,7 +197,14 @@ export default function TracksTable({content, page }) {
                 <td className='tdRegTrack'></td>
               </tr>            
               {content.map(cont =>
-                <tr className='trackTableRow' key={cont.id}>
+                <tr className='trackTableRow' key={cont.id}
+                    onContextMenu={() => {                  
+                      if (!preventProp) {
+                        setRightClick({id: cont.id, type: 'track'})
+                      }
+                      else return
+                    }}
+                    style={(rightClick.id === cont.id)? {background: 'grey'} : {}} >
                 <td className='emptyCell'></td>
                 {(cont.albUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri && !nowPlaying.isPaused)?
                   <td className='rowFirst tdRegTrack'>
@@ -212,6 +219,7 @@ export default function TracksTable({content, page }) {
                   <td className='rowFirst tdRegTrack'>
                     <span className='trackTableIndex'>{cont.num}</span>
                     <div className='trackTablePlayIcon'
+                    style={(rightClick.id === cont.id)? {visibility: 'visible'} : {}}
                     onClick={() => playTrack(accessToken, 
                     {context_uri: cont.albUri,
                      offset: { uri: cont.uri }})}></div>
@@ -223,6 +231,10 @@ export default function TracksTable({content, page }) {
                       {cont.artists.map((artist, index, artists) => 
                       <span key={artist.id} className='trackTableArtist'>                 
                         <span className='trackTableLink'
+                              style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
+                              onMouseEnter={() => setPreventProp(true)}
+                              onMouseLeave={() => setPreventProp(false)}
+                              onContextMenu={() => setRightClick({id: cont.id, type: 'artist'})}
                             onClick={(e) => {
                              e.preventDefault()
                              history.push({
@@ -419,19 +431,31 @@ export default function TracksTable({content, page }) {
         </thead>
         <tbody>
         {content.slice(0, 10).map(cont =>
-        <tr className='trackTableRow' key={cont.id}>
+        <tr className='trackTableRow' key={cont.id}
+            onContextMenu={() => {
+              if (!preventProp) {
+                setRightClick({id: cont.id, type: 'track'})
+              }
+              else return
+              }}
+            style={(rightClick.id === cont.id)? {background: 'grey'} : {}}>
         <td className='emptyCell'></td>
           <td className='rowFirst tdRegTrack'>
             <img className='searchTableTrackImage' src={cont.trackImage} alt='' />
             <div className='searchTableTrackPlayIcon'
-            onClick={() => playTrack(accessToken, {uris: [cont.uri]})}
+                 style={(rightClick.id === cont.id)? {visibility: 'visible'} : {}}
+                 onClick={() => playTrack(accessToken, {uris: [cont.uri]})}
             ></div>
           </td>
           <td className='rowSecond tdRegTrack'>
           <p className='tableTrackName'>{cont.name}</p>
           {cont.artists.map((artist, index, artists) => 
                 <span key={artist.id} className='trackTableArtist'>                 
-                <span className='trackTableLink'>{artist.name}</span>
+                <span className='trackTableLink'
+                      style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
+                      onMouseEnter={() => setPreventProp(true)}
+                      onMouseLeave={() => setPreventProp(false)}
+                      onContextMenu={() => setRightClick({id: cont.id, type: 'artist'})}>{artist.name}</span>
                 {(index < artists.length - 1)?
                 <span>, </span>
                 :
@@ -441,7 +465,13 @@ export default function TracksTable({content, page }) {
           )}
           </td>
           <td className='tdRegTrack'>
+          <span className='trackTableLink'
+                style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
+                onMouseEnter={() => setPreventProp(true)}
+                onMouseLeave={() => setPreventProp(false)}
+                onContextMenu={() => setRightClick({id: cont.id, type: 'album'})}>
             {cont.albumName}
+          </span>
           </td>
 
           <td className='rowLast tdRegTrack'>
@@ -464,11 +494,19 @@ export default function TracksTable({content, page }) {
         <table className='searchTable' cellSpacing='0' cellPadding='3'>
           <tbody>
           {content.map(cont =>
-          <tr className='trackTableRow' key={cont.id}>
+          <tr className='trackTableRow' key={cont.id}
+              onContextMenu={() => {
+                if (!preventProp) {
+                  setRightClick({id: cont.id, type: 'track'})
+                }
+                else return
+              }}
+              style={(rightClick.id === cont.id)? {background: 'grey'} : {}}>
             <td className='rowFirst tdSmallTrack'>
               <img className='searchTableTrackImage' src={cont.trackImage} alt='' />
               <div className='searchTableTrackPlayIcon'
-              onClick={() => playTrack(accessToken, {uris: [cont.uri]})}
+                   style={(rightClick.id === cont.id)? {visibility: 'visible'} : {}}
+                   onClick={() => playTrack(accessToken, {uris: [cont.uri]})}
               ></div>
             </td>
             <td className='rowSecondSearch tdSmallTrack'>
@@ -476,6 +514,10 @@ export default function TracksTable({content, page }) {
             {cont.artists.map((artist, index, artists) => 
                   <span key={artist.id} className='trackTableArtist'>                 
                   <span className='trackTableLink'
+                        style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
+                        onMouseEnter={() => setPreventProp(true)}
+                        onMouseLeave={() => setPreventProp(false)}
+                        onContextMenu={() => setRightClick({id: cont.id, type: 'artist'})}
                         onClick={(e) => {
                              e.preventDefault()
                              history.push({

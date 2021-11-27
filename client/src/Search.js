@@ -8,6 +8,7 @@ import TracksTable from './TracksTable'
 import axios from 'axios'
 import { TrackContext } from './TrackContext'
 import playTrack from './playTrack'
+import Menu from './Menu'
 
 
 export default function Search() {
@@ -183,6 +184,7 @@ export default function Search() {
     if (search) { 
         return (
         <div id='searchPage'>
+        <Menu/>
             <form>
               <input
               className='searchBar'

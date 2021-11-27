@@ -13,6 +13,7 @@ import like from './like'
 import unlike from './unlike'
 import axios from 'axios'
 import flagSavedTracks from './flagSavedTracks'
+import Menu from './Menu'
 
 
 
@@ -213,6 +214,7 @@ export default function AlbumPage({ location }) {
     return (
         <div>
         <HeaderPanel content={album} creators={creatorObject} />
+        <Menu/>
         <div className='pageContainer'>
         <div id='headerControls'>
           <div className='headerPlayButton'
