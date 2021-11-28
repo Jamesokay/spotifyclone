@@ -35,6 +35,8 @@ export default function AlbumPage({ location }) {
     const [moreByArtist, setMoreByArtist] = useState([])
     const { nowPlaying } = useContext(TrackContext)
     const [liked, setLiked] = useState(false)
+    const [notification, setNotification] = useState('')
+    const [showNotification, setShowNotification] = useState(false)
 
 
     function getAlbumObject(id) {
@@ -215,6 +217,7 @@ export default function AlbumPage({ location }) {
         <div>
         <HeaderPanel content={album} creators={creatorObject} />
         <Menu/>
+        <div className='likedNotification' style={(showNotification)? {opacity: '1'} : {opacity: '0'}}>{notification}</div>
         <div className='pageContainer'>
         <div id='headerControls'>
           <div className='headerPlayButton'
@@ -239,10 +242,16 @@ export default function AlbumPage({ location }) {
                    if (liked) {
                        unlike(accessToken, `https://api.spotify.com/v1/me/albums?ids=${id}`)
                        setLiked(false)
+                       setNotification('Removed from Your Library')
+                       setShowNotification(true)
+                       setTimeout(function() { setShowNotification(false) }, 3000)
                    }
                    else {
                        like(accessToken, `https://api.spotify.com/v1/me/albums?ids=${id}`)
                        setLiked(true)
+                       setNotification('Added to Your Library')
+                       setShowNotification(true)
+                       setTimeout(function() { setShowNotification(false) }, 3000)
                    }
                    
                 }}>

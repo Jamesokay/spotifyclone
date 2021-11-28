@@ -46,8 +46,8 @@ export default function PlaylistPage({ location }) {
     const [loading, setLoading] = useState(true)
     const [liked, setLiked] = useState(false)
     const {setUserPlaylists} = useContext(SidebarContext)
-    // const { anchorPoint, showMenu } = useContextMenu()
-    // const { rightClick } = useContext(RightClickContext)
+    const [notification, setNotification] = useState('')
+    const [showNotification, setShowNotification] = useState(false)
 
 
 
@@ -339,6 +339,7 @@ export default function PlaylistPage({ location }) {
       <div>
       <Menu />
       <HeaderPanel content={playlist} creators={creator} id={id}/>
+      <div className='likedNotification' style={(showNotification)? {opacity: '1'} : {opacity: '0'}}>{notification}</div>
       <div className='pageContainer'>
       {(tracksFinal.length !== 0)?
       <div id='headerControls'> 
@@ -366,11 +367,17 @@ export default function PlaylistPage({ location }) {
                        unlike(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`) 
                        setUserPlaylists(userPlaylists => userPlaylists.filter(item => item.id !== id))                    
                        setLiked(false)
+                       setNotification('Removed from Your Library')
+                       setShowNotification(true)
+                       setTimeout(function() { setShowNotification(false) }, 3000)
                    }
                    else {
                        like(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`)
                        setUserPlaylists(userPlaylists => [...userPlaylists, playlistObj])
                        setLiked(true)
+                       setNotification('Added to Your Library')
+                       setShowNotification(true)
+                       setTimeout(function() { setShowNotification(false) }, 3000)
                    }
                    
                 }}>
