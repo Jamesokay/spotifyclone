@@ -21,6 +21,7 @@ import { SidebarContext } from './SidebarContext'
 import getDataObject from './getDataObject'
 // import useContextMenu from './useContextMenu'
 import Menu from './Menu'
+import { NotificationContext } from './NotificationContext'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -46,8 +47,7 @@ export default function PlaylistPage({ location }) {
     const [loading, setLoading] = useState(true)
     const [liked, setLiked] = useState(false)
     const {setUserPlaylists} = useContext(SidebarContext)
-    const [notification, setNotification] = useState('')
-    const [showNotification, setShowNotification] = useState(false)
+    const { setNotification } = useContext(NotificationContext)
 
 
 
@@ -339,7 +339,6 @@ export default function PlaylistPage({ location }) {
       <div>
       <Menu />
       <HeaderPanel content={playlist} creators={creator} id={id}/>
-      <div className='likedNotification' style={(showNotification)? {opacity: '1'} : {opacity: '0'}}>{notification}</div>
       <div className='pageContainer'>
       {(tracksFinal.length !== 0)?
       <div id='headerControls'> 
@@ -368,16 +367,12 @@ export default function PlaylistPage({ location }) {
                        setUserPlaylists(userPlaylists => userPlaylists.filter(item => item.id !== id))                    
                        setLiked(false)
                        setNotification('Removed from Your Library')
-                       setShowNotification(true)
-                       setTimeout(function() { setShowNotification(false) }, 3000)
                    }
                    else {
                        like(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`)
                        setUserPlaylists(userPlaylists => [...userPlaylists, playlistObj])
                        setLiked(true)
                        setNotification('Added to Your Library')
-                       setShowNotification(true)
-                       setTimeout(function() { setShowNotification(false) }, 3000)
                    }
                    
                 }}>

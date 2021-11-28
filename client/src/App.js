@@ -18,6 +18,7 @@ import { PlaylistContext } from './PlaylistContext'
 import { TrackContext } from './TrackContext'
 import { SidebarContext } from './SidebarContext'
 import { RightClickContext } from './RightClickContext'
+import { NotificationContext } from './NotificationContext'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
 import Layout from './Layout'
@@ -56,6 +57,9 @@ function App() {
   const [rightClick, setRightClick] = useState({type: '',
                                                 id: ''})
   const rightClickedEl = {rightClick, setRightClick}
+
+  const [notification, setNotification] = useState('')
+  const message = {notification, setNotification}
   
   const location = useLocation()
 
@@ -134,6 +138,7 @@ function App() {
       <TrackContext.Provider value={currentTrack}>
       <SidebarContext.Provider value={sidebarPlaylists}>
       <RightClickContext.Provider value={rightClickedEl}>
+      <NotificationContext.Provider value={message}>
       
         <Layout>
         <Route path='/' exact component={(accessToken)? Dashboard : Login} />
@@ -147,7 +152,8 @@ function App() {
         <Route path="/collection/albums" component={CollectionAlbum} />
         <Route path="/collection/tracks" component={CollectionTrack} />
         </Layout>
-      
+
+      </NotificationContext.Provider>
       </RightClickContext.Provider>
       </SidebarContext.Provider>
       </TrackContext.Provider>

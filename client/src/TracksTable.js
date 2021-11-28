@@ -7,6 +7,7 @@ import axios from 'axios'
 import { PageContext } from './PageContext'
 import { TrackContext } from './TrackContext'
 import { RightClickContext } from './RightClickContext'
+import { NotificationContext } from './NotificationContext'
 
 export default function TracksTable({content, page }) {
 
@@ -19,8 +20,7 @@ export default function TracksTable({content, page }) {
     const [likedTracks, setLikedTracks] = useState([])
     const { rightClick, setRightClick } = useContext(RightClickContext)
     const [preventProp, setPreventProp] = useState(false)
-    const [notification, setNotification] = useState('')
-    const [showNotification, setShowNotification] = useState(false)
+    const { setNotification } = useContext(NotificationContext)
 
 
     function getLikedIds(arr) {
@@ -77,8 +77,6 @@ export default function TracksTable({content, page }) {
 
       function addTrack(data, trackObj) {
         setNotification('Added to playlist')
-        setShowNotification(true)
-        setTimeout(function() { setShowNotification(false) }, 3000)
         let playlistId = currentPage.pageUri.slice(17)
         const options = {
           url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
@@ -104,8 +102,6 @@ export default function TracksTable({content, page }) {
      function likeSong(id) {
         setLikedTracks(likedTracks => [...likedTracks, id])
         setNotification('Added to your Liked Songs')
-        setShowNotification(true)
-        setTimeout(function() { setShowNotification(false) }, 3000)
         const options = {
             url: `https://api.spotify.com/v1/me/tracks?ids=${id}`,
             method: 'PUT',
@@ -127,8 +123,6 @@ export default function TracksTable({content, page }) {
      function unlikeSong(id) {
       setLikedTracks(likedTracks => likedTracks.filter(item => item !== id))
       setNotification('Removed from your Liked Songs')
-      setShowNotification(true)
-      setTimeout(function() { setShowNotification(false) }, 3000)
       const options = {
           url: `https://api.spotify.com/v1/me/tracks?ids=${id}`,
           method: 'DELETE',
@@ -184,7 +178,6 @@ export default function TracksTable({content, page }) {
         return (
           <div>
            <div id='tableHeader'></div>
-           <div className='likedNotification' style={(showNotification)? {opacity: '1'} : {opacity: '0'}}>{notification}</div>
             <table className='tableReg' cellSpacing='0' cellPadding='0'>
             <thead>
               <tr id='tableTop' style={(scrolling)? {backgroundColor:'#212121'} : {backgroundColor: 'transparent'}}>
@@ -297,7 +290,6 @@ export default function TracksTable({content, page }) {
         return (
           <div>
             <div id='tableHeader'></div>
-            <div className='likedNotification' style={(showNotification)? {opacity: '1'} : {opacity: '0'}}>{notification}</div>
             <table className='tableReg' cellSpacing='0' cellPadding='0'>
               <thead>
                 <tr id='tableTop' style={(scrolling)? {backgroundColor:'#212121'} : {backgroundColor: 'transparent'}}>
@@ -428,7 +420,6 @@ export default function TracksTable({content, page }) {
       return (
         <div>
         <div id='tableHeader'></div>
-        <div className='likedNotification' style={(showNotification)? {opacity: '1'} : {opacity: '0'}}>{notification}</div>
         <table className='tableReg' cellSpacing='0' cellPadding='0'>
         <thead>
           <tr>
