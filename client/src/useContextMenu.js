@@ -6,10 +6,10 @@ export default function useContextMenu() {
     const [showMenu, setShowMenu] = useState(false)
     const { setRightClick } = useContext(RightClickContext)
 
+
     const handleContextMenu = useCallback(
       (event) => {
         event.preventDefault()
-        console.log(event.screenY)
         if (event.target.className.baseVal) {
             if (event.target.className.baseVal.toLowerCase().includes('track')) {
             setAnchorPoint({ x: event.pageX + 5, y: event.pageY + 5})
@@ -33,7 +33,7 @@ export default function useContextMenu() {
     const handleClick = useCallback(() => {
       if (showMenu) { 
         setShowMenu(false)
-        setRightClick({type: '', id: ''})
+        setRightClick({type: '', yPos: 0, xPos: 0, id: ''})
       }
       else {
         return

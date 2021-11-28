@@ -6,8 +6,7 @@ import getDataObject from './getDataObject'
 import createContextArray from './createContextArray'
 import PanelGrid from './PanelGrid'
 import Loader from './Loader'
-import { RightClickContext } from './RightClickContext'
-import useContextMenu from './useContextMenu'
+import Menu from './Menu'
 
 const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
@@ -31,8 +30,6 @@ export default function Dashboard() {
     const time = date.toLocaleTimeString('en-GB')
     const timeMod = parseInt(time.replace(/:/g, ''))
     const greeting = greetingMessage(timeMod)
-    const { anchorPoint, showMenu } = useContextMenu()
-    const { rightClick } = useContext(RightClickContext)
 
 
     function greetingMessage(time) {
@@ -294,26 +291,7 @@ export default function Dashboard() {
     
     return loading? <Loader /> : (
       <div id="dash">
-                {(showMenu)?
-          <div className='contextMenuDash' style={{top: anchorPoint.y, left: anchorPoint.x}}>
-            <ul className='contextMenuOptions'>
-              <li className='contextMenuOpt'>Add to queue</li>
-              {(rightClick.type === 'playlist')?
-              <li className='contextMenuOpt'>Go to playlist radio</li>
-              :
-              <li className='contextMenuOpt'>Go to artist radio</li>
-              }
-              <hr className='contextMenuDivider'/>
-              <li className='contextMenuOpt'>Add to Your Library</li>
-              <li className='contextMenuOpt'>Add to playlist</li>
-              <hr className='contextMenuDivider'/>
-              <li className='contextMenuOpt'>Share</li>
-            </ul>
-          </div>
-          :
-          <></>
-          } 
-      
+           <Menu />
         {recent.length > 7?
           <PanelGrid content={recent} head={greeting}/>
           :

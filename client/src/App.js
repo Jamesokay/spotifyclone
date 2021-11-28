@@ -55,6 +55,8 @@ function App() {
   const sidebarPlaylists = {userPlaylists, setUserPlaylists}
   
   const [rightClick, setRightClick] = useState({type: '',
+                                                yPos: 0,
+                                                xPos: 0,
                                                 id: ''})
   const rightClickedEl = {rightClick, setRightClick}
 

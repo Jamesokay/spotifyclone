@@ -21,7 +21,7 @@ const { rightClick, setRightClick } = useContext(RightClickContext)
         <div className='panel'> 
         {content.map(cont =>
           <Link className='cardLink' style={{textDecoration: 'none', marginRight: '1.5vw'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}
-                onContextMenu={() => setRightClick({type: cont.type, id: cont.id})}>
+                onContextMenu={(e) => setRightClick({type: cont.type, yPos: e.screenY, xPos: e.screenX, id: cont.id})}>
           <div className='cardBody' style={(rightClick.id === cont.id)? {background: '#373737'} : {}}>
             {cont.type === 'artist'?
             <img className='cardArtist' src={cont.imgUrl} alt='' />
