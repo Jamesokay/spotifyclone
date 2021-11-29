@@ -226,6 +226,10 @@ body {
     background: rgb(18, 18, 18);
 }
 
+::-webkit-scrollbar {
+    display: none
+}
+
 
 .button {
     height: auto;
@@ -502,7 +506,7 @@ body {
     position: absolute;
     display: flex;
     width: 16.25%;
-    background-color: #373737;
+    background-color: rgb(40, 40, 40);
     top: 95%;
     right: 2.5%;
     border-radius: 5px;
@@ -522,7 +526,6 @@ body {
 }
 
 .userMenuOpt {
-    background-color: #373737;
     width: 92.5%;
     padding-left: 5%;
     padding-top: 5%;
@@ -531,7 +534,7 @@ body {
 }
 
 .userMenuOpt:hover {
-    background-color: grey;
+    background-color: rgb(62, 62, 62);
 }
 
 #logOut {
@@ -785,7 +788,7 @@ li:hover .sideBarImg {
     width: 98%;
     height: 0.5px;
     border: none;
-    background-color: grey;
+    background-color: rgb(62, 62, 62);
     opacity: 0.4;
 }
 
@@ -1002,8 +1005,8 @@ li:hover .sideBarImg {
 
 #playFunctions {
     position: absolute;
-    left: 45%;
-    width: 200px;
+    left: 50%;
+    transform: translateX(-50%);
     height: 50px;
     display: flex;
 }
