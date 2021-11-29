@@ -128,7 +128,7 @@
     height: 40vh;
     padding-top: 20vh;
     margin-top: -20vh;
-    background-image: linear-gradient(transparent, #121212 85%)
+    background-image: linear-gradient(transparent, rgb(18, 18, 18) 85%)
 }
 
 
@@ -223,6 +223,7 @@ body {
     overscroll-behavior-y: none;
     overscroll-behavior-x: none;
     overflow-x: hidden;
+    background: rgb(18, 18, 18);
 }
 
 
@@ -304,7 +305,7 @@ body {
     width: 15vw; 
     height: 40vh;
     cursor: default;
-    background: #212121;
+    background: rgb(24, 24, 24);
     border-radius: 5px;
     margin-bottom: 25px;
     transition: background 0.2s ease-in-out;
@@ -430,7 +431,7 @@ body {
 }
 
 .cardBody:hover {
-    background: #373737;
+    background: rgb(40, 40, 40);
 }
 
 .loginPage {
@@ -671,7 +672,7 @@ body {
 
 
 .sideBarActive {
-    background-color: #212121;
+    background-color: rgb(40, 40, 40);
     width: 95%;
     text-decoration: none;
     color: white !important;
@@ -746,7 +747,7 @@ li:hover .sideBarImg {
     position: absolute;
     display: flex;
     width: 85%;
-    background-color: #373737;
+    background-color: rgb(40, 40, 40);
     top: 0;
     left: 0;
     border-radius: 5px;
@@ -758,7 +759,7 @@ li:hover .sideBarImg {
     position: absolute;
     display: flex;
     width: 15%;
-    background-color: #373737;
+    background-color: rgb(40, 40, 40);
     border-radius: 5px;
     box-shadow: 0px 5px 10px 2px #121212;
     z-index: 5;
@@ -789,7 +790,6 @@ li:hover .sideBarImg {
 }
 
 .contextMenuOpt {
-    background-color: #373737;
     width: 93%;
     padding-left: 5%;
     padding-top: 7.5%;
@@ -798,7 +798,7 @@ li:hover .sideBarImg {
 }
 
 .contextMenuOpt:hover {
-    background-color: grey;
+    background-color: rgb(62, 62, 62);
 }
 
 
@@ -862,7 +862,7 @@ li:hover .sideBarImg {
     display: flex;
     height: 12.5%;
     width: 100vw;
-    background: #212121;
+    background: rgb(24, 24, 24);
     cursor: default;
     bottom: 0;
     border-top: 0.5px solid #373737;
@@ -879,7 +879,7 @@ li:hover .sideBarImg {
 #volumeBar {
     height: 5px;
     width: 100px;
-    background-color: #373737;
+    background-color: rgb(83, 83, 83);
     position: absolute;
     right: 50px;
     bottom: 40px;
@@ -888,7 +888,7 @@ li:hover .sideBarImg {
 
 #volume {
     height: 5px;
-    background-color: grey;
+    background-color: rgb(148, 148, 148);
     border-radius: 10px;
     max-width: 100px;
 }
@@ -903,7 +903,7 @@ li:hover .sideBarImg {
     font-size: 8pt;
     left: 30%;
     bottom: 13px;
-    color: grey;
+    color: rgb(148, 148, 148);
 }
 
 .playingTimeTotal {
@@ -912,13 +912,13 @@ li:hover .sideBarImg {
     font-size: 8pt;
     left: 68%;
     bottom: 13px;
-    color: grey;
+    color: rgb(148, 148, 148);
 }
 
 #playProgressBar {
     height: 5px;
     width: 33.3%;
-    background-color: #373737;
+    background-color: rgb(83, 83, 83);
     position: absolute;
     left: 33.3%;
     bottom: 15px;
@@ -928,7 +928,7 @@ li:hover .sideBarImg {
 
 .playProgress {
     height: 5px;
-    background-color: grey;
+    background-color: rgb(148, 148, 148);
     border-radius: 10px;
     max-width: 480px;
 }
@@ -954,7 +954,6 @@ li:hover .sideBarImg {
     padding-top: 15px;
     margin-left: 15px;
     width: 20%;
-    background-color: #212121;
 }
 
 .playingTrackImg {
@@ -1166,7 +1165,7 @@ li:hover .sideBarImg {
 
 #topResult {
     position: relative;
-    background-color: #212121;
+    background-color: rgb(24, 24, 24);
     height: 230px;
     width: 100%;
     margin-left: 1.75vw;
@@ -1176,7 +1175,7 @@ li:hover .sideBarImg {
 }
 
 #topResult:hover {
-    background-color: #373737;
+    background-color: rgb(40, 40, 40);
 }
 
 #topResultPlayButton {
@@ -1343,14 +1342,15 @@ li:hover .sideBarImg {
 }
 
 th {
-    color: grey;
+    color: rgb(148, 148, 148);
     text-align: left;
     font-family: Arial, sans-serif;
+    font-size: 9pt;
     font-weight: normal;
     letter-spacing: 1px;
     border-bottom: 1px solid rgb(105, 105, 105, 0.3);
-    padding-top: 10px;
-    padding-bottom: 6px;
+    padding-top: 15px;
+    padding-bottom: 10px;
 }
 
 .blankHead {
@@ -1418,7 +1418,7 @@ th {
 
 
 .trackTableRow {
-    color: grey;
+    color: rgb(148, 148, 148);
 }
 
 .trackTablePlayIcon {
@@ -1607,7 +1607,7 @@ th {
 
 .trackTableRow:hover {
     color: white;
-    background: #212121;
+    background: rgb(53, 53, 53);
 }
 
 .trackTableRow:hover .emptyCell{

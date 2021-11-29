@@ -180,7 +180,7 @@ export default function TracksTable({content, page }) {
            <div id='tableHeader'></div>
             <table className='tableReg' cellSpacing='0' cellPadding='0'>
             <thead>
-              <tr id='tableTop' style={(scrolling)? {backgroundColor:'#212121'} : {backgroundColor: 'transparent'}}>
+              <tr id='tableTop' style={(scrolling)? {backgroundColor:'rgb(24, 24, 24)'} : {backgroundColor: 'transparent'}}>
                 <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
                 <th style={{textAlign: 'center'}}>#</th>
                 <th>TITLE</th>
@@ -292,7 +292,7 @@ export default function TracksTable({content, page }) {
             <div id='tableHeader'></div>
             <table className='tableReg' cellSpacing='0' cellPadding='0'>
               <thead>
-                <tr id='tableTop' style={(scrolling)? {backgroundColor:'#212121'} : {backgroundColor: 'transparent'}}>
+                <tr id='tableTop' style={(scrolling)? {backgroundColor:'rgb(24, 24, 24)'} : {backgroundColor: 'transparent'}}>
                 <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
                 <th style={{textAlign: 'center'}}>#</th>
                 <th>TITLE</th>
