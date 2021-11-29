@@ -60,7 +60,8 @@ function App() {
                                                 id: ''})
   const rightClickedEl = {rightClick, setRightClick}
 
-  const [notification, setNotification] = useState('')
+  const [notification, setNotification] = useState({text: '',
+                                                    action: ''})
   const message = {notification, setNotification}
   
   const location = useLocation()

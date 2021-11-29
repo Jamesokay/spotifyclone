@@ -241,12 +241,14 @@ export default function AlbumPage({ location }) {
                    if (liked) {
                        unlike(accessToken, `https://api.spotify.com/v1/me/albums?ids=${id}`)
                        setLiked(false)
-                       setNotification('Removed from Your Library')
+                       setNotification({text: 'Removed from Your Library',
+                                        action: 'unlike' + id})
                    }
                    else {
                        like(accessToken, `https://api.spotify.com/v1/me/albums?ids=${id}`)
                        setLiked(true)
-                       setNotification('Added to Your Library')
+                       setNotification({text: 'Added to Your Library',
+                                        action: 'like' + id})
                    }
                    
                 }}>

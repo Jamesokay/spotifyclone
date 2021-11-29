@@ -10,11 +10,16 @@ export default function Layout({ children }) {
     const { notification } = useContext(NotificationContext)
     const [show, setShow] = useState(false) 
 
+
     useEffect(() => {
-        if (!notification) return
+        if (!notification.action) return
         setShow(true)
-        setTimeout(function() { setShow(false) }, 3000)
-    }, [notification])
+        const notify = setTimeout(() => { 
+            setShow(false) }, 3000)
+        return () => {
+            setShow(false)
+            clearTimeout(notify)}
+    }, [notification.action])
 
 
     return (accessToken)?
@@ -23,7 +28,7 @@ export default function Layout({ children }) {
             <NavBar />
             <SideBar />
             {children}
-            <div className='likedNotification' style={(show)? {opacity: '1'} : {opacity: '0'}}>{notification}</div>
+            <div className='likedNotification' style={(show)? {opacity: '1'} : {opacity: '0'}}>{notification.text}</div>
             <WebPlayer />
         </div>
     

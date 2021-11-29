@@ -101,7 +101,8 @@ export default function TracksTable({content, page }) {
 
      function likeSong(id) {
         setLikedTracks(likedTracks => [...likedTracks, id])
-        setNotification('Added to your Liked Songs')
+        setNotification({text: 'Added to your Liked Songs',
+                         action: 'like' + id})
         const options = {
             url: `https://api.spotify.com/v1/me/tracks?ids=${id}`,
             method: 'PUT',
@@ -122,7 +123,8 @@ export default function TracksTable({content, page }) {
 
      function unlikeSong(id) {
       setLikedTracks(likedTracks => likedTracks.filter(item => item !== id))
-      setNotification('Removed from your Liked Songs')
+      setNotification({text: 'Removed from your Liked Songs',
+                       action: 'unlike' + id})
       const options = {
           url: `https://api.spotify.com/v1/me/tracks?ids=${id}`,
           method: 'DELETE',

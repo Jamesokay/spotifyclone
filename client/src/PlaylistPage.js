@@ -366,13 +366,15 @@ export default function PlaylistPage({ location }) {
                        unlike(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`) 
                        setUserPlaylists(userPlaylists => userPlaylists.filter(item => item.id !== id))                    
                        setLiked(false)
-                       setNotification('Removed from Your Library')
+                       setNotification({text: 'Removed from Your Library',
+                                        action: 'unlike' + id})
                    }
                    else {
                        like(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`)
                        setUserPlaylists(userPlaylists => [...userPlaylists, playlistObj])
                        setLiked(true)
-                       setNotification('Added to Your Library')
+                       setNotification({text: 'Added to Your Library',
+                                        action: 'like' + id})
                    }
                    
                 }}>

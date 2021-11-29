@@ -1,6 +1,7 @@
 import { createContext } from 'react'
 
 export const NotificationContext = createContext({
-    notification:  '',
+    notification:  {text: '',
+                    action: ''},
     setNotification: () => { }
 })
