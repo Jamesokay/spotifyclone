@@ -6,6 +6,7 @@ import toMinsSecs from './toMinsSecs'
 import likedSongs from './likedSongs.png'
 import TracksTable from './TracksTable'
 import HeaderPanel from './HeaderPanel'
+import Menu from './Menu'
 
 const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
@@ -27,6 +28,7 @@ export default function CollectionTrack() {
         name: user.display_name,
         id: user.id
     }]
+
 
     useEffect(() => {
         if (!accessToken) return
@@ -74,6 +76,7 @@ export default function CollectionTrack() {
 
     return (
         <div>
+        <Menu/>
         <HeaderPanel content={likedSongsObj} creators={profile}/>
         <div className='pageContainer'>
         <div id='headerControls'>

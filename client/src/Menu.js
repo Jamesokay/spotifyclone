@@ -23,7 +23,7 @@ export default function Menu() {
   
     if (showMenu && rightClick.type === 'playlist') {
       return (
-         <div className='contextMenuDash' style={{top: anchorPoint.y, left: anchorPoint.x}}>
+         <div className='contextMenuDash' style={menuXY}>
             <ul className='contextMenuOptions'>
               <li className='contextMenuOpt'>Add to queue</li>
               <li className='contextMenuOpt'>Go to playlist radio</li>
@@ -38,7 +38,7 @@ export default function Menu() {
     }
     else if (showMenu && rightClick.type === 'artist') {
       return (
-        <div className='contextMenuDash' style={{top: anchorPoint.y, left: anchorPoint.x}}>
+        <div className='contextMenuDash' style={menuXY}>
           <ul className='contextMenuOptions'>
             <li className='contextMenuOpt'>Follow</li>
             <li className='contextMenuOpt'>Go to artist radio</li>
@@ -64,7 +64,7 @@ export default function Menu() {
     }
     else if (showMenu && rightClick.type === 'track') {
         return (
-          <div className='contextMenuDash' style={{top: anchorPoint.y, left: anchorPoint.x}}>
+          <div className='contextMenuDash' style={menuXY}>
             <ul className='contextMenuOptions'>
               <li className='contextMenuOpt'>Add to queue</li>
               <hr className='contextMenuDivider'/>

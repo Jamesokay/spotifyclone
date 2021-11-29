@@ -23,7 +23,7 @@ export default function NavBar() {
     const [navPlayerShow, setNavPlayerShow] = useState(false)
     const location = useLocation()
     const [toggle, setToggle] = useState(false)
-
+  
     
     useEffect(() => {
       if (location.pathname === '/' || location.pathname === '/search') {

@@ -34,13 +34,13 @@ export default function Dashboard() {
 
     function greetingMessage(time) {
       if (time < 120000) {
-        return 'Good Morning'
+        return 'Good morning'
       }
       else if (time >= 120000 && time < 175959) {
-        return 'Good Afternoon'
+        return 'Good afternoon'
       }
       else if (time >= 180000) {
-        return 'Good Evening'
+        return 'Good evening'
       }
     }
 
