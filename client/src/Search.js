@@ -181,7 +181,6 @@ export default function Search() {
     }, [topResult, accessToken])
 
 
-    if (search) { 
         return (
         <div id='searchPage'>
         <Menu/>
@@ -197,7 +196,7 @@ export default function Search() {
                   setLoading(true)}}
               />
             </form>
-            
+        {(search)?
             <div id='searchResults'
                      style={(loading)? {visibility: 'hidden'} : {visibility: 'visible'}}
                      onLoad={() => setLoading(false)}>        
@@ -250,22 +249,12 @@ export default function Search() {
             <p><span className='panelTitle'>Playlists</span></p>
             <Panel content={playlistResults.slice(0, 5)} />
             </div>
+            
+            :
 
-        </div>
-        )
-    } else {
-        return (
-            <div id='searchPage'>
-            <form>
-              <input
-              className='searchBar'
-              type='search'
-              placeholder='Search albums, artists and playlists'
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              />
-            </form>
-            </div>
-        )
-    }
+            <> </>
+        } 
+        </div> 
+       )     
+  
 }
