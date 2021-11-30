@@ -33,6 +33,7 @@ export default function AlbumPage({ location }) {
     const [artistId, setArtistId] = useState('')
     const [artistName, setArtistName] = useState('')
     const [creatorObject, setCreatorObject] = useState([])
+    const [creatorImg, setCreatorImg] = useState('')
     const [moreByArtist, setMoreByArtist] = useState([])
     const { nowPlaying } = useContext(TrackContext)
     const [liked, setLiked] = useState(false)
@@ -194,10 +195,21 @@ export default function AlbumPage({ location }) {
             console.log(error)
         })
 
-        return setMoreByArtist([])
+        spotifyApi.getArtist(artistId)
+        .then(data => {
+            setCreatorImg(data.body.images[0].url)
+        })
+        .catch(error => {
+            console.log(error)
+        })
 
+        return function cleanUp() {
+            setMoreByArtist([])
+            setCreatorImg('')
+        }
 
     }, [accessToken, artistId, albumName])
+
 
     useEffect(() => {
         if (!accessToken) return
@@ -215,7 +227,7 @@ export default function AlbumPage({ location }) {
 
     return (
         <div>
-        <HeaderPanel content={album} creators={creatorObject} />
+        <HeaderPanel content={album} creators={creatorObject} creatorImg={creatorImg}/>
         <Menu/>
         <div className='pageContainer'>
         <div id='headerControls'>

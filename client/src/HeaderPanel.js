@@ -5,7 +5,7 @@ import { PageContext } from './PageContext'
 
 
 
-export default function HeaderPanel({ content, creators }) {
+export default function HeaderPanel({ content, creators, creatorImg }) {
 
 
 //    const [titleStyle, setTitleStyle] = useState({})
@@ -127,19 +127,24 @@ export default function HeaderPanel({ content, creators }) {
               <span className='headerType'>{content.type}</span>
               <span className='headerTitle'>{content.title}</span>
               
-              <span>
+              <div className='headerCreatorInfo'>
+              {(content.type === 'ALBUM' && creators.length === 1)?
+              <img className='artistImgSmall' src={creatorImg} alt=''/>
+              :
+              <></>
+              }
               {creators.map((creator, index, creators) =>
                <span key={creator.id}>
                 <span className='headerCreator'>{creator.name}</span>
                 {(index < creators.length - 1)?
-                        <span style={{color: 'white'}}> • </span>
+                        <span style={{color: 'white'}}>•</span>
                         :
                         <span></span>
                         }
                   </span>
                 )}  
                 <span className='headerSub'>{content.info}</span>
-              </span>
+              </div>
 
               
             </div>
