@@ -126,10 +126,10 @@ function App() {
 
   }, [accessToken])
 
-
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [location])
+
   
 
     return (

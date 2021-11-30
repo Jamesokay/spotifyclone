@@ -6,7 +6,7 @@ import { UserContext } from './UserContext'
 import { PageContext } from './PageContext'
 import { TrackContext } from './TrackContext'
 import defaultUser from './defaultUser.png'
-import { useLocation } from 'react-router-dom'
+// import { useLocation } from 'react-router-dom'
 import playTrack from './playTrack'
 import pauseTrack from './pauseTrack'
 
@@ -21,34 +21,55 @@ export default function NavBar() {
     const { nowPlaying } = useContext(TrackContext)
     const [name, setName] = useState('')
     const [navPlayerShow, setNavPlayerShow] = useState(false)
-    const location = useLocation()
+ //   const location = useLocation()
     const [toggle, setToggle] = useState(false)
-  
-    
-    useEffect(() => {
-      if (location.pathname === '/' || location.pathname === '/search') {
-        setNavPlayerShow(false)
-      }
-      else {
-        setNavPlayerShow(true)
-      }
 
-      return function cleanUp() {
-        setNavPlayerShow(false)
+
+    
+    
+    // useEffect(() => {
+    //   if (location.pathname === '/' || location.pathname === '/search') {
+    //     setNavPlayerShow(false)
+    //   }
+    //   else {
+    //     setNavPlayerShow(true)
+    //   }
+
+    //   return function cleanUp() {
+    //     setNavPlayerShow(false)
+    //   }
+    // }, [location, setNavPlayerShow])
+
+    function test() {
+      var ypos = (window.pageYOffset / 100)
+      setAlpha(ypos.toFixed(2))     
+    }
+
+    useEffect(() => {
+      window.addEventListener("scroll", test)
+
+      return () => {
+        window.removeEventListener("scroll", test)
       }
-    }, [location, setNavPlayerShow])
+    })
+
 
     useEffect(() => {
        if (!user) return
        setName(user.display_name)      
     }, [user])
 
-    function test() {
-        var ypos = (window.pageYOffset / 100)
-        setAlpha(ypos.toFixed(2))     
-    }
-  
-    window.addEventListener('scroll', test)
+    useEffect(() => {
+      if (alpha < 1) {
+        setNavPlayerShow(false)
+      }
+      else {
+      setNavPlayerShow(true)
+      }
+    }, [alpha])
+
+
+   
 
 
 
@@ -70,9 +91,10 @@ export default function NavBar() {
         </div>
         </div>
         
-        {(navPlayerShow)?
+        
         <div id='navCurrentPage' style={(alpha >= 2.5)? {opacity: '1'}:{opacity: '0'}}>
           <div id='navPlayButton'
+               style={(navPlayerShow)? {visibility: 'visible'} : {}}
                onClick={(e) => {
                 e.preventDefault()
                  if (currentPage.pageUri === nowPlaying.contextUri && !nowPlaying.isPaused) {
@@ -87,11 +109,9 @@ export default function NavBar() {
                }>
             <div className={(!nowPlaying.isPaused && currentPage.pageUri === nowPlaying.contextUri)? 'navPauseIcon' : 'navPlayIcon'}></div>
           </div>
-          <span id='navCurrentTitle'>{currentPage.pageName}</span>
+          <span id='navCurrentTitle' style={(navPlayerShow)? {visibility: 'visible'} : {}}>{currentPage.pageName}</span>
         </div>
-        :
-        <div></div>
-        }
+   
 
         <div id='user' style={(toggle)? {backgroundColor: '#373737'} : {backgroundColor: '#121212'}}>
             <img id='userImg' src={defaultUser} alt=''></img>

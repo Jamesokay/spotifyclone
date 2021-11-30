@@ -261,6 +261,16 @@ body {
     padding-top: 18vh;
     display: flex;
     flex-wrap: wrap;
+    padding-bottom: 90px;
+}
+
+#collectionPagePlaylist {
+    margin-top: 0;
+    margin-left: 15vw;
+    width: 85vw;
+    padding-top: 18vh;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .collectionTitle {
@@ -566,6 +576,7 @@ body {
     display: flex;
     border-radius: 50%;
     background: #1ed760;
+    visibility: hidden;
 }
 
 #navPlayButton:hover {
@@ -597,6 +608,7 @@ body {
 #navCurrentTitle {
   display: inline-block;
   padding-left: 15px;
+  visibility: hidden;
 }
 
 
@@ -635,7 +647,6 @@ body {
     margin-left: 15vw;
     margin-top: -25vh;
     background-color:rgba(0, 0, 0, 0.1);
-    margin-bottom: 90px;
 }
 
 #page {   

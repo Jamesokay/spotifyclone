@@ -34,7 +34,7 @@ export default function CollectionArtist() {
         <div id='collectionPage'>
             <CollectionNav />
             <span className='collectionTitle'>Artists</span>
-            <Panel panelVariant={true} content={artists} />
+            <Panel content={artists} />
         </div>
     )
 }

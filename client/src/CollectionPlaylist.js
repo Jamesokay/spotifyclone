@@ -69,7 +69,7 @@ export default function CollectionPlaylist() {
   }, [playlists])
 
     return (
-    <div id='collectionPage'>
+    <div id='collectionPagePlaylist'>
      <CollectionNav />
      <span className='collectionTitle'>Playlists</span> 
      <div style={{marginLeft: '1.75vw', display: 'flex', flexWrap: 'wrap', marginBottom: '90px'}}>
