@@ -13,7 +13,7 @@ export default function HeaderPanel({ content, creators, creatorImg }) {
     const { setCurrentPage } = useContext(PageContext)
     const user = useContext(UserContext)
     const [isOwner, setIsOwner] = useState(false)
-//    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true)
 
 
     useEffect(() => {
@@ -92,7 +92,7 @@ export default function HeaderPanel({ content, creators, creatorImg }) {
       let bg = 'rgba(' + avgRed + ',' + avgGreen + ',' + avgBlue + ',' + avgAlpha + ')'
       setGradient('linear-gradient(' + bg + ', #121212)')
       setCurrentTheme('' + avgRed + ', ' + avgGreen + ', ' + avgBlue)
-    //  setLoading(false)
+      setLoading(false)
       
       
     }
@@ -102,7 +102,7 @@ export default function HeaderPanel({ content, creators, creatorImg }) {
     return (
         <div id='headerPanel' style={{backgroundImage: gradient}}>
         <div className='headerBody'>
-          <img id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()}/>
+          <img id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()} style={(loading)? {visibility: 'hidden'}:{}}/>
           {(isOwner)?
           <div id='headerImageChange'>
           <svg className='editPlaylistImage'

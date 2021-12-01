@@ -6,7 +6,7 @@ import { UserContext } from './UserContext'
 import { PageContext } from './PageContext'
 import { TrackContext } from './TrackContext'
 import defaultUser from './defaultUser.png'
-// import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import playTrack from './playTrack'
 import pauseTrack from './pauseTrack'
 
@@ -21,7 +21,7 @@ export default function NavBar() {
     const { nowPlaying } = useContext(TrackContext)
     const [name, setName] = useState('')
     const [navPlayerShow, setNavPlayerShow] = useState(false)
- //   const location = useLocation()
+    const location = useLocation()
     const [toggle, setToggle] = useState(false)
 
 
@@ -91,7 +91,9 @@ export default function NavBar() {
         </div>
         </div>
         
-        
+      {(location.pathname === '/' || location.pathname === '/search')?
+      <></>
+      :
         <div id='navCurrentPage' style={(alpha >= 2.5)? {opacity: '1'}:{opacity: '0'}}>
           <div id='navPlayButton'
                style={(navPlayerShow)? {visibility: 'visible'} : {}}
@@ -111,7 +113,7 @@ export default function NavBar() {
           </div>
           <span id='navCurrentTitle' style={(navPlayerShow)? {visibility: 'visible'} : {}}>{currentPage.pageName}</span>
         </div>
-   
+      }
 
         <div id='user' style={(toggle)? {backgroundColor: '#373737'} : {backgroundColor: '#121212'}}>
             <img id='userImg' src={defaultUser} alt=''></img>
