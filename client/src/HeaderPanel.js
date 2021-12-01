@@ -45,8 +45,6 @@ export default function HeaderPanel({ content, creators, creatorImg }) {
     }, [creators, content.title, user])
 
 
-
-
     
     function getData() {
       var canvas = document.createElement('canvas');
@@ -100,9 +98,9 @@ export default function HeaderPanel({ content, creators, creatorImg }) {
 
 
     return (
-        <div id='headerPanel' style={{backgroundImage: gradient}}>
+        <div id='headerPanel' style={(loading)? {visibility: 'hidden'} : {visibility: 'visible', backgroundImage: gradient}}>
         <div className='headerBody'>
-          <img id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()} style={(loading)? {visibility: 'hidden'}:{}}/>
+          <img id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()}/>
           {(isOwner)?
           <div id='headerImageChange'>
           <svg className='editPlaylistImage'

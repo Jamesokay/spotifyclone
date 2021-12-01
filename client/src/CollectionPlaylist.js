@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import CollectionNav from './CollectionNav'
 import SpotifyWebApi from 'spotify-web-api-node'
 import { AuthContext } from './AuthContext'
+import { ThemeContext } from './ThemeContext'
 import axios from 'axios'
 import getDataObject from './getDataObject'
 import playTrack from './playTrack'
@@ -16,11 +17,16 @@ export default function CollectionPlaylist() {
   const accessToken = useContext(AuthContext)
   const [preview, setPreview] = useState([])
   const [playlists, setPlaylists] = useState([])
+  const { setCurrentTheme } = useContext(ThemeContext)
 
   useEffect(() => {
     if (!accessToken) return
     spotifyApi.setAccessToken(accessToken)
   }, [accessToken])
+
+  useEffect(() => {
+    setCurrentTheme('0, 0, 0')
+  }, [setCurrentTheme])
 
   useEffect(() => {
     if (!accessToken) return
