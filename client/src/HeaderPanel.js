@@ -88,7 +88,7 @@ export default function HeaderPanel({ content, creators, creatorImg }) {
     //  console.log('AVG red: ' + avgRed + ' AVG green: ' + avgGreen + ' AVG blue: ' + avgBlue + ' AVG alpha: ' + avgAlpha) 
 
       let bg = 'rgba(' + avgRed + ',' + avgGreen + ',' + avgBlue + ',' + avgAlpha + ')'
-      setGradient('linear-gradient(' + bg + ', #121212)')
+      setGradient('linear-gradient(' + bg + ', rgb(18, 18, 18))')
       setCurrentTheme('' + avgRed + ', ' + avgGreen + ', ' + avgBlue)
       setLoading(false)
       
@@ -126,7 +126,7 @@ export default function HeaderPanel({ content, creators, creatorImg }) {
               <span className='headerTitle'>{content.title}</span>
               
               <div className='headerCreatorInfo'>
-              {(content.type === 'ALBUM' && creators.length === 1)?
+              {(creatorImg)?
               <img className='artistImgSmall' src={creatorImg} alt=''/>
               :
               <></>

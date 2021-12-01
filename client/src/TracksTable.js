@@ -312,7 +312,7 @@ export default function TracksTable({content, page }) {
               </thead>
               <tbody>
               <tr>
-                <td className='tdRegTrack'></td>
+                <td style={{height: '10px'}}></td>
               </tr>
               {content.map(cont =>
                 <tr className='trackTableRow' 

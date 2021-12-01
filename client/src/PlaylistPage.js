@@ -39,6 +39,7 @@ export default function PlaylistPage({ location }) {
     const [savedArray, setSavedArray] = useState([])
     const [tracksFinal, setTracksFinal] = useState([])
     const [creator, setCreator] = useState([])
+    const [creatorImg, setCreatorImg] = useState('')
     const [recommendations, setRecommendations] = useState([])
     const [isOwner, setIsOwner] = useState(false)
     const {newTrack} = useContext(PlaylistContext)
@@ -142,6 +143,28 @@ export default function PlaylistPage({ location }) {
       return setCreator([])
       
     }, [accessToken, id])
+
+    useEffect(() => {
+      if (!accessToken) return
+      if (creator.length === 0) return
+
+      spotifyApi.getUser(creator[0].id)
+      .then(data => {  
+        if (data.body.images[0]) {
+          setCreatorImg(data.body.images[0].url)
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+      return function cleanUp() {
+        setCreatorImg('')
+      }
+    }, [accessToken, creator])
+
+
+    
 
 
     useEffect(() => {
@@ -338,7 +361,7 @@ export default function PlaylistPage({ location }) {
     return loading? <div/> : (
       <div>
       <Menu />
-      <HeaderPanel content={playlist} creators={creator} id={id}/>
+      <HeaderPanel content={playlist} creators={creator} id={id} creatorImg={creatorImg}/>
       <div className='pageContainer'>
       {(tracksFinal.length !== 0)?
       <div id='headerControls'> 

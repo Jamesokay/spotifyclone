@@ -41,7 +41,7 @@ export default function NavBar() {
     // }, [location, setNavPlayerShow])
 
     function test() {
-      var ypos = (window.pageYOffset / 100)
+      var ypos = ((window.pageYOffset - 160) / 100)
       setAlpha(ypos.toFixed(2))     
     }
 
@@ -94,7 +94,7 @@ export default function NavBar() {
       {(location.pathname === '/' || location.pathname === '/search')?
       <></>
       :
-        <div id='navCurrentPage' style={(alpha >= 2.5)? {opacity: '1'}:{opacity: '0'}}>
+        <div id='navCurrentPage' style={(alpha >= 2)? {opacity: '1'}:{opacity: '0'}}>
           <div id='navPlayButton'
                style={(navPlayerShow)? {visibility: 'visible'} : {}}
                onClick={(e) => {

@@ -475,6 +475,7 @@ body {
     transition: background-color 0.1s ease;
 }
 
+
 /* #navTableHead {
     position: fixed;
     width: 85vw;
@@ -1333,7 +1334,7 @@ li:hover .sideBarImg {
     width: 85vw;
     font-family: Arial, sans-serif;
     cursor: default;
-    font-size: 11pt;    
+    font-size: 11.5pt;    
 }
 
 .artistTable {
@@ -1396,8 +1397,8 @@ th {
 
 
 .tdRegTrack {
-    padding-top: 11px;
-    padding-bottom: 11px;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
 }
 
 .tdTime {
@@ -1566,7 +1567,7 @@ th {
 }
 
 .tableImgCol {
-    width: 50px; 
+    width: 60px; 
 }
 
 .rowSecond {
@@ -1658,12 +1659,12 @@ th {
     margin-left: 15vw;
     width: 85vw;
     min-width: 1000px; 
-    padding-top: 75px;
+    padding-top: 85px;
     height: 436px;
 }
 
 .headerBody {
-    margin-left: 2.5vw;
+    margin-left: 2.25vw;
     width: 92.5vw;
     height: 232px;
     position: relative;
