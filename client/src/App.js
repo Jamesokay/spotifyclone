@@ -35,7 +35,7 @@ function App() {
   const [accessToken, setAccessToken] = useState(null)
   const [user, setUser] = useState(null)
 
-  const [currentTheme, setCurrentTheme] = useState('0, 0, 0')
+  const [currentTheme, setCurrentTheme] = useState({red: 0, green: 0, blue: 0})
   const theme = {currentTheme, setCurrentTheme}
 
   const [currentPage, setCurrentPage] = useState({pageName: '',

@@ -104,7 +104,7 @@ export default function HeaderPanel({ content, creators, creatorImg }) {
 
       let bg = 'rgba(' + avgRed + ',' + avgGreen + ',' + avgBlue + ',' + avgAlpha + ')'
       setGradient('linear-gradient(' + bg + ', rgb(18, 18, 18))')
-      setCurrentTheme('' + avgRed + ', ' + avgGreen + ', ' + avgBlue)
+      setCurrentTheme({red: avgRed, green: avgGreen, blue: avgBlue})
       setLoading(false)
       
       

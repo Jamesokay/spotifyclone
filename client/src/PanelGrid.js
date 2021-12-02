@@ -55,7 +55,7 @@ export default function PanelGrid({ content, head }) {
             let obj = {}
             obj['id'] = itemId
             obj['bg'] = 'rgba(' + avgRed + ',' + avgGreen + ',' + avgBlue + ',' + avgAlpha + ')'
-            obj['rgb'] = '' + avgRed + ', ' + avgGreen + ', ' + avgBlue 
+            obj['rgb'] = {red: avgRed, green: avgGreen, blue: avgBlue}
 
             setColors(colors => [...colors, obj])
         }        

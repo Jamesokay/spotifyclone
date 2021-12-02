@@ -1,6 +1,8 @@
 import { createContext } from 'react'
 
 export const ThemeContext = createContext({
-    currentTheme: '0, 0, 0',
+    currentTheme: {red: 0, 
+                   green: 0, 
+                   blue: 0},
     setCurrentTheme: () => { }
 })

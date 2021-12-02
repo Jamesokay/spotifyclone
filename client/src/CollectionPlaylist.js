@@ -25,7 +25,7 @@ export default function CollectionPlaylist() {
   }, [accessToken])
 
   useEffect(() => {
-    setCurrentTheme('0, 0, 0')
+    setCurrentTheme({red: 0, green: 0, blue: 0})
   }, [setCurrentTheme])
 
   useEffect(() => {

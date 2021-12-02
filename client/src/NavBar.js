@@ -23,22 +23,25 @@ export default function NavBar() {
     const [navPlayerShow, setNavPlayerShow] = useState(false)
     const location = useLocation()
     const [toggle, setToggle] = useState(false)
-
-
+    const [adjustedColour, setAdjustedColour] = useState({red: 0, green: 0, blue: 0})
     
-    
-    // useEffect(() => {
-    //   if (location.pathname === '/' || location.pathname === '/search') {
-    //     setNavPlayerShow(false)
-    //   }
-    //   else {
-    //     setNavPlayerShow(true)
-    //   }
+    function calculateChange(startNum) {
+      var distance = 18 - startNum
+      var change = Math.floor(distance * 0.7)
+      return startNum + change
+    }
 
-    //   return function cleanUp() {
-    //     setNavPlayerShow(false)
-    //   }
-    // }, [location, setNavPlayerShow])
+    useEffect(() => {
+      if (!currentTheme) return
+      setAdjustedColour({red: calculateChange(currentTheme.red), 
+                         green: calculateChange(currentTheme.green), 
+                         blue: calculateChange(currentTheme.blue)})
+
+      return function cleanUp() {
+        setAdjustedColour({red: 0, green: 0, blue: 0})
+      }
+    }, [currentTheme, currentTheme.red, currentTheme.green, currentTheme.blue])
+    
 
     function test() {
       var ypos = ((window.pageYOffset - 160) / 100)
@@ -75,7 +78,7 @@ export default function NavBar() {
 
     return (
     
-        <div id='navBar' style={{backgroundColor: 'rgba(' + currentTheme + ', ' + alpha + ')'}}>
+        <div id='navBar' style={{backgroundColor: 'rgb(' + adjustedColour.red + ',' + adjustedColour.green + ',' + adjustedColour.blue + ')', opacity: alpha}}>
 
         <div className='navHistory'>
         <div className='navButton' onClick={() => history.goBack()}>
