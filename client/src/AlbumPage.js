@@ -48,6 +48,7 @@ export default function AlbumPage({ location }) {
                     onAlbumPage: true,
                     key: data.body.id,
                     id: data.body.id,
+                    uri: data.body.uri,
                     type: 'album',
                     name: data.body.name,
                     popularity: data.body.popularity,
