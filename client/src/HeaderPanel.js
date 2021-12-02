@@ -124,9 +124,13 @@ export default function HeaderPanel({ content, creators, creatorImg }) {
             <div className='headerInfo'>
               <span className='headerType'>{content.type}</span>
               <span className='headerTitle'>{content.title}</span>
-              
+              {(content.type === 'PLAYLIST')?
+              <span className='headerSub'>{content.about}</span>
+              :
+              <></>
+              }
               <div className='headerCreatorInfo'>
-              {(creatorImg)?
+              {(creatorImg && creators.length === 1)?
               <img className='artistImgSmall' src={creatorImg} alt=''/>
               :
               <></>
