@@ -14,6 +14,7 @@ export default function HeaderPanel({ content, creators, creatorImg }) {
     const user = useContext(UserContext)
     const [isOwner, setIsOwner] = useState(false)
     const [loading, setLoading] = useState(true)
+    const [titleSize, setTitleSize] = useState({fontSize: ''})
 
 
     useEffect(() => {
@@ -25,6 +26,20 @@ export default function HeaderPanel({ content, creators, creatorImg }) {
       })
 
     }, [content, content.title, content.uri, setCurrentPage])
+
+    useEffect(() => {
+      if (!content.title) return
+
+      if (content.title.length <= 20) {
+        setTitleSize({fontSize: '12vmin'})
+      }
+      else if (content.title.length > 20 && content.title.length <= 30) {
+        setTitleSize({fontSize: '9.5vmin'})
+      }
+      else if (content.title.length > 30) {
+        setTitleSize({fontSize: '6.75vmin'})
+      }
+    }, [content.title])
       
 
     const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
@@ -123,7 +138,7 @@ export default function HeaderPanel({ content, creators, creatorImg }) {
           }
             <div className='headerInfo'>
               <span className='headerType'>{content.type}</span>
-              <span className='headerTitle'>{content.title}</span>
+              <span className='headerTitle' style={titleSize}>{content.title}</span>
               {(content.type === 'PLAYLIST')?
               <span className='headerSub'>{content.about}</span>
               :

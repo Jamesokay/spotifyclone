@@ -1657,7 +1657,7 @@ th {
     flex-wrap: wrap;
     cursor: default;
     margin-left: 15vw;
-    width: 85vw;
+    width: 95vw;
     min-width: 1000px; 
     padding-top: 85px;
     height: 436px;
@@ -1665,7 +1665,6 @@ th {
 
 .headerBody {
     margin-left: 2.25vw;
-    width: 92.5vw;
     height: 232px;
     position: relative;
 }
@@ -1764,7 +1763,7 @@ th {
     font-family: Arial, sans-serif;
     font-weight: bold;
     color: white; 
-    font-size: 6.5vmin;
+    font-size: 9.5vmin;
     letter-spacing: -0.25vw;
     
 }
@@ -1802,7 +1801,7 @@ th {
     flex-wrap: wrap;
     float: right;
     text-align: left;
-    width: 60vw;
+    width: 65vw;
     flex-direction: column;
     left: 250px;
     bottom: 0;
