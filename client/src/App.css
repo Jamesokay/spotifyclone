@@ -1324,6 +1324,64 @@ li:hover .sideBarImg {
    padding-bottom: 5px !important;
 } */
 
+@keyframes skeleton-load {
+    0% {
+        background-color: hsl(0, 0%, 16%);
+    }
+    100% {
+        background-color: hsl(0, 0%, 25%)
+    }
+}
+
+.skeletonTitle {
+    width: 60%;
+    height: 0.9rem;
+    margin-bottom: 0.25rem;
+    border-radius: 0.25rem;
+    animation: skeleton-load 1s linear infinite alternate;
+}
+
+.skeletonArtist {
+    width: 30%;
+    height: 0.75rem;
+    border-radius: 0.25rem;
+    animation: skeleton-load 1s linear infinite alternate;
+}
+
+.skeletonAlbum {
+    width: 30%;
+    height: 0.9rem;
+    margin-bottom: 0.25rem;
+    border-radius: 0.25rem;
+    animation: skeleton-load 1s linear infinite alternate;
+}
+
+.skeletonImg {
+    height: 40px;
+    width: 40px;
+    border-radius: 5px;
+    animation: skeleton-load 1s linear infinite alternate;
+}
+
+.skeletonIndex {
+    height: 20px;
+    width: 20px;
+    border-radius: 5px;
+    margin: auto;
+    animation: skeleton-load 1s linear infinite alternate;
+}
+
+.skeletonTime {
+    width: 100%;
+    float: right;
+    height: 0.9rem;
+    margin-bottom: 0.25rem;
+    border-radius: 0.25rem;
+    animation: skeleton-load 1s linear infinite alternate;
+}
+
+
+
 .tableReg {
     width: 85vw;
     font-family: Arial, sans-serif;

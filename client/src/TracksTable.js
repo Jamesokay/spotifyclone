@@ -148,8 +148,6 @@ export default function TracksTable({content, page }) {
    }, [likedTracks])
 
 
-
-
     if (page === 'artist') {
         return (
           <div>

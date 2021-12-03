@@ -115,7 +115,12 @@ export default function HeaderPanel({ content, creators, creatorImg }) {
     return (
         <div id='headerPanel' style={(loading)? {visibility: 'hidden'} : {visibility: 'visible', backgroundImage: gradient}}>
         <div className='headerBody'>
+        {(content.imgUrl)?
           <img id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()}/>
+          : 
+          <div id='headerImage'/>
+        }
+          
           {(isOwner)?
           <div id='headerImageChange'>
           <svg className='editPlaylistImage'
