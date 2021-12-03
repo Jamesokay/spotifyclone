@@ -379,7 +379,9 @@ export default function WebPlayer() {
       <div className='playingTrack'>
         <img className='playingTrackImg' src={currentTrack.album.images[0].url} alt='' />
         <div className='playingTrackInfo'>
+        <Link style={{textDecoration: 'none'}} to={{pathname: `/album/${currentTrack.album.uri.slice(14)}`, state: currentTrack.album.uri.slice(14) }}>
         <span className='playingTrackName'>{currentTrack.name}</span>
+        </Link>
         <div className='trackArtists'>
           {currentTrack.artists.map((artist, index, artists) => 
              <span key={artist.uri}>
