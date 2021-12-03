@@ -78,7 +78,7 @@ export default function NavBar() {
 
     return (
     
-        <div id='navBar' style={{backgroundColor: 'rgb(' + adjustedColour.red + ',' + adjustedColour.green + ',' + adjustedColour.blue + ')', opacity: alpha}}>
+        <div id='navBar' style={{backgroundColor: 'rgba(' + adjustedColour.red + ',' + adjustedColour.green + ',' + adjustedColour.blue + ',' + alpha + ')'}}>
 
         <div className='navHistory'>
         <div className='navButton' onClick={() => history.goBack()}>

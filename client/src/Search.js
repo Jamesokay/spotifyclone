@@ -8,7 +8,10 @@ import TracksTable from './TracksTable'
 import axios from 'axios'
 import { TrackContext } from './TrackContext'
 import playTrack from './playTrack'
+import pauseTrack from './pauseTrack'
 import Menu from './Menu'
+import { Link } from 'react-router-dom'
+import { RightClickContext } from './RightClickContext'
 
 
 export default function Search() {
@@ -25,8 +28,10 @@ export default function Search() {
         imgUrl: '',
         type:''
     })
+    const [topResultPlaying, setTopResultPlaying] = useState(false)
     const { setCurrentTheme } = useContext(ThemeContext)
     const { nowPlaying } = useContext(TrackContext)
+    const { setRightClick } = useContext(RightClickContext)
 
     const [userArtists, setUserArtists] = useState([])
     const [featuringArtist, setFeaturingArtist] = useState([])
@@ -67,6 +72,7 @@ export default function Search() {
                 if (userArtists.includes(artists[i].id)) {
                     return({
                         name: artists[i].name,
+                        id: artists[i].id,
                         creator: '',
                         imgUrl: artists[i].images[0].url,                  
                         type: 'ARTIST'
@@ -78,11 +84,12 @@ export default function Search() {
                 if (userArtists.includes(albums[i].artists[0].id)) {
                     return({
                         name: albums[i].name,
+                        id: albums[i].id,
                         creator: albums[i].artists[0].name,
                         imgUrl: albums[i].images[0].url,                  
                         type: 'ALBUM',
                         data: {context_uri: albums[i].uri},
-                        context: albums[i].uri
+                        uri: albums[i].uri
                     })
                 }
             }
@@ -92,6 +99,7 @@ export default function Search() {
                 if (userArtists.includes(tracks[i].artists[0].id)) {
                     return({
                         name: tracks[i].name,
+                        id: tracks[i].id,
                         creator: tracks[i].artists[0].name,
                         imgUrl: tracks[i].album.images[0].url,                  
                         type: 'TRACK',
@@ -105,6 +113,7 @@ export default function Search() {
 
         return({
                 name: artists[0].name,
+                id: artists[0].id,
                 creator: '',
                 imgUrl: artists[0].images[0].url,                  
                 type: 'ARTIST'
@@ -155,6 +164,21 @@ export default function Search() {
     }, [search, accessToken, userArtists])
 
     useEffect(() => {
+        if (!topResult.uri) return
+
+        if (topResult.uri === nowPlaying.trackUri || topResult.uri === nowPlaying.contextUri) {
+            setTopResultPlaying(true)
+        }
+        else {
+            setTopResultPlaying(false)
+        }
+
+        return function cleanUp() {
+            setTopResultPlaying(false)
+        }
+    }, [topResult, topResult.uri, nowPlaying.trackUri, nowPlaying.contextUri])
+
+    useEffect(() => {
         if (topResult.type === 'ARTIST') {
             const options = {
                 url: `https://api.spotify.com/v1/search?q=${topResult.name}&type=playlist`,
@@ -201,7 +225,9 @@ export default function Search() {
                      style={(loading)? {visibility: 'hidden'} : {visibility: 'visible'}}
                      onLoad={() => setLoading(false)}>        
             <div id='searchResultsHead'>
-            
+
+          <Link id='topResultLink' style={{textDecoration: 'none', marginRight: '1.5vw'}} to={{pathname: `/${topResult.type}/${topResult.id}`, state: topResult.id }}
+                onContextMenu={(e) => setRightClick({type: topResult.type, yPos: e.screenY, xPos: e.screenX, id: topResult.id})}> 
             <div id='topResultContainer'>
             <p><span className='panelTitle'>Top result</span></p>
             <div id='topResult'>
@@ -212,21 +238,44 @@ export default function Search() {
                 <span id='topResultSub' style={(topResult.type === 'ARTIST')? {marginLeft: '10px'} : {marginLeft: '20px'}}>{topResult.creator}</span>
                 <div id='topResultsType'><span>{topResult.type}</span></div>
 
-                {(topResult.type === 'TRACK')?
+                {(topResult.type !== 'ARTIST')?
                 <div id='topResultPlayButton'
-                    onClick={() => playTrack(accessToken, topResult.data)}
-                    style={(topResult.uri === nowPlaying.trackUri)? {opacity: '1', bottom: '20px'} : {opacity: '0'}}>    
-                    <div className={(!nowPlaying.isPaused && topResult.uri === nowPlaying.trackUri)? 'topResultPauseIcon' : 'topResultPlayIcon'}></div>
+                     style={(topResultPlaying)? {opacity: '1', bottom: '20px'} : {opacity: '0'}}                    
+                    onClick={(e) => {
+                    e.preventDefault()
+                    if (topResult.type === 'TRACK') {
+                      if (topResult.uri === nowPlaying.trackUri && !nowPlaying.isPaused) {
+                        pauseTrack(accessToken)
+                      }
+                      else if (topResult.uri === nowPlaying.trackUri && nowPlaying.isPaused) {
+                       playTrack(accessToken)
+                      }
+                      else {
+                       playTrack(accessToken, topResult.data)
+                       } 
+                    }
+                    else {
+                        if (topResult.uri === nowPlaying.contextUri && !nowPlaying.isPaused) {
+                            pauseTrack(accessToken)
+                        }
+                        else if (topResult.uri === nowPlaying.contextUri && nowPlaying.isPaused) {
+                            playTrack(accessToken)
+                        }
+                        else {
+                            playTrack(accessToken, topResult.data)
+                        }
+                    }
+                }}>    
+                    <div className={(!nowPlaying.isPaused && topResultPlaying)? 'topResultPauseIcon' : 'topResultPlayIcon'}></div>
                 </div>
                  : 
-                <div id='topResultPlayButton'
-                    onClick={() => playTrack(accessToken, topResult.data)}
-                    style={(topResult.context === nowPlaying.contextUri)? {opacity: '1', bottom: '20px'} : {opacity: '0'}}>    
+                <div id='topResultPlayButton'>    
                     <div className={(!nowPlaying.isPaused && topResult.context === nowPlaying.contextUri)? 'topResultPauseIcon' : 'topResultPlayIcon'}></div>
                 </div>
                 }
             </div>
-            </div>
+        </div>
+        </Link>
             
             <div id='trackResultsContainer'>
             <p><span className='panelTitle'>Songs</span></p>
