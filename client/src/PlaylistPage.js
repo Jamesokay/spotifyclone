@@ -332,7 +332,7 @@ export default function PlaylistPage({ location }) {
       </div>
         :
       <div>
-      <HeaderControls contextUri={playlist.uri} contextId={id} isOwner={isOwner} playlistObj={playlistObj} />
+      <HeaderControls URL={`https://api.spotify.com/v1/playlists/${id}/followers/contains?ids=${user.id}`} contextUri={playlist.uri} contextId={id} isOwner={isOwner} playlistObj={playlistObj} />
       <TracksTable content={tracksFinal} page='playlist' />        
         {(isOwner)?
           <div>

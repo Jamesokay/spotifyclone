@@ -637,6 +637,7 @@ body {
     margin-left: 15vw;
     margin-top: -25vh;
     background-color:rgba(0, 0, 0, 0.1);
+    padding-bottom: 100px;
 }
 
 #page {   
@@ -1331,6 +1332,12 @@ li:hover .sideBarImg {
     100% {
         background-color: hsl(0, 0%, 25%)
     }
+}
+
+.skeletonTable {
+    width: 85vw;
+    cursor: default;  
+    pointer-events: none;
 }
 
 .skeletonTitle {

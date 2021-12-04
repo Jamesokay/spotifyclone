@@ -3,7 +3,7 @@ import React from 'react'
 export default function PlaylistLoader() {
     return (
         <div>
-        <table className='tableReg' cellSpacing='0' cellPadding='0'>
+        <table className='skeletonTable' cellSpacing='0' cellPadding='0'>
           <thead>
             <tr>
             <th className='empty'></th>
