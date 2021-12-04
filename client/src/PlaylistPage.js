@@ -5,24 +5,15 @@ import TracksTable from './TracksTable'
 import { AuthContext } from './AuthContext'
 import HeaderPanel from './HeaderPanel'
 import getTotalDuration from './getTotalDuration'
-import playTrack from './playTrack'
-import pauseTrack from './pauseTrack'
 import defaultPlaylist from './defaultPlaylist.png'
 import { UserContext } from './UserContext'
-import { TrackContext } from './TrackContext'
 import flagSavedTracks from './flagSavedTracks'
-import axios from 'axios'
 import PlaylistSearch from './PlaylistSearch'
 import { PlaylistContext } from './PlaylistContext'
-import like from './like'
-import unlike from './unlike'
-import { SidebarContext } from './SidebarContext'
-// import { RightClickContext } from './RightClickContext'
 import getDataObject from './getDataObject'
-// import useContextMenu from './useContextMenu'
 import Menu from './Menu'
-import { NotificationContext } from './NotificationContext'
 import PlaylistLoader from './PlaylistLoader'
+import HeaderControls from './HeaderControls'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -45,11 +36,7 @@ export default function PlaylistPage({ location }) {
     const [isOwner, setIsOwner] = useState(false)
     const {newTrack} = useContext(PlaylistContext)
     const [tracksSample, setTracksSample] = useState([])
-    const { nowPlaying } = useContext(TrackContext)
     const [loading, setLoading] = useState(true)
-    const [liked, setLiked] = useState(false)
-    const {setUserPlaylists} = useContext(SidebarContext)
-    const { setNotification } = useContext(NotificationContext)
 
 
 
@@ -57,33 +44,6 @@ export default function PlaylistPage({ location }) {
         if (!accessToken) return
         spotifyApi.setAccessToken(accessToken)
       }, [accessToken])
-
-      useEffect(() => {
-        if (!accessToken) return
-
-        const options = {
-            url: `https://api.spotify.com/v1/playlists/${id}/followers/contains?ids=${user.id}`,
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json',
-            }
-        }
-
-        axios(options)
-        .then(response => {
-          console.log(response.data)
-          setLiked(response.data[0])
-        })
-        .catch(error => {
-          console.log(error)
-        })
-
-        return function cleanUp() {
-            setLiked(false)
-        }
-
-    }, [id, user.id, accessToken])
 
 
     useEffect(() => {
@@ -367,56 +327,13 @@ export default function PlaylistPage({ location }) {
       <div className='pageContainer'>
       {(loading)?
       <div>
-      <div id='headerControls'></div> 
-      <div id='page'>
-      <PlaylistLoader />
-      </div>
+        <div id='headerControls'></div> 
+         <PlaylistLoader />
       </div>
         :
-      <div id='headerControls'> 
-        <div className='headerPlayButton'
-             onClick={(e) => {
-                e.preventDefault()
-                 if (playlist.uri === nowPlaying.contextUri && !nowPlaying.isPaused) {
-                     pauseTrack(accessToken)
-                 }
-                 else if (playlist.uri === nowPlaying.contextUri && nowPlaying.isPaused) {
-                     playTrack(accessToken)
-                 }
-                 else {
-                 playTrack(accessToken, {context_uri: playlist.uri})} 
-                }
-               }>
-            <div className={(!nowPlaying.isPaused && playlist.uri === nowPlaying.contextUri)?'headerPauseIcon': 'headerPlayIcon'}></div>   
-        </div>
-        {(isOwner)?
-        <div/>
-        :
-        <svg className={(liked)?'headerLiked':'headerLike'} viewBox="0 0 32 32" stroke="white" 
-               onClick={() => {
-                   if (liked) {
-                       unlike(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`) 
-                       setUserPlaylists(userPlaylists => userPlaylists.filter(item => item.id !== id))                    
-                       setLiked(false)
-                       setNotification({text: 'Removed from Your Library',
-                                        action: 'unlike' + id})
-                   }
-                   else {
-                       like(accessToken, `https://api.spotify.com/v1/playlists/${id}/followers`)
-                       setUserPlaylists(userPlaylists => [...userPlaylists, playlistObj])
-                       setLiked(true)
-                       setNotification({text: 'Added to Your Library',
-                                        action: 'like' + id})
-                   }
-                   
-                }}>
-            <path className='headerHeartIcon' d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
-          </svg> 
-        }
-      </div>        
-      }
-      <div id='page'>  
-          <TracksTable content={tracksFinal} page='playlist' />        
+      <div>
+      <HeaderControls contextUri={playlist.uri} contextId={id} isOwner={isOwner} playlistObj={playlistObj} />
+      <TracksTable content={tracksFinal} page='playlist' />        
         {(isOwner)?
           <div>
           {(tracksFinal.length !== 0)? 
@@ -443,9 +360,9 @@ export default function PlaylistPage({ location }) {
           </div>
           :
           <div></div>
-        }
-
+        }   
       </div>
+      }
       </div>
       </div>
     )

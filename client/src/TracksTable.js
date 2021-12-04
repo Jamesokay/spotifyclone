@@ -56,10 +56,11 @@ export default function TracksTable({content, page }) {
         }
     
         function navTableHead(entries) {
-          if (entries[0].isIntersecting) {           
+          if (entries[0].intersectionRatio > 0) {           
             setScrolling(false)
           }
           else {           
+            console.log('FIRED!')
             setScrolling(true)
           }
         }
@@ -142,10 +143,6 @@ export default function TracksTable({content, page }) {
         console.log(error)
       })
    }
-
-   useEffect(() => {
-     console.log(likedTracks.length)
-   }, [likedTracks])
 
 
     if (page === 'artist') {
