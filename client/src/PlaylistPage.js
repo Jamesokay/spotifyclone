@@ -37,6 +37,7 @@ export default function PlaylistPage({ location }) {
     const {newTrack} = useContext(PlaylistContext)
     const [tracksSample, setTracksSample] = useState([])
     const [loading, setLoading] = useState(true)
+    const [isEmpty, setIsEmpty] = useState(false)
 
 
 
@@ -133,7 +134,9 @@ export default function PlaylistPage({ location }) {
       spotifyApi.getPlaylist(id, 'AU')
       .then(data => {
             let playlistUri = data.body.uri
-            
+            if (data.body.tracks.items.length === 0) {
+              setIsEmpty(true)
+            }
             setTracksSample(data.body.tracks.items.slice(0, 5).map((item, index ) => {
               if (item.track.album.images[0]) {
                 return {
@@ -196,6 +199,7 @@ export default function PlaylistPage({ location }) {
 
         return function cleanUp() {
           setTracks([])
+          setIsEmpty(false)
         }
     }, [accessToken, id])
 
@@ -219,10 +223,9 @@ export default function PlaylistPage({ location }) {
       
   }, [tracks, accessToken])
 
-  useEffect(() => {
+  useEffect(() => {  
     if (tracks.length === 0) return
-    if (savedArray.length === 0) return
-
+    
     setTracksFinal(flagSavedTracks(tracks.slice(0, 50), savedArray))
     setLoading(false)
 
@@ -230,7 +233,8 @@ export default function PlaylistPage({ location }) {
       setTracksFinal([])
       setLoading(true)
     }
-    }, [tracks, savedArray])
+  }, [tracks, savedArray])
+
 
     useEffect(() => {
       if (!user) return
@@ -320,23 +324,37 @@ export default function PlaylistPage({ location }) {
     
 
  
-    return (
+    return (isOwner && isEmpty)? 
+    (
       <div>
-      <Menu />
-      <HeaderPanel content={playlist} creators={creator} id={id} creatorImg={creatorImg}/>
-      <div className='pageContainer'>
-      {(loading)?
-      <div>
-        <div id='headerControls'></div> 
-         <PlaylistLoader />
+        <Menu />
+        <HeaderPanel content={playlist} creators={creator} id={id} creatorImg={creatorImg}/>
+        <div className='pageContainer'>     
+          <HeaderControls URL={`https://api.spotify.com/v1/playlists/${id}/followers/contains?ids=${user.id}`} contextUri={playlist.uri} contextId={id} isOwner={isOwner} playlistObj={playlistObj} isEmpty={isEmpty}/>
+          <hr className='emptyPlaylist'/>
+        <div className='playlistLowerHeading'>
+          <span className='playlistLowerTitle'>Let's find something for your playlist</span>
+        </div>
+        <PlaylistSearch />
       </div>
-        :
+    </div>
+    )
+    :
+    (
       <div>
-      <HeaderControls URL={`https://api.spotify.com/v1/playlists/${id}/followers/contains?ids=${user.id}`} contextUri={playlist.uri} contextId={id} isOwner={isOwner} playlistObj={playlistObj} />
-      <TracksTable content={tracksFinal} page='playlist' />        
-        {(isOwner)?
+        <Menu />
+        <HeaderPanel content={playlist} creators={creator} id={id} creatorImg={creatorImg}/>
+        <div className='pageContainer'>
+        {(loading)?
           <div>
-          {(tracksFinal.length !== 0)? 
+            <div id='headerControls'></div> 
+             <PlaylistLoader />
+          </div>
+        :
+        <div>
+          <HeaderControls URL={`https://api.spotify.com/v1/playlists/${id}/followers/contains?ids=${user.id}`} contextUri={playlist.uri} contextId={id} isOwner={isOwner} playlistObj={playlistObj} isEmpty={isEmpty}/>
+          <TracksTable content={tracksFinal} page='playlist' />        
+          {(isOwner)?
             <div>
               <div className='playlistLowerHeading'>
                 <span className='playlistLowerTitle'>Recommended</span>
@@ -350,20 +368,12 @@ export default function PlaylistPage({ location }) {
               <PlaylistSearch />
             </div>
           :
-          <div>
-            <div className='playlistLowerHeading'>
-              <span className='playlistLowerTitle'>Let's find something for your playlist</span>
-            </div>
-            <PlaylistSearch />
-          </div>
+          <></>
           }
-          </div>
-          :
-          <div></div>
+        </div>
         }   
+        </div>
       </div>
-      }
-      </div>
-      </div>
+
     )
 }

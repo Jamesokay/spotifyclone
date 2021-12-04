@@ -1871,6 +1871,14 @@ th {
     align-items: center;
 }
 
+.emptyPlaylist {
+    width: 80vw;
+    border: none;
+    height: 1px;
+    background-color: rgb(40, 40, 40);
+    margin-top: 0;
+}
+
 .playlistLowerHeading {
     margin-top: 7.5vh;
     margin-bottom: 2.5vh;
