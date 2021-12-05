@@ -50,6 +50,7 @@ export default function HeaderControls({URL, contextUri, contextId, isOwner, pla
     useEffect(() => {
         if (!accessToken) return
         if (isOwner) return
+        if(!URL) return
 
         const options = {
             url: URL,

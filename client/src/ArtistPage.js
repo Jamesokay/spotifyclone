@@ -183,6 +183,7 @@ export default function ArtistPage({ location }) {
         }
       }, [currentTheme, currentTheme.red, currentTheme.green, currentTheme.blue])
 
+
     
 
 

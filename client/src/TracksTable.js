@@ -176,7 +176,7 @@ export default function TracksTable({content, page }) {
 
                 
                 <td className='tableImgCol tdRegTrack'><img className='trackTableImage' src={cont.trackImage} alt=''/></td>
-                <td className='tdRegTrack' style={{width: '60%'}}>
+                <td className='tdRegTrack' style={{width: '65%'}}>
                   <span style={(cont.uri === nowPlaying.trackUri)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</span>
                 </td>
                 <td style={{width: '7.5%'}}>
