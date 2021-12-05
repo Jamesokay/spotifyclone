@@ -6,7 +6,7 @@ import HeaderControls from './HeaderControls'
 import getDataObject from './getDataObject'
 import TracksTable from './TracksTable'
 import { AuthContext } from './AuthContext'
-// import { PageContext } from './PageContext'
+import Menu from './Menu'
 import { ThemeContext } from './ThemeContext'
 import toMinsSecs from './toMinsSecs'
 import flagSavedTracks from './flagSavedTracks'
@@ -25,8 +25,15 @@ export default function ArtistPage({ location }) {
     const [tracksFinal, setTracksFinal] = useState([])
     const [savedArray, setSavedArray] = useState([])
     const [alsoLike, setAlsoLike] = useState([])
-  //  const { setCurrentPage } = useContext(PageContext)
     const { currentTheme } = useContext(ThemeContext)
+    const [adjustedColour, setAdjustedColour] = useState({red: 0, green: 0, blue: 0})
+    
+    
+    function calculateChange(startNum) {
+        var distance = 18 - startNum
+        var change = Math.floor(distance * 0.7)
+        return startNum + change
+      }
 
 
     function getAlbumObject(id) {
@@ -165,6 +172,17 @@ export default function ArtistPage({ location }) {
 
     }, [accessToken, id, artistAlbumsRaw])
 
+    useEffect(() => {
+        if (!currentTheme) return
+        setAdjustedColour({red: calculateChange(currentTheme.red), 
+                           green: calculateChange(currentTheme.green), 
+                           blue: calculateChange(currentTheme.blue)})
+  
+        return function cleanUp() {
+          setAdjustedColour({red: 0, green: 0, blue: 0})
+        }
+      }, [currentTheme, currentTheme.red, currentTheme.green, currentTheme.blue])
+
     
 
 
@@ -172,7 +190,9 @@ export default function ArtistPage({ location }) {
     return (
        <div>
         <HeaderPanel content={artist} type='ARTIST'/>
-        <div className='pageContainerArtist' style={{backgroundImage: 'linear-gradient(rgb(' + (currentTheme.red + 30) + ',' + (currentTheme.green + 30) + ',' + (currentTheme.blue + 30) + '), rgb(18, 18, 18) 20%)'}}>       
+        <Menu/>
+    
+        <div className='pageContainerArtist' style={{backgroundImage: 'linear-gradient(rgb(' + adjustedColour.red + ',' + adjustedColour.green + ',' + adjustedColour.blue + '), rgb(18, 18, 18) 15%)'}}>       
         <HeaderControls URL={`https://api.spotify.com/v1/me/following/contains?type=artist&ids=${id}`} contextUri={artist.uri} contextId={id} type='ARTIST'/>
     
           <p id='artistTableTitle'>Popular</p>

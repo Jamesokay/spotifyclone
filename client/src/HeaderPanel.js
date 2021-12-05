@@ -110,14 +110,19 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
 
 
     return type === 'ARTIST'? (
-      <div id='headerPanel' style={{backgroundImage: "url(" + content.imgUrl + ")", backgroundColor: edgeColour, backgroundPositionY: '40%'}}>
-      <div className='headerBody'>
-        <img id='headerImage' style={{visibility: 'hidden'}} src={content.imgUrl} alt='' onLoad={()=> getData()}/>
-        <div className='headerInfoArtist'>
-          <span className='headerTitle' style={titleSize}>{content.title}</span>
-          <span className='headerSubArtist'>{content.followers + ' followers'}</span>
-        </div>
-      </div>  
+      <div id='headerPanelUpper' style={{backgroundColor: edgeColour}}>
+      
+      
+      <div className='headerBG' style={{backgroundImage: "url(" + content.imgUrl + ")", boxShadow: '0 0 20px 20px ' + edgeColour + ' inset'}}/>
+        
+          <img id='headerImage' style={{visibility: 'hidden'}} src={content.imgUrl} alt='' onLoad={()=> getData()}/>
+          <div className='headerInfoArtist'>
+            <span className='headerTitle' style={titleSize}>{content.title}</span>
+            <span className='headerSubArtist'>{content.followers + ' followers'}</span>
+          </div>
+         
+      
+
       </div>
     )
     :
