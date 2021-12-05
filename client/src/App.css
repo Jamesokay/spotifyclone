@@ -1735,6 +1735,27 @@ th {
     display: flex;
 }
 
+.followButton {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 30px;
+    padding-left: 1.25%;
+    padding-right: 1.25%;
+    padding-top: 0.75%;
+    padding-bottom: 0.75%;
+    border-radius: 0.25rem;
+    border-style: solid;
+    border-color: rgb(168, 168, 168);
+    border-width: thin;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9pt;
+    letter-spacing: 1.5px;
+    color: white;
+}
+
 .headerLike {
     transform: scale(0.3);
     stroke: rgb(168, 168, 168);
@@ -1854,6 +1875,14 @@ th {
     margin-bottom: 1%;
 }
 
+.headerSubArtist {
+    font-family: Arial, sans-serif;
+    color: white; 
+    font-size: 12pt;
+    margin-top: 1%;
+    margin-bottom: 1%; 
+}
+
 .headerInfo {
     position: absolute;
     display: flex;
@@ -1863,6 +1892,18 @@ th {
     width: 65vw;
     flex-direction: column;
     left: 250px;
+    bottom: 0;
+}
+
+.headerInfoArtist {
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    float: right;
+    text-align: left;
+    width: 65vw;
+    flex-direction: column;
+    left: 0;
     bottom: 0;
 }
 

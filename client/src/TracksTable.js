@@ -30,7 +30,6 @@ export default function TracksTable({content, page }) {
           newArr.push(arr[i].id)
         }
       }
-      console.log(newArr)
       return newArr
     }
      

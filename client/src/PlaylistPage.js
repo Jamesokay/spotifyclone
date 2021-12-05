@@ -328,7 +328,7 @@ export default function PlaylistPage({ location }) {
     (
       <div>
         <Menu />
-        <HeaderPanel content={playlist} creators={creator} id={id} creatorImg={creatorImg}/>
+        <HeaderPanel content={playlist} creators={creator} creatorImg={creatorImg} isOwner={isOwner}/>
         <div className='pageContainer'>     
           <HeaderControls URL={`https://api.spotify.com/v1/playlists/${id}/followers/contains?ids=${user.id}`} contextUri={playlist.uri} contextId={id} isOwner={isOwner} playlistObj={playlistObj} isEmpty={isEmpty}/>
           <hr className='emptyPlaylist'/>

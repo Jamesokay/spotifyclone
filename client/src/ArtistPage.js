@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
 import Panel from './Panel'
+import HeaderPanel from './HeaderPanel'
+import HeaderControls from './HeaderControls'
 import getDataObject from './getDataObject'
 import TracksTable from './TracksTable'
 import { AuthContext } from './AuthContext'
@@ -16,21 +18,13 @@ const spotifyApi = new SpotifyWebApi({
 export default function ArtistPage({ location }) {
     const id = location.state
     const accessToken = useContext(AuthContext)
-    const [artistName, setArtistName] = useState('')
-//    const [artistImage, setArtistImage] = useState('')
+    const [artist, setArtist] = useState({})
     const [artistAlbumsRaw, setArtistAlbumsRaw] = useState([])
     const [artistTracks, setArtistTracks] = useState([])
     const [alsoLike, setAlsoLike] = useState([])
     const { setCurrentPage } = useContext(PageContext)
     const { setCurrentTheme } = useContext(ThemeContext)
 
-    // function expandPanel(title, content) {
-    //     dispatch({
-    //       type: 'PANEL_EXPANDED',
-    //       header: title,
-    //       array: content
-    //     })
-    // }
 
     function getAlbumObject(id) {
         spotifyApi.getAlbum(id)
@@ -67,14 +61,11 @@ export default function ArtistPage({ location }) {
     useEffect(() => {
         if (!accessToken) return
 
-        setCurrentTheme('0, 0, 0')
+        setCurrentTheme({red: 0, green: 0, blue: 0})
 
         spotifyApi.getArtist(id)
         .then(data =>{
-            console.log(data.body)
-            setArtistName(data.body.name)
-            setCurrentPage(data.body.name)
-//            setArtistImage(data.body.images[0].url)
+            setArtist({title: data.body.name, followers: data.body.followers.total.toLocaleString('en-US'), uri: data.body.uri, type: 'ARTIST'})
         })
         .catch(error => {
             console.log(error)
@@ -118,7 +109,7 @@ export default function ArtistPage({ location }) {
         })
 
         return function cleanUp() {
-            setArtistName('')
+            setArtist({})
             setArtistAlbumsRaw([])
             setArtistTracks([])
             setAlsoLike([])
@@ -142,26 +133,18 @@ export default function ArtistPage({ location }) {
 
 
     return (
-          
-        <div className='pageContainer'>
-            {/* <span className='artistTitle'>{artistName}</span> */}
-        <div style={{width: '100%', height: '436px'}}></div>
-          
-        <div id='headerControls'>
-          <div className='headerPlayButton'>         
-            <div className='headerPlayIcon'></div>
-          </div>
-        </div>
-        <div id='page'>
+       <div>
+        <HeaderPanel content={artist} type='ARTIST'/>
+        <div className='pageContainer'>       
+        <HeaderControls URL={`https://api.spotify.com/v1/me/following/contains?type=artist&ids=${id}`} contextUri={artist.uri} contextId={id} type='ARTIST'/>
+    
           <p id='artistTableTitle'>Popular</p>
           <TracksTable content={artistTracks.slice(0, 5)} page='artist' />
-          <p><span className='panelTitle'
-            >Albums</span></p>
+          <p><span className='panelTitle'>Albums</span></p>
           <Panel content={artistAlbumsRaw.slice(0, 5)} />
-          <p><span className='panelTitle'>{'Similar to ' + artistName}</span></p>
-          <Panel content={alsoLike.slice(0, 5)} /> 
-        </div>  
-        
+          <p><span className='panelTitle'>Fans also like</span></p>
+          <Panel content={alsoLike.slice(0, 5)} />       
+        </div>
         </div>
     )
 }

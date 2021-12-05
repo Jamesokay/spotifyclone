@@ -1,20 +1,16 @@
 import { useState, useEffect, useContext } from 'react'
 import { ThemeContext } from './ThemeContext'
-import { UserContext } from './UserContext'
 import { PageContext } from './PageContext'
 
 
 
-export default function HeaderPanel({ content, creators, creatorImg }) {
+export default function HeaderPanel({ content, type, creators, creatorImg, isOwner }) {
 
-
-//    const [titleStyle, setTitleStyle] = useState({})
     const { setCurrentTheme } = useContext(ThemeContext)
     const { setCurrentPage } = useContext(PageContext)
-    const user = useContext(UserContext)
-    const [isOwner, setIsOwner] = useState(false)
     const [loading, setLoading] = useState(true)
     const [titleSize, setTitleSize] = useState({fontSize: ''})
+    const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
 
 
     useEffect(() => {
@@ -42,22 +38,22 @@ export default function HeaderPanel({ content, creators, creatorImg }) {
     }, [content.title])
       
 
-    const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
 
-    useEffect(() => {
-      if (!content.title) return
-      if (!creators[0]) return
-      if (!user) return
 
-      if (creators[0].id === user.id && content.title !== 'Liked Songs') {
-        setIsOwner(true)
-      }
+    // useEffect(() => {
+    //   if (!content.title) return
+    //   if (!creators[0]) return
+    //   if (!user) return
 
-      return function cleanUp() {
-        setIsOwner(false)
-      }
+    //   if (creators[0].id === user.id && content.title !== 'Liked Songs') {
+    //     setIsOwner(true)
+    //   }
 
-    }, [creators, content.title, user])
+    //   return function cleanUp() {
+    //     setIsOwner(false)
+    //   }
+
+    // }, [creators, content.title, user])
 
 
     
@@ -112,7 +108,18 @@ export default function HeaderPanel({ content, creators, creatorImg }) {
 
 
 
-    return (
+    return type === 'ARTIST'? (
+      <div id='headerPanel' style={{backgroundImage: gradient}}>
+        <div className='headerBody'>
+        <div className='headerInfoArtist'>
+          <span className='headerTitle' style={titleSize}>{content.title}</span>
+          <span className='headerSubArtist'>{content.followers + ' followers'}</span>
+        </div>
+        </div>
+      </div>
+    )
+    :
+    (
         <div id='headerPanel' style={(loading)? {visibility: 'hidden'} : {visibility: 'visible', backgroundImage: gradient}}>
         <div className='headerBody'>
         {(content.imgUrl)?
