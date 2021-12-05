@@ -11,6 +11,7 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
     const [loading, setLoading] = useState(true)
     const [titleSize, setTitleSize] = useState({fontSize: ''})
     const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
+    const [edgeColour, setEdgeColour] = useState('')
 
 
     useEffect(() => {
@@ -39,23 +40,6 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
       
 
 
-
-    // useEffect(() => {
-    //   if (!content.title) return
-    //   if (!creators[0]) return
-    //   if (!user) return
-
-    //   if (creators[0].id === user.id && content.title !== 'Liked Songs') {
-    //     setIsOwner(true)
-    //   }
-
-    //   return function cleanUp() {
-    //     setIsOwner(false)
-    //   }
-
-    // }, [creators, content.title, user])
-
-
     
     function getData() {
       var canvas = document.createElement('canvas');
@@ -70,10 +54,13 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
 
      
       var yStart = Math.floor(canvas.height * 0.5)
+      var xStartEdge = Math.floor(canvas.width * 0.95)
   
 
       var imgdata = ctx.getImageData(0,yStart,50,50);
+      var imgdataEdge = ctx.getImageData(xStartEdge, yStart, 20, 20)
       var pixels = imgdata.data;
+      var pixelsEdge = imgdataEdge.data
 
       var red = 0
       var green = 0
@@ -89,33 +76,48 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
         
       }
 
-    //  console.log('red: ' + red + ' green: ' + green + ' blue: ' + blue + ' alpha: ' + alpha) 
+      var redEdge = 0
+      var greenEdge = 0
+      var blueEdge = 0
+
+      for (let i = 0; i < pixelsEdge.length; i += 4) {
+        
+        redEdge += pixelsEdge[i]
+        greenEdge += pixelsEdge[i + 1]
+        blueEdge += pixelsEdge[i + 2]
+        
+      }
+
 
       let avgRed = Math.floor(red / (pixels.length / 4))
       let avgGreen = Math.floor(green / (pixels.length / 4))
       let avgBlue = Math.floor(blue / (pixels.length / 4))
       let avgAlpha = Math.floor(alpha / (pixels.length / 4))
 
-    //  console.log('AVG red: ' + avgRed + ' AVG green: ' + avgGreen + ' AVG blue: ' + avgBlue + ' AVG alpha: ' + avgAlpha) 
+      let avgRedEdge = Math.floor(redEdge / (pixelsEdge.length / 4))
+      let avgGreenEdge = Math.floor(greenEdge / (pixelsEdge.length / 4))
+      let avgBlueEdge = Math.floor(blueEdge / (pixelsEdge.length / 4))
+
 
       let bg = 'rgba(' + avgRed + ',' + avgGreen + ',' + avgBlue + ',' + avgAlpha + ')'
+      setEdgeColour('rgb(' + avgRedEdge + ',' + avgGreenEdge + ',' + avgBlueEdge + ')')
       setGradient('linear-gradient(' + bg + ', rgb(18, 18, 18))')
       setCurrentTheme({red: avgRed, green: avgGreen, blue: avgBlue})
-      setLoading(false)
-      
+      setLoading(false)     
       
     }
 
 
 
     return type === 'ARTIST'? (
-      <div id='headerPanel' style={{backgroundImage: gradient}}>
-        <div className='headerBody'>
+      <div id='headerPanel' style={{backgroundImage: "url(" + content.imgUrl + ")", backgroundColor: edgeColour, backgroundPositionY: '40%'}}>
+      <div className='headerBody'>
+        <img id='headerImage' style={{visibility: 'hidden'}} src={content.imgUrl} alt='' onLoad={()=> getData()}/>
         <div className='headerInfoArtist'>
           <span className='headerTitle' style={titleSize}>{content.title}</span>
           <span className='headerSubArtist'>{content.followers + ' followers'}</span>
         </div>
-        </div>
+      </div>  
       </div>
     )
     :

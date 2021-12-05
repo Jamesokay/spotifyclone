@@ -640,6 +640,13 @@ body {
     padding-bottom: 100px;
 }
 
+.pageContainerArtist {
+    margin-left: 15vw;
+    margin-top: -25vh;
+    background-color:rgb(18, 18, 18);
+    padding-bottom: 100px;
+}
+
 #page {   
     width: 85vw; 
     padding-bottom: 100px;
@@ -1397,11 +1404,12 @@ li:hover .sideBarImg {
 }
 
 .artistTable {
-    width: 81.75vw;
-    margin-left: 1.75vw;
+    width: 55%;
+    margin-left: 1.75%;
+    
     font-family: Arial, Helvetica, sans-serif;
     cursor: default;
-    font-size: 11pt; 
+    font-size: 11.5pt; 
 }
 
 .empty {
@@ -1720,6 +1728,7 @@ th {
     min-width: 1000px; 
     padding-top: 85px;
     height: 436px;
+    background-repeat: no-repeat;
 }
 
 .headerBody {
@@ -1754,6 +1763,11 @@ th {
     font-size: 9pt;
     letter-spacing: 1.5px;
     color: white;
+    cursor: default;
+}
+
+.followButton:hover {
+    border-color: white;
 }
 
 .headerLike {

@@ -150,18 +150,56 @@ export default function TracksTable({content, page }) {
             <div id='tableHeader'></div>        
             <table className='artistTable' cellSpacing='0' cellPadding='0'>
             <tbody>
-            {content.map(cont =>
+            {content.slice(0, 5).map(cont =>
               <tr className='trackTableRow' key={cont.id} style={{color: 'white'}}>
-              
-                <td className='rowFirst tdRegTrack'>
-                <span className='trackTableIndex'>{cont.num}</span>
-                <div className='trackTablePlayIcon'
-                onClick={() => playTrack(accessToken, {uris: [cont.uri]})}
-                ></div>
+           
+                
+              {(cont.uri === nowPlaying.trackUri && !nowPlaying.isPaused)?
+                  <td className='rowFirst tdRegTrack'>
+                    <div className='tablePlayingBox'>
+                      <div className='tablePlayingBar1'/>
+                      <div className='tablePlayingBar2'/>
+                      <div className='tablePlayingBar3'/>
+                      <div className='tablePlayingBar4'/>
+                    </div>
+                  </td>
+                  :
+                  <td className='rowFirst tdRegTrack'>
+                    <span className='trackTableIndex'>{cont.num}</span>
+                    <div className='trackTablePlayIcon'
+                    style={(rightClick.id === cont.id)? {visibility: 'visible'} : {}}
+                    onClick={() => playTrack(accessToken, 
+                    {context_uri: cont.albUri,
+                     offset: { uri: cont.uri }})}></div>
+                  </td>
+                 } 
+
+                
+                <td className='tableImgCol tdRegTrack'><img className='trackTableImage' src={cont.trackImage} alt=''/></td>
+                <td className='tdRegTrack' style={{width: '60%'}}>
+                  <span style={(cont.uri === nowPlaying.trackUri)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</span>
                 </td>
-                <td className='tdRegTrack'><img className='trackTableImage' src={cont.trackImage} alt=''/></td>
-                <td className='tdRegTrack'>{cont.name}</td>
-                <td className='rowLast tdRegTrack'>{cont.duration}</td>
+                <td style={{width: '7.5%'}}>
+                    <svg className={(likedTracks.includes(cont.id))? 'trackTableLiked' : 'trackTableLike'} viewBox="0 0 32 32" stroke="none" fill="none"
+                         onClick={() => {
+                           if (likedTracks.includes(cont.id)) {
+                             unlikeSong(cont.id)
+                           }
+                           else {
+                             likeSong(cont.id)
+                           }
+                         }}>
+                      <path className='tableHeartIcon' d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
+                    </svg>                 
+                </td>
+                <td className='tdRegTrack' style={{width: '5%'}}>{cont.duration}</td>
+                <td className='rowLast tdRegTrack' style={{width: '7.5%'}}>                   
+                   <div className='trackOptions'>
+                    <div className='dot'/>
+                    <div className='dot'/>
+                    <div className='dot'/>
+                   </div>
+                </td>
                 
               </tr>
             )}

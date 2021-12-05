@@ -6,9 +6,10 @@ import HeaderControls from './HeaderControls'
 import getDataObject from './getDataObject'
 import TracksTable from './TracksTable'
 import { AuthContext } from './AuthContext'
-import { PageContext } from './PageContext'
+// import { PageContext } from './PageContext'
 import { ThemeContext } from './ThemeContext'
 import toMinsSecs from './toMinsSecs'
+import flagSavedTracks from './flagSavedTracks'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -21,9 +22,11 @@ export default function ArtistPage({ location }) {
     const [artist, setArtist] = useState({})
     const [artistAlbumsRaw, setArtistAlbumsRaw] = useState([])
     const [artistTracks, setArtistTracks] = useState([])
+    const [tracksFinal, setTracksFinal] = useState([])
+    const [savedArray, setSavedArray] = useState([])
     const [alsoLike, setAlsoLike] = useState([])
-    const { setCurrentPage } = useContext(PageContext)
-    const { setCurrentTheme } = useContext(ThemeContext)
+  //  const { setCurrentPage } = useContext(PageContext)
+    const { currentTheme } = useContext(ThemeContext)
 
 
     function getAlbumObject(id) {
@@ -61,11 +64,13 @@ export default function ArtistPage({ location }) {
     useEffect(() => {
         if (!accessToken) return
 
-        setCurrentTheme({red: 0, green: 0, blue: 0})
-
         spotifyApi.getArtist(id)
         .then(data =>{
-            setArtist({title: data.body.name, followers: data.body.followers.total.toLocaleString('en-US'), uri: data.body.uri, type: 'ARTIST'})
+            setArtist({title: data.body.name, 
+                followers: data.body.followers.total.toLocaleString('en-US'), 
+                uri: data.body.uri, 
+                type: 'ARTIST', 
+                imgUrl: data.body.images[0].url})
         })
         .catch(error => {
             console.log(error)
@@ -81,6 +86,7 @@ export default function ArtistPage({ location }) {
                     name: track.name,
                     trackImage: track.album.images[0].url,
                     albumId: track.album.id,
+                    albUri: track.album.uri,
                     duration: toMinsSecs(track.duration_ms),
                     artists: track.artists
                 }
@@ -116,7 +122,38 @@ export default function ArtistPage({ location }) {
         }
       
 
-    }, [accessToken, id, setCurrentPage, setCurrentTheme])
+    }, [accessToken, id])
+
+    useEffect(() => {
+        if (!accessToken) return
+        if (artistTracks.length === 0) return
+
+        let trax = artistTracks.map(item => item.id)
+
+        spotifyApi.containsMySavedTracks(trax)
+        .then(data => {
+          setSavedArray(data.body)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
+        return function cleanUp() {
+            setSavedArray([])
+        }
+        
+    }, [artistTracks, accessToken])
+
+    useEffect(() => {
+        if (artistTracks.length === 0) return
+        if (savedArray.length === 0) return
+
+        setTracksFinal(flagSavedTracks(artistTracks, savedArray))
+
+        return function cleanUp() {
+            setTracksFinal([])
+        }
+    }, [artistTracks, savedArray])
 
     useEffect(() => {
         if (!accessToken) return
@@ -135,11 +172,11 @@ export default function ArtistPage({ location }) {
     return (
        <div>
         <HeaderPanel content={artist} type='ARTIST'/>
-        <div className='pageContainer'>       
+        <div className='pageContainerArtist' style={{backgroundImage: 'linear-gradient(rgb(' + (currentTheme.red + 30) + ',' + (currentTheme.green + 30) + ',' + (currentTheme.blue + 30) + '), rgb(18, 18, 18) 20%)'}}>       
         <HeaderControls URL={`https://api.spotify.com/v1/me/following/contains?type=artist&ids=${id}`} contextUri={artist.uri} contextId={id} type='ARTIST'/>
     
           <p id='artistTableTitle'>Popular</p>
-          <TracksTable content={artistTracks.slice(0, 5)} page='artist' />
+          <TracksTable content={tracksFinal} page='artist' />
           <p><span className='panelTitle'>Albums</span></p>
           <Panel content={artistAlbumsRaw.slice(0, 5)} />
           <p><span className='panelTitle'>Fans also like</span></p>
