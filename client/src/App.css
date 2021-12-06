@@ -1354,6 +1354,13 @@ li:hover .sideBarImg {
     pointer-events: none;
 }
 
+.skeletonTableArtist {
+    width: 55%;
+    margin-left: 3%;
+    cursor: default;  
+    pointer-events: none;
+}
+
 .skeletonTitle {
     width: 60%;
     height: 0.9rem;

@@ -10,6 +10,7 @@ import Menu from './Menu'
 import { ThemeContext } from './ThemeContext'
 import toMinsSecs from './toMinsSecs'
 import flagSavedTracks from './flagSavedTracks'
+import ArtistLoader from './ArtistLoader'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -27,6 +28,7 @@ export default function ArtistPage({ location }) {
     const [alsoLike, setAlsoLike] = useState([])
     const { currentTheme } = useContext(ThemeContext)
     const [adjustedColour, setAdjustedColour] = useState({red: 0, green: 0, blue: 0})
+    const [loading, setLoading] = useState(true)
     
     
     function calculateChange(startNum) {
@@ -156,9 +158,11 @@ export default function ArtistPage({ location }) {
         if (savedArray.length === 0) return
 
         setTracksFinal(flagSavedTracks(artistTracks, savedArray))
+        setLoading(false)
 
         return function cleanUp() {
             setTracksFinal([])
+            setLoading(true)
         }
     }, [artistTracks, savedArray])
 
@@ -194,13 +198,18 @@ export default function ArtistPage({ location }) {
     
         <div className='pageContainerArtist' style={{backgroundImage: 'linear-gradient(rgb(' + adjustedColour.red + ',' + adjustedColour.green + ',' + adjustedColour.blue + '), rgb(18, 18, 18) 15%)'}}>       
         <HeaderControls URL={`https://api.spotify.com/v1/me/following/contains?type=artist&ids=${id}`} contextUri={artist.uri} contextId={id} type='ARTIST'/>
-    
+        {(loading)?
+        <ArtistLoader/>
+        :
+        <div>
           <p id='artistTableTitle'>Popular</p>
           <TracksTable content={tracksFinal} page='artist' />
           <p><span className='panelTitle'>Albums</span></p>
           <Panel content={artistAlbumsRaw.slice(0, 5)} />
           <p><span className='panelTitle'>Fans also like</span></p>
-          <Panel content={alsoLike.slice(0, 5)} />       
+          <Panel content={alsoLike.slice(0, 5)} /> 
+        </div>
+        }      
         </div>
         </div>
     )
