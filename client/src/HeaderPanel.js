@@ -17,6 +17,7 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
     useEffect(() => {
       if (!content.title) return
       if (content.title === 'Liked Songs') return
+      // bug fix?
 
       setCurrentPage({pageName: content.title,
                       pageUri: content.uri
@@ -110,12 +111,15 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
 
 
     return type === 'ARTIST'? (
-      <div id='headerPanelUpper' style={{backgroundColor: edgeColour}}>
-      
-      
-      <div className='headerBG' style={{backgroundImage: "url(" + content.imgUrl + ")", boxShadow: '0 0 20px 20px ' + edgeColour + ' inset'}}/>
-        
-          <img id='headerImage' style={{visibility: 'hidden'}} src={content.imgUrl} alt='' onLoad={()=> getData()}/>
+      <div id='headerPanelUpper' style={{backgroundColor: edgeColour}}>    
+        {(content.imgUrl)?
+          <div>
+            <div className='headerBG' style={{backgroundImage: "url(" + content.imgUrl + ")", boxShadow: '0 0 20px 20px ' + edgeColour + ' inset'}}/>      
+            <img id='headerImage' style={{visibility: 'hidden'}} src={content.imgUrl} alt='' onLoad={()=> getData()}/>
+          </div>
+          :
+          <></>
+        } 
           <div className='headerInfoArtist'>
             <span className='headerTitle' style={titleSize}>{content.title}</span>
             <span className='headerSubArtist'>{content.followers + ' followers'}</span>

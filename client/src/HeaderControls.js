@@ -63,7 +63,6 @@ export default function HeaderControls({URL, contextUri, contextId, isOwner, pla
 
         axios(options)
         .then(response => {
-          console.log(response.data)
           setLiked(response.data[0])
           setLoading(false)
         })

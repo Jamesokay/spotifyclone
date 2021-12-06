@@ -678,6 +678,13 @@ body {
     z-index: 3;
 }
 
+.logo {
+    margin-left: 24px;
+    margin-top: 24px;
+    margin-bottom: 10px;
+    height: 5.4vh;
+}
+
 .sideBarLink {
     text-decoration: none;
     color: rgb(168, 168, 168);
@@ -691,10 +698,10 @@ body {
 
 .sideBarActive {
     background-color: rgb(40, 40, 40);
-    width: 95%;
+    width: 97%;
     text-decoration: none;
     color: white !important;
-    border-radius: 5px;
+    border-radius: 0.25rem;
 }
 
 .sideBarPlaylistActive {
@@ -705,13 +712,13 @@ body {
 
 .sideBarIcon {
     transition: color 0.2s ease-in-out;
-    margin-left: 15px;
+    margin-left: 18px;
 }
 
 .sideBarImg {
     width: 25px;
     height: 25px;
-    margin-left: 15px;
+    margin-left: 18px;
     border-radius: 2px;
     opacity: 0.6;
     transition: opacity 0.2s ease-in-out;
@@ -719,7 +726,7 @@ body {
 
 .sideBarText {
     font-size: 11pt;
-    margin-left: 10px;
+    margin-left: 18px;
     transition: color 0.2s ease-in-out;
 }
 
@@ -756,7 +763,7 @@ li:hover .sideBarImg {
 #sideBarList {
     list-style-type: none;
     padding-left: 0;
-    margin-left: 5%;
+    margin-left: 3%;
     margin-top: 1.5vh;
     font-family: Arial, sans-serif;
 }
