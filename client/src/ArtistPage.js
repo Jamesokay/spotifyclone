@@ -23,6 +23,7 @@ export default function ArtistPage({ location }) {
     const [artist, setArtist] = useState({})
     const [artistAlbumsRaw, setArtistAlbumsRaw] = useState([])
     const [popularReleases, setPopularReleases] = useState([])
+    const [singles, setSingles] = useState([])
     const [artistTracks, setArtistTracks] = useState([])
     const [tracksFinal, setTracksFinal] = useState([])
     const [savedArray, setSavedArray] = useState([])
@@ -30,6 +31,7 @@ export default function ArtistPage({ location }) {
     const { currentTheme } = useContext(ThemeContext)
     const [adjustedColour, setAdjustedColour] = useState({red: 0, green: 0, blue: 0})
     const [loading, setLoading] = useState(true)
+    const [showMoreTracks, setShowMoreTracks] = useState(false)
     
     
     function calculateChange(startNum) {
@@ -37,32 +39,9 @@ export default function ArtistPage({ location }) {
         var change = Math.floor(distance * 0.7)
         return startNum + change
       }
-    
-    
-    function getPopularObject(id) {
-        spotifyApi.getAlbum(id)
-        .then(data => {
-            let obj = {
-                    onArtistPage: true,
-                    key: data.body.id,
-                    id: data.body.id,
-                    uri: data.body.uri,
-                    type: data.body.album_type,
-                    name: data.body.name,
-                    popularity: data.body.popularity,
-                    imgUrl: data.body.images[0].url,
-                    year: parseInt(data.body.release_date.slice(0, 4)),
-                    subtitle: data.body.release_date.slice(0, 4) + ' • ' + data.body.album_type.charAt(0).toUpperCase() + data.body.album_type.slice(1)
-            }
-            setPopularReleases(popularReleases => [...popularReleases, obj])
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    }
 
 
-    function getAlbumObject(id) {
+    function getAlbumObject(id, type) {
         spotifyApi.getAlbum(id)
         .then(data => {
             let obj = {
@@ -75,9 +54,17 @@ export default function ArtistPage({ location }) {
                     popularity: data.body.popularity,
                     imgUrl: data.body.images[0].url,
                     year: parseInt(data.body.release_date.slice(0, 4)),
-                    subtitle: data.body.release_date.slice(0, 4) + ' • Album'
+                    subtitle: data.body.release_date.slice(0, 4) + ' • ' + data.body.album_type.charAt(0).toUpperCase() + data.body.album_type.slice(1)
             }
-            setArtistAlbumsRaw(artistAlbumsRaw => [...artistAlbumsRaw, obj])
+            if (type === 'albums') {
+              setArtistAlbumsRaw(artistAlbumsRaw => [...artistAlbumsRaw, obj])
+            }
+            else if (type === 'popular') {
+              setPopularReleases(popularReleases => [...popularReleases, obj])
+            }
+            else if (type === 'singles') {
+              setSingles(singles => [...singles, obj])
+            }
         })
         .catch(error => {
             console.log(error)
@@ -135,7 +122,7 @@ export default function ArtistPage({ location }) {
         .then(data => {
             let albumsFiltered = getUniqueByName(data.body.items)
             let albumsIds = albumsFiltered.map(item => item.id)
-            albumsIds.forEach(getPopularObject)
+            albumsIds.forEach(item => getAlbumObject(item, 'popular'))
         })
         .catch(error => {
             console.log(error)
@@ -146,7 +133,17 @@ export default function ArtistPage({ location }) {
         .then(data => {
             let albumsFiltered = getUniqueByName(data.body.items)
             let albumsIds = albumsFiltered.map(item => item.id)
-            albumsIds.forEach(getAlbumObject)
+            albumsIds.forEach(item => getAlbumObject(item, 'albums'))
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
+        spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'single'})
+        .then(data => {
+            let albumsFiltered = getUniqueByName(data.body.items)
+            let albumsIds = albumsFiltered.map(item => item.id)
+            albumsIds.forEach(item => getAlbumObject(item, 'singles'))
         })
         .catch(error => {
             console.log(error)
@@ -163,6 +160,7 @@ export default function ArtistPage({ location }) {
         return function cleanUp() {
             setArtist({})
             setPopularReleases([])
+            setSingles([])
             setArtistAlbumsRaw([])
             setArtistTracks([])
             setAlsoLike([])
@@ -177,7 +175,7 @@ export default function ArtistPage({ location }) {
 
         let trax = artistTracks.map(item => item.id)
 
-        spotifyApi.containsMySavedTracks(trax)
+        spotifyApi.containsMySavedTracks(trax.slice(0, 10))
         .then(data => {
           setSavedArray(data.body)
         })
@@ -225,7 +223,11 @@ export default function ArtistPage({ location }) {
             return b.year - a.year
         })
 
-    }, [accessToken, id, popularReleases, artistAlbumsRaw])
+        singles.sort(function(a, b) {
+            return b.year - a.year
+        })
+
+    }, [accessToken, id, popularReleases, artistAlbumsRaw, singles])
 
     useEffect(() => {
         if (!currentTheme) return
@@ -254,11 +256,21 @@ export default function ArtistPage({ location }) {
         :
         <div>
           <p id='artistTableTitle'>Popular</p>
-          <TracksTable content={tracksFinal} page='artist' />
+          <TracksTable content={(!showMoreTracks)? tracksFinal.slice(0, 5) : tracksFinal.slice(0, 10)} page='artist' />
+          <span className='seeMore' 
+                onClick={() => {
+                  if (showMoreTracks ) {
+                    setShowMoreTracks(false)
+                  }
+                  else setShowMoreTracks(true)
+                }}
+          >{(!showMoreTracks)? 'SEE MORE' : 'SHOW LESS'}</span>
           <p><span className='panelTitle'>Popular releases</span></p>
           <Panel content={popularReleases.slice(0, 5)} />          
           <p><span className='panelTitle'>Albums</span></p>
           <Panel content={artistAlbumsRaw.slice(0, 5)} />
+          <p><span className='panelTitle'>Singles and EPs</span></p>
+          <Panel content={singles.slice(0, 5)} />
           <p><span className='panelTitle'>Fans also like</span></p>
           <Panel content={alsoLike.slice(0, 5)} /> 
         </div>

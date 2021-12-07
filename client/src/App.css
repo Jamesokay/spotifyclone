@@ -1426,6 +1426,23 @@ li:hover .sideBarImg {
     font-size: 11.5pt; 
 }
 
+.seeMore {
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(168, 168, 168);
+    font-size: 9pt;
+    letter-spacing: 1px;
+    margin-left: 4%;
+    margin-top: 15px;
+    margin-bottom: 60px;
+    font-weight: bolder;
+    cursor: default;
+}
+
+.seeMore:hover {
+    color: white;
+}
+
 .empty {
     width: 2.5vw;
     border-bottom: none;
@@ -1753,7 +1770,7 @@ th {
     width: 95vw;
     min-width: 1000px; 
     padding-top: 85px;
-    height: 420px;
+    height: 440px;
     z-index: -2;
 }
 

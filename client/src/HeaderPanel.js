@@ -122,7 +122,11 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
         } 
           <div className='headerInfoArtist'>
             <span className='headerTitle' style={titleSize}>{content.title}</span>
+            {(content.followers)?
             <span className='headerSubArtist'>{content.followers + ' followers'}</span>
+            :
+            <></>
+            }
           </div>
          
       

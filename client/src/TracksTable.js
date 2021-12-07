@@ -150,7 +150,7 @@ export default function TracksTable({content, page }) {
             <div id='tableHeader'></div>        
             <table className='artistTable' cellSpacing='0' cellPadding='0'>
             <tbody>
-            {content.slice(0, 5).map(cont =>
+            {content.map(cont =>
               <tr className='trackTableRow' key={cont.id} style={{color: 'white'}}>
            
                 
