@@ -94,7 +94,7 @@ export default function NavBar() {
         </div>
         </div>
         
-      {(location.pathname === '/' || location.pathname === '/search')?
+      {(location.pathname === '/' || location.pathname === '/search' || location.pathname === '/collection/playlists' || location.pathname === '/collection/albums' || location.pathname === '/collection/tracks')?
       <></>
       :
         <div id='navCurrentPage' style={(alpha >= 2)? {opacity: '1'}:{opacity: '0'}}>
