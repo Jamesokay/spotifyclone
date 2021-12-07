@@ -22,6 +22,7 @@ export default function ArtistPage({ location }) {
     const accessToken = useContext(AuthContext)
     const [artist, setArtist] = useState({})
     const [artistAlbumsRaw, setArtistAlbumsRaw] = useState([])
+    const [popularReleases, setPopularReleases] = useState([])
     const [artistTracks, setArtistTracks] = useState([])
     const [tracksFinal, setTracksFinal] = useState([])
     const [savedArray, setSavedArray] = useState([])
@@ -36,6 +37,29 @@ export default function ArtistPage({ location }) {
         var change = Math.floor(distance * 0.7)
         return startNum + change
       }
+    
+    
+    function getPopularObject(id) {
+        spotifyApi.getAlbum(id)
+        .then(data => {
+            let obj = {
+                    onArtistPage: true,
+                    key: data.body.id,
+                    id: data.body.id,
+                    uri: data.body.uri,
+                    type: data.body.album_type,
+                    name: data.body.name,
+                    popularity: data.body.popularity,
+                    imgUrl: data.body.images[0].url,
+                    year: parseInt(data.body.release_date.slice(0, 4)),
+                    subtitle: data.body.release_date.slice(0, 4) + ' • ' + data.body.album_type.charAt(0).toUpperCase() + data.body.album_type.slice(1)
+            }
+            setPopularReleases(popularReleases => [...popularReleases, obj])
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
 
 
     function getAlbumObject(id) {
@@ -50,6 +74,7 @@ export default function ArtistPage({ location }) {
                     name: data.body.name,
                     popularity: data.body.popularity,
                     imgUrl: data.body.images[0].url,
+                    year: parseInt(data.body.release_date.slice(0, 4)),
                     subtitle: data.body.release_date.slice(0, 4) + ' • Album'
             }
             setArtistAlbumsRaw(artistAlbumsRaw => [...artistAlbumsRaw, obj])
@@ -58,6 +83,7 @@ export default function ArtistPage({ location }) {
             console.log(error)
         })
     }
+
 
     function getUniqueByName(array) {
         const names = array.map(item => item.name)      
@@ -105,6 +131,17 @@ export default function ArtistPage({ location }) {
             console.log(error)
         })
 
+        spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'single,album'})
+        .then(data => {
+            let albumsFiltered = getUniqueByName(data.body.items)
+            let albumsIds = albumsFiltered.map(item => item.id)
+            albumsIds.forEach(getPopularObject)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
+
         spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'album'})
         .then(data => {
             let albumsFiltered = getUniqueByName(data.body.items)
@@ -125,6 +162,7 @@ export default function ArtistPage({ location }) {
 
         return function cleanUp() {
             setArtist({})
+            setPopularReleases([])
             setArtistAlbumsRaw([])
             setArtistTracks([])
             setAlsoLike([])
@@ -168,13 +206,26 @@ export default function ArtistPage({ location }) {
 
     useEffect(() => {
         if (!accessToken) return
+        if (!popularReleases) return
         if (!artistAlbumsRaw) return
-            
-        artistAlbumsRaw.sort(function(a, b) {
-          return b.popularity - a.popularity
-          })
 
-    }, [accessToken, id, artistAlbumsRaw])
+        popularReleases.sort(function(a, b) {
+            return b.popularity - a.popularity
+          })
+  
+        // popularReleases.sort(function(a, b) {
+        //       return b.year - a.year
+        // })
+            
+        // artistAlbumsRaw.sort(function(a, b) {
+        //   return b.popularity - a.popularity
+        // })
+
+        artistAlbumsRaw.sort(function(a, b) {
+            return b.year - a.year
+        })
+
+    }, [accessToken, id, popularReleases, artistAlbumsRaw])
 
     useEffect(() => {
         if (!currentTheme) return
@@ -204,6 +255,8 @@ export default function ArtistPage({ location }) {
         <div>
           <p id='artistTableTitle'>Popular</p>
           <TracksTable content={tracksFinal} page='artist' />
+          <p><span className='panelTitle'>Popular releases</span></p>
+          <Panel content={popularReleases.slice(0, 5)} />          
           <p><span className='panelTitle'>Albums</span></p>
           <Panel content={artistAlbumsRaw.slice(0, 5)} />
           <p><span className='panelTitle'>Fans also like</span></p>
