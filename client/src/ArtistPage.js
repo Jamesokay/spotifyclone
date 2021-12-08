@@ -256,7 +256,7 @@ export default function ArtistPage({ location }) {
         :
         <div>
           <p id='artistTableTitle'>Popular</p>
-          <TracksTable content={(!showMoreTracks)? tracksFinal.slice(0, 5) : tracksFinal.slice(0, 10)} page='artist' />
+          <TracksTable content={tracksFinal} page='artist' trackDepth={(showMoreTracks)? 10 : 5}/>
           <span className='seeMore' 
                 onClick={() => {
                   if (showMoreTracks ) {

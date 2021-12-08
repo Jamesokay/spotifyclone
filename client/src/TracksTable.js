@@ -9,7 +9,7 @@ import { TrackContext } from './TrackContext'
 import { RightClickContext } from './RightClickContext'
 import { NotificationContext } from './NotificationContext'
 
-export default function TracksTable({content, page }) {
+export default function TracksTable({content, page, trackDepth }) {
 
     const accessToken = useContext(AuthContext)
     const history = useHistory()
@@ -42,9 +42,9 @@ export default function TracksTable({content, page }) {
       }
     }, [content])
   
-      useEffect(() => {
-        setNewTrack({})
-      }, [setNewTrack])
+      // useEffect(() => {
+      //   setNewTrack({})
+      // }, [setNewTrack])
 
       useEffect(() => {
 
@@ -59,7 +59,6 @@ export default function TracksTable({content, page }) {
             setScrolling(false)
           }
           else {           
-            console.log('FIRED!')
             setScrolling(true)
           }
         }
@@ -150,7 +149,7 @@ export default function TracksTable({content, page }) {
             <div id='tableHeader'></div>        
             <table className='artistTable' cellSpacing='0' cellPadding='0'>
             <tbody>
-            {content.map(cont =>
+            {content.slice(0,trackDepth).map(cont =>
               <tr className='trackTableRow' key={cont.id} style={{color: 'white'}}>
            
                 
