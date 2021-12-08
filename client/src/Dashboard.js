@@ -15,8 +15,8 @@ const spotifyApi = new SpotifyWebApi({
 export default function Dashboard() {
     const accessToken = useContext(AuthContext)
     const [topArtists, setTopArtists] = useState([])
-//    const [topTracks, setTopTracks] = useState([])
     const [recent, setRecent] = useState([])
+    const [recentReversed, setRecentReversed] = useState([])
     const [recentSeeds, setRecentSeeds] = useState([])
     const [forToday, setForToday] = useState([])
     const [moreLike, setMoreLike] = useState([])
@@ -112,14 +112,6 @@ export default function Dashboard() {
     useEffect(() => {
       if (!accessToken) return 
 
-      // spotifyApi.getMyTopTracks()
-      // .then(data => {
-      //   setTopTracks(data.body.items.map(item => item.id))
-      // })
-      // .catch(error => {
-      //   console.log(error)
-      // })
-
       spotifyApi.getMyTopArtists({limit : 20})
       .then(data => {
           setTopArtists(data.body.items.map(getDataObject))
@@ -155,16 +147,7 @@ export default function Dashboard() {
 
       var artistIndex = Math.floor(Math.random() * (11 - 5) + 5)
       
-
       setRelatedArtistsSeed(topArtists[artistIndex].name)
- 
-    //   spotifyApi.getArtistRelatedArtists(topArtists[artistIndex].key)
-    //   .then(data => {
-    //     setMoreLike(data.body.artists.map(getDataObject))
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //  })
 
      spotifyApi.getRecommendations({
       seed_artists: [topArtists[artistIndex].key],
@@ -205,6 +188,16 @@ export default function Dashboard() {
      })
 
     }, [accessToken, topArtists])
+
+    useEffect(() => {
+      if (recent.length === 0) return
+
+      setRecentReversed(recent.slice().reverse())
+
+      return function cleanUp() {
+        setRecentReversed([])
+      }
+    }, [recent])
 
     useEffect(() => {
       if (!accessToken) return
@@ -308,6 +301,8 @@ export default function Dashboard() {
         <Panel content={moreLike.slice(0, 5)} />
         <p className='panelText'><span className='panelTitle'>Album picks</span></p> 
         <Panel content={recommend.slice(0, 5)} />   
+        <p className='panelText'><span className='panelTitle'>Jump back in</span></p> 
+        <Panel content={recentReversed.slice(0, 5)} />  
         <p className='panelText'><span className='panelTitle'>{'For fans of ' + customArtistName}</span></p> 
         <Panel content={customArtistPanel.slice(0, 5)} /> 
         <p className='panelText'><span className='panelTitle'>Recommended for today</span></p>
