@@ -377,10 +377,13 @@ export default function WebPlayer() {
         
         }}>
       <div className='playingTrack'>
+      <div className='playingTrackImgContainer'>
         <img className='playingTrackImg' src={currentTrack.album.images[0].url} alt='' />
-        <div className='playingTrackInfo'>
+      </div>
+        
+        <div className='playingTrackText'>
         <Link style={{textDecoration: 'none'}} to={{pathname: `/album/${currentTrack.album.uri.slice(14)}`, state: currentTrack.album.uri.slice(14) }}>
-        <span className='playingTrackName'>{currentTrack.name}</span>
+        <span className={(currentTrack.name.length >= 30)? 'playingTrackNameScroll':'playingTrackName'}>{currentTrack.name}</span>
         </Link>
         <div className='trackArtists'>
           {currentTrack.artists.map((artist, index, artists) => 
@@ -396,7 +399,9 @@ export default function WebPlayer() {
              </span>
             )}
         </div>
-        </div>       
+        </div>
+
+              
       </div>
 
       <div id='playFunctions'>
