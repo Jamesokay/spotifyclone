@@ -853,38 +853,43 @@ li:hover .sideBarImg {
 }
 
 #loader {
-    margin-left: 45%;
+    left: 45%;
     margin-top: 35vh;
     width: 5%;
     height: 10%;
-    display: inline-flex;
-    justify-content: space-around;
+    position: relative;
 }
 
 #loading1 {
+    position: absolute;
+    left: 10%;
     height: 10px;
     width: 10px;
     border-radius: 100%;
     background-color: #212121;
-    animation: dash-loading 2s infinite;
+    animation: dash-loading-left 1.2s infinite;
 }
 
 #loading2 {
     height: 10px;
     width: 10px;
+    position: absolute;
+    left: 43%;
     border-radius: 100%;
     background-color: #212121;
-    animation: dash-loading 2s infinite;
-    animation-delay: 0.6s;
+    animation: dash-loading 1.2s infinite;
+    animation-delay: 0.2s;
 }
 
 #loading3 {
+    position: absolute;
+    right: 10%;
     height: 10px;
     width: 10px;
     border-radius: 100%;
     background-color: #212121;
-    animation: dash-loading 2s infinite;
-    animation-delay: 1.2s;
+    animation: dash-loading-right 1.2s infinite;
+    animation-delay: 0.5s;
 }
 
 @keyframes dash-loading {
@@ -892,7 +897,35 @@ li:hover .sideBarImg {
         background-color: rgb(168, 168, 168);
         transform: scale(1.25)
     }
-    30%, 60%, 100% {
+    50%, 100% {
+        background-color: #212121;
+        transform: scale(1)
+    }
+    
+}
+
+@keyframes dash-loading-left {
+    0% {
+        left: 0;
+        background-color: rgb(168, 168, 168);
+        transform: scale(1.25)
+    }
+    50%, 100% {
+        left: 10%;
+        background-color: #212121;
+        transform: scale(1)
+    }
+    
+}
+
+@keyframes dash-loading-right {
+    0% {
+        right: 0;
+        background-color: rgb(168, 168, 168);
+        transform: scale(1.25)
+    }
+    50%, 100% {
+        right: 10%;
         background-color: #212121;
         transform: scale(1)
     }
