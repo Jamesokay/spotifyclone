@@ -1071,10 +1071,9 @@ li:hover .sideBarImg {
     display: block;
     color: white;
     font-family: Verdana, sans-serif;
-    font-size: 10pt;
-     
+    font-size: 10pt;  
     white-space: nowrap; 
-    animation: marquee 15s linear infinite;
+    animation: marquee 30s linear infinite;
 }
 
 
@@ -1082,11 +1081,14 @@ li:hover .sideBarImg {
     0% {
       transform: translate(0, 0);
     }
-    20% {
+    15% {
         transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(-100%, 0);
       }
     100% {
-      transform: translate(-100%, 0);
+      transform: translate(0, 0);
     }
   }
 

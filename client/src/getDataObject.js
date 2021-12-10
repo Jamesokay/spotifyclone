@@ -1,4 +1,4 @@
-import defaultProfile from './defaultProfile.png'
+import defaultPlaylist from './defaultPlaylist.png'
 
 export default function getDataObject(dataObject) {
       
@@ -7,7 +7,7 @@ export default function getDataObject(dataObject) {
   }
   
   var imgSrc
-  (dataObject.images[0])? imgSrc = dataObject.images[0].url : imgSrc = defaultProfile
+  (dataObject.images[0])? imgSrc = dataObject.images[0].url : imgSrc = defaultPlaylist
 
       if (dataObject.type === 'album') {
         return {
