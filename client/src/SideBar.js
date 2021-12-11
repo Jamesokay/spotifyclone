@@ -7,6 +7,7 @@ import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { SidebarContext } from './SidebarContext'
 import getDataObject from './getDataObject'
+import { useLocation } from 'react-router-dom'
 
 export default function SideBar() {
     const history = useHistory()
@@ -17,6 +18,7 @@ export default function SideBar() {
     const [showMenu, setShowMenu] = useState(false)
     const [rightClicked, setRightClicked] = useState('')
     const [scrolled, setScrolled] = useState(0)
+    const location = useLocation()
 
 
     const handleContextMenu = useCallback(
@@ -99,8 +101,8 @@ export default function SideBar() {
           <li>
           <NavLink className='sideBarLink' draggable="false" to="/" exact={true} activeClassName="sideBarActive">
           <svg className='sideBarIcon' viewBox="0 0 512 512" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-            <path className='homeIcon' d="M 256.274 60.84 L 84.324 166.237 L 84.324 443.063 L 193.27 443.063 L 193.27 293.73 L 320.228 293.73 L 320.228 443.063 L 428.222 443.063 L 428.222 165.476 L 256.274 60.84 Z M 256.274 35.95 L 448.452 149.145 L 448.452 464.395 L 300 464.395 L 300 315.062 L 213.499 315.062 L 213.499 464.395 L 64.095 464.395 L 64.095 150.161 L 256.274 35.95 Z" fill="currentColor"></path>
-        </svg> 
+            <path className='homeIcon' d={(location.pathname === '/')? "M 256.274 35.95 L 448.452 149.145 L 448.452 464.395 L 300 464.395 L 300 315.062 L 213.499 315.062 L 213.499 464.395 L 64.095 464.395 L 64.095 150.161 L 256.274 35.95 Z": "M 256.274 60.84 L 84.324 166.237 L 84.324 443.063 L 193.27 443.063 L 193.27 293.73 L 320.228 293.73 L 320.228 443.063 L 428.222 443.063 L 428.222 165.476 L 256.274 60.84 Z M 256.274 35.95 L 448.452 149.145 L 448.452 464.395 L 300 464.395 L 300 315.062 L 213.499 315.062 L 213.499 464.395 L 64.095 464.395 L 64.095 150.161 L 256.274 35.95 Z"} fill="currentColor"></path>
+          </svg> 
           <span className='sideBarText'>Home</span>
           </NavLink>
           </li>
