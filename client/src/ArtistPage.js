@@ -265,13 +265,13 @@ export default function ArtistPage({ location }) {
                   else setShowMoreTracks(true)
                 }}
           >{(!showMoreTracks)? 'SEE MORE' : 'SHOW LESS'}</span>
-          <p><span className='panelTitle'>Popular releases</span></p>
+          <span className='panelTitle'>Popular releases</span>
           <Panel content={popularReleases.slice(0, 5)} />          
-          <p><span className='panelTitle'>Albums</span></p>
+          <span className='panelTitle'>Albums</span>
           <Panel content={artistAlbumsRaw.slice(0, 5)} />
-          <p><span className='panelTitle'>Singles and EPs</span></p>
+          <span className='panelTitle'>Singles and EPs</span>
           <Panel content={singles.slice(0, 5)} />
-          <p><span className='panelTitle'>Fans also like</span></p>
+          <span className='panelTitle'>Fans also like</span>
           <Panel content={alsoLike.slice(0, 5)} /> 
         </div>
         }      

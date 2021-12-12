@@ -333,28 +333,29 @@ export default function Dashboard() {
           <PanelGrid content={recent} head={greeting}/>
           :
           <div>
-          <p><span className='panelTitle'>{greeting}</span></p>
+          <span className='panelTitle'>{greeting}</span>
           <Panel content={recent.slice(0, 5)} />
           </div>
         
         }
         {(month === 11)?
         <div>
-          <p className='panelText'><span className='panelTitle'>{'Your ' + year + ' in review'}</span></p> 
+          <span className='panelTitle'>{'Your ' + year + ' in review'}</span>
           <Panel content={topYear} />
         </div>
         :
         <></>
         }
-        <p className='panelText'><span className='panelTitle'>{'More like ' + relatedArtistsSeed}</span></p> 
+        <span className='panelTitle'>{'More like ' + relatedArtistsSeed}</span>
         <Panel content={moreLike.slice(0, 5)} />
-        <p className='panelText'><span className='panelTitle'>Album picks</span></p> 
+        <span className='panelTitle'>Album picks</span>
+        <span className='panelTitleSub'>Albums for you based on what you like to listen to.</span>
         <Panel content={recommend.slice(0, 5)} />   
-        <p className='panelText'><span className='panelTitle'>Jump back in</span></p> 
+        <span className='panelTitle'>Jump back in</span> 
         <Panel content={recentReversed.slice(0, 5)} />  
-        <p className='panelText'><span className='panelTitle'>{'For fans of ' + customArtistName}</span></p> 
+        <span className='panelTitle'>{'For fans of ' + customArtistName}</span>
         <Panel content={customArtistPanel.slice(0, 5)} /> 
-        <p className='panelText'><span className='panelTitle'>Recommended for today</span></p>
+        <span className='panelTitle'>Recommended for today</span>
         <Panel content={forToday.slice(0, 5)} />
 
       </div>
