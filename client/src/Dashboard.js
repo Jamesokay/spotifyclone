@@ -35,7 +35,7 @@ export default function Dashboard() {
     const timeMod = parseInt(time.replace(/:/g, ''))
     const greeting = greetingMessage(timeMod)
 
-
+    // Set greeting message based on time of day
     function greetingMessage(time) {
       if (time < 120000) {
         return 'Good morning'
@@ -48,7 +48,7 @@ export default function Dashboard() {
       }
     }
 
-    
+    // Function for removing duplicate listening contexts in Recently Played
     function getUniqueById(array) {
         const clearUndefinedValues = array.filter(item => {
             return item !== undefined
@@ -57,59 +57,45 @@ export default function Dashboard() {
           const filtered = clearUndefinedValues.filter(({id}, index) => !ids.includes(id, index + 1))
           return filtered
     }
-
-    function getUniqueByAlbumId(array) {
-      const albumIds = []
-      const filtered = []
-      array.forEach(item => {
-        if (!albumIds.includes(item.album.id)) {
-          albumIds.push(item.album.id)
-          filtered.push(item.album.id)
-        }
-      })
-      return filtered    
+    
+    // Function to retrieve data from relevant API endpoints based on Recently Played track contexts
+    function spotifyContextQuery(item) {
+      if (!item.type) {
+        return
+      }
+      else if (item.type === 'playlist') {
+        spotifyApi.getPlaylist(item.id)
+        .then(data => {
+          setRecent(recent => [...recent, getDataObject(data.body)])
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      }
+      else if (item.type === 'artist') {
+        spotifyApi.getArtist(item.id)
+        .then(data => {
+          setRecent(recent => [...recent, getDataObject(data.body)])
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      }
+      else if (item.type === 'album') {
+        spotifyApi.getAlbum(item.id)
+        .then(data => {
+          setRecent(recent => [...recent, getDataObject(data.body)])
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      }
     }
-
-  function spotifyContextQuery(item) {
- 
-    if (!item.type) {
-      return
-    }
-    else if (item.type === 'playlist') {
-      spotifyApi.getPlaylist(item.id)
-      .then(data => {
-        let obj = getDataObject(data.body)
-        setRecent(recent => [...recent, obj])
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    }
-    else if (item.type === 'artist') {
-      spotifyApi.getArtist(item.id)
-      .then(data => {
-        let obj = getDataObject(data.body)
-        setRecent(recent => [...recent, obj])
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    }
-    else if (item.type === 'album') {
-      spotifyApi.getAlbum(item.id)
-      .then(data => {
-        let obj = getDataObject(data.body)
-        setRecent(recent => [...recent, obj])
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    }
-  }
+    
 
     useEffect(() => {
-        if (!accessToken) return
-        spotifyApi.setAccessToken(accessToken)
+      if (!accessToken) return
+      spotifyApi.setAccessToken(accessToken)
     }, [accessToken])
 
 
@@ -118,13 +104,21 @@ export default function Dashboard() {
 
       spotifyApi.getMyTopArtists({limit : 20})
       .then(data => {
-          setTopArtists(data.body.items.map(getDataObject))
-        })
-      .catch(error => {
-         console.log(error)
+        setTopArtists(data.body.items.map(getDataObject))
       })
+      .catch(error => {
+        console.log(error)
+      })
+
     } , [accessToken])
 
+
+    // Get recently played tracks
+    // Store top 5 ids as seeds for generating recommendations
+    // Build Recently Played array by first passing response objects to createContextArray()
+    // createContextArray() returns an object for each specifying type and id
+    // These are then filtered by getUniqueById() to remove duplicate contexts
+    // Filtered array is then passed through spotifyContextQuery() to generate the final array of objects to be rendered
     useEffect(() => {   
       if (!accessToken) return   
  
@@ -142,9 +136,10 @@ export default function Dashboard() {
       return function cleanUp() {
         setRecentSeeds([])
       }
-
     }, [accessToken])
 
+
+    // Retrieve Year in Review playlists via the Search endpoint
     useEffect(() => {
       if (!accessToken) return
 
@@ -172,22 +167,24 @@ export default function Dashboard() {
             'Authorization': `Bearer ${accessToken}`,
             'Content-Type': 'application/json',
             }
-        }
+      }
       
-        axios(options2)
-        .then(response => {
-          setTopYear(topYear => [...topYear, getDataObject(response.data.playlists.items[0])])
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      axios(options2)
+      .then(response => {
+        setTopYear(topYear => [...topYear, getDataObject(response.data.playlists.items[0])])
+      })
+      .catch(error => {
+        console.log(error)
+      })
 
       return function cleanUp() {
         setTopYear([])
       }
-
     }, [accessToken])
 
+    
+    // Generate arrays for 'More like {artist}' and 'Album picks'
+    // Based on randomised index into topArtists array
     useEffect(() => {
       if (!accessToken) return     
       if (topArtists.length < 20) return
@@ -196,46 +193,38 @@ export default function Dashboard() {
       
       setRelatedArtistsSeed(topArtists[artistIndex].name)
 
-     spotifyApi.getRecommendations({
-      seed_artists: [topArtists[artistIndex].key],
-      min_popularity: 50
-    })
-    .then(data => {
-      let uniqueAlbumIds = getUniqueByAlbumId(data.body.tracks)
-      uniqueAlbumIds.forEach(id => {
-        spotifyApi.getAlbum(id)
-        .then(data => {
-          if (data.body.artists[0].id === topArtists[artistIndex].key) return
-          let obj = getDataObject(data.body)
-          setMoreLike(moreLike => [...moreLike, obj])
-        })
+      spotifyApi.getRecommendations({
+        seed_artists: [topArtists[artistIndex].key],
+        min_popularity: 50
       })
-    })
-    .catch(error => {
-      console.log(error)
-    })
+      .then(data => {
+        setMoreLike(data.body.tracks.map(track => getDataObject(track.album)))
+      })
+      .catch(error => {
+        console.log(error)
+      })
      
      spotifyApi.getRecommendations({
        seed_artists: [topArtists[1].key, topArtists[2].key, topArtists[3].key],
        min_popularity: 50
      })
      .then(data => {
-       let uniqueAlbumIds = getUniqueByAlbumId(data.body.tracks)
-       uniqueAlbumIds.forEach(id => {
-         spotifyApi.getAlbum(id)
-         .then(data => {
-           if (data.body.artists[0].id === topArtists[1].key || data.body.artists[0].id === topArtists[2].key || data.body.artists[0].id === topArtists[3].key || data.body.artists[0].id === topArtists[artistIndex].key) return
-           let obj = getDataObject(data.body)
-           setRecommend(recommend => [...recommend, obj])
-         })
-       })
+       setRecommend(data.body.tracks.map(track => getDataObject(track.album)))
      })
      .catch(error => {
        console.log(error)
      })
 
+    return function cleanUp() {
+      setMoreLike([])
+      setRecommend([])
+    }
+
     }, [accessToken, topArtists])
 
+
+    // Generate array for 'Jump back in' panel
+    // Based on recent array, simply reversed so as to show different results
     useEffect(() => {
       if (recent.length === 0) return
 
@@ -246,6 +235,12 @@ export default function Dashboard() {
       }
     }, [recent])
 
+
+    // Generate custom artist panel
+    // Composed of both Spotify-made playlists and artist albums
+    // Based on randomised index into topArtists array, with random number produced in such a way
+    // that it will always be different to the one produced above, preventing 'More like {artist}' and
+    // custom artist panel from being based on the same artist
     useEffect(() => {
       if (!accessToken) return
       if (topArtists.length < 5) return
@@ -254,7 +249,6 @@ export default function Dashboard() {
 
       setCustomArtistName(topArtists[artistIndex].name)
       
-      //Artist Playlists
       spotifyApi.searchPlaylists(topArtists[artistIndex].name)
       .then(data => {
         let playlists = data.body.playlists.items.filter(item => item.owner.display_name === 'Spotify')
@@ -273,7 +267,7 @@ export default function Dashboard() {
         console.log(error)
       })
 
-      spotifyApi.getArtistAlbums(topArtists[artistIndex].key, {album_type: 'album', limit: 5})
+      spotifyApi.getArtistAlbums(topArtists[artistIndex].key, {album_type: 'album', limit: 4})
       .then(data => {
         data.body.items.forEach(item => {
           spotifyApi.getAlbum(item.id)
@@ -293,6 +287,10 @@ export default function Dashboard() {
 
     }, [accessToken, topArtists])
 
+
+    // Generate array for 'Recommended for today' panel
+    // Same pattern as used above for generating 'Album picks' and 'More like {artist}'
+    // Only difference being the seeds are derived from recently played tracks rather than top artists
     useEffect(() => {
       if (recentSeeds.length === 0) return
 
@@ -310,10 +308,10 @@ export default function Dashboard() {
       return function cleanUp() {
         setForToday([])
       }
-
-
     }, [recentSeeds])
 
+
+    // Finish loading and render page once all necessary API queries have been sent and arrays constructed
     useEffect(() => {
       if (recent.length < 5) return
       if (moreLike.length < 5) return
@@ -324,8 +322,7 @@ export default function Dashboard() {
 
       return function cleanUp() {
         setLoading(true)
-      }
-      
+      }     
     }, [recent, moreLike, recommend, customArtistPanel])
     
     
