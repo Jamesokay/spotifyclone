@@ -161,7 +161,7 @@ export default function SideBar() {
           <></>
           }
         </ul>
-         <hr style={{width: '80%', float: 'left', border: 'none', backgroundColor: 'rgb(40, 40, 40)', height: '0.5px', marginLeft: '10%', marginBottom: '0px', marginTop: '0px'}}/>    
+         <hr style={{width: '80%', float: 'left', border: 'none', backgroundColor: 'rgb(40, 40, 40)', height: '0.5px', marginLeft: '10%', marginBottom: '7.5%', marginTop: '5%'}}/>    
          <ul className='sideBarList' style={{overflowY: 'scroll'}}>
          {userPlaylists.map(playlist => 
          <li key={playlist.key} className='playlistLi' onContextMenu={() => setRightClicked(playlist.id)}>
