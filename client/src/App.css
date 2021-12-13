@@ -115,19 +115,19 @@
 }
 
 #gridPanel {
-    height: 40vh;
+    height: 20.5vw;
     width: 100%;
-    padding-top: 20vh;
-    margin-top: -20vh;
+    padding-top: 10.2vw;
+    margin-top: -10.2vw;
     transition: background 0.4s ease-in;
 }
 
 #gridPanelLower {
     position: absolute;
     width: 100%;
-    height: 40vh;
-    padding-top: 20vh;
-    margin-top: -20vh;
+    height: 20.5vw;
+    padding-top: 10.2vw;
+    margin-top: -10.2vw;
     background-image: linear-gradient(to top, 
     rgb(18, 18, 18) 0%,
     rgba(18, 18, 18, 0.94) 21%, 
@@ -143,8 +143,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    height: 25vh;
-    margin-top: 10vh;
+    height: 12.8vw;
+    margin-top: 5.05vw;
     max-width: 83.25vw;
     margin-left: 1vw;
 }
@@ -152,7 +152,7 @@
 
 .gridCard {
     width: 19vw;
-    height: 11vh;
+    height: 5.65vw;
     background-color:rgb(128, 128, 128, 0.2);
     display: flex;
     align-items: center;
@@ -162,7 +162,7 @@
 
 .gridCardLink {
     width: 19vw;
-    height: 11vh;
+    height: 5.65vw;
 }
 
 .gridCard:hover .gridPlayButton {
@@ -338,7 +338,7 @@ body::-webkit-scrollbar {
 
 .cardBody  {    
     width: 15vw; 
-    height: 40vh;
+    height: 20.75vw;
     cursor: default;
     background: rgb(24, 24, 24);
     border-radius: 5px;
@@ -348,7 +348,7 @@ body::-webkit-scrollbar {
 
 .cardLink {
     width: 15vw;
-    height: 40vh;
+    height: 20.75vw;
     margin-bottom: 25px;
 }
 
@@ -356,7 +356,7 @@ body::-webkit-scrollbar {
     height: 63%;
     width: 86%;
     object-fit: cover;
-    margin: 15px;
+    margin: 7.5%;
     box-shadow: 0px 4px 10px 2px #121212;
     border-radius: 1%;
 }
@@ -418,7 +418,7 @@ body::-webkit-scrollbar {
 
 .cardTitle {
     display: inline-block;
-    font-size: 12pt;
+    font-size: 1.11vw;
     font-family: Verdana, sans-serif;
     color: white;  
     overflow: hidden; 
@@ -428,11 +428,10 @@ body::-webkit-scrollbar {
 }
 
 .cardSub {
-    font-size: 10pt;
+    font-size: 0.92vw;
     font-family: Verdana, sans-serif; 
     color: rgb(168, 168, 168);
-    width: 90%;
-    
+    width: 90%;    
     overflow: hidden; 
     text-overflow: ellipsis; 
     white-space: normal; 
@@ -687,11 +686,10 @@ body::-webkit-scrollbar {
     left: 0;
     top: 0;
     width: 15vw;
-    min-width: 215px;
-    height: 87.25%;
+    height: 87.25vh;
     background: black;
     cursor: default;
-    z-index: 3;
+    z-index: 2;
     display: flex;
     flex-direction: column;
 }
@@ -700,13 +698,13 @@ body::-webkit-scrollbar {
     margin-left: 24px;
     margin-top: 24px;
     margin-bottom: 5px;
-    height: 5.4vh;
+    height: 2.775vw;
 }
 
 .sideBarLink {
     text-decoration: none;
     color: rgb(168, 168, 168);
-    height: 5.5vh;
+    height: 2.82vw;
     min-height: 25px;
     display: flex;
     align-items: center;
@@ -784,6 +782,7 @@ li:hover .sideBarImg {
     margin-left: 3.5%;
     font-family: Arial, sans-serif;
     margin-bottom: 3%;
+    min-height: 15.5vw;
 }
 
 .contextMenuSB {
@@ -936,7 +935,7 @@ li:hover .sideBarImg {
 .playBar {
     position: fixed;
     display: flex;
-    height: 12.5%;
+    height: 6.4vw;
     width: 100vw;
     background: rgb(24, 24, 24);
     cursor: default;
@@ -1251,11 +1250,11 @@ li:hover .sideBarImg {
 
 
 .panelTitle {
-    font-size: 18pt;
+    font-size: 1.65vw;
     font-family: Arial, sans-serif;
     color: white;
-    margin-top: 45px;
-    margin-bottom: 25px;
+    margin-top: 3.125vw;
+    margin-bottom: 1.736vw;
     margin-left: 1.75vw;
     cursor: default;
     display: inline-block;
