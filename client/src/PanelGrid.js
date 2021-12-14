@@ -17,23 +17,29 @@ export default function PanelGrid({ content, head }) {
     const { nowPlaying } = useContext(TrackContext)
     const { rightClick, setRightClick } = useContext(RightClickContext)
     const [index, setIndex] = useState(8)
+    const [cardWidth, setCardWidth] = useState('19vw')
     const { width } = useViewport()
     const breakPointMedium = 1420
     const breakPointSmall = 1130
+    
 
     useEffect(() => {
         if (width <= breakPointSmall) {
           setIndex(4)
+          setCardWidth('37.16vw')
         }
         else if (width > breakPointSmall && width <= breakPointMedium) {
             setIndex(6)
+            setCardWidth('26vw')
         }
         else if (width > breakPointMedium) {
             setIndex(8)
+            setCardWidth('19vw')
         }
 
         return function cleanUp() {
             setIndex(8)
+            setCardWidth('19vw')
         }
     }, [width])
 
@@ -121,7 +127,8 @@ export default function PanelGrid({ content, head }) {
         
         <div id='gridContent'>
         {content.slice(0, index).map(cont =>
-          <Link className='gridCardLink' style={{textDecoration: 'none', width: '19vw'}} 
+          <Link className='gridCardLink' 
+                style={{width: cardWidth}}
                 key={cont.key} 
                 to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}
                 onContextMenu={(e) => setRightClick({type: cont.type,  yPos: e.screenY, xPos: e.screenX, id: cont.id})}
