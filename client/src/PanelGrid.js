@@ -1,4 +1,5 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
+import useViewport from './useViewPort'
 import { AuthContext } from './AuthContext'
 import { ThemeContext } from './ThemeContext'
 import { TrackContext } from './TrackContext'
@@ -15,7 +16,26 @@ export default function PanelGrid({ content, head }) {
     const { setCurrentTheme } = useContext(ThemeContext)
     const { nowPlaying } = useContext(TrackContext)
     const { rightClick, setRightClick } = useContext(RightClickContext)
+    const [index, setIndex] = useState(8)
+    const { width } = useViewport()
+    const breakPointMedium = 1420
+    const breakPointSmall = 1130
 
+    useEffect(() => {
+        if (width <= breakPointSmall) {
+          setIndex(4)
+        }
+        else if (width > breakPointSmall && width <= breakPointMedium) {
+            setIndex(6)
+        }
+        else if (width > breakPointMedium) {
+            setIndex(8)
+        }
+
+        return function cleanUp() {
+            setIndex(8)
+        }
+    }, [width])
 
  
     function getColor(itemId, imgUrl) {
@@ -100,7 +120,7 @@ export default function PanelGrid({ content, head }) {
         </div>
         
         <div id='gridContent'>
-        {content.slice(0, 8).map(cont =>
+        {content.slice(0, index).map(cont =>
           <Link className='gridCardLink' style={{textDecoration: 'none', width: '19vw'}} 
                 key={cont.key} 
                 to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}

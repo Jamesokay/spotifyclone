@@ -143,16 +143,18 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    height: 12.8vw;
+    height: 13vw;
+    min-height: 185px;
     margin-top: 5.05vw;
-    max-width: 83.25vw;
-    margin-left: 1vw;
+    width: 82vw;
+    min-width: 550px;
+    margin-left: 1.75vw;
 }
 
 
 .gridCard {
-    width: 19vw;
-    height: 5.65vw;
+    min-height: 80px;
+    min-width: 250px;
     background-color:rgb(128, 128, 128, 0.2);
     display: flex;
     align-items: center;
@@ -161,8 +163,7 @@
 }
 
 .gridCardLink {
-    width: 19vw;
-    height: 5.65vw;
+    min-height: 80px;
 }
 
 .gridCard:hover .gridPlayButton {
@@ -203,6 +204,8 @@
     background-color: white;
     width: 30%;
     height: 100%;
+    min-height: 80px;
+    min-width: 80px;
     float: left;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
