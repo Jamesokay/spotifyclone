@@ -26,7 +26,7 @@ export default function PanelGrid({ content, head }) {
     useEffect(() => {
         if (width <= breakPointSmall) {
           setIndex(4)
-          setCardWidth('37.16vw')
+          setCardWidth('36.5vw')
         }
         else if (width > breakPointSmall && width <= breakPointMedium) {
             setIndex(6)
