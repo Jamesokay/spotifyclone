@@ -338,24 +338,30 @@ body::-webkit-scrollbar {
 .panel {
     display: flex;
     justify-content: flex-start;
-    margin-left: 1.75vw;
-    flex-wrap: wrap;
+    margin-left: max(1.75vw, 20px);
+    flex-wrap: nowrap;
+    width: 100%;
+    min-width: 550px;
 }
 
 .cardBody  {    
-    width: 15vw; 
-    height: 20.75vw;
+    width: 100%; 
+    height: 100%;
     cursor: default;
     background: rgb(24, 24, 24);
     border-radius: 2.5%;
-    margin-bottom: 1.736vw;
+    margin-bottom: max(1.736vw, 24px);
     transition: background 0.2s ease-in-out;
 }
 
 .cardLink {
-    width: 15vw;
-    height: 20.75vw;
-    margin-bottom: 1.736vw;
+    min-width: 180px;
+    min-height: 260px;
+    max-width: 280px;
+    max-height: 360px;
+    margin-bottom: max(1.736vw, 24px);
+    text-decoration: none;
+    margin-right: max(1.75%, 20px);
 }
 
 .cardImage {
@@ -426,7 +432,7 @@ body::-webkit-scrollbar {
 
 .cardTitle {
     display: inline-block;
-    font-size: 1.11vw;
+    font-size: 100%;
     font-family: Verdana, sans-serif;
     color: white;  
     overflow: hidden; 
@@ -436,10 +442,10 @@ body::-webkit-scrollbar {
 }
 
 .cardSub {
-    font-size: 0.92vw;
+    font-size: 85%;
     font-family: Verdana, sans-serif; 
     color: rgb(168, 168, 168);
-    width: 90%;    
+    width: 100%;    
     overflow: hidden; 
     text-overflow: ellipsis; 
     white-space: normal; 
@@ -456,11 +462,12 @@ body::-webkit-scrollbar {
 
 .cardText {
     height: 20%;
+    width: 90%;
     margin-left: 7.5%;
 }
 
 .cardSubLink {
-    font-size: 0.92vw;
+    font-size: 100%;
     font-family: Verdana, sans-serif; 
     color: rgb(168, 168, 168);
 }
@@ -1263,23 +1270,23 @@ li:hover .sideBarImg {
 
 
 .panelTitle {
-    font-size: 1.65vw;
+    font-size: 150%;
     font-family: Arial, sans-serif;
     color: white;
-    margin-top: 3.125vw;
-    margin-bottom: 1.736vw;
-    margin-left: 1.75vw;
+    margin-top: max(3.125vw, 44px);
+    margin-bottom: max(1.736vw, 24px);
+    margin-left: max(1.75vw, 24px);
     cursor: default;
     display: inline-block;
 }
 
 .panelTitleSub {
-    font-size: 0.92vw;
+    font-size: 85%;
     font-family: Arial, sans-serif;
     color: rgb(168, 168, 168);
-    margin-top: -1.388vw;
-    margin-bottom: 1.25vw;
-    margin-left: 1.75vw;
+    margin-top: min(-1.388vw, -20px);
+    margin-bottom: max(1.25vw, 18px);
+    margin-left: max(1.75vw, 24px);
     cursor: default;
     display: block;
 }

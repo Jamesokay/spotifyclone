@@ -6,21 +6,54 @@ import pauseTrack from './pauseTrack'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 import { RightClickContext } from './RightClickContext'
+import { useState, useEffect } from 'react'
+import useViewport from './useViewPort'
 
 export default function Panel({ content }) {
   
-const accessToken = useContext(AuthContext)
-const { nowPlaying } = useContext(TrackContext)
-const history = useHistory()
-const { rightClick, setRightClick } = useContext(RightClickContext)
+    const accessToken = useContext(AuthContext)
+    const { nowPlaying } = useContext(TrackContext)
+    const history = useHistory()
+    const { rightClick, setRightClick } = useContext(RightClickContext)
+    const [index, setIndex] = useState(8)
+    const [cardWidth, setCardWidth] = useState('17.8%')
+    const { width } = useViewport()
+    const breakPointLarge = 1275
+    const breakPointMedium = 1075
+    const breakPointSmall = 835
+    
+
+    useEffect(() => {
+        if (width <= breakPointSmall) {
+          setIndex(2)
+          setCardWidth('44.5%')
+        }
+        else if (width > breakPointSmall && width <= breakPointMedium) {
+          setIndex(3)
+          setCardWidth('29.6%')
+        }
+        else if (width > breakPointMedium && width < breakPointLarge) {
+          setIndex(4)
+          setCardWidth('22.25%')
+        }
+        else if (width >= breakPointLarge) {
+          setIndex(5)
+          setCardWidth('17.8%')
+        }
+
+        return function cleanUp() {
+            setIndex(8)
+            setCardWidth('17.8%')
+        }
+    }, [width])
 
 
 
     
     return (
         <div className='panel'> 
-        {content.map(cont =>
-          <Link className='cardLink' style={{textDecoration: 'none', marginRight: '1.5vw'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}
+        {content.slice(0, index).map(cont =>
+          <Link className='cardLink' style={{width: cardWidth}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}
                 onContextMenu={(e) => setRightClick({type: cont.type, yPos: e.screenY, xPos: e.screenX, id: cont.id})}>
           <div className='cardBody' style={(rightClick.id === cont.id)? {background: 'rgb(40, 40, 40)'} : {}}>
             {cont.type === 'artist'?
