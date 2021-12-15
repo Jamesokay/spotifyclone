@@ -17,29 +17,29 @@ export default function PanelGrid({ content, head }) {
     const { nowPlaying } = useContext(TrackContext)
     const { rightClick, setRightClick } = useContext(RightClickContext)
     const [index, setIndex] = useState(8)
-    const [cardWidth, setCardWidth] = useState('19vw')
+    const [cardWidth, setCardWidth] = useState('22.25%')
     const { width } = useViewport()
-    const breakPointMedium = 1420
-    const breakPointSmall = 1130
+    const breakPointMedium = 1430
+    const breakPointSmall = 1135
     
 
     useEffect(() => {
         if (width <= breakPointSmall) {
           setIndex(4)
-          setCardWidth('36.5vw')
+          setCardWidth('44.5%')
         }
         else if (width > breakPointSmall && width <= breakPointMedium) {
             setIndex(6)
-            setCardWidth('26vw')
+            setCardWidth('29.6%')
         }
         else if (width > breakPointMedium) {
             setIndex(8)
-            setCardWidth('19vw')
+            setCardWidth('22.25%')
         }
 
         return function cleanUp() {
             setIndex(8)
-            setCardWidth('19vw')
+            setCardWidth('22.25%')
         }
     }, [width])
 
