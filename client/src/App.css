@@ -696,18 +696,36 @@ body::-webkit-scrollbar {
     top: 0;
 }
 
-.sideBar {
+#sideBarContainer {
     position: fixed;
     left: 0;
-    top: 0;
-    width: 15vw;
+    top: 0;   
     min-width: 215px;
-    height: 100vh;
+    height: 100vh; 
+    display: inline-flex;
+}
+
+
+.sideBar {
     background: black;
-    cursor: default;
+    cursor: pointer;
     z-index: 2;
     display: flex;
     flex-direction: column;
+    height: 100%;
+    width: 98%;
+}
+
+#sideBarDrag {
+    width: 2%;
+    height: 100%;
+    background: black;
+    z-index: 2;
+    cursor: col-resize;
+}
+
+#sideBarDrag:hover {
+    background: linear-gradient(to right, black 80%, rgb(168, 168, 168) 20%);
 }
 
 .logo {
@@ -863,7 +881,7 @@ li:hover .sideBarImg {
 
 
 #dash {
-    margin-left: max(15vw, 215px);
+    margin-left: max(14.9vw, 215px);
     min-width: 700px;
     padding-top: 65px;
     padding-bottom: 90px;
