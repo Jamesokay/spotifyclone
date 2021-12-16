@@ -374,8 +374,7 @@ body::-webkit-scrollbar {
 
 .cardImageBox {
     position: relative;
-    width: 86%;
-    height: 63%;
+    width: 85%;
     padding: 7.5%;
 }
 
