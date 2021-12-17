@@ -17,6 +17,7 @@ import { PageContext } from './PageContext'
 import { PlaylistContext } from './PlaylistContext'
 import { TrackContext } from './TrackContext'
 import { SidebarContext } from './SidebarContext'
+import { SideBarWidthContext } from './SideBarWidthContext'
 import { RightClickContext } from './RightClickContext'
 import { NotificationContext } from './NotificationContext'
 import axios from 'axios'
@@ -63,6 +64,9 @@ function App() {
   const [notification, setNotification] = useState({text: '',
                                                     action: ''})
   const message = {notification, setNotification}
+
+  const [currentWidth, setCurrentWidth] = useState(window.innerWidth * 0.15)
+  const sideWidth = {currentWidth, setCurrentWidth}
   
   const location = useLocation()
 
@@ -142,6 +146,7 @@ function App() {
       <SidebarContext.Provider value={sidebarPlaylists}>
       <RightClickContext.Provider value={rightClickedEl}>
       <NotificationContext.Provider value={message}>
+      <SideBarWidthContext.Provider value={sideWidth}>
       
         <Layout>
         <Route path='/' exact component={(accessToken)? Dashboard : Login} />
@@ -156,6 +161,7 @@ function App() {
         <Route path="/collection/tracks" component={CollectionTrack} />
         </Layout>
 
+      </SideBarWidthContext.Provider>
       </NotificationContext.Provider>
       </RightClickContext.Provider>
       </SidebarContext.Provider>

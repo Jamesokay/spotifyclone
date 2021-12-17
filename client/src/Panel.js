@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import { AuthContext } from './AuthContext'
 import { TrackContext } from './TrackContext'
 import playTrack from './playTrack'
@@ -6,8 +5,9 @@ import pauseTrack from './pauseTrack'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 import { RightClickContext } from './RightClickContext'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import useViewport from './useViewPort'
+import { SideBarWidthContext } from './SideBarWidthContext'
 
 export default function Panel({ content }) {
   
@@ -18,25 +18,26 @@ export default function Panel({ content }) {
     const [index, setIndex] = useState(8)
     const [cardWidth, setCardWidth] = useState('17.8%')
     const { width } = useViewport()
-    const breakPointLarge = 1275
-    const breakPointMedium = 1075
-    const breakPointSmall = 835
+    const { currentWidth } = useContext(SideBarWidthContext)
+    const breakPointLarge = 1060
+    const breakPointMedium = 860
+    const breakPointSmall = 620
     
 
     useEffect(() => {
-        if (width <= breakPointSmall) {
+        if ((width - currentWidth) <= breakPointSmall) {
           setIndex(2)
           setCardWidth('44.5%')
         }
-        else if (width > breakPointSmall && width <= breakPointMedium) {
+        else if ((width - currentWidth) > breakPointSmall && (width - currentWidth) <= breakPointMedium) {
           setIndex(3)
           setCardWidth('29.6%')
         }
-        else if (width > breakPointMedium && width < breakPointLarge) {
+        else if ((width - currentWidth) > breakPointMedium && (width - currentWidth) < breakPointLarge) {
           setIndex(4)
           setCardWidth('22.25%')
         }
-        else if (width >= breakPointLarge) {
+        else if ((width - currentWidth) >= breakPointLarge) {
           setIndex(5)
           setCardWidth('17.8%')
         }
@@ -45,7 +46,7 @@ export default function Panel({ content }) {
             setIndex(8)
             setCardWidth('17.8%')
         }
-    }, [width])
+    }, [width, currentWidth])
 
 
 

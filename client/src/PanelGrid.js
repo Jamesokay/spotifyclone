@@ -4,6 +4,7 @@ import { AuthContext } from './AuthContext'
 import { ThemeContext } from './ThemeContext'
 import { TrackContext } from './TrackContext'
 import { RightClickContext } from './RightClickContext'
+import { SideBarWidthContext } from './SideBarWidthContext'
 import playTrack from './playTrack'
 import pauseTrack from './pauseTrack'
 import { Link } from 'react-router-dom'
@@ -19,20 +20,21 @@ export default function PanelGrid({ content, head }) {
     const [index, setIndex] = useState(8)
     const [cardWidth, setCardWidth] = useState('22.25%')
     const { width } = useViewport()
-    const breakPointMedium = 1430
-    const breakPointSmall = 1135
+    const { currentWidth } = useContext(SideBarWidthContext)
+    const breakPointMedium = 1215
+    const breakPointSmall = 920
     
 
     useEffect(() => {
-        if (width <= breakPointSmall) {
+        if ((width - currentWidth) <= breakPointSmall) {
           setIndex(4)
           setCardWidth('44.5%')
         }
-        else if (width > breakPointSmall && width <= breakPointMedium) {
+        else if ((width - currentWidth) > breakPointSmall && (width - currentWidth) <= breakPointMedium) {
             setIndex(6)
             setCardWidth('29.6%')
         }
-        else if (width > breakPointMedium) {
+        else if ((width - currentWidth) > breakPointMedium) {
             setIndex(8)
             setCardWidth('22.25%')
         }
@@ -41,7 +43,7 @@ export default function PanelGrid({ content, head }) {
             setIndex(8)
             setCardWidth('22.25%')
         }
-    }, [width])
+    }, [width, currentWidth])
 
  
     function getColor(itemId, imgUrl) {

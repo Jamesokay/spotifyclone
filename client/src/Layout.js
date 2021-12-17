@@ -3,6 +3,7 @@ import NavBar from './NavBar'
 import WebPlayer from './WebPlayer'
 import { AuthContext } from './AuthContext'
 import { NotificationContext } from './NotificationContext'
+import { SideBarWidthContext } from './SideBarWidthContext'
 import { useContext, useState, useEffect } from 'react'
 
 export default function Layout({ children }) {
@@ -10,7 +11,8 @@ export default function Layout({ children }) {
     const { notification } = useContext(NotificationContext)
     const [show, setShow] = useState(false) 
     const [resizing, setResizing] = useState(false)
-    const [width, setWidth] = useState('15vw')
+    const { currentWidth, setCurrentWidth } = useContext(SideBarWidthContext)
+    
 
 
     useEffect(() => {
@@ -25,12 +27,11 @@ export default function Layout({ children }) {
 
 
     return (accessToken)?
-    
         <div style={(resizing)? {cursor: 'col-resize'}:{}}
              onMouseMove={(e) => {
              e.preventDefault()
-             if (resizing && e.pageX >= 215) {
-               setWidth(e.pageX)
+             if (resizing && e.pageX >= 215 && e.pageX <= 390) {
+               setCurrentWidth(e.pageX)
              }
              else return
              }}
@@ -42,19 +43,19 @@ export default function Layout({ children }) {
                 else return
             }}>
 
-        <div id='navBarContainer' style={{marginLeft: width, width: window.innerWidth - width}}>
+        <div id='navBarContainer' style={{marginLeft: currentWidth, width: window.innerWidth - currentWidth}}>
             <NavBar />
         </div>
 
 
-            <div id='sideBarContainer' style={{width: width}}>
+            <div id='sideBarContainer' style={{width: currentWidth}}>
               <SideBar />
               <div id='sideBarDrag' 
                    style={(resizing)? {background: 'linear-gradient(to right, black 80%, rgb(168, 168, 168) 20%)'}:{}}
                    onMouseDown={() => setResizing(true)}/>
             </div>
 
-            <div style={{marginLeft: width}}>
+            <div style={{marginLeft: currentWidth}}>
             {children}
             </div>
             <div className='likedNotification' style={(show)? {opacity: '1'} : {opacity: '0'}}>{notification.text}</div>
