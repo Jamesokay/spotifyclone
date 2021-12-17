@@ -43,6 +43,9 @@ export default function SideBar() {
          return
       }
     }, [showMenu]);
+
+        
+
   
     useEffect(() => {
       document.addEventListener("click", handleClick);
@@ -54,6 +57,8 @@ export default function SideBar() {
         window.removeEventListener('scroll', getScrollDistance)
       };
     });
+
+
 
     function getScrollDistance() {
       setScrolled(window.pageYOffset)
@@ -90,7 +95,7 @@ export default function SideBar() {
     }
 
     return (
-      <div id='sideBarContainer'>
+      
         <div className='sideBar' onContextMenu={(e) => e.preventDefault()}>
         <div id='logoContainer'>
         <svg viewBox="0 0 1134 340" className='logo'>
@@ -173,7 +178,6 @@ export default function SideBar() {
          )}
         </ul>    
         </div>
-        <div id='sideBarDrag'></div>
-        </div>
+
     )
 }

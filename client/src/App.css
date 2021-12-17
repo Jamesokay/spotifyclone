@@ -488,17 +488,18 @@ body::-webkit-scrollbar {
     height: 100vh;
 }
 
-#navBar {
+#navBarContainer {
     position: fixed;
     top: 0;
+    z-index: 2;
+}
+
+#navBar {
     display: flex;
     height: 8%;
     min-height: 50px;
     min-width: 600px;
-    left: max(15vw, 215px);
-    width: 85vw;
     cursor: default;
-    z-index: 2;
     transition: background-color 0.1s ease;
 }
 
@@ -881,7 +882,6 @@ li:hover .sideBarImg {
 
 
 #dash {
-    margin-left: max(14.9vw, 215px);
     min-width: 700px;
     padding-top: 65px;
     padding-bottom: 90px;
