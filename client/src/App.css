@@ -492,11 +492,12 @@ body::-webkit-scrollbar {
     position: fixed;
     top: 0;
     z-index: 2;
+    height: 8%;
 }
 
 #navBar {
     display: flex;
-    height: 8%;
+    height: 100%;
     min-height: 50px;
     min-width: 600px;
     cursor: default;
@@ -665,14 +666,12 @@ body::-webkit-scrollbar {
 
 
 .pageContainer {
-    margin-left: 15vw;
     margin-top: -25vh;
     background-color:rgba(0, 0, 0, 0.1);
     padding-bottom: 100px;
 }
 
 .pageContainerArtist {
-    margin-left: 15vw;
     margin-top: -25vh;
     background-color:rgb(18, 18, 18);
     padding-bottom: 100px;
@@ -689,13 +688,11 @@ body::-webkit-scrollbar {
     padding-bottom: 90px;
 }
 
-#artistPage {
-    margin-left: 15vw;
-    width: 85vw; 
+/* #artistPage {
     padding-bottom: 90px;
     background-image: linear-gradient(rgb(117, 184, 238) 5%, #121212 20% 100%);
     top: 0;
-}
+} */
 
 #sideBarContainer {
     position: fixed;
@@ -1554,7 +1551,7 @@ li:hover .sideBarImg {
 
 
 .tableReg {
-    width: 85vw;
+    width: 100%;
     font-family: Arial, sans-serif;
     cursor: default;
     font-size: 11.5pt;    
@@ -1897,11 +1894,9 @@ th {
     display: flex;
     flex-wrap: wrap;
     cursor: default;
-    margin-left: 15vw;
-    width: 95vw;
-    min-width: 1000px; 
+    min-width: 550px; 
     padding-top: 85px;
-    height: 436px;
+    height: max(30vw, 436px);
 }
 
 #headerPanelUpper {
@@ -1909,8 +1904,6 @@ th {
     position: relative;
     flex-wrap: wrap;
     cursor: default;
-    margin-left: 15vw;
-    width: 95vw;
     min-width: 1000px; 
     padding-top: 85px;
     height: 440px;
@@ -1929,15 +1922,15 @@ th {
 
 
 .headerBody {
-    margin-left: 2.25vw;
+    margin-left: max(2.25vw, 30px);
     height: 232px;
     position: relative;
 }
 
 #headerControls {
-    height: 15vh;
+    height: 7.7vw;
     min-height: 110px;
-    margin-left: 2.5vw;
+    margin-left: max(2.5vw, 35px);
     display: flex;
 }
 
