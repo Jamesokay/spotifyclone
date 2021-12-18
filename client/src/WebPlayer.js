@@ -42,6 +42,7 @@ export default function WebPlayer() {
   
   var total = currentTrack.duration_ms
   var percent = ((counter/total) * 100).toFixed(2)
+  var playerDiv = document.getElementById('player')
   var bar = document.getElementById('playProgressBar')
 
   var volBar = document.getElementById('volumeBar')
@@ -328,14 +329,14 @@ export default function WebPlayer() {
     <div className='playBar'
         onMouseMove={(e)=> {
         if (dragging) {
-          if (e.screenX < bar.offsetLeft) {
+          if (e.screenX < (bar.offsetLeft + playerDiv.offsetLeft)) {
             setDragPos(0)
           }
-          else if (e.screenX > (bar.offsetLeft + bar.offsetWidth)) {
+          else if (e.screenX > (bar.offsetLeft + bar.offsetWidth + playerDiv.offsetLeft)) {
             setDragPos(bar.offsetWidth)
           }
           else {
-            setDragPos(e.screenX - bar.offsetLeft)
+            setDragPos(e.screenX - (bar.offsetLeft + playerDiv.offsetLeft))
           }
         }
         if (volDrag) {
@@ -352,14 +353,14 @@ export default function WebPlayer() {
         onMouseUp={(e) => {
         if (dragging) {
           setDragging(false)
-          if (e.screenX < bar.offsetLeft) {
+          if (e.screenX < (bar.offsetLeft + playerDiv.offsetLeft)) {
             setNewPlayback(0)
           }
-          else if (e.screenX > (bar.offsetLeft + bar.offsetWidth)) {
+          else if (e.screenX > (bar.offsetLeft + bar.offsetWidth + playerDiv.offsetLeft)) {
             setNewPlayback(100)
           }
           else {
-            setNewPlayback(Math.floor(((e.screenX - bar.offsetLeft) / bar.offsetWidth) * 100))
+            setNewPlayback(Math.floor(((e.screenX - (bar.offsetLeft + playerDiv.offsetLeft)) / bar.offsetWidth) * 100))
           }
         }
         if (volDrag) {
@@ -496,7 +497,7 @@ export default function WebPlayer() {
       </div>
       </div>
 
-
+    <div id='player'>
       <div className='playedTime'>
         {(dragging)? 
           toMinsSecs(Math.floor((currentTrack.duration_ms / 100) * (dragPos / bar.offsetWidth) * 100))
@@ -507,7 +508,8 @@ export default function WebPlayer() {
            onMouseOver={()=> setBarHover(true)} 
            onMouseLeave={()=> setBarHover(false)} 
            onMouseDown={(e)=> {
-             setDragPos(e.screenX - bar.offsetLeft)
+             setDragPos(e.screenX - (bar.offsetLeft + playerDiv.offsetLeft))
+             console.log(playerDiv.offsetLeft)
              setDragging(true)}}>
             <div className='playProgress' style={(dragging)? {width: dragPos, backgroundColor: '#1ed760'} : {width: percent + '%'}}>
               <div className='drag' 
@@ -517,6 +519,7 @@ export default function WebPlayer() {
             </div>
       </div>
       <div className='playingTimeTotal'>{toMinsSecs(total)}</div>
+    </div>
 
       <svg className='volumeIcon'
            xmlns="http://www.w3.org/2000/svg" 
