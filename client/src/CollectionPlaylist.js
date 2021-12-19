@@ -19,6 +19,7 @@ export default function CollectionPlaylist() {
   const [playlists, setPlaylists] = useState([])
   const { setCurrentTheme } = useContext(ThemeContext)
 
+
   useEffect(() => {
     if (!accessToken) return
     spotifyApi.setAccessToken(accessToken)
@@ -27,6 +28,8 @@ export default function CollectionPlaylist() {
   useEffect(() => {
     setCurrentTheme({red: 0, green: 0, blue: 0})
   }, [setCurrentTheme])
+
+  
 
   useEffect(() => {
     if (!accessToken) return
@@ -78,7 +81,7 @@ export default function CollectionPlaylist() {
     <div id='collectionPagePlaylist'>
      <CollectionNav />
      <span className='collectionTitle'>Playlists</span> 
-     <div style={{marginLeft: '1.75vw', display: 'flex', flexWrap: 'wrap', marginBottom: '90px'}}>
+     <div className='collectionPanel'>
      <Link to={{pathname:'/collection/tracks'}}>
         <div id='likedSongsCard'>
            <span id='lsCardPreview'>
@@ -97,7 +100,7 @@ export default function CollectionPlaylist() {
       </div>
       </Link>
       {playlists.map(cont =>
-        <Link style={{textDecoration: 'none', marginRight: '15px'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
+        <Link className='cardLink' style={{width: '15vw'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
         <div className='cardBody'>
           <div className='cardImageBox'>
             <img className='cardImage' src={cont.imgUrl} alt='' />

@@ -287,11 +287,8 @@ body::-webkit-scrollbar {
 
 #collectionPagePlaylist {
     margin-top: 0;
-    margin-left: 15vw;
-    width: 85vw;
+    width: 100%;
     padding-top: 18vh;
-    display: flex;
-    flex-wrap: wrap;
 }
 
 .collectionTitle {
@@ -341,6 +338,13 @@ body::-webkit-scrollbar {
     margin-left: max(1.75vw, 20px);
     flex-wrap: nowrap;
     width: 100%;
+}
+
+.collectionPanel {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: max(1.75vw, 20px);
+    flex-wrap: wrap;
 }
 
 .cardBody  {    
