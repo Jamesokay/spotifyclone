@@ -58,7 +58,9 @@ export default function Panel({ content }) {
                 onContextMenu={(e) => setRightClick({type: cont.type, yPos: e.screenY, xPos: e.screenX, id: cont.id})}>
           <div className='cardBody' style={(rightClick.id === cont.id)? {background: 'rgb(40, 40, 40)'} : {}}>
             {cont.type === 'artist'?
+            <div className='cardImageBox'>
             <img className='cardArtist' src={cont.imgUrl} alt='' />
+            </div>
             :
             <div className='cardImageBox'>
               <img className='cardImage' src={cont.imgUrl} alt='' />

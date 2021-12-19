@@ -18,7 +18,7 @@ export default function PanelGrid({ content, head }) {
     const { nowPlaying } = useContext(TrackContext)
     const { rightClick, setRightClick } = useContext(RightClickContext)
     const [index, setIndex] = useState(8)
-    const [cardWidth, setCardWidth] = useState('22.25%')
+    const [cardWidth, setCardWidth] = useState(25)
     const { width } = useViewport()
     const { currentWidth } = useContext(SideBarWidthContext)
     const breakPointMedium = 1215
@@ -28,20 +28,20 @@ export default function PanelGrid({ content, head }) {
     useEffect(() => {
         if ((width - currentWidth) <= breakPointSmall) {
           setIndex(4)
-          setCardWidth('44.5%')
+          setCardWidth(50)
         }
         else if ((width - currentWidth) > breakPointSmall && (width - currentWidth) <= breakPointMedium) {
             setIndex(6)
-            setCardWidth('29.6%')
+            setCardWidth(33.3)
         }
         else if ((width - currentWidth) > breakPointMedium) {
             setIndex(8)
-            setCardWidth('22.25%')
+            setCardWidth(25)
         }
 
         return function cleanUp() {
             setIndex(8)
-            setCardWidth('22.25%')
+            setCardWidth(25)
         }
     }, [width, currentWidth])
 
@@ -127,10 +127,10 @@ export default function PanelGrid({ content, head }) {
         {head}
         </div>
         
-        <div id='gridContent'>
+        <div id='gridContent' style={{width: (width - currentWidth) - 30}}>
         {content.slice(0, index).map(cont =>
           <Link className='gridCardLink' 
-                style={{width: cardWidth}}
+                style={{flex: `0 1 calc(${cardWidth}% - 25px)`}}
                 key={cont.key} 
                 to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}
                 onContextMenu={(e) => setRightClick({type: cont.type,  yPos: e.screenY, xPos: e.screenX, id: cont.id})}
