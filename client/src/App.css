@@ -669,6 +669,7 @@ body::-webkit-scrollbar {
 .pageContainer {
     margin-top: -25vh;
     background-color:rgba(0, 0, 0, 0.1);
+    min-width: 550px;
     padding-bottom: 100px;
 }
 
@@ -800,7 +801,6 @@ li:hover .sideBarImg {
     font-size: 10pt;
     margin-left: 15px;
     display: block;
-    width: 160px;
     height: 32px;
     overflow: hidden; 
     text-overflow: ellipsis; 
@@ -1571,8 +1571,7 @@ li:hover .sideBarImg {
 
 .artistTable {
     width: 55%;
-    margin-left: 3%;
-    
+    margin-left: 3%;   
     font-family: Arial, Helvetica, sans-serif;
     cursor: default;
     font-size: 11.5pt; 
@@ -1596,7 +1595,7 @@ li:hover .sideBarImg {
 }
 
 .empty {
-    width: 2.5vw;
+    width: max(2.5vw, 36px);
     border-bottom: none;
 }
 
@@ -1647,8 +1646,8 @@ th {
 
 
 .tdRegTrack {
-    padding-top: 0.5%;
-    padding-bottom: 0.5%;
+    padding-top: 6px;
+    padding-bottom: 6px;
 }
 
 .tdTime {
@@ -1706,6 +1705,7 @@ th {
 
 .trackTableRow {
     color: rgb(168, 168, 168);
+    height: max(3.47vw, 50px);
 }
 
 .trackTablePlayIcon {

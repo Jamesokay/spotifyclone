@@ -207,7 +207,7 @@ export default function AlbumPage({ location }) {
           :
           <TracksTable content={tracksFinal} page='album' />
         }   
-          <p><span className='panelTitle'>{'More by ' + artistName}</span></p>
+          <span className='panelTitle'>{'More by ' + artistName}</span>
           <Panel content={moreByArtist.slice(0, 5)} /> 
 
         </div>
