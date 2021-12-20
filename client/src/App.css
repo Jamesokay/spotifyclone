@@ -980,7 +980,7 @@ li:hover .sideBarImg {
     height: 6.4vw;
     width: 100vw;
     min-width: 765px;
-    min-height: 90px;
+    min-height: 92px;
     background: rgb(24, 24, 24);
     cursor: default;
     bottom: 0;
@@ -1595,7 +1595,8 @@ li:hover .sideBarImg {
 }
 
 .empty {
-    width: max(2.5vw, 36px);
+    width: 2.5vw;
+    min-width: 36px;
     border-bottom: none;
 }
 
@@ -1619,7 +1620,8 @@ li:hover .sideBarImg {
 
 .tableTrackName {
     color: white;
-    max-width: 500px;
+    width: 34.72vw;
+    min-width: 300px;
     overflow: hidden; 
     text-overflow: ellipsis; 
     white-space: nowrap;
@@ -1705,7 +1707,7 @@ th {
 
 .trackTableRow {
     color: rgb(168, 168, 168);
-    height: max(3.47vw, 50px);
+    height: max(3.47vw, 55px);
 }
 
 .trackTablePlayIcon {
@@ -1809,7 +1811,8 @@ th {
 
 .rowFirst {
     position: relative;
-    width: 50px;
+    width: 3.47vw;
+    min-width: 50px;
     font-size: 12pt;
     text-align: center;
     border-top-left-radius: 5px;
