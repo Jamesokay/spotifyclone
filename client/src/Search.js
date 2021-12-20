@@ -206,7 +206,7 @@ export default function Search() {
 
 
         return (
-        <div id='searchPage'>
+        <div id='page'>
         <Menu/>
             <form>
               <input
@@ -226,10 +226,10 @@ export default function Search() {
                      onLoad={() => setLoading(false)}>        
             <div id='searchResultsHead'>
 
-          <Link id='topResultLink' style={{textDecoration: 'none', marginRight: '1.5vw'}} to={{pathname: `/${topResult.type}/${topResult.id}`, state: topResult.id }}
+          <Link id='topResultLink' to={{pathname: `/${topResult.type}/${topResult.id}`, state: topResult.id }}
                 onContextMenu={(e) => setRightClick({type: topResult.type, yPos: e.screenY, xPos: e.screenX, id: topResult.id})}> 
             <div id='topResultContainer'>
-            <p><span className='panelTitle'>Top result</span></p>
+            <span className='resultTitle'>Top result</span>
             <div id='topResult'>
                 <img id={(topResult.type === 'ARTIST')? 'topResultImageArtist' : 'topResultImage'} 
                      src={topResult.imgUrl} 
@@ -278,24 +278,24 @@ export default function Search() {
         </Link>
             
             <div id='trackResultsContainer'>
-            <p><span className='panelTitle'>Songs</span></p>
+            <span className='resultTitle'>Songs</span>
               <TracksTable content={trackResults.slice(0, 4)} page='search' />
             </div>
 
             </div>
             {(featuringArtist.length > 0)?
             <div>
-              <p><span className='panelTitle'>Featuring {topResult.name}</span></p>
+              <span className='panelTitle'>Featuring {topResult.name}</span>
               <Panel content={featuringArtist} panelVariant='true'/> 
             </div>
             :
             <div></div>
             }
-            <p><span className='panelTitle'>Artists</span></p>
+            <span className='panelTitle'>Artists</span>
             <Panel content={artistResults.slice(0, 5)} />
-            <p><span className='panelTitle'>Albums</span></p>
+            <span className='panelTitle'>Albums</span>
             <Panel content={albumResults.slice(0, 5)} />
-            <p><span className='panelTitle'>Playlists</span></p>
+            <span className='panelTitle'>Playlists</span>
             <Panel content={playlistResults.slice(0, 5)} />
             </div>
             
