@@ -12,6 +12,8 @@ import pauseTrack from './pauseTrack'
 import Menu from './Menu'
 import { Link } from 'react-router-dom'
 import { RightClickContext } from './RightClickContext'
+import { SideBarWidthContext } from './SideBarWidthContext'
+import useViewport from './useViewPort'
 
 
 export default function Search() {
@@ -37,6 +39,29 @@ export default function Search() {
     const [featuringArtist, setFeaturingArtist] = useState([])
 
     const [loading, setLoading] = useState(true)
+
+    const [topResultWidth, setTopResultWidth] = useState(37.5)
+    const { width } = useViewport()
+    const { currentWidth } = useContext(SideBarWidthContext)
+    const breakPointLarge = 1055
+    const breakPointSmall = 850
+    
+
+    useEffect(() => {
+        if ((width - currentWidth) <= breakPointSmall) {
+          setTopResultWidth(61)
+        }
+        else if ((width - currentWidth) > breakPointSmall && (width - currentWidth) < breakPointLarge) {
+          setTopResultWidth(46.4)
+        }
+        else if ((width - currentWidth) >= breakPointLarge) {
+          setTopResultWidth(37.5)
+        }
+
+        return function cleanUp() {
+            setTopResultWidth(37.5)
+        }
+    }, [width, currentWidth])
 
     useEffect(() => {
         setCurrentTheme('0,0,0')
@@ -226,7 +251,7 @@ export default function Search() {
                      onLoad={() => setLoading(false)}>        
             <div id='searchResultsHead'>
 
-          <Link id='topResultLink' to={{pathname: `/${topResult.type}/${topResult.id}`, state: topResult.id }}
+          <Link id='topResultLink' style={{width: topResultWidth + '%'}} to={{pathname: `/${topResult.type}/${topResult.id}`, state: topResult.id }}
                 onContextMenu={(e) => setRightClick({type: topResult.type, yPos: e.screenY, xPos: e.screenX, id: topResult.id})}> 
             <div id='topResultContainer'>
             <span className='resultTitle'>Top result</span>
