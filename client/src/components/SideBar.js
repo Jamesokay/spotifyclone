@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import likedSongs from '../likedSongs.png'
+import likedSongs from '../icons/likedSongs.png'
 import { AuthContext, UserContext, SidebarContext, SideBarWidthContext } from '../contexts'
 import { useContext, useState, useEffect, useCallback } from 'react'
 import axios from 'axios'

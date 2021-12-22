@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom'
 import { useState, useContext, useEffect } from 'react'
 import { AuthContext, ThemeContext, UserContext, PageContext, TrackContext } from '../contexts'
-import defaultUser from '../defaultUser.png'
+import defaultUser from '../icons/defaultUser.png'
 import { useLocation } from 'react-router-dom'
 import playTrack from '../utils/playTrack'
 import pauseTrack from '../utils/pauseTrack'
