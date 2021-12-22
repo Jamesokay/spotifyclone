@@ -1,13 +1,13 @@
 import { useEffect, useState, useContext } from 'react'
-import { AuthContext } from './AuthContext'
-import { SidebarContext } from './SidebarContext'
-import { TrackContext } from './TrackContext'
-import { NotificationContext } from './NotificationContext'
+import { AuthContext } from '../AuthContext'
+import { SidebarContext } from '../SidebarContext'
+import { TrackContext } from '../TrackContext'
+import { NotificationContext } from '../NotificationContext'
 import axios from 'axios'
-import unlike from './unlike'
-import like from './like'
-import playTrack from './playTrack'
-import pauseTrack from './pauseTrack'
+import unlike from '../utils/unlike'
+import like from '../utils/like'
+import playTrack from '../utils/playTrack'
+import pauseTrack from '../utils/pauseTrack'
 
 export default function HeaderControls({URL, contextUri, contextId, isOwner, playlistObj, isEmpty, type}) {
     const accessToken = useContext(AuthContext)

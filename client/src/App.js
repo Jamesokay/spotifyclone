@@ -1,13 +1,13 @@
 import './App.css'
-import Login from "./Login"
-import Dashboard from "./Dashboard"
-import ArtistPage from "./ArtistPage"
-import AlbumPage from "./AlbumPage"
-import PlaylistPage from "./PlaylistPage"
-import Search from "./Search"
-import CollectionPlaylist from './CollectionPlaylist'
-import CollectionAlbum from './CollectionAlbum'
-import CollectionArtist from './CollectionArtist'
+import Login from "./pages/Login"
+import Dashboard from "./pages/Dashboard"
+import ArtistPage from "./pages/ArtistPage"
+import AlbumPage from "./pages/AlbumPage"
+import PlaylistPage from "./pages/PlaylistPage"
+import Search from "./pages/Search"
+import CollectionPlaylist from './pages/CollectionPlaylist'
+import CollectionAlbum from './pages/CollectionAlbum'
+import CollectionArtist from './pages/CollectionArtist'
 import PanelExpanded from './PanelExpanded'
 import { useState, useEffect } from 'react'
 import { AuthContext } from './AuthContext'
@@ -22,10 +22,10 @@ import { RightClickContext } from './RightClickContext'
 import { NotificationContext } from './NotificationContext'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
-import Layout from './Layout'
-import CollectionTrack from './CollectionTrack'
+import Layout from './components/Layout'
+import CollectionTrack from './pages/CollectionTrack'
 import { useLocation } from 'react-router-dom'
-import getDataObject from './getDataObject'
+import getDataObject from './utils/getDataObject'
 
 
 function App() {

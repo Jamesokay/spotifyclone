@@ -1,4 +1,4 @@
-import defaultPlaylist from './defaultPlaylist.png'
+import defaultPlaylist from '../defaultPlaylist.png'
 
 export default function getDataObject(dataObject) {
       

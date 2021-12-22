@@ -1,12 +1,12 @@
 import SpotifyWebApi from 'spotify-web-api-node'
 import React, { useState, useEffect, useContext } from 'react'
-import { AuthContext } from './AuthContext'
-import Panel from './Panel'
-import getDataObject from './getDataObject'
-import createContextArray from './createContextArray'
-import PanelGrid from './PanelGrid'
+import { AuthContext } from '../AuthContext'
+import Panel from '../components/Panel'
+import getDataObject from '../utils/getDataObject'
+import createContextArray from '../utils/createContextArray'
+import PanelGrid from '../components/PanelGrid'
 import Loader from './Loader'
-import Menu from './Menu'
+import Menu from '../components/Menu'
 import axios from 'axios'
 
 const spotifyApi = new SpotifyWebApi({

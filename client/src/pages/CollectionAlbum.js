@@ -1,9 +1,9 @@
-import CollectionNav from './CollectionNav'
+import CollectionNav from '../components/CollectionNav'
 import SpotifyWebApi from 'spotify-web-api-node'
-import { AuthContext } from './AuthContext'
+import { AuthContext } from '../AuthContext'
 import { useState, useEffect, useContext } from 'react'
-import getDataObject from './getDataObject'
-import Panel from './Panel'
+import getDataObject from '../utils/getDataObject'
+import Panel from '../components/Panel'
 
 const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')

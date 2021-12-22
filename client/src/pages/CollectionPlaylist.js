@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext } from 'react'
-import CollectionNav from './CollectionNav'
+import CollectionNav from '../components/CollectionNav'
 import SpotifyWebApi from 'spotify-web-api-node'
-import { AuthContext } from './AuthContext'
-import { ThemeContext } from './ThemeContext'
+import { AuthContext } from '../AuthContext'
+import { ThemeContext } from '../ThemeContext'
 import axios from 'axios'
-import getDataObject from './getDataObject'
-import playTrack from './playTrack'
+import getDataObject from '../utils/getDataObject'
+import playTrack from '../utils/playTrack'
 import { Link } from 'react-router-dom'
 
 

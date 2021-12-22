@@ -1,9 +1,9 @@
 import SideBar from './SideBar'
 import NavBar from './NavBar'
 import WebPlayer from './WebPlayer'
-import { AuthContext } from './AuthContext'
-import { NotificationContext } from './NotificationContext'
-import { SideBarWidthContext } from './SideBarWidthContext'
+import { AuthContext } from '../AuthContext'
+import { NotificationContext } from '../NotificationContext'
+import { SideBarWidthContext } from '../SideBarWidthContext'
 import { useContext, useState, useEffect } from 'react'
 
 export default function Layout({ children }) {

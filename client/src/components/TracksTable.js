@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from 'react'
-import { AuthContext } from './AuthContext'
-import { PlaylistContext } from './PlaylistContext'
-import playTrack from './playTrack'
+import { AuthContext } from '../AuthContext'
+import { PlaylistContext } from '../PlaylistContext'
+import playTrack from '../utils/playTrack'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
-import { PageContext } from './PageContext'
-import { TrackContext } from './TrackContext'
-import { RightClickContext } from './RightClickContext'
-import { NotificationContext } from './NotificationContext'
+import { PageContext } from '../PageContext'
+import { TrackContext } from '../TrackContext'
+import { RightClickContext } from '../RightClickContext'
+import { NotificationContext } from '../NotificationContext'
 
 export default function TracksTable({content, page, trackDepth }) {
 

@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
-import { AuthContext } from './AuthContext'
-import { UserContext } from './UserContext'
-import toMinsSecs from './toMinsSecs'
-import likedSongs from './likedSongs.png'
-import TracksTable from './TracksTable'
-import HeaderPanel from './HeaderPanel'
-import Menu from './Menu'
+import { AuthContext } from '../AuthContext'
+import { UserContext } from '../UserContext'
+import toMinsSecs from '../utils/toMinsSecs'
+import likedSongs from '../likedSongs.png'
+import TracksTable from '../components/TracksTable'
+import HeaderPanel from '../components/HeaderPanel'
+import Menu from '../components/Menu'
 
 const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')

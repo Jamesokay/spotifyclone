@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useContext} from 'react'
-import { RightClickContext } from './RightClickContext'
+import { RightClickContext } from '../RightClickContext'
 
 export default function useContextMenu() {
     const [anchorPoint, setAnchorPoint] = useState({x: 0, y: 0})

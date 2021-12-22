@@ -1,4 +1,4 @@
-import Panel from './Panel'
+import Panel from './components/Panel'
 
 export default function PanelExpanded({ title, array, dispatch }) { 
     return (

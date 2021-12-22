@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react'
 // import getDataObject from './getDataObject'
-import toMinsSecs from './toMinsSecs'
-import { AuthContext } from './AuthContext'
-import { PlaylistContext } from './PlaylistContext'
-import TracksTable from './TracksTable'
+import toMinsSecs from '../utils/toMinsSecs'
+import { AuthContext } from '../AuthContext'
+import { PlaylistContext } from '../PlaylistContext'
+import TracksTable from '../components/TracksTable'
 import axios from 'axios'
 
 

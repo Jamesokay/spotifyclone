@@ -1,14 +1,14 @@
 import { useHistory } from 'react-router-dom'
 import { useState, useContext, useEffect } from 'react'
-import { AuthContext } from './AuthContext'
-import { ThemeContext } from './ThemeContext'
-import { UserContext } from './UserContext'
-import { PageContext } from './PageContext'
-import { TrackContext } from './TrackContext'
-import defaultUser from './defaultUser.png'
+import { AuthContext } from '../AuthContext'
+import { ThemeContext } from '../ThemeContext'
+import { UserContext } from '../UserContext'
+import { PageContext } from '../PageContext'
+import { TrackContext } from '../TrackContext'
+import defaultUser from '../defaultUser.png'
 import { useLocation } from 'react-router-dom'
-import playTrack from './playTrack'
-import pauseTrack from './pauseTrack'
+import playTrack from '../utils/playTrack'
+import pauseTrack from '../utils/pauseTrack'
 
 
 export default function NavBar() {
