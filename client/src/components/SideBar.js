@@ -1,14 +1,11 @@
 import { NavLink } from 'react-router-dom'
 import likedSongs from '../likedSongs.png'
-import { AuthContext } from '../AuthContext'
-import { UserContext } from '../UserContext'
+import { AuthContext, UserContext, SidebarContext, SideBarWidthContext } from '../contexts'
 import { useContext, useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
-import { SidebarContext } from '../SidebarContext'
 import getDataObject from '../utils/getDataObject'
 import { useLocation } from 'react-router-dom'
-import { SideBarWidthContext } from '../SideBarWidthContext'
 
 export default function SideBar() {
     const history = useHistory()

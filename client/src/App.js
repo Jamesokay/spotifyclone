@@ -8,18 +8,8 @@ import Search from "./pages/Search"
 import CollectionPlaylist from './pages/CollectionPlaylist'
 import CollectionAlbum from './pages/CollectionAlbum'
 import CollectionArtist from './pages/CollectionArtist'
-import PanelExpanded from './PanelExpanded'
 import { useState, useEffect } from 'react'
-import { AuthContext } from './AuthContext'
-import { ThemeContext } from './ThemeContext'
-import { UserContext } from './UserContext'
-import { PageContext } from './PageContext'
-import { PlaylistContext } from './PlaylistContext'
-import { TrackContext } from './TrackContext'
-import { SidebarContext } from './SidebarContext'
-import { SideBarWidthContext } from './SideBarWidthContext'
-import { RightClickContext } from './RightClickContext'
-import { NotificationContext } from './NotificationContext'
+import { AuthContext, ThemeContext, UserContext, PageContext, PlaylistContext, TrackContext, SidebarContext, SideBarWidthContext, RightClickContext, NotificationContext } from './contexts'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
 import Layout from './components/Layout'
@@ -154,7 +144,6 @@ function App() {
         <Route path="/playlist/:id" component={PlaylistPage} />
         <Route path="/album/:id" component={AlbumPage} />
         <Route path="/artist/:id" component={ArtistPage} />
-        <Route path="/genre/:id" component={PanelExpanded} />
         <Route path="/collection/playlists" component={CollectionPlaylist} />
         <Route path="/collection/artists" component={CollectionArtist} />
         <Route path="/collection/albums" component={CollectionAlbum} />

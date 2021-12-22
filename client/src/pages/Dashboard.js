@@ -1,6 +1,6 @@
 import SpotifyWebApi from 'spotify-web-api-node'
 import React, { useState, useEffect, useContext } from 'react'
-import { AuthContext } from '../AuthContext'
+import { AuthContext } from '../contexts'
 import Panel from '../components/Panel'
 import getDataObject from '../utils/getDataObject'
 import createContextArray from '../utils/createContextArray'

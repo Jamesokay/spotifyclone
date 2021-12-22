@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import useContextMenu from '../hooks/useContextMenu'
-import { RightClickContext } from '../RightClickContext'
+import { RightClickContext } from '../contexts'
 
 export default function Menu() {
     const { rightClick } = useContext(RightClickContext)

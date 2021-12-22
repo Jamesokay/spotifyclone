@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
-import { AuthContext } from '../AuthContext'
-import { UserContext } from '../UserContext'
+import { AuthContext, UserContext } from '../contexts'
 import toMinsSecs from '../utils/toMinsSecs'
 import likedSongs from '../likedSongs.png'
 import TracksTable from '../components/TracksTable'

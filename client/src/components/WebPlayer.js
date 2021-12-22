@@ -1,8 +1,7 @@
 import { useContext, useState, useEffect } from 'react'
 import useInterval from '../hooks/useInterval'
 import toMinsSecs from '../utils/toMinsSecs'
-import { AuthContext } from '../AuthContext'
-import { TrackContext } from '../TrackContext'
+import { AuthContext, TrackContext } from '../contexts'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 

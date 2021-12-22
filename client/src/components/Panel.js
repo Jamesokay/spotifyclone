@@ -1,13 +1,10 @@
-import { AuthContext } from '../AuthContext'
-import { TrackContext } from '../TrackContext'
+import { AuthContext, TrackContext, RightClickContext, SideBarWidthContext } from '../contexts'
 import playTrack from '../utils/playTrack'
 import pauseTrack from '../utils/pauseTrack'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
-import { RightClickContext } from '../RightClickContext'
 import { useState, useEffect, useContext } from 'react'
 import useViewport from '../hooks/useViewPort'
-import { SideBarWidthContext } from '../SideBarWidthContext'
 
 export default function Panel({ content }) {
   

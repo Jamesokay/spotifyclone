@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-// import getDataObject from './getDataObject'
 import toMinsSecs from '../utils/toMinsSecs'
-import { AuthContext } from '../AuthContext'
-import { PlaylistContext } from '../PlaylistContext'
+import { AuthContext, PlaylistContext } from '../contexts'
 import TracksTable from '../components/TracksTable'
 import axios from 'axios'
 
@@ -12,8 +10,6 @@ export default function Search() {
     const accessToken = useContext(AuthContext)
     const [search, setSearch] = useState('')
     const [trackResults, setTrackResults] = useState([])
-//    const [artistResults, setArtistResults] = useState([])
-//    const [albumResults, setAlbumResults] = useState([])
     const { newTrack } = useContext(PlaylistContext)
     
 
@@ -47,8 +43,6 @@ export default function Search() {
                             duration: toMinsSecs(item.duration_ms)
                         }
               }))
-          //    setArtistResults(response.data.artists.items.map(getDataObject))
-          //    setAlbumResults(response.data.albums.items.map(getDataObject))
           })
           .catch(error => {
             console.log(error)

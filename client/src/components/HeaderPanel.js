@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { ThemeContext } from '../ThemeContext'
-import { PageContext } from '../PageContext'
+import { ThemeContext, PageContext } from '../contexts'
 
 
 
