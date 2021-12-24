@@ -7,7 +7,6 @@ import createContextArray from '../utils/createContextArray'
 import PanelGrid from '../components/PanelGrid'
 import Loader from './Loader'
 import Menu from '../components/Menu'
-import axios from 'axios'
 
 const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
@@ -17,7 +16,6 @@ export default function Dashboard() {
     const accessToken = useContext(AuthContext)
     const [topArtists, setTopArtists] = useState([])
     const [recent, setRecent] = useState([])
-    const [topYear, setTopYear] = useState([])
     const [recentReversed, setRecentReversed] = useState([])
     const [recentSeeds, setRecentSeeds] = useState([])
     const [forToday, setForToday] = useState([])
@@ -29,8 +27,6 @@ export default function Dashboard() {
     const [loading, setLoading] = useState(true)
 
     const date = new Date()
-    const month = date.getMonth()
-    const year = date.getFullYear()
     const time = date.toLocaleTimeString('en-GB')
     const timeMod = parseInt(time.replace(/:/g, ''))
     const greeting = greetingMessage(timeMod)
@@ -135,50 +131,6 @@ export default function Dashboard() {
 
       return function cleanUp() {
         setRecentSeeds([])
-      }
-    }, [accessToken])
-
-
-    // Retrieve Year in Review playlists via the Search endpoint
-    useEffect(() => {
-      if (!accessToken) return
-
-      const options1 = {
-        url: `https://api.spotify.com/v1/search?q=your+top+songs+2021&type=playlist`,
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-            }
-        }
-      
-      axios(options1)
-      .then(response => {
-        setTopYear(topYear => [...topYear, getDataObject(response.data.playlists.items[1])])
-      })
-      .catch(error => {
-        console.log(error)
-      })
-
-      const options2 = {
-        url: `https://api.spotify.com/v1/search?q=your+artists+revealed&type=playlist`,
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-            }
-      }
-      
-      axios(options2)
-      .then(response => {
-        setTopYear(topYear => [...topYear, getDataObject(response.data.playlists.items[0])])
-      })
-      .catch(error => {
-        console.log(error)
-      })
-
-      return function cleanUp() {
-        setTopYear([])
       }
     }, [accessToken])
 
@@ -338,14 +290,7 @@ export default function Dashboard() {
           </div>
         
         }
-        {(month === 11)?
-        <div>
-          <span className='panelTitle'>{'Your ' + year + ' in review'}</span>
-          <Panel content={topYear} />
-        </div>
-        :
-        <></>
-        }
+
         <span className='panelTitle'>{'More like ' + relatedArtistsSeed}</span>
         <Panel content={moreLike.slice(0, 5)} />
         <span className='panelTitle'>Album picks</span>

@@ -298,7 +298,7 @@ export default function Search() {
         </div>
         </Link>
             
-            <div id='trackResultsContainer'>
+            <div>
             <span className='resultTitle'>Songs</span>
               <TracksTable content={trackResults.slice(0, 4)} page='search' />
             </div>

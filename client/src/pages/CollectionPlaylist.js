@@ -4,7 +4,7 @@ import SpotifyWebApi from 'spotify-web-api-node'
 import { AuthContext, ThemeContext } from '../contexts'
 import axios from 'axios'
 import getDataObject from '../utils/getDataObject'
-import playTrack from '../utils/playTrack'
+import Panel from '../components/Panel'
 import { Link } from 'react-router-dom'
 
 
@@ -79,8 +79,9 @@ export default function CollectionPlaylist() {
     return (
     <div id='collectionPagePlaylist'>
      <CollectionNav />
+
+     <div>
      <span className='collectionTitle'>Playlists</span> 
-     <div className='collectionPanel'>
      <Link to={{pathname:'/collection/tracks'}}>
         <div id='likedSongsCard'>
            <span id='lsCardPreview'>
@@ -98,28 +99,10 @@ export default function CollectionPlaylist() {
             </div>
       </div>
       </Link>
-      {playlists.map(cont =>
-        <Link className='cardLink' style={{width: '15vw'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
-        <div className='cardBody'>
-          <div className='cardImageBox'>
-            <img className='cardImage' src={cont.imgUrl} alt='' />
-            <div className ='cardPlayButton'
-             onClick={(e) => {
-               e.preventDefault()
-               playTrack(accessToken, {context_uri: cont.uri})} 
-             }>
-              <div className='cardPlayIcon'></div>
-            </div>
-          </div>
-          <div className='cardText'>
-          <span className='cardTitle'>{cont.name}</span>
-          <br /> 
-          <span className='cardSub'>{cont.subtitle}</span> 
-          </div>
-        </div>
-        </Link>
-      )}
       </div>
+
+      <Panel content={playlists} />
+      
     </div>
     )
 }

@@ -277,8 +277,6 @@ body::-webkit-scrollbar {
 
 #collectionPage {
     margin-top: 0;
-    margin-left: 15vw;
-    width: 85vw;
     padding-top: 18vh;
     display: flex;
     flex-wrap: wrap;
@@ -289,6 +287,8 @@ body::-webkit-scrollbar {
     margin-top: 0;
     width: 100%;
     padding-top: 18vh;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .collectionTitle {
@@ -1367,10 +1367,7 @@ li:hover .sideBarImg {
     margin-right: max(1.736vw, 24px);
 }
 
-#trackResultsContainer {
-    /* width: 45vw; */
-    min-width: 300px;
-}
+
 
 #topResult {
     position: relative;
@@ -1493,7 +1490,7 @@ li:hover .sideBarImg {
     cursor: default;
     font-size: 11pt;
     margin-top: max(1.736vw, 24px);
-    width: 100%;
+    width: 48vw;
 }
 
 /* .trackTableSearchCell {
@@ -1835,7 +1832,7 @@ th {
 
 .rowSecond {
     padding-left: 10px;
-    width: 50%;
+    width: 65%;
 }
 
 .rowSecondSearch {
