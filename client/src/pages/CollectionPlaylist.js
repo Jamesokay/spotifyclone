@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext } from 'react'
 import CollectionNav from '../components/CollectionNav'
 import SpotifyWebApi from 'spotify-web-api-node'
-import { AuthContext, ThemeContext } from '../contexts'
+import { AuthContext, ThemeContext, SideBarWidthContext } from '../contexts'
 import axios from 'axios'
 import getDataObject from '../utils/getDataObject'
-import Panel from '../components/Panel'
+import playTrack from '../utils/playTrack'
 import { Link } from 'react-router-dom'
+import useViewport from '../hooks/useViewPort'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -27,6 +28,39 @@ export default function CollectionPlaylist() {
   useEffect(() => {
     setCurrentTheme({red: 0, green: 0, blue: 0})
   }, [setCurrentTheme])
+
+  const [cardWidth, setCardWidth] = useState('17.8%')
+  const [likedSongsCardWidth, setLikedSongsCardWidth] = useState('37.3%')
+  const { width } = useViewport()
+  const { currentWidth } = useContext(SideBarWidthContext)
+  const breakPointLarge = 1060
+  const breakPointMedium = 860
+  const breakPointSmall = 620
+  
+
+  useEffect(() => {
+      if ((width - currentWidth) <= breakPointSmall) {
+        setLikedSongsCardWidth('91%')
+        setCardWidth('44.5%')
+      }
+      else if ((width - currentWidth) > breakPointSmall && (width - currentWidth) <= breakPointMedium) {
+        setLikedSongsCardWidth('61%')
+        setCardWidth('29.6%')
+      }
+      else if ((width - currentWidth) > breakPointMedium && (width - currentWidth) < breakPointLarge) {
+        setLikedSongsCardWidth('46.2%')
+        setCardWidth('22.25%')
+      }
+      else if ((width - currentWidth) >= breakPointLarge) {
+        setLikedSongsCardWidth('37.3%')
+        setCardWidth('17.8%')
+      }
+
+      return function cleanUp() {
+          setLikedSongsCardWidth('37.3%')
+          setCardWidth('17.8%')
+      }
+  }, [width, currentWidth])
 
   
 
@@ -79,10 +113,9 @@ export default function CollectionPlaylist() {
     return (
     <div id='collectionPagePlaylist'>
      <CollectionNav />
-
-     <div>
      <span className='collectionTitle'>Playlists</span> 
-     <Link to={{pathname:'/collection/tracks'}}>
+     <div className='collectionPanel'>
+     <Link id='likedSongsContainer' to={{pathname:'/collection/tracks'}} style={{width: likedSongsCardWidth}}>
         <div id='likedSongsCard'>
            <span id='lsCardPreview'>
             {preview.map(prev =>
@@ -99,10 +132,28 @@ export default function CollectionPlaylist() {
             </div>
       </div>
       </Link>
+      {playlists.map(cont =>
+        <Link className='cardLink' style={{width: cardWidth}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
+        <div className='cardBody'>
+          <div className='cardImageBox'>
+            <img className='cardImage' src={cont.imgUrl} alt='' />
+            <div className ='cardPlayButton'
+             onClick={(e) => {
+               e.preventDefault()
+               playTrack(accessToken, {context_uri: cont.uri})} 
+             }>
+              <div className='cardPlayIcon'></div>
+            </div>
+          </div>
+          <div className='cardText'>
+          <span className='cardTitle'>{cont.name}</span>
+          <br /> 
+          <span className='cardSub'>{cont.subtitle}</span> 
+          </div>
+        </div>
+        </Link>
+      )}
       </div>
-
-      <Panel content={playlists} />
-      
     </div>
     )
 }
