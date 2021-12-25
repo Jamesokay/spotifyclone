@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom'
 import { useState, useEffect, useContext } from 'react'
 import useViewport from '../hooks/useViewPort'
 
-export default function Panel({ content }) {
+export default function Panel({ content, type }) {
   
     const accessToken = useContext(AuthContext)
     const { nowPlaying } = useContext(TrackContext)
@@ -19,6 +19,7 @@ export default function Panel({ content }) {
     const breakPointLarge = 1060
     const breakPointMedium = 860
     const breakPointSmall = 620
+    const [array, setArray] = useState([])
     
 
     useEffect(() => {
@@ -45,12 +46,25 @@ export default function Panel({ content }) {
         }
     }, [width, currentWidth])
 
+    useEffect(() => {
+      if (type === 'collection') {
+        setArray(content)
+      }
+      else {
+        setArray(content.slice(0, index))
+      }
+
+      return function cleanUp() {
+        setArray([])
+      }
+    }, [type, content, index])
+
 
 
     
     return (
         <div className='panel'> 
-        {content.slice(0, index).map(cont =>
+        {array.map(cont =>
           <Link className='cardLink' style={{width: cardWidth}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}
                 onContextMenu={(e) => setRightClick({type: cont.type, yPos: e.screenY, xPos: e.screenX, id: cont.id})}>
           <div className='cardBody' style={(rightClick.id === cont.id)? {background: 'rgb(40, 40, 40)'} : {}}>

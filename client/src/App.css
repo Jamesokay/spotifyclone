@@ -286,9 +286,8 @@ body::-webkit-scrollbar {
 #collectionPage {
     margin-top: 0;
     padding-top: 18vh;
-    display: flex;
-    flex-wrap: wrap;
     padding-bottom: 90px;
+    min-width: 550px;
 }
 
 #collectionPagePlaylist {
@@ -343,6 +342,7 @@ body::-webkit-scrollbar {
     display: flex;
     justify-content: flex-start;
     margin-left: max(1.75vw, 20px);
+    flex-wrap: wrap;
 }
 
 .collectionPanel {

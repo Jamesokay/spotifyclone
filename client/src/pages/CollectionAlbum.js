@@ -35,7 +35,7 @@ export default function CollectionAlbum() {
         <div id='collectionPage'>
             <CollectionNav />
             <span className='collectionTitle'>Albums</span>
-            <Panel content={albums} />
+            <Panel content={albums} type='collection'/>
         </div>
     )
 }
