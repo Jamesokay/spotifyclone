@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
-import { ThemeContext, PageContext } from '../contexts'
+import { ThemeContext, PageContext, SideBarWidthContext } from '../contexts'
+import useViewport from '../hooks/useViewPort'
 
 
 
@@ -11,12 +12,37 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
     const [titleSize, setTitleSize] = useState({fontSize: ''})
     const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
     const [edgeColour, setEdgeColour] = useState('')
+    const [imgSize, setImgSize] = useState()
+    const { width } = useViewport()
+    const { currentWidth } = useContext(SideBarWidthContext)
+    const breakPointLarge = 1065
+    const breakPointSmall = 800
+    
+
+    useEffect(() => {
+        if ((width - currentWidth) <= breakPointSmall) {
+          setImgSize()
+        //  setTitleSize()
+        }
+        else if ((width - currentWidth) > breakPointSmall && (width - currentWidth) <= breakPointLarge) {
+          setImgSize()
+        //  setTitleSize()
+        }
+        else if ((width - currentWidth) >= breakPointLarge) {
+          setImgSize()
+        //  setTitleSize()
+        }
+
+        return function cleanUp() {
+          setImgSize()
+        //  setTitleSize()
+        }
+    }, [width, currentWidth])
 
 
     useEffect(() => {
       if (!content.title) return
       if (content.title === 'Liked Songs') return
-      // bug fix?
 
       setCurrentPage({pageName: content.title,
                       pageUri: content.uri
@@ -28,13 +54,13 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
       if (!content.title) return
 
       if (content.title.length <= 20) {
-        setTitleSize({fontSize: '12vmin'})
+        setTitleSize({fontSize: '600%'})
       }
       else if (content.title.length > 20 && content.title.length <= 30) {
-        setTitleSize({fontSize: '9.5vmin'})
+        setTitleSize({fontSize: '425%'})
       }
       else if (content.title.length > 30) {
-        setTitleSize({fontSize: '6.75vmin'})
+        setTitleSize({fontSize: '325%'})
       }
     }, [content.title])
       

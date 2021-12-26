@@ -2032,8 +2032,7 @@ th {
 }
 
 #headerImage {
-    height: 232px;
-    width: 232px;
+    width: 36.5%;
     object-fit: cover;
 }
 
