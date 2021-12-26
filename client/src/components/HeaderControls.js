@@ -12,7 +12,7 @@ export default function HeaderControls({URL, contextUri, contextId, isOwner, pla
     const {setUserPlaylists} = useContext(SidebarContext)
     const { setNotification } = useContext(NotificationContext)
     const [liked, setLiked] = useState(false)
-    const [loading, setLoading] = useState(true)
+//    const [loading, setLoading] = useState(true)
 
     function likePlaylist() {
         like(accessToken, `https://api.spotify.com/v1/playlists/${contextId}/followers`)
@@ -61,7 +61,6 @@ export default function HeaderControls({URL, contextUri, contextId, isOwner, pla
         axios(options)
         .then(response => {
           setLiked(response.data[0])
-          setLoading(false)
         })
         .catch(error => {
           console.log(error)
@@ -69,17 +68,12 @@ export default function HeaderControls({URL, contextUri, contextId, isOwner, pla
 
         return function cleanUp() {
             setLiked(false)
-            setLoading(true)
         }
 
     }, [contextId, URL, accessToken, isOwner])
 
 
     return isEmpty? <div id='headerControls'></div> : (
-        <div>
-        {(loading)?
-        <div id='headerControls'></div>
-        :
         <div id='headerControls'>
         <div className='headerPlayButton'
              style={(type === 'ARTIST')? {transform: 'scale(1.15)'} : {}}
@@ -126,7 +120,5 @@ export default function HeaderControls({URL, contextUri, contextId, isOwner, pla
           </svg>
         }
         </div>
-        }
-      </div>  
     )
 }

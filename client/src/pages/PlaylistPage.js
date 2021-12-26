@@ -57,26 +57,29 @@ export default function PlaylistPage({ location }) {
       if (!accessToken) return
        
       spotifyApi.getPlaylist(id)
-      .then(data => {
-        if (data.body.images[0]) {
+      .then(data => {    
           setPlaylist({
             title: data.body.name,
-            imgUrl: data.body.images[0].url,
+            imgUrl: data.body.images[0]? data.body.images[0].url : defaultPlaylist,
             uri: data.body.uri,
             about: data.body.description,
-            info: ` • ${data.body.followers.total.toLocaleString('en-US')} likes • ${data.body.tracks.total} songs, ${getTotalDuration(data.body.tracks.items)}`,
+            info: (data.body.tracks.items.length !== 0)? ` • ${data.body.followers.total.toLocaleString('en-US')} likes • ${data.body.tracks.total} songs, ${getTotalDuration(data.body.tracks.items)}` : '',
             type: 'PLAYLIST',
             owner: data.body.owner.id 
           })
           setPlaylistObj(getDataObject(data.body))
-        } else {
-          setPlaylist({
-            title: data.body.name,
-            imgUrl: defaultPlaylist,
-            uri: data.body.uri,
-            type: 'PLAYLIST'
-          })
-        }
+
+          if (user.id === data.body.owner.id) {
+            setIsOwner(true)
+          }
+          
+          if (data.body.tracks.items.length === 0) {
+            setIsEmpty(true)
+          }
+          else {
+            setTracksSample(data.body.tracks.items.slice(0, 5).map((item, index) => getTrackObject(item.track, index, data.body.uri))) 
+            setTracks(data.body.tracks.items.map((item, index) => getTrackObject(item.track, index, data.body.uri)))
+          }    
       })
       .catch(error => {
         console.log(error)
@@ -85,8 +88,12 @@ export default function PlaylistPage({ location }) {
       return function cleanUp() {
         setPlaylist({})
         setPlaylistObj({})
+        setIsOwner(false)
+        setTracksSample([])
+        setTracks([])
+        setIsEmpty(false)
       }
-    }, [id, accessToken])
+    }, [id, user, accessToken])
 
 
     useEffect(() => {
@@ -116,30 +123,6 @@ export default function PlaylistPage({ location }) {
 
     useEffect(() => {
       if (!accessToken) return
-      spotifyApi.getPlaylist(id, 'AU')
-      .then(data => {
-        let playlistUri = data.body.uri
-        if (data.body.tracks.items.length === 0) {
-          setIsEmpty(true)
-        }
-        else {
-          setTracksSample(data.body.tracks.items.slice(0, 5).map((item, index) => getTrackObject(item.track, index, playlistUri))) 
-          setTracks(data.body.tracks.items.map((item, index) => getTrackObject(item.track, index, playlistUri)))
-        }    
-      })
-      .catch(error => {
-        console.log(error)
-      })
-
-      return function cleanUp() {
-        setTracksSample([])
-        setTracks([])
-        setIsEmpty(false)
-      }
-    }, [accessToken, id])
-
-    useEffect(() => {
-      if (!accessToken) return
       if (tracks.length === 0) return
 
       let trax = tracks.slice(0, 50).map(item => item.id)
@@ -159,7 +142,7 @@ export default function PlaylistPage({ location }) {
   }, [tracks, accessToken])
 
   useEffect(() => {  
-    if (tracks.length === 0) return
+    if (isEmpty) return
     
     setTracksFinal(flagSavedTracks(tracks.slice(0, 50), savedArray))
     setLoading(false)
@@ -168,31 +151,13 @@ export default function PlaylistPage({ location }) {
       setTracksFinal([])
       setLoading(true)
     }
-  }, [tracks, savedArray])
+  }, [isEmpty, tracks, savedArray])
 
-
-    useEffect(() => {
-      if (!user) return
-      if (!creator[0]) return
-      if (user.id === creator[0].id) {
-        setIsOwner(true)
-      }
-      else {
-        setIsOwner(false)
-      }
-
-      return function cleanUp() {
-        setIsOwner(false)
-      }
-
-    }, [user, creator])
 
     useEffect(() => {
       if (!accessToken) return
-      if (!user) return
-      if (!creator[0]) return
-      if (user.id !== creator[0].id) return
-      if (tracksSample.length === 0) return
+      if (!isOwner) return
+      if (isEmpty) return
 
       spotifyApi.getRecommendations({
         seed_tracks: getSeeds(tracksSample),
@@ -208,7 +173,7 @@ export default function PlaylistPage({ location }) {
       return function cleanUp() {
         setRecommendations([])
       }    
-    }, [accessToken, user, creator, tracksSample])
+    }, [accessToken, isOwner, isEmpty, tracksSample])
 
 
     useEffect(() => {

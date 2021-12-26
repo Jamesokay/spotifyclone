@@ -345,13 +345,6 @@ body::-webkit-scrollbar {
     flex-wrap: wrap;
 }
 
-.collectionPanel {
-    display: flex;
-    justify-content: flex-start;
-    margin-left: max(1.75vw, 20px);
-    flex-wrap: wrap;
-}
-
 .cardBody  {    
     width: 100%; 
     height: 100%;

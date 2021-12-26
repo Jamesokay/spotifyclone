@@ -114,7 +114,7 @@ export default function CollectionPlaylist() {
     <div id='collectionPagePlaylist'>
      <CollectionNav />
      <span className='collectionTitle'>Playlists</span> 
-     <div className='collectionPanel'>
+     <div className='panel'>
      <Link id='likedSongsContainer' to={{pathname:'/collection/tracks'}} style={{width: likedSongsCardWidth}}>
         <div id='likedSongsCard'>
            <span id='lsCardPreview'>
