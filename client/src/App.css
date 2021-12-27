@@ -395,7 +395,7 @@ body::-webkit-scrollbar {
 }
 
 .cardBody:hover .cardPlayButton {
-    bottom: 1.6vw;
+    bottom: 1.8vw;
     opacity: 1 !important;
 }
 
@@ -665,7 +665,7 @@ body::-webkit-scrollbar {
 
 
 .pageContainer {
-    margin-top: -25vh;
+    margin-top: min(-6.5vw, -93px);
     background-color:rgba(0, 0, 0, 0.1);
     min-width: 550px;
     padding-bottom: 100px;
@@ -1910,11 +1910,8 @@ th {
 
 
 #headerPanel {
-    display: flex;
-    flex-wrap: wrap;
     cursor: default;
-    min-width: 550px; 
-    padding-top: 85px;
+    min-width: 550px;
     height: max(30vw, 436px);
 }
 
@@ -1941,9 +1938,11 @@ th {
 
 
 .headerBody {
-    margin-left: max(2.25vw, 30px);
+    margin-left: max(2.25vw, 32px);
+    display: inline-flex;
+    width: 90%;
+    margin-top: max(5.5vw, 79px);
     height: 232px;
-    position: relative;
 }
 
 #headerControls {
@@ -2031,8 +2030,16 @@ th {
     transform: scale(1.05)
 }
 
+.headerImageBox {
+    width: 232px;  
+    height: 232px;
+    min-width: 232px;
+    margin-right: max(1.5vw, 21.6px);
+}
+
 #headerImage {
-    width: 36.5%;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
 }
 
@@ -2064,9 +2071,8 @@ th {
 .headerTitle {
     font-family: Arial, sans-serif;
     font-weight: bold;
-    color: white; 
-    font-size: 9.5vmin;
-    letter-spacing: -0.25vw;
+    color: white;
+    letter-spacing: min(-0.25vw, -3.6px);
     
 }
 
@@ -2105,16 +2111,19 @@ th {
     margin-bottom: 1%; 
 }
 
-.headerInfo {
+.headerInfoBox {
+    position: relative;
+    width: 77%;
+}
+
+.headerInfo { 
     position: absolute;
+    bottom: 0;
+    max-height: 232px;
     display: flex;
     flex-wrap: wrap;
-    float: right;
     text-align: left;
-    width: 65vw;
     flex-direction: column;
-    left: 250px;
-    bottom: 0;
 }
 
 .headerInfoArtist {
