@@ -2031,8 +2031,6 @@ th {
 }
 
 .headerImageBox {
-    width: 232px;  
-    height: 232px;
     min-width: 232px;
     margin-right: max(1.5vw, 21.6px);
 }
@@ -2065,7 +2063,7 @@ th {
 .headerType {
     font-family: Verdana, sans-serif;
     color: white; 
-    font-size: 12pt;
+    font-size: 80%;
 }
 
 .headerTitle {
@@ -2080,16 +2078,16 @@ th {
     height: 25px;
     width: 25px;
     border-radius: 50%;
-    margin-right: 5px;
+    vertical-align: middle;
+    margin-right: 3px;
 }
 
 .headerCreator {
     font-family: Verdana, sans-serif;
     color: white; 
     font-size: 10pt;
-    margin-right: 5px;
-    margin-left: 5px;
 }
+
 
 .headerCreator:hover {
     text-decoration: underline;
@@ -2100,7 +2098,7 @@ th {
     color: rgb(188, 188, 188); 
     font-size: 10pt;
     margin-top: 1%;
-    margin-bottom: 1%;
+    margin-bottom: 2%;
 }
 
 .headerSubArtist {
@@ -2112,18 +2110,16 @@ th {
 }
 
 .headerInfoBox {
-    position: relative;
-    width: 77%;
+    display: flex;
+    height: 100%;
 }
 
 .headerInfo { 
-    position: absolute;
-    bottom: 0;
-    max-height: 232px;
+    align-self: flex-end;
     display: flex;
-    flex-wrap: wrap;
-    text-align: left;
     flex-direction: column;
+    max-height: 232px;
+    flex-wrap: wrap;
 }
 
 .headerInfoArtist {
@@ -2138,10 +2134,6 @@ th {
     bottom: 40%;
 }
 
-.headerCreatorInfo {
-    display: flex;
-    align-items: center;
-}
 
 .emptyPlaylist {
     width: 80vw;

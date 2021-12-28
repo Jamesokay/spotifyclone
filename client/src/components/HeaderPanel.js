@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
-import { ThemeContext, PageContext } from '../contexts'
-// import useViewport from '../hooks/useViewPort'
+import { ThemeContext, PageContext, SideBarWidthContext } from '../contexts'
+import useViewport from '../hooks/useViewPort'
 
 
 
@@ -12,28 +12,28 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
     const [titleSize, setTitleSize] = useState({fontSize: ''})
     const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
     const [edgeColour, setEdgeColour] = useState('')
-    // const [imgSize, setImgSize] = useState(232)
-    // const { width } = useViewport()
-    // const { currentWidth } = useContext(SideBarWidthContext)
-    // const breakPointLarge = 1065
-    // const breakPointSmall = 800
+    const [imgSize, setImgSize] = useState(232)
+    const { width } = useViewport()
+    const { currentWidth } = useContext(SideBarWidthContext)
+    const breakPointLarge = 1065
+    const breakPointSmall = 800
     
 
-    // useEffect(() => {
-    //     if ((width - currentWidth) <= breakPointSmall) {
-    //       setTitleSize({fontSize: '325%'})
-    //     }
-    //     else if ((width - currentWidth) > breakPointSmall && (width - currentWidth) <= breakPointLarge) {
-    //       setImgSize(195)
-    //     }
-    //     else if ((width - currentWidth) >= breakPointLarge) {
-    //       setImgSize(232)
-    //     }
+    useEffect(() => {
+        if ((width - currentWidth) <= breakPointSmall) {
+          setTitleSize({fontSize: '325%'})
+        }
+        else if ((width - currentWidth) > breakPointSmall && (width - currentWidth) <= breakPointLarge) {
+          setImgSize(195)
+        }
+        else if ((width - currentWidth) >= breakPointLarge) {
+          setImgSize(232)
+        }
 
-    //     return function cleanUp() {
-    //       setImgSize(232)
-    //     }
-    // }, [width, currentWidth])
+        return function cleanUp() {
+          setImgSize(232)
+        }
+    }, [width, currentWidth])
 
 
     useEffect(() => {
@@ -196,8 +196,8 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
               <></>
               }
               
-              <div className='headerCreatorInfo'>
-              {(creatorImg && creators.length === 1)?
+              <div>
+              {(content.type === 'ALBUM' && creatorImg)?
               <img className='artistImgSmall' src={creatorImg} alt=''/>
               :
               <></>
