@@ -9,7 +9,7 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
     const { setCurrentTheme } = useContext(ThemeContext)
     const { setCurrentPage } = useContext(PageContext)
     const [loading, setLoading] = useState(true)
-    const [titleSize, setTitleSize] = useState({fontSize: ''})
+    const [titleSize, setTitleSize] = useState(0)
     const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
     const [edgeColour, setEdgeColour] = useState('')
     const [imgSize, setImgSize] = useState(232)
@@ -17,11 +17,28 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
     const { currentWidth } = useContext(SideBarWidthContext)
     const breakPointLarge = 1065
     const breakPointSmall = 800
+
+    function calculateFontSize(title) {
+      if (title.length <= 20) {
+        setTitleSize(600)
+      }
+      else if (title.length > 20 && title.length <= 30) {
+        setTitleSize(425)
+      }
+      else if (title.length > 30) {
+        setTitleSize(325)
+      }
+    }
+
+    useEffect(() => {
+      if (!content.title) return
+      calculateFontSize(content.title)    
+    }, [content.title])
     
 
     useEffect(() => {
         if ((width - currentWidth) <= breakPointSmall) {
-          setTitleSize({fontSize: '325%'})
+          setImgSize(195)
         }
         else if ((width - currentWidth) > breakPointSmall && (width - currentWidth) <= breakPointLarge) {
           setImgSize(195)
@@ -46,19 +63,7 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
 
     }, [content, content.title, content.uri, setCurrentPage])
 
-    useEffect(() => {
-      if (!content.title) return
 
-      if (content.title.length <= 20) {
-        setTitleSize({fontSize: '600%'})
-      }
-      else if (content.title.length > 20 && content.title.length <= 30) {
-        setTitleSize({fontSize: '425%'})
-      }
-      else if (content.title.length > 30) {
-        setTitleSize({fontSize: '325%'})
-      }
-    }, [content.title])
       
 
 
@@ -142,7 +147,7 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
           <></>
         } 
           <div className='headerInfoArtist'>
-            <span className='headerTitle' style={titleSize}>{content.title}</span>
+            <span className='headerTitle' style={{fontSize: titleSize +'%'}}>{content.title}</span>
             {(content.followers)?
             <span className='headerSubArtist'>{content.followers + ' followers'}</span>
             :
@@ -157,10 +162,10 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
     :
     (
         <div id='headerPanel' style={(loading)? {visibility: 'hidden'} : {visibility: 'visible', backgroundImage: gradient}}>
-        <div className='headerBody'>
+        <div className='headerBody' style={((width - currentWidth) <= breakPointSmall)? {marginLeft: 'max(1.125vw, 16px)'} : {}}>
         {(content.imgUrl)?
         <div className='headerImageBox'>
-          <img id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()}/>
+          <img id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()} style={{width: imgSize, height: imgSize, minWidth: imgSize}}/>
         </div>
           : 
           <div id='headerImage'/>
@@ -189,7 +194,7 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
           <div className='headerInfoBox'>
             <div className='headerInfo'>
               <span className='headerType'>{content.type}</span>
-              <span className='headerTitle' style={titleSize}>{content.title}</span>
+              <span className='headerTitle' style={(imgSize === 232)? {fontSize: titleSize + '%'} : {fontSize: (titleSize * 0.75) + '%'}}>{content.title}</span>
               {(content.type === 'PLAYLIST')?
               <span className='headerSub'>{content.about}</span>
               :
@@ -204,7 +209,7 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
               }
               {creators.map((creator, index, creators) =>
                <span key={creator.id}>
-                <span className='headerCreator'>{creator.name}</span>
+                <span className='headerCreator'>{' ' + creator.name + ' '}</span>
                 {(index < creators.length - 1)?
                         <span style={{color: 'white'}}>•</span>
                         :
