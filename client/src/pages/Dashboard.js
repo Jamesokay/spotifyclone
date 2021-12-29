@@ -3,7 +3,6 @@ import React, { useState, useEffect, useContext } from 'react'
 import { AuthContext } from '../contexts'
 import Panel from '../components/Panel'
 import getDataObject from '../utils/getDataObject'
-import createContextArray from '../utils/createContextArray'
 import PanelGrid from '../components/PanelGrid'
 import Loader from './Loader'
 import Menu from '../components/Menu'
@@ -46,46 +45,49 @@ export default function Dashboard() {
 
     // Function for removing duplicate listening contexts in Recently Played
     function getUniqueById(array) {
+        
         const clearUndefinedValues = array.filter(item => {
-            return item !== undefined
+            return item.context !== null
           })
-          const ids = clearUndefinedValues.map(item => item.id)      
-          const filtered = clearUndefinedValues.filter(({id}, index) => !ids.includes(id, index + 1))
+
+          const uris = clearUndefinedValues.map(item => item.context.uri)      
+          const filtered = clearUndefinedValues.filter((item, index) => !uris.includes(item.context.uri, index + 1))
           return filtered
     }
     
     // Function to retrieve data from relevant API endpoints based on Recently Played track contexts
-    function spotifyContextQuery(item) {
-      if (!item.type) {
-        return
+    async function spotifyContextQuery(array) {
+
+     let newArray = []
+
+     for (const item of array) {
+        if (item.context.type === 'playlist') {
+          try {
+            const data = await spotifyApi.getPlaylist(item.context.uri.substr(17))
+            newArray.push(getDataObject(data.body))
+          } catch (err) {
+            console.error(err)
+          }
+        }
+        else if (item.context.type === 'artist') {
+          try {
+            const data = await spotifyApi.getArtist(item.context.uri.substr(15))
+            newArray.push(getDataObject(data.body))
+          } catch (err) {
+            console.error(err)
+          }
+        }
+        else if (item.context.type === 'album') {
+          try {
+          const data = await spotifyApi.getAlbum(item.context.uri.substr(14))
+          newArray.push(getDataObject(data.body))
+          }catch (err) {
+            console.error(err)
+          }
+        }
       }
-      else if (item.type === 'playlist') {
-        spotifyApi.getPlaylist(item.id)
-        .then(data => {
-          setRecent(recent => [...recent, getDataObject(data.body)])
-        })
-        .catch(error => {
-          console.log(error)
-        })
-      }
-      else if (item.type === 'artist') {
-        spotifyApi.getArtist(item.id)
-        .then(data => {
-          setRecent(recent => [...recent, getDataObject(data.body)])
-        })
-        .catch(error => {
-          console.log(error)
-        })
-      }
-      else if (item.type === 'album') {
-        spotifyApi.getAlbum(item.id)
-        .then(data => {
-          setRecent(recent => [...recent, getDataObject(data.body)])
-        })
-        .catch(error => {
-          console.log(error)
-        })
-      }
+
+      return newArray
     }
     
 
@@ -98,39 +100,46 @@ export default function Dashboard() {
     useEffect(() => {
       if (!accessToken) return 
 
-      spotifyApi.getMyTopArtists({limit : 20})
-      .then(data => {
-        setTopArtists(data.body.items.map(getDataObject))
-      })
-      .catch(error => {
-        console.log(error)
-      })
+      const getArtists = async () => {
+        try {
+          const data = await spotifyApi.getMyTopArtists({limit : 20})
+          setTopArtists(data.body.items.map(getDataObject))
+        } catch (err) {
+          console.error(err)
+        }
+      }
+
+      getArtists()
 
     } , [accessToken])
 
 
-    // Get recently played tracks
+    
     // Store top 5 ids as seeds for generating recommendations
-    // Build Recently Played array by first passing response objects to createContextArray()
-    // createContextArray() returns an object for each specifying type and id
+    // Get recently played tracks
     // These are then filtered by getUniqueById() to remove duplicate contexts
     // Filtered array is then passed through spotifyContextQuery() to generate the final array of objects to be rendered
     useEffect(() => {   
       if (!accessToken) return   
- 
-      spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
-      .then(data => {
-        setRecentSeeds(data.body.items.slice(0, 5).map(item => item.track.id))
-        let recentRaw = data.body.items.map(createContextArray)
-        let recentFiltered = getUniqueById(recentRaw)
-        recentFiltered.forEach(spotifyContextQuery)
-      })
-      .catch(error => {
-        console.log(error)
-      })
+
+      const getRecent = async () => {
+        try {
+          const data = await spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
+          setRecentSeeds(data.body.items.slice(0, 5).map(item => item.track.id))
+          let recentFiltered = getUniqueById(data.body.items)
+          let recentlyPlayed = await spotifyContextQuery(recentFiltered)
+          setRecent(recentlyPlayed)
+        } catch (err) {
+          console.error(err)
+        }
+      }
+
+      getRecent()
 
       return function cleanUp() {
+        setRecent([])
         setRecentSeeds([])
+        setRecentReversed([])
       }
     }, [accessToken])
 
@@ -265,7 +274,6 @@ export default function Dashboard() {
 
     // Finish loading and render page once all necessary API queries have been sent and arrays constructed
     useEffect(() => {
-      if (recent.length < 5) return
       if (moreLike.length < 5) return
       if (recommend.length < 5) return
       if (customArtistPanel.length < 5) return
@@ -275,7 +283,7 @@ export default function Dashboard() {
       return function cleanUp() {
         setLoading(true)
       }     
-    }, [recent, moreLike, recommend, customArtistPanel])
+    }, [moreLike, recommend, customArtistPanel])
     
     
     return loading? <Loader /> : (
