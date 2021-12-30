@@ -22,7 +22,7 @@ export default function Dashboard() {
     const [recommend, setRecommend] = useState([])
     const [relatedArtistsSeed, setRelatedArtistsSeed] = useState('')
     const [customArtistPanel, setCustomArtistPanel] = useState([])
-    const [customArtistName, setCustomArtistName] = useState([])
+    const [customArtistName, setCustomArtistName] = useState('')
     const [loading, setLoading] = useState(true)
 
     const date = new Date()
@@ -209,41 +209,32 @@ export default function Dashboard() {
 
       setCustomArtistName(topArtists[artistIndex].name)
       
-      spotifyApi.searchPlaylists(topArtists[artistIndex].name)
-      .then(data => {
-        let playlists = data.body.playlists.items.filter(item => item.owner.display_name === 'Spotify')
-        playlists.forEach(item => {
-          spotifyApi.getPlaylist(item.id)
-          .then(data => {
-            let obj = getDataObject(data.body)
-            setCustomArtistPanel(customArtistPanel => [...customArtistPanel, obj])
-          })
-          .catch(error => {
-            console.log(error)
-          })
-        })        
-      })
-      .catch(error => {
-        console.log(error)
-      })
+      const getCustomPanelPlaylists = async () => {
+        try {
+          const data = await spotifyApi.searchPlaylists(topArtists[artistIndex].name)
+          let playlists = data.body.playlists.items.filter(item => item.owner.display_name === 'Spotify')
+          playlists.slice(0, 2).forEach(playlist => setCustomArtistPanel(customArtistPanel => [...customArtistPanel, getDataObject(playlist)]))         
+        } catch (err) {
+          console.error(err)
+        }
+      }
+          
+      const getCustomPanelAlbums = async () => {
+        try {
+          const data = await spotifyApi.getArtistAlbums(topArtists[artistIndex].key, {album_type: 'album', limit: 5})
+          data.body.items.forEach(album => setCustomArtistPanel(customArtistPanel => [...customArtistPanel, getDataObject(album)]))
+        } catch (err) {
+          console.error(err)
+        }
+      }
+      
+      getCustomPanelPlaylists()
+      getCustomPanelAlbums()
 
-      spotifyApi.getArtistAlbums(topArtists[artistIndex].key, {album_type: 'album', limit: 4})
-      .then(data => {
-        data.body.items.forEach(item => {
-          spotifyApi.getAlbum(item.id)
-          .then(data => {
-          let obj = getDataObject(data.body)
-          setCustomArtistPanel(customArtistPanel => [...customArtistPanel, obj])
-          })
-          .catch(error => {
-            console.log(error)
-          })
-        })
-        
-      })
-      .catch(error => {
-        console.log(error)
-      })
+      return function cleanUp() {
+        setCustomArtistName('')
+        setCustomArtistPanel([])
+      }
 
     }, [accessToken, topArtists])
 
@@ -254,16 +245,16 @@ export default function Dashboard() {
     useEffect(() => {
       if (recentSeeds.length === 0) return
 
-      spotifyApi.getRecommendations({
-        seed_tracks: recentSeeds,
-        min_popularity: 50
-      })
-      .then(data => {
-        setForToday(data.body.tracks.map(track => getDataObject(track.album)))
-      })
-      .catch(error => {
-        console.log(error)
-      })
+      const getForToday = async () => {
+        try {
+          const data = await spotifyApi.getRecommendations({seed_tracks: recentSeeds, min_popularity: 50})
+          setForToday(data.body.tracks.map(track => getDataObject(track.album)))
+        } catch (err) {
+          console.error(err)
+        }
+      }
+
+      getForToday()
 
       return function cleanUp() {
         setForToday([])
@@ -275,14 +266,13 @@ export default function Dashboard() {
     useEffect(() => {
       if (moreLike.length < 5) return
       if (recommend.length < 5) return
-      if (customArtistPanel.length < 5) return
 
       setLoading(false)
 
       return function cleanUp() {
         setLoading(true)
       }     
-    }, [moreLike, recommend, customArtistPanel])
+    }, [moreLike, recommend])
     
     
     return loading? <Loader /> : (

@@ -209,7 +209,7 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
               }
               {creators.map((creator, index, creators) =>
                <span key={creator.id}>
-                <span className='headerCreator'>{' ' + creator.name + ' '}</span>
+                <span className='headerCreator'>{creator.name}</span>
                 {(index < creators.length - 1)?
                         <span style={{color: 'white'}}>•</span>
                         :
