@@ -81,7 +81,7 @@ export default function Dashboard() {
           try {
           const data = await spotifyApi.getAlbum(item.context.uri.substr(14))
           newArray.push(getDataObject(data.body))
-          }catch (err) {
+          } catch (err) {
             console.error(err)
           }
         }
@@ -154,27 +154,26 @@ export default function Dashboard() {
       
       setRelatedArtistsSeed(topArtists[artistIndex].name)
 
-      spotifyApi.getRecommendations({
-        seed_artists: [topArtists[artistIndex].key],
-        min_popularity: 50
-      })
-      .then(data => {
-        setMoreLike(data.body.tracks.map(track => getDataObject(track.album)))
-      })
-      .catch(error => {
-        console.log(error)
-      })
-     
-     spotifyApi.getRecommendations({
-       seed_artists: [topArtists[1].key, topArtists[2].key, topArtists[3].key],
-       min_popularity: 50
-     })
-     .then(data => {
-       setRecommend(data.body.tracks.map(track => getDataObject(track.album)))
-     })
-     .catch(error => {
-       console.log(error)
-     })
+      const getMoreLike = async () => {
+        try {
+          const data = await spotifyApi.getRecommendations({seed_artists: [topArtists[artistIndex].key], min_popularity: 50})
+          setMoreLike(data.body.tracks.map(track => getDataObject(track.album)))
+        } catch (err) {
+          console.error(err)
+        }
+      }
+
+     const getRecommend = async () => {
+       try {
+         const data = await spotifyApi.getRecommendations({seed_artists: [topArtists[1].key, topArtists[2].key, topArtists[3].key], min_popularity: 50})
+         setRecommend(data.body.tracks.map(track => getDataObject(track.album)))
+       } catch (err) {
+         console.error(err)
+       }
+     }
+
+     getMoreLike()
+     getRecommend()
 
     return function cleanUp() {
       setMoreLike([])
