@@ -4,7 +4,6 @@ import TracksTable from '../components/TracksTable'
 import { AuthContext, UserContext, PlaylistContext } from '../contexts'
 import HeaderPanel from '../components/HeaderPanel'
 import getTotalDuration from '../utils/getTotalDuration'
-import defaultPlaylist from '../icons/defaultPlaylist.png'
 import flagSavedTracks from '../utils/flagSavedTracks'
 import PlaylistSearch from '../components/PlaylistSearch'
 import getDataObject from '../utils/getDataObject'
@@ -22,14 +21,11 @@ export default function PlaylistPage({ location }) {
     const id  = location.state
     const accessToken = useContext(AuthContext)
     const user = useContext(UserContext)
-
     const [playlist, setPlaylist] = useState({})
-    const [playlistObj, setPlaylistObj] = useState({})
     const [tracks, setTracks] = useState([])
     const [savedArray, setSavedArray] = useState([])
     const [tracksFinal, setTracksFinal] = useState([])
     const [creator, setCreator] = useState([])
-    const [creatorImg, setCreatorImg] = useState('')
     const [recommendations, setRecommendations] = useState([])
     const [isOwner, setIsOwner] = useState(false)
     const {newTrack} = useContext(PlaylistContext)
@@ -55,39 +51,31 @@ export default function PlaylistPage({ location }) {
 
     useEffect(() => {
       if (!accessToken) return
-       
-      spotifyApi.getPlaylist(id)
-      .then(data => {    
-          setPlaylist({
-            title: data.body.name,
-            imgUrl: data.body.images[0]? data.body.images[0].url : defaultPlaylist,
-            uri: data.body.uri,
-            about: data.body.description,
-            info: (data.body.tracks.items.length !== 0)? ` • ${data.body.followers.total.toLocaleString('en-US')} likes • ${data.body.tracks.total} songs, ${getTotalDuration(data.body.tracks.items)}` : '',
-            type: 'PLAYLIST',
-            owner: data.body.owner.id 
-          })
-          setPlaylistObj(getDataObject(data.body))
 
+      const getPlaylistData = async () => {
+        try {
+          const data = await spotifyApi.getPlaylist(id)
+          setPlaylist({...getDataObject(data.body), info: (data.body.tracks.items.length !== 0)? ` • ${data.body.followers.total.toLocaleString('en-US')} likes • ${data.body.tracks.total} songs, ${getTotalDuration(data.body.tracks.items)}` : ''})
           if (user.id === data.body.owner.id) {
-            setIsOwner(true)
-          }
-          
+            setIsOwner(true) 
+          }   
           if (data.body.tracks.items.length === 0) {
             setIsEmpty(true)
           }
           else {
             setTracksSample(data.body.tracks.items.slice(0, 5).map((item, index) => getTrackObject(item.track, index, data.body.uri))) 
             setTracks(data.body.tracks.items.map((item, index) => getTrackObject(item.track, index, data.body.uri)))
-          }    
-      })
-      .catch(error => {
-        console.log(error)
-      })
+          }  
+        } catch (err) {
+          console.error(err)
+        }
+      }
+
+      getPlaylistData()
+       
 
       return function cleanUp() {
         setPlaylist({})
-        setPlaylistObj({})
         setIsOwner(false)
         setTracksSample([])
         setTracks([])
@@ -100,23 +88,19 @@ export default function PlaylistPage({ location }) {
       if (!accessToken) return
       if (!playlist.owner) return
 
-      spotifyApi.getUser(playlist.owner)
-      .then(data => {  
-        let obj = { name: data.body.display_name,
-                    id: data.body.id
+      const getUserInfo = async () => {
+        try {
+          const data = await spotifyApi.getUser(playlist.owner)
+          setCreator(creator => [...creator, { name: data.body.display_name, id: data.body.id}])
+        } catch (err) {
+          console.error(err)
         }
-        setCreator(creator => [...creator, obj])
-        if (data.body.images[0]) {
-          setCreatorImg(data.body.images[0].url)
-        }
-      })
-      .catch(error => {
-        console.log(error)
-      })
+      }
+
+      getUserInfo()
 
       return function cleanUp() {
         setCreator([])
-        setCreatorImg('')
       }
     }, [accessToken, playlist.owner])
 
@@ -126,32 +110,36 @@ export default function PlaylistPage({ location }) {
       if (tracks.length === 0) return
 
       let trax = tracks.slice(0, 50).map(item => item.id)
+      
+      const checkForSavedTracks = async () => {
+        try {
+          const data = await spotifyApi.containsMySavedTracks(trax)
+          setSavedArray(data.body)
+        } catch (err) {
+          console.error(err)
+        }
+      }
 
-      spotifyApi.containsMySavedTracks(trax)
-      .then(data => {
-        setSavedArray(data.body)
-      })
-      .catch(error => {
-          console.log(error)
-      })
+      checkForSavedTracks()
 
       return function cleanUp() {
         setSavedArray([])
       }
       
-  }, [tracks, accessToken])
+    }, [tracks, accessToken])
 
-  useEffect(() => {  
-    if (isEmpty) return
+
+    useEffect(() => {  
+      if (isEmpty) return
     
-    setTracksFinal(flagSavedTracks(tracks.slice(0, 50), savedArray))
-    setLoading(false)
+      setTracksFinal(flagSavedTracks(tracks.slice(0, 50), savedArray))
+      setLoading(false)
 
-    return function cleanUp() {
-      setTracksFinal([])
-      setLoading(true)
-    }
-  }, [isEmpty, tracks, savedArray])
+      return function cleanUp() {
+        setTracksFinal([])
+        setLoading(true)
+      }
+    }, [isEmpty, tracks, savedArray])
 
 
     useEffect(() => {
@@ -159,16 +147,16 @@ export default function PlaylistPage({ location }) {
       if (!isOwner) return
       if (isEmpty) return
 
-      spotifyApi.getRecommendations({
-        seed_tracks: getSeeds(tracksSample),
-        min_popularity: 50
-      })
-      .then(data => {
-        setRecommendations(data.body.tracks.map((track, index ) => getTrackObject(track, index, '')))
-      })
-      .catch(error => {
-        console.log(error)
-      })
+      const getRecommendedTracks = async () => {
+        try {
+          const data = await spotifyApi.getRecommendations({seed_tracks: getSeeds(tracksSample), min_popularity: 50})
+          setRecommendations(data.body.tracks.map((track, index ) => getTrackObject(track, index, '')))
+        } catch (err) {
+          console.error(err)
+        }
+      }
+
+      getRecommendedTracks()
 
       return function cleanUp() {
         setRecommendations([])
@@ -189,9 +177,9 @@ export default function PlaylistPage({ location }) {
     (
       <div>
         <Menu />
-        <HeaderPanel content={playlist} creators={creator} creatorImg={creatorImg} isOwner={isOwner}/>
+        <HeaderPanel content={playlist} creators={creator} isOwner={isOwner}/>
         <div className='pageContainer'>     
-          <HeaderControls URL={`https://api.spotify.com/v1/playlists/${id}/followers/contains?ids=${user.id}`} contextUri={playlist.uri} contextId={id} isOwner={isOwner} playlistObj={playlistObj} isEmpty={isEmpty}/>
+          <HeaderControls URL={`https://api.spotify.com/v1/playlists/${id}/followers/contains?ids=${user.id}`} contextUri={playlist.uri} contextId={id} isOwner={isOwner} playlistObj={playlist} isEmpty={isEmpty}/>
           <hr className='emptyPlaylist'/>
         <div className='playlistLowerHeading'>
           <span className='playlistLowerTitle'>Let's find something for your playlist</span>
@@ -204,7 +192,7 @@ export default function PlaylistPage({ location }) {
     (
       <div>
         <Menu />
-        <HeaderPanel content={playlist} creators={creator} id={id} creatorImg={creatorImg}/>
+        <HeaderPanel content={playlist} creators={creator} id={id} />
         <div className='pageContainer'>
         {(loading)?
           <div>
@@ -213,7 +201,7 @@ export default function PlaylistPage({ location }) {
           </div>
         :
         <div>
-          <HeaderControls URL={`https://api.spotify.com/v1/playlists/${id}/followers/contains?ids=${user.id}`} contextUri={playlist.uri} contextId={id} isOwner={isOwner} playlistObj={playlistObj} isEmpty={isEmpty}/>
+          <HeaderControls URL={`https://api.spotify.com/v1/playlists/${id}/followers/contains?ids=${user.id}`} contextUri={playlist.uri} contextId={id} isOwner={isOwner} playlistObj={playlist} isEmpty={isEmpty}/>
           <TracksTable content={tracksFinal} page='playlist' />        
           {(isOwner)?
             <div>

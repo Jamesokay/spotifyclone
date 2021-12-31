@@ -43,7 +43,7 @@ export default function Dashboard() {
       }
     }
 
-    // Function for removing duplicate listening contexts in Recently Played
+    // Function for removing null and duplicate listening contexts in Recently Played
     function getUniqueById(array) {
         
         const clearUndefinedValues = array.filter(item => {
@@ -129,6 +129,7 @@ export default function Dashboard() {
           let recentFiltered = getUniqueById(data.body.items)
           let recentlyPlayed = await spotifyContextQuery(recentFiltered)
           setRecent(recentlyPlayed)
+          setLoading(false)
         } catch (err) {
           console.error(err)
         }
@@ -140,6 +141,7 @@ export default function Dashboard() {
         setRecent([])
         setRecentSeeds([])
         setRecentReversed([])
+        setLoading(true)
       }
     }, [accessToken])
 
@@ -260,19 +262,6 @@ export default function Dashboard() {
         setForToday([])
       }
     }, [recentSeeds])
-
-
-    // Finish loading and render page once all necessary API queries have been sent and arrays constructed
-    useEffect(() => {
-      if (moreLike.length < 5) return
-      if (recommend.length < 5) return
-
-      setLoading(false)
-
-      return function cleanUp() {
-        setLoading(true)
-      }     
-    }, [moreLike, recommend])
     
     
     return loading? <Loader /> : (

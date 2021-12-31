@@ -31,9 +31,9 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
     }
 
     useEffect(() => {
-      if (!content.title) return
-      calculateFontSize(content.title)    
-    }, [content.title])
+      if (!content.name) return
+      calculateFontSize(content.name)    
+    }, [content.name])
     
 
     useEffect(() => {
@@ -54,14 +54,14 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
 
 
     useEffect(() => {
-      if (!content.title) return
-      if (content.title === 'Liked Songs') return
+      if (!content.name) return
+      if (content.name === 'Liked Songs') return
 
-      setCurrentPage({pageName: content.title,
+      setCurrentPage({pageName: content.name,
                       pageUri: content.uri
       })
 
-    }, [content, content.title, content.uri, setCurrentPage])
+    }, [content, content.name, content.uri, setCurrentPage])
 
 
       
@@ -193,10 +193,10 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
           }
           <div className='headerInfoBox'>
             <div className='headerInfo'>
-              <span className='headerType'>{content.type}</span>
-              <span className='headerTitle' style={(imgSize === 232)? {fontSize: titleSize + '%'} : {fontSize: (titleSize * 0.75) + '%'}}>{content.title}</span>
+              <span className='headerType'>{(content.type)? content.type.toUpperCase() : ''}</span>
+              <span className='headerTitle' style={(imgSize === 232)? {fontSize: titleSize + '%'} : {fontSize: (titleSize * 0.75) + '%'}}>{content.name}</span>
               {(content.type === 'PLAYLIST')?
-              <span className='headerSub'>{content.about}</span>
+              <span className='headerSub'>{content.subtitle}</span>
               :
               <></>
               }

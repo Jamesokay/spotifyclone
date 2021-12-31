@@ -28,7 +28,8 @@ export default function getDataObject(dataObject) {
           type: dataObject.type,
           name: dataObject.name,
           imgUrl: imgSrc,
-          subtitle: dataObject.description
+          subtitle: dataObject.description,
+          owner: dataObject.owner.id 
         }
       }
       else {
