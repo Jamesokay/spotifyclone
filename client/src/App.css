@@ -423,7 +423,9 @@ body::-webkit-scrollbar {
 
 .cardArtist {
     border-radius: 50%;
-    width: 100%;
+    width: 85%;
+    height: 62.5%;
+    margin: 7.5%;
     object-fit: cover;
     box-shadow: 0px 0px 10px 2px #121212;
 }
