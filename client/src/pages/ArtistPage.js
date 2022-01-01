@@ -7,9 +7,9 @@ import getDataObject from '../utils/getDataObject'
 import TracksTable from '../components/TracksTable'
 import { AuthContext, ThemeContext } from '../contexts'
 import Menu from '../components/Menu'
-import toMinsSecs from '../utils/toMinsSecs'
 import flagSavedTracks from '../utils/flagSavedTracks'
 import ArtistLoader from './ArtistLoader'
+import getTrackObject from '../utils/getTrackObject'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -40,34 +40,21 @@ export default function ArtistPage({ location }) {
       }
 
 
-    function getAlbumObject(id, type) {
-        spotifyApi.getAlbum(id)
-        .then(data => {
-            let obj = {
-                    onArtistPage: true,
-                    key: data.body.id,
-                    id: data.body.id,
-                    uri: data.body.uri,
-                    type: 'album',
-                    name: data.body.name,
-                    popularity: data.body.popularity,
-                    imgUrl: data.body.images[0].url,
-                    year: parseInt(data.body.release_date.slice(0, 4)),
-                    subtitle: data.body.release_date.slice(0, 4) + ' • ' + data.body.album_type.charAt(0).toUpperCase() + data.body.album_type.slice(1)
-            }
-            if (type === 'albums') {
-              setArtistAlbumsRaw(artistAlbumsRaw => [...artistAlbumsRaw, obj])
-            }
-            else if (type === 'popular') {
-              setPopularReleases(popularReleases => [...popularReleases, obj])
-            }
-            else if (type === 'singles') {
-              setSingles(singles => [...singles, obj])
-            }
-        })
-        .catch(error => {
-            console.log(error)
-        })
+    async function getAlbumObjects(array) {
+      let newArray = []
+
+      for (const item of array) {
+        try {
+          const data = await spotifyApi.getAlbum(item)
+          newArray.push({...getDataObject(data.body), 
+                         onArtistPage: true,
+                         year: parseInt(data.body.release_date.slice(0, 4)),
+                         subtitle: data.body.release_date.slice(0, 4) + ' • ' + data.body.album_type.charAt(0).toUpperCase() + data.body.album_type.slice(1)})
+        } catch (err) {
+          console.error(err)
+        }
+      }
+      return newArray
     }
 
 
@@ -85,68 +72,67 @@ export default function ArtistPage({ location }) {
     useEffect(() => {
         if (!accessToken) return
 
-        spotifyApi.getArtist(id)
-        .then(data =>{
-            setArtist({title: data.body.name, 
-                followers: data.body.followers.total.toLocaleString('en-US'), 
-                uri: data.body.uri, 
-                type: 'ARTIST', 
-                imgUrl: data.body.images[0].url})
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        const getArtistData = async () => {
+          try {
+            const data = await spotifyApi.getArtist(id)
+            setArtist({name: data.body.name, 
+              followers: data.body.followers.total.toLocaleString('en-US'), 
+              uri: data.body.uri, 
+              type: 'ARTIST', 
+              imgUrl: data.body.images[0].url})
+          } catch (err) {
+            console.error(err)
+          }
+        }
 
-        spotifyApi.getArtistTopTracks(id, 'AU')
-        .then(data => {
-            setArtistTracks(data.body.tracks.map((track, index ) => {
-                return {
-                    num: index + 1,
-                    id: track.id,
-                    uri: track.uri,
-                    name: track.name,
-                    trackImage: track.album.images[0].url,
-                    albumId: track.album.id,
-                    albUri: track.album.uri,
-                    duration: toMinsSecs(track.duration_ms),
-                    artists: track.artists
-                }
-            }))
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        const getTopTracks = async () => {
+          try {
+            const data = await spotifyApi.getArtistTopTracks(id, 'AU')
+            setArtistTracks(data.body.tracks.map((track, index) => getTrackObject(track, index, '')))
+          } catch (err) {
+            console.error(err)
+          }
+        }
 
-        spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'single,album'})
-        .then(data => {
+        const getPopularReleases = async () => {
+          try {
+            const data = await spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'single,album'})
             let albumsFiltered = getUniqueByName(data.body.items)
-            let albumsIds = albumsFiltered.map(item => item.id)
-            albumsIds.forEach(item => getAlbumObject(item, 'popular'))
-        })
-        .catch(error => {
-            console.log(error)
-        })
+            let albumIds = albumsFiltered.map(item => item.id)
+            setPopularReleases(await getAlbumObjects(albumIds))
+          } catch (err) {
+            console.error(err)
+          }
+        }
 
-
-        spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'album'})
-        .then(data => {
+        const getAlbums = async () => {
+          try {
+            const data = await spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'album'})
             let albumsFiltered = getUniqueByName(data.body.items)
-            let albumsIds = albumsFiltered.map(item => item.id)
-            albumsIds.forEach(item => getAlbumObject(item, 'albums'))
-        })
-        .catch(error => {
-            console.log(error)
-        })
+            let albumIds = albumsFiltered.map(item => item.id)
+            setArtistAlbumsRaw(await getAlbumObjects(albumIds))
+          } catch (err) {
+            console.error(err)
+          }
+        }
 
-        spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'single'})
-        .then(data => {
+        const getSingles = async () => {
+          try {
+            const data = await spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'single'})
             let albumsFiltered = getUniqueByName(data.body.items)
-            let albumsIds = albumsFiltered.map(item => item.id)
-            albumsIds.forEach(item => getAlbumObject(item, 'singles'))
-        })
-        .catch(error => {
-            console.log(error)
-        })
+            let albumIds = albumsFiltered.map(item => item.id)
+            setSingles(await getAlbumObjects(albumIds))
+          } catch (err) {
+            console.error(err)
+          }
+        }
+        getArtistData()
+        getTopTracks()
+        getPopularReleases()
+        getAlbums()
+        getSingles()
+
+
 
         spotifyApi.getArtistRelatedArtists(id)
         .then(data => {
@@ -174,13 +160,16 @@ export default function ArtistPage({ location }) {
 
         let trax = artistTracks.map(item => item.id)
 
-        spotifyApi.containsMySavedTracks(trax.slice(0, 10))
-        .then(data => {
-          setSavedArray(data.body)
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        const checkForSavedTracks = async () => {
+          try {
+            const data = await spotifyApi.containsMySavedTracks(trax.slice(0, 10))
+            setSavedArray(data.body)
+          } catch (err) {
+            console.error(err)
+          }
+        }
+
+        checkForSavedTracks()
 
         return function cleanUp() {
             setSavedArray([])
@@ -209,14 +198,6 @@ export default function ArtistPage({ location }) {
         popularReleases.sort(function(a, b) {
             return b.popularity - a.popularity
           })
-  
-        // popularReleases.sort(function(a, b) {
-        //       return b.year - a.year
-        // })
-            
-        // artistAlbumsRaw.sort(function(a, b) {
-        //   return b.popularity - a.popularity
-        // })
 
         artistAlbumsRaw.sort(function(a, b) {
             return b.year - a.year
@@ -238,9 +219,6 @@ export default function ArtistPage({ location }) {
           setAdjustedColour({red: 0, green: 0, blue: 0})
         }
       }, [currentTheme, currentTheme.red, currentTheme.green, currentTheme.blue])
-
-
-
 
 
     return (
