@@ -20,13 +20,13 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
 
     function calculateFontSize(title) {
       if (title.length <= 20) {
-        setTitleSize(600)
+        setTitleSize(550)
       }
       else if (title.length > 20 && title.length <= 30) {
-        setTitleSize(425)
+        setTitleSize(435)
       }
       else if (title.length > 30) {
-        setTitleSize(325)
+        setTitleSize(310)
       }
     }
 
@@ -195,14 +195,14 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
             <div className='headerInfo'>
               <span className='headerType'>{(content.type)? content.type.toUpperCase() : ''}</span>
               <span className='headerTitle' style={(imgSize === 232)? {fontSize: titleSize + '%'} : {fontSize: (titleSize * 0.75) + '%'}}>{content.name}</span>
-              {(content.type === 'PLAYLIST')?
+              {(content.type === 'playlist')?
               <span className='headerSub'>{content.subtitle}</span>
               :
               <></>
               }
               
               <div>
-              {(content.type === 'ALBUM' && creatorImg)?
+              {(content.type === 'album' && creatorImg)?
               <img className='artistImgSmall' src={creatorImg} alt=''/>
               :
               <></>
