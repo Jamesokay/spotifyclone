@@ -31,26 +31,17 @@ export default function AlbumPage({ location }) {
     const [moreByArtist, setMoreByArtist] = useState([])
 
 
-    function getAlbumObject(id) {
-
-        spotifyApi.getAlbum(id)
-        .then(data => {
-              let obj = {
-                    onAlbumPage: true,
-                    key: data.body.id,
-                    id: data.body.id,
-                    uri: data.body.uri,
-                    type: 'album',
-                    name: data.body.name,
-                    popularity: data.body.popularity,
-                    imgUrl: data.body.images[0].url,
-                    subtitle: data.body.release_date.slice(0, 4),
-              }
-              setMoreByArtist(moreByArtist => [...moreByArtist, obj])
-        })
-        .catch(error => {
-            console.log(error)
-        })
+    async function getAlbumObjects(array) {
+        let newArray = []
+        for (const item of array) {
+            try {
+                const data = await spotifyApi.getAlbum(item)
+                newArray.push({...getDataObject(data.body), onAlbumPage: true})
+            } catch (err) {
+                console.error(err)
+            }
+        }
+        return newArray
     }
 
 
@@ -149,8 +140,8 @@ export default function AlbumPage({ location }) {
             try {
                 const data = await spotifyApi.getArtistAlbums(album.artists[0].id, {limit: 50})
                 let filteredAlbums = getUniqueByName(data.body.items)
-                let albumsIds = filteredAlbums.map(item => item.id)
-                albumsIds.forEach(getAlbumObject)
+                let albumIds = filteredAlbums.map(item => item.id)
+                setMoreByArtist(await getAlbumObjects(albumIds))
             } catch (err) {
                 console.error(err)
             }

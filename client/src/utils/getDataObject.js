@@ -17,7 +17,9 @@ export default function getDataObject(dataObject) {
           type: dataObject.type,
           name: dataObject.name,
           imgUrl: imgSrc,
-          artists: dataObject.artists
+          artists: dataObject.artists,
+          popularity: dataObject.popularity,
+          subtitle: dataObject.release_date.slice(0, 4)
         }
       }
       else if (dataObject.type === 'playlist') {
