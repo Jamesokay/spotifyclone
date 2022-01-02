@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Panel from '../components/Panel'
 import getDataObject from '../utils/getDataObject'
-import toMinsSecs from '../utils/toMinsSecs'
 import { AuthContext, ThemeContext, TrackContext, RightClickContext, SideBarWidthContext } from '../contexts'
 import TracksTable from '../components/TracksTable'
 import axios from 'axios'
@@ -10,6 +9,7 @@ import pauseTrack from '../utils/pauseTrack'
 import Menu from '../components/Menu'
 import { Link } from 'react-router-dom'
 import useViewport from '../hooks/useViewPort'
+import getTrackObject from '../utils/getTrackObject'
 
 
 export default function Search() {
@@ -30,19 +30,77 @@ export default function Search() {
     const { setCurrentTheme } = useContext(ThemeContext)
     const { nowPlaying } = useContext(TrackContext)
     const { setRightClick } = useContext(RightClickContext)
-
     const [userArtists, setUserArtists] = useState([])
     const [featuringArtist, setFeaturingArtist] = useState([])
-
     const [loading, setLoading] = useState(true)
-
     const [topResultWidth, setTopResultWidth] = useState(37.5)
     const { width } = useViewport()
     const { currentWidth } = useContext(SideBarWidthContext)
     const breakPointLarge = 1055
     const breakPointSmall = 850
-    
 
+    // Function for generating a personalized top result by cross-referencing search results with user's top artists
+    // If no match found, function will simply return the first artist in the artist results array
+    function getTopResult(userArray, artists, albums, tracks) {
+      for (const artist of artists) {
+        if (userArray.includes(artist.id)) {
+          return({
+            name: artist.name,
+            id: artist.id,
+            creator: '',
+            imgUrl: artist.images[0].url,                  
+            type: 'ARTIST'
+          })
+        }
+      }
+
+      for (const album of albums) {
+        if (userArray.includes(album.artists[0].id)) {
+          return({
+            name: album.name,
+            id: album.id,
+            creator: album.artists[0].name,
+            imgUrl: album.images[0].url,                  
+            type: 'ALBUM',
+            data: {context_uri: album.uri},
+                    uri: album.uri
+          })
+        }
+      }
+
+      for (const track of tracks) {
+        if (userArray.includes(track.artists[0].id)) {
+          return({
+            name: track.name,
+            id: track.id,
+            creator: track.artists[0].name,
+            imgUrl: track.album.images[0].url,                  
+            type: 'TRACK',
+            data: {context_uri: track.album.uri,
+                    offset: { uri: track.uri }},  
+            context: track.album.uri,
+            uri: track.uri               
+          })
+        }
+      }
+
+      return({
+        name: artists[0].name,
+        id: artists[0].id,
+        creator: '',
+        imgUrl: artists[0].images[0].url,                  
+        type: 'ARTIST'
+      })
+    }
+
+
+    // Set NavBar to black
+    useEffect(() => {
+        setCurrentTheme('0,0,0')
+    }, [setCurrentTheme])
+
+
+    // Make top result card responsive to viewport breakpoints
     useEffect(() => {
         if ((width - currentWidth) <= breakPointSmall) {
           setTopResultWidth(61)
@@ -54,15 +112,13 @@ export default function Search() {
           setTopResultWidth(37.5)
         }
 
-        return function cleanUp() {
+        return () => {
             setTopResultWidth(37.5)
         }
     }, [width, currentWidth])
 
-    useEffect(() => {
-        setCurrentTheme('0,0,0')
-    }, [setCurrentTheme])
 
+    // API call to get user's top artists
     useEffect(() => {
         const options = {
             url: `https://api.spotify.com/v1/me/top/artists`,
@@ -73,73 +129,26 @@ export default function Search() {
                 }
             }
         
-        axios(options)
-        .then(response => {
-            console.log(response.data)
-            setUserArtists(response.data.items.map(item => item.id))
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        const getUserArtists = async () => {
+            try {
+                const response = await axios(options)
+                setUserArtists(response.data.items.map(item => item.id))
+            } catch (err) {
+                console.error(err)
+            }
+        }
+
+        getUserArtists()
+
+        return () => {
+            setUserArtists([])
+        }       
     }, [accessToken])
 
 
+    // Search query
     useEffect(()=> {
         if (!search) return
-
-        function getTopResult(artists, albums, tracks) {
-
-            for (let i = 0; i < artists.length; i ++) {
-                if (userArtists.includes(artists[i].id)) {
-                    return({
-                        name: artists[i].name,
-                        id: artists[i].id,
-                        creator: '',
-                        imgUrl: artists[i].images[0].url,                  
-                        type: 'ARTIST'
-                    })
-                }
-            }
-
-            for (let i = 0; i < albums.length; i ++) {
-                if (userArtists.includes(albums[i].artists[0].id)) {
-                    return({
-                        name: albums[i].name,
-                        id: albums[i].id,
-                        creator: albums[i].artists[0].name,
-                        imgUrl: albums[i].images[0].url,                  
-                        type: 'ALBUM',
-                        data: {context_uri: albums[i].uri},
-                        uri: albums[i].uri
-                    })
-                }
-            }
-
-
-            for (let i = 0; i < tracks.length; i ++) {
-                if (userArtists.includes(tracks[i].artists[0].id)) {
-                    return({
-                        name: tracks[i].name,
-                        id: tracks[i].id,
-                        creator: tracks[i].artists[0].name,
-                        imgUrl: tracks[i].album.images[0].url,                  
-                        type: 'TRACK',
-                        data: {context_uri: tracks[i].album.uri,
-                               offset: { uri: tracks[i].uri }},  
-                        context: tracks[i].album.uri,
-                        uri: tracks[i].uri               
-                    })
-                }
-            }
-
-        return({
-                name: artists[0].name,
-                id: artists[0].id,
-                creator: '',
-                imgUrl: artists[0].images[0].url,                  
-                type: 'ARTIST'
-            })
-        }
 
         let query = search.replace(/ /g, '+')
 
@@ -152,38 +161,65 @@ export default function Search() {
                 }
             }
         
-          axios(options)
-          .then(response => {
-              console.log(response.data)
-              setTrackResults(
-                  response.data.tracks.items.map(item => {
-                        return {
-                            id: item.id,
-                            uri: item.uri,
-                            trackImage: item.album.images[0].url,
-                            name: item.name,
-                            artists: item.artists,
-                            duration: toMinsSecs(item.duration_ms)
-                        }
-              }))
-              setTopResult(getTopResult(response.data.artists.items, response.data.albums.items, response.data.tracks.items))
-              setArtistResults(response.data.artists.items.map(getDataObject))
-              setAlbumResults(response.data.albums.items.map(getDataObject))
-              setPlaylistResults(response.data.playlists.items.map(getDataObject))
-          })
-          .catch(error => {
-            console.log(error)
-          })
+        const searchQuery = async () => {
+            try {
+                const response = await axios(options)
+                setTrackResults(response.data.tracks.items.map((item, index) => getTrackObject(item, index, '')))
+                setTopResult(getTopResult(userArtists, response.data.artists.items, response.data.albums.items, response.data.tracks.items))
+                setArtistResults(response.data.artists.items.map(getDataObject))
+                setAlbumResults(response.data.albums.items.map(getDataObject))
+                setPlaylistResults(response.data.playlists.items.map(getDataObject))
+                setLoading(false)
+            } catch (err) {
+                console.error(err)
+            }
+        }
+        
+        searchQuery()
 
-        return function cleanUp() {
+        return () => {
             setTrackResults([])
             setArtistResults([])
             setAlbumResults([])
             setPlaylistResults([])
             setTopResult({})
+            setLoading(true)
         }
     }, [search, accessToken, userArtists])
 
+
+    // Generate additional 'Featuring {Artist}' panel if top result is of type 'ARTIST'
+    useEffect(() => {
+        if (topResult.type !== 'ARTIST') return
+
+        const options = {
+            url: `https://api.spotify.com/v1/search?q=${topResult.name}&type=playlist`,
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+                }
+            }
+
+        const getFeaturingArtist = async () => {
+            try {
+                const response = await axios(options)
+                let playlists = response.data.playlists.items.filter(item => item.owner.id === 'spotify')
+                setFeaturingArtist(playlists.map(getDataObject))
+            } catch (err) {
+                console.error(err)
+            }
+        }   
+        
+        getFeaturingArtist()
+
+        return () => {
+            setFeaturingArtist([])
+        }
+    }, [topResult, accessToken])
+
+
+    // Play/pause button logic for top result card
     useEffect(() => {
         if (!topResult.uri) return
 
@@ -194,36 +230,10 @@ export default function Search() {
             setTopResultPlaying(false)
         }
 
-        return function cleanUp() {
+        return () => {
             setTopResultPlaying(false)
         }
     }, [topResult, topResult.uri, nowPlaying.trackUri, nowPlaying.contextUri])
-
-    useEffect(() => {
-        if (topResult.type === 'ARTIST') {
-            const options = {
-                url: `https://api.spotify.com/v1/search?q=${topResult.name}&type=playlist`,
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json',
-                    }
-                }
-            axios(options)
-            .then(response => {
-                let playlists = response.data.playlists.items.filter(item => item.owner.id === 'spotify')
-                setFeaturingArtist(playlists.map(getDataObject))
-            })
-            .catch(error => {
-                console.log(error)
-            })          
-        }
-
-        return function cleanUp() {
-            setFeaturingArtist([])
-        }
-
-    }, [topResult, accessToken])
 
 
         return (
@@ -243,8 +253,7 @@ export default function Search() {
             </form>
         {(search)?
             <div id='searchResults'
-                     style={(loading)? {visibility: 'hidden'} : {visibility: 'visible'}}
-                     onLoad={() => setLoading(false)}>        
+                     style={(loading)? {visibility: 'hidden'} : {visibility: 'visible'}}>        
             <div id='searchResultsHead'>
 
           <Link id='topResultLink' style={{width: topResultWidth + '%'}} to={{pathname: `/${topResult.type}/${topResult.id}`, state: topResult.id }}

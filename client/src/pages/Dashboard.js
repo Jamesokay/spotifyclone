@@ -117,7 +117,7 @@ export default function Dashboard() {
     
     // Store top 5 ids as seeds for generating recommendations
     // Get recently played tracks
-    // These are then filtered by getUniqueById() to remove duplicate contexts
+    // These are then filtered by getUniqueById() to remove null and duplicate contexts
     // Filtered array is then passed through spotifyContextQuery() to generate the final array of objects to be rendered
     useEffect(() => {   
       if (!accessToken) return   
