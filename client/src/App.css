@@ -714,7 +714,6 @@ body::-webkit-scrollbar {
     width: 2%;
     height: 100%;
     background: black;
-    z-index: 2;
     cursor: col-resize;
 }
 
@@ -831,7 +830,7 @@ li:hover .sideBarImg {
     left: 0;
     border-radius: 5px;
     box-shadow: 0px 5px 10px 2px #121212;
-    z-index: 5;
+    z-index: 6;
 }
 
 .contextMenuDash {

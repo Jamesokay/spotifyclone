@@ -24,7 +24,6 @@ export default function SideBar() {
       (event) => {
         event.preventDefault();
         if (event.target.className === 'playlistLi' || event.target.className === 'sideBarPlaylist' || event.target.className === 'sideBarPlaylist sideBarPlaylistActive' || event.target.className === 'playlistTitle') {
-          console.log('callback')
           setAnchorPoint({ x: event.pageX, y: event.pageY - scrolled});
           setShowMenu(true);
         }
@@ -43,9 +42,7 @@ export default function SideBar() {
       }
     }, [showMenu]);
 
-        
-
-  
+   
     useEffect(() => {
       document.addEventListener("click", handleClick);
       document.addEventListener("contextmenu", handleContextMenu);
@@ -63,12 +60,8 @@ export default function SideBar() {
       setScrolled(window.pageYOffset)
     }
       
-    
-    function createPlaylist() {
-        let data = {
-          name: 'My Playlist #' + (userPlaylists.length + 1)
-        }
-
+    // Function to create new playlist and then navigate to its page
+    async function createPlaylist() {
         const options = {
           url: `https://api.spotify.com/v1/users/${user.id}/playlists`,
           method: 'POST',
@@ -76,21 +69,20 @@ export default function SideBar() {
               'Authorization': `Bearer ${accessToken}`,
               'Content-Type': 'application/json',
               },
-          data
+          data: {name: 'My Playlist #' + (userPlaylists.length + 1)}
           }
-      
-        axios(options)
-        .then(response => {
-           setUserPlaylists(userPlaylists => [...userPlaylists, getDataObject(response.data)])
-           let location = {
+        
+        try {
+          const response = await axios(options)
+          setUserPlaylists(userPlaylists => [...userPlaylists, getDataObject(response.data)])
+          let location = {
             pathname: '/playlist/' + response.data.id,
             state: response.data.id
           }
-           history.push(location)
-        })
-        .catch(error => {
-          console.log(error)
-        })
+          history.push(location)
+        } catch (err) {
+          console.error(err)
+        }
     }
 
     return (
@@ -132,7 +124,6 @@ export default function SideBar() {
          </li>
 
          <li className='sideBarLink' onClick={()=> createPlaylist()}>
-           {/* <div className='sideBarImg' style={{backgroundColor: 'white'}}></div> */}
            <svg className='sideBarImg' viewBox="0 0 24 24" width="24" height="24" style={{borderRadius: '2px'}} xmlns="http://www.w3.org/2000/svg">
            <rect className='createPlaylistIcon' width='24' height='24' fill='white'></rect>
             <path className='plusIcon' d="M7 12, L17 12, M12 7, L12 17 " stroke="black" fill='none' strokeWidth='2'></path>

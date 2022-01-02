@@ -11,8 +11,6 @@ export default function Layout({ children }) {
     const [resizing, setResizing] = useState(false)
     const { currentWidth, setCurrentWidth } = useContext(SideBarWidthContext)
     
-
-
     useEffect(() => {
         if (!notification.action) return
         setShow(true)
@@ -41,23 +39,20 @@ export default function Layout({ children }) {
                 else return
             }}>
 
-        <div id='navBarContainer' style={{marginLeft: currentWidth, width: window.innerWidth - currentWidth}}>
+          <div id='navBarContainer' style={{marginLeft: currentWidth, width: window.innerWidth - currentWidth}}>
             <NavBar />
-        </div>
-
-
-            <div id='sideBarContainer' style={{width: currentWidth}}>
-              <SideBar />
-              <div id='sideBarDrag' 
-                   style={(resizing)? {background: 'linear-gradient(to right, black 80%, rgb(168, 168, 168) 20%)'}:{}}
-                   onMouseDown={() => setResizing(true)}/>
-            </div>
-
-            <div style={{marginLeft: currentWidth}}>
+          </div>
+          <div id='sideBarContainer' style={{width: currentWidth}}>
+            <SideBar />
+            <div id='sideBarDrag' 
+                style={(resizing)? {background: 'linear-gradient(to right, black 80%, rgb(168, 168, 168) 20%)'}:{}}
+                onMouseDown={() => setResizing(true)}/>
+          </div>
+          <div style={{marginLeft: currentWidth}}>
             {children}
-            </div>
-            <div className='likedNotification' style={(show)? {opacity: '1'} : {opacity: '0'}}>{notification.text}</div>
-            <WebPlayer />
+          </div>
+          <div className='likedNotification' style={(show)? {opacity: '1'} : {opacity: '0'}}>{notification.text}</div>
+          <WebPlayer />
         </div>
     
     :

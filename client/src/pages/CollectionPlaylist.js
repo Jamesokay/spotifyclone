@@ -16,74 +16,84 @@ const spotifyApi = new SpotifyWebApi({
 export default function CollectionPlaylist() {
   const accessToken = useContext(AuthContext)
   const [preview, setPreview] = useState([])
+  const [savedTracksTotal, setSavedTracksTotal] = useState(0)
   const [playlists, setPlaylists] = useState([])
   const { setCurrentTheme } = useContext(ThemeContext)
-
-
-  useEffect(() => {
-    if (!accessToken) return
-    spotifyApi.setAccessToken(accessToken)
-  }, [accessToken])
-
-  useEffect(() => {
-    setCurrentTheme({red: 0, green: 0, blue: 0})
-  }, [setCurrentTheme])
-
-  const [cardWidth, setCardWidth] = useState('17.8%')
-  const [likedSongsCardWidth, setLikedSongsCardWidth] = useState('37.3%')
+  const [cardWidth, setCardWidth] = useState(17.8)
+  const [likedSongsCardWidth, setLikedSongsCardWidth] = useState(37.3)
   const { width } = useViewport()
   const { currentWidth } = useContext(SideBarWidthContext)
   const breakPointLarge = 1060
   const breakPointMedium = 860
   const breakPointSmall = 620
-  
 
   useEffect(() => {
+    if (!accessToken) return
+    spotifyApi.setAccessToken(accessToken)
+  }, [accessToken])
+  
+  // Set NavBar to black
+  useEffect(() => {
+    setCurrentTheme({red: 0, green: 0, blue: 0})
+  }, [setCurrentTheme])
+
+  
+  // Make cards responsive to viewport breakpoints
+  useEffect(() => {
       if ((width - currentWidth) <= breakPointSmall) {
-        setLikedSongsCardWidth('91%')
-        setCardWidth('44.5%')
+        setLikedSongsCardWidth(91)
+        setCardWidth(44.5)
       }
       else if ((width - currentWidth) > breakPointSmall && (width - currentWidth) <= breakPointMedium) {
-        setLikedSongsCardWidth('61%')
-        setCardWidth('29.6%')
+        setLikedSongsCardWidth(61)
+        setCardWidth(29.6)
       }
       else if ((width - currentWidth) > breakPointMedium && (width - currentWidth) < breakPointLarge) {
-        setLikedSongsCardWidth('46.2%')
-        setCardWidth('22.25%')
+        setLikedSongsCardWidth(46.2)
+        setCardWidth(22.25)
       }
       else if ((width - currentWidth) >= breakPointLarge) {
-        setLikedSongsCardWidth('37.3%')
-        setCardWidth('17.8%')
+        setLikedSongsCardWidth(37.3)
+        setCardWidth(17.8)
       }
 
-      return function cleanUp() {
-          setLikedSongsCardWidth('37.3%')
-          setCardWidth('17.8%')
+      return () => {
+          setLikedSongsCardWidth(37.3)
+          setCardWidth(17.8)
       }
   }, [width, currentWidth])
 
   
-
+  // Get user's saved tracks, the names and artists of which will be rendered on Liked Songs card
   useEffect(() => {
     if (!accessToken) return
 
-    spotifyApi.getMySavedTracks()
-    .then(data => {
-      console.log(data.body)
-      setPreview(data.body.items.map(item => {
-        return {
-          id: item.track.id,
-          name: item.track.name + ' ',
-          artist: item.track.artists[0].name + ' • '
-        }
-      }))
-    })
-    .catch(error => {
-      console.log(error)
-    })
+    const getLikedSongsPreview = async () => {
+      try {
+        const data = await spotifyApi.getMySavedTracks()
+        setSavedTracksTotal(data.body.items.length)
+        setPreview(data.body.items.map(item => {
+          return {
+            id: item.track.id,
+            name: item.track.name + ' ',
+            artist: item.track.artists[0].name + ' • '
+          }
+        }))
+      } catch (err) {
+        console.error(err)
+      }
+    }
 
+    getLikedSongsPreview()
+
+    return () => {
+      setSavedTracksTotal(0)
+      setPreview([])
+    }
   }, [accessToken])
 
+
+  // Get user's saved playlists
   useEffect(() => {
     if (!accessToken) return
 
@@ -95,27 +105,30 @@ export default function CollectionPlaylist() {
           'Content-Type': 'application/json',
           }
       }
-  
-    axios(options)
-    .then(response => {
-       setPlaylists(response.data.items.map(getDataObject))
-    })
-    .catch(error => {
-      console.log(error)
-    })
     
+    const getSavedPlaylists = async () => {
+      try {
+        const response = await axios(options)
+        setPlaylists(response.data.items.map(getDataObject))
+      } catch (err) {
+        console.error(err)
+      }
+    }
+  
+    getSavedPlaylists()
+
+    return () => {
+      setPlaylists([])
+    }   
   }, [accessToken])
 
-  useEffect(() => {
-    console.log(playlists)
-  }, [playlists])
 
     return (
     <div id='collectionPagePlaylist'>
      <CollectionNav />
      <span className='collectionTitle'>Playlists</span> 
      <div className='panel'>
-     <Link id='likedSongsContainer' to={{pathname:'/collection/tracks'}} style={{width: likedSongsCardWidth}}>
+     <Link id='likedSongsContainer' to={{pathname:'/collection/tracks'}} style={{width: likedSongsCardWidth + '%'}}>
         <div id='likedSongsCard'>
            <span id='lsCardPreview'>
             {preview.map(prev =>
@@ -126,14 +139,14 @@ export default function CollectionPlaylist() {
             )}
             </span>
             <span id='lsCardTitle'>Liked Songs</span>
-            <span id='lsCount'>200 liked songs</span>
+            <span id='lsCount'>{savedTracksTotal + ' liked songs'}</span>
             <div id='lsPlayButton'>
               <div id='lsPlayIcon'></div>
             </div>
       </div>
       </Link>
       {playlists.map(cont =>
-        <Link className='cardLink' style={{width: cardWidth}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
+        <Link className='cardLink' style={{width: cardWidth + '%'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
         <div className='cardBody'>
           <div className='cardImageBox'>
             <img className='cardImage' src={cont.imgUrl} alt='' />
