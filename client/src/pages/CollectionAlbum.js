@@ -21,13 +21,20 @@ export default function CollectionAlbum() {
     useEffect(() => {
         if (!accessToken) return
 
-        spotifyApi.getMySavedAlbums()
-        .then(data => {
-            setAlbums(data.body.items.map(item=> getDataObject(item.album)))
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        const getSavedAlbums = async () => {
+            try {
+                const data = await spotifyApi.getMySavedAlbums()
+                setAlbums(data.body.items.map(item=> getDataObject(item.album)))
+            } catch (err) {
+                console.error(err)
+            }
+        }
+
+        getSavedAlbums()
+
+        return () => {
+            setAlbums([])
+        }     
     }, [accessToken])
 
 

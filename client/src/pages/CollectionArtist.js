@@ -21,13 +21,20 @@ export default function CollectionArtist() {
     useEffect(() => {
         if (!accessToken) return
 
-        spotifyApi.getFollowedArtists()
-        .then(data => {
-            setArtists(data.body.artists.items.map(getDataObject))
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        const getSavedArtists = async () => {
+            try {
+                const data = await spotifyApi.getFollowedArtists()
+                setArtists(data.body.artists.items.map(getDataObject))
+            } catch (err) {
+                console.error(err)
+            }
+        }
+
+        getSavedArtists()
+
+        return () => {
+            setArtists([])
+        }
     }, [accessToken])
     
     return (

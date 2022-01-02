@@ -96,7 +96,7 @@ export default function Search() {
 
     // Set NavBar to black
     useEffect(() => {
-        setCurrentTheme('0,0,0')
+        setCurrentTheme({red: 0, green: 0, blue: 0}) 
     }, [setCurrentTheme])
 
 
