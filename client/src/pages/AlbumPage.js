@@ -8,7 +8,6 @@ import Panel from '../components/Panel'
 import HeaderPanel from '../components/HeaderPanel'
 import getTotalDuration from '../utils/getTotalDuration'
 import flagSavedTracks from '../utils/flagSavedTracks'
-import Menu from '../components/Menu'
 import HeaderControls from '../components/HeaderControls'
 import AlbumLoader from './AlbumLoader'
 
@@ -180,7 +179,6 @@ export default function AlbumPage({ location }) {
     return (
         <div>
           <HeaderPanel content={album} creators={creatorObject} creatorImg={creatorImg}/>
-          <Menu/>
           <div className='pageContainer'>
             <HeaderControls URL={`https://api.spotify.com/v1/me/albums/contains?ids=${id}`} contextUri={album.uri} contextId={id} />
             {(loading)?

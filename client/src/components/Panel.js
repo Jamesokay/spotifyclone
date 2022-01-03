@@ -66,7 +66,7 @@ export default function Panel({ content, type }) {
         <div className='panel'> 
         {array.map(cont =>
           <Link className='cardLink' style={{width: cardWidth}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}
-                onContextMenu={(e) => setRightClick({type: cont.type, yPos: e.screenY, xPos: e.screenX, id: cont.id})}>
+                onContextMenu={(e) => setRightClick({type: cont.type, id: cont.id})}>
           <div className='cardBody' style={(rightClick.id === cont.id)? {background: 'rgb(40, 40, 40)'} : {}}>
             {cont.type === 'artist'?
             <img className='cardArtist' src={cont.imgUrl} alt='' />

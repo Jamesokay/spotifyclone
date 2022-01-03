@@ -129,7 +129,7 @@ export default function PanelGrid({ content, head }) {
                 style={{flex: `0 1 calc(${cardWidth}% - 25px)`}}
                 key={cont.key} 
                 to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}
-                onContextMenu={(e) => setRightClick({type: cont.type,  yPos: e.screenY, xPos: e.screenX, id: cont.id})}
+                onContextMenu={(e) => setRightClick({type: cont.type, id: cont.id})}
                 >
           <div className='gridCard'
                style={(rightClick.id === cont.id)? {backgroundColor: 'rgba(128, 128, 128, 0.7)'} : {}}

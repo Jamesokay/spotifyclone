@@ -8,18 +8,18 @@ export default function Menu() {
     const [menuXY, setMenuXY] = useState()
 
     useEffect(() => {
-      if (rightClick.yPos + (window.innerHeight * 0.2) > window.innerHeight && rightClick.xPos + (window.innerWidth * 0.2) > window.innerWidth) {
+      if (anchorPoint.y + (window.innerHeight * 0.15) > window.innerHeight && anchorPoint.x + (window.innerWidth * 0.15) > window.innerWidth) {
         setMenuXY({top: anchorPoint.y, left: anchorPoint.x, transform: 'translateX(-105%) translateY(-105%)'})
       }
-      else if (rightClick.yPos + (window.innerHeight * 0.2) > window.innerHeight) {
+      else if (anchorPoint.y + (window.innerHeight * 0.15) > window.innerHeight) {
         setMenuXY({top: anchorPoint.y, left: anchorPoint.x, transform: 'translateY(-105%)'})
       }
-      else if (rightClick.xPos + (window.innerWidth * 0.2) > window.innerWidth) {
+      else if (anchorPoint.x + (window.innerWidth * 0.15) > window.innerWidth) {
         setMenuXY({top: anchorPoint.y, left: anchorPoint.x, transform: 'translateX(-105%)'})
       }
       else setMenuXY({top: anchorPoint.y, left: anchorPoint.x})
 
-    }, [rightClick.yPos, rightClick.xPos, anchorPoint.y, anchorPoint.x])
+    }, [anchorPoint.y, anchorPoint.x])
   
     if (showMenu && rightClick.type === 'playlist') {
       return (

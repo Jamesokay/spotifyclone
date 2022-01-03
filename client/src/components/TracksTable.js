@@ -230,7 +230,7 @@ export default function TracksTable({content, page, trackDepth }) {
                 <tr className='trackTableRow' key={cont.id}
                     onContextMenu={(e) => {                  
                       if (!preventProp) {
-                        setRightClick({id: cont.id, yPos: e.screenY, xPos: e.screenX, type: 'track'})
+                        setRightClick({id: cont.id, type: 'track'})
                       }
                       else return
                     }}
@@ -264,7 +264,7 @@ export default function TracksTable({content, page, trackDepth }) {
                               style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                               onMouseEnter={() => setPreventProp(true)}
                               onMouseLeave={() => setPreventProp(false)}
-                              onContextMenu={(e) => setRightClick({id: cont.id, yPos: e.screenY, xPos: e.screenX, type: 'artist'})}
+                              onContextMenu={(e) => setRightClick({id: cont.id, type: 'artist'})}
                             onClick={(e) => {
                              e.preventDefault()
                              history.push({
@@ -344,7 +344,7 @@ export default function TracksTable({content, page, trackDepth }) {
                 <tr className='trackTableRow' 
                     onContextMenu={(e) => {
                       if (!preventProp) {
-                        setRightClick({id: cont.id, yPos: e.screenY, xPos: e.screenX, type: 'track'})
+                        setRightClick({id: cont.id, type: 'track'})
                       }
                       else return
                     }
@@ -384,7 +384,7 @@ export default function TracksTable({content, page, trackDepth }) {
                               style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                               onMouseEnter={() => setPreventProp(true)}
                               onMouseLeave={() => setPreventProp(false)}
-                              onContextMenu={(e) => setRightClick({id: cont.id, yPos: e.screenY, xPos: e.screenX, type: 'artist'})}
+                              onContextMenu={(e) => setRightClick({id: cont.id, type: 'artist'})}
                               onClick={(e) => {
                                 e.preventDefault()
                                 history.push({
@@ -406,7 +406,7 @@ export default function TracksTable({content, page, trackDepth }) {
                           style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                           onMouseEnter={() => setPreventProp(true)}
                           onMouseLeave={() => setPreventProp(false)}
-                          onContextMenu={(e) => setRightClick({id: cont.id, yPos: e.screenY, xPos: e.screenX, type: 'album'})}
+                          onContextMenu={(e) => setRightClick({id: cont.id, type: 'album'})}
                           onClick={() => {        
                              history.push({
                                pathname: `/album/${cont.albumId}`,
@@ -464,7 +464,7 @@ export default function TracksTable({content, page, trackDepth }) {
         <tr className='trackTableRow' key={cont.id}
             onContextMenu={(e) => {
               if (!preventProp) {
-                setRightClick({id: cont.id, yPos: e.screenY, xPos: e.screenX, type: 'track'})
+                setRightClick({id: cont.id, type: 'track'})
               }
               else return
               }}
@@ -485,7 +485,7 @@ export default function TracksTable({content, page, trackDepth }) {
                       style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                       onMouseEnter={() => setPreventProp(true)}
                       onMouseLeave={() => setPreventProp(false)}
-                      onContextMenu={(e) => setRightClick({id: cont.id,  yPos: e.screenY, xPos: e.screenX, type: 'artist'})}>{artist.name}</span>
+                      onContextMenu={(e) => setRightClick({id: cont.id, type: 'artist'})}>{artist.name}</span>
                 {(index < artists.length - 1)?
                 <span>, </span>
                 :
@@ -499,7 +499,7 @@ export default function TracksTable({content, page, trackDepth }) {
                 style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                 onMouseEnter={() => setPreventProp(true)}
                 onMouseLeave={() => setPreventProp(false)}
-                onContextMenu={(e) => setRightClick({id: cont.id,  yPos: e.screenY, xPos: e.screenX, type: 'album'})}>
+                onContextMenu={(e) => setRightClick({id: cont.id, type: 'album'})}>
             {cont.albumName}
           </span>
           </td>
@@ -527,7 +527,7 @@ export default function TracksTable({content, page, trackDepth }) {
           <tr className='trackTableRow' key={cont.id}
               onContextMenu={(e) => {
                 if (!preventProp) {
-                  setRightClick({id: cont.id, yPos: e.screenY, xPos: e.screenX, type: 'track'})
+                  setRightClick({id: cont.id, type: 'track'})
                 }
                 else return
               }}
@@ -547,7 +547,7 @@ export default function TracksTable({content, page, trackDepth }) {
                         style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                         onMouseEnter={() => setPreventProp(true)}
                         onMouseLeave={() => setPreventProp(false)}
-                        onContextMenu={(e) => setRightClick({id: cont.id,  yPos: e.screenY, xPos: e.screenX,  type: 'artist'})}
+                        onContextMenu={(e) => setRightClick({id: cont.id, type: 'artist'})}
                         onClick={(e) => {
                              e.preventDefault()
                              history.push({

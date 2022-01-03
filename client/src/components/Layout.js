@@ -1,6 +1,7 @@
 import SideBar from './SideBar'
 import NavBar from './NavBar'
 import WebPlayer from './WebPlayer'
+import Menu from './Menu'
 import { AuthContext, NotificationContext, SideBarWidthContext  } from '../contexts'
 import { useContext, useState, useEffect } from 'react'
 
@@ -38,6 +39,7 @@ export default function Layout({ children }) {
                 }
                 else return
             }}>
+          <Menu/>
 
           <div id='navBarContainer' style={{marginLeft: currentWidth, width: window.innerWidth - currentWidth}}>
             <NavBar />

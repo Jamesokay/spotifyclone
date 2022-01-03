@@ -7,7 +7,6 @@ import getTotalDuration from '../utils/getTotalDuration'
 import flagSavedTracks from '../utils/flagSavedTracks'
 import PlaylistSearch from '../components/PlaylistSearch'
 import getDataObject from '../utils/getDataObject'
-import Menu from '../components/Menu'
 import PlaylistLoader from '../pages/PlaylistLoader'
 import HeaderControls from '../components/HeaderControls'
 import getTrackObject from '../utils/getTrackObject'
@@ -176,7 +175,6 @@ export default function PlaylistPage({ location }) {
     return (isOwner && isEmpty)? 
     (
       <div>
-        <Menu />
         <HeaderPanel content={playlist} creators={creator} isOwner={isOwner}/>
         <div className='pageContainer'>     
           <HeaderControls URL={`https://api.spotify.com/v1/playlists/${id}/followers/contains?ids=${user.id}`} contextUri={playlist.uri} contextId={id} isOwner={isOwner} playlistObj={playlist} isEmpty={isEmpty}/>
@@ -191,7 +189,6 @@ export default function PlaylistPage({ location }) {
     :
     (
       <div>
-        <Menu />
         <HeaderPanel content={playlist} creators={creator} id={id} />
         <div className='pageContainer'>
         {(loading)?

@@ -19,7 +19,7 @@ export default function useContextMenu() {
                 return
             }
         }
-        else if (event.target.className.toLowerCase().includes('card') || event.target.className.toLowerCase().includes('track')) {
+        else if (event.target.className.toLowerCase().includes('card') || event.target.className.toLowerCase().includes('track') || event.target.className === 'playlistLi' || event.target.className === 'sideBarPlaylist' || event.target.className === 'sideBarPlaylist sideBarPlaylistActive' || event.target.className === 'playlistTitle') {
             setAnchorPoint({ x: event.pageX + 5, y: event.pageY + 5})
             setShowMenu(true)         
         }
@@ -33,7 +33,7 @@ export default function useContextMenu() {
     const handleClick = useCallback(() => {
       if (showMenu) { 
         setShowMenu(false)
-        setRightClick({type: '', yPos: 0, xPos: 0, id: ''})
+        setRightClick({type: '', id: ''})
       }
       else {
         return

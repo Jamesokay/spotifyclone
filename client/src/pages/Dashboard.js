@@ -5,7 +5,6 @@ import Panel from '../components/Panel'
 import getDataObject from '../utils/getDataObject'
 import PanelGrid from '../components/PanelGrid'
 import Loader from './Loader'
-import Menu from '../components/Menu'
 
 const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
@@ -266,7 +265,6 @@ export default function Dashboard() {
     
     return loading? <Loader /> : (
       <div id="dash">
-           <Menu />
         {recent.length > 7?
           <PanelGrid content={recent} head={greeting}/>
           :

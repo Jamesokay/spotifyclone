@@ -146,7 +146,7 @@
     rgba(18, 18, 18, 0.738) 42%, 
     rgba(18, 18, 18, 0.641) 63%, 
     rgba(18, 18, 18, 0.59) 70%, 
-    rgba(18, 18, 18, 0.51) 100%)
+    rgba(18, 18, 18, 0.51) 100%);
 }
 
 
@@ -353,6 +353,7 @@ body::-webkit-scrollbar {
     border-radius: 2.5%;
     margin-bottom: max(1.736vw, 24px);
     transition: background 0.2s ease-in-out;
+    z-index: 2;
 }
 
 .cardLink {
@@ -821,18 +822,6 @@ li:hover .sideBarImg {
     margin-top: max(1.04vw, 15px);
 }
 
-.contextMenuSB {
-    position: absolute;
-    display: flex;
-    width: 85%;
-    background-color: rgb(40, 40, 40);
-    top: 0;
-    left: 0;
-    border-radius: 5px;
-    box-shadow: 0px 5px 10px 2px #121212;
-    z-index: 6;
-}
-
 .contextMenuDash {
     position: absolute;
     display: flex;
@@ -840,7 +829,8 @@ li:hover .sideBarImg {
     background-color: rgb(40, 40, 40);
     border-radius: 5px;
     box-shadow: 0px 5px 10px 2px #121212;
-    z-index: 5;
+    z-index: 100;
+    
 }
 
 .contextMenuOptions {

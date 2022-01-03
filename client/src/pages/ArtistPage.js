@@ -6,7 +6,6 @@ import HeaderControls from '../components/HeaderControls'
 import getDataObject from '../utils/getDataObject'
 import TracksTable from '../components/TracksTable'
 import { AuthContext, ThemeContext } from '../contexts'
-import Menu from '../components/Menu'
 import flagSavedTracks from '../utils/flagSavedTracks'
 import ArtistLoader from './ArtistLoader'
 import getTrackObject from '../utils/getTrackObject'
@@ -224,8 +223,6 @@ export default function ArtistPage({ location }) {
     return (
        <div>
         <HeaderPanel content={artist} type='ARTIST'/>
-        <Menu/>
-    
         <div className='pageContainerArtist' style={{backgroundImage: 'linear-gradient(rgb(' + adjustedColour.red + ',' + adjustedColour.green + ',' + adjustedColour.blue + '), rgb(18, 18, 18) 15%)'}}>       
         <HeaderControls URL={`https://api.spotify.com/v1/me/following/contains?type=artist&ids=${id}`} contextUri={artist.uri} contextId={id} type='ARTIST'/>
         {(loading)?
