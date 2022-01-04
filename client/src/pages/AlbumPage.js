@@ -56,13 +56,13 @@ export default function AlbumPage({ location }) {
         const getAlbumData = async () => {
             try {
                 const data = await spotifyApi.getAlbum(id)
-                setAlbum({...getDataObject(data.body), info: (data.body.tracks.items.length !== 0)? ` • ${data.body.release_date.slice(0, 4)} likes • ${data.body.tracks.total} songs, ${getTotalDuration(data.body.tracks.items)}` : ''})
+                setAlbum({...getDataObject(data.body), info: (data.body.tracks.items.length !== 0)? ` • ${data.body.release_date.slice(0, 4)} • ${data.body.tracks.total} songs, ${getTotalDuration(data.body.tracks.items)}` : ''})
                 setCreatorObject(data.body.artists)
                 setTracks(data.body.tracks.items.map(item => {
                     return {
                       id: item.id,
                       uri: item.uri,
-                      albUri: data.body.uri,
+                      albumUri: data.body.uri,
                       num: item.track_number,
                       name: item.name,
                       artists: item.artists,

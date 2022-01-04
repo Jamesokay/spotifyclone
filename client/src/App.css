@@ -1637,11 +1637,6 @@ th {
     padding-bottom: 10px;
 }
 
-.blankHead {
-    visibility: hidden;
-}
-
-
 
 .tdRegTrack {
     padding-top: 6px;
@@ -1821,7 +1816,6 @@ th {
 
 .rowSecond {
     padding-left: 10px;
-    width: 65%;
 }
 
 .rowSecondSearch {

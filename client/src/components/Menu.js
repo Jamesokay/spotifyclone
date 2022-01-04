@@ -5,13 +5,30 @@ import { RightClickContext } from '../contexts'
 export default function Menu() {
     const { rightClick } = useContext(RightClickContext)
     const { anchorPoint, showMenu } = useContextMenu()
+    const [scrolled, setScrolled] = useState(0)
     const [menuXY, setMenuXY] = useState()
+    
+    // Keep track of scroll distance in order to adjust y co-ordinate of context menu
+    function handleScroll() {
+      setScrolled(window.pageYOffset)
+    }
 
+    useEffect (() => {
+      window.addEventListener("scroll", handleScroll)
+
+      return () => {
+        window.removeEventListener("scroll", handleScroll)
+      }
+    }, [])
+
+    
+    // Condition to check whether context menu will overflow viewport
+    // then translating X, Y or both accordingly, keep menu within viewport boundaries
     useEffect(() => {
-      if (anchorPoint.y + (window.innerHeight * 0.15) > window.innerHeight && anchorPoint.x + (window.innerWidth * 0.15) > window.innerWidth) {
+      if (anchorPoint.y + (window.innerHeight * 0.3) > window.innerHeight + scrolled && anchorPoint.x + (window.innerWidth * 0.15) > window.innerWidth) {
         setMenuXY({top: anchorPoint.y, left: anchorPoint.x, transform: 'translateX(-105%) translateY(-105%)'})
       }
-      else if (anchorPoint.y + (window.innerHeight * 0.15) > window.innerHeight) {
+      else if (anchorPoint.y + (window.innerHeight * 0.3) > window.innerHeight + scrolled) {
         setMenuXY({top: anchorPoint.y, left: anchorPoint.x, transform: 'translateY(-105%)'})
       }
       else if (anchorPoint.x + (window.innerWidth * 0.15) > window.innerWidth) {
@@ -19,7 +36,8 @@ export default function Menu() {
       }
       else setMenuXY({top: anchorPoint.y, left: anchorPoint.x})
 
-    }, [anchorPoint.y, anchorPoint.x])
+    }, [anchorPoint.y, anchorPoint.x, scrolled])
+    
   
     if (showMenu && rightClick.type === 'playlist') {
       return (

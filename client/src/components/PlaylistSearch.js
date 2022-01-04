@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
-import toMinsSecs from '../utils/toMinsSecs'
 import { AuthContext, PlaylistContext } from '../contexts'
 import TracksTable from '../components/TracksTable'
 import axios from 'axios'
+import getTrackObject from '../utils/getTrackObject'
 
 
 export default function Search() {
@@ -12,8 +12,6 @@ export default function Search() {
     const [trackResults, setTrackResults] = useState([])
     const { newTrack } = useContext(PlaylistContext)
     
-
-
     useEffect(()=> {
         if (!search) return
 
@@ -28,26 +26,22 @@ export default function Search() {
                 }
             }
         
-          axios(options)
-          .then(response => {
-            console.log(response.data)
-              setTrackResults(
-                  response.data.tracks.items.map(item => {
-                        return {
-                            id: item.id,
-                            uri: item.uri,
-                            trackImage: item.album.images[0].url,
-                            albumName: item.album.name,
-                            name: item.name,
-                            artists: item.artists,
-                            duration: toMinsSecs(item.duration_ms)
-                        }
-              }))
-          })
-          .catch(error => {
-            console.log(error)
-          })
+        const searchQuery = async () => {
+          try {
+            const response = await axios(options)
+            setTrackResults(response.data.tracks.items.map((item, index) => getTrackObject(item, index, item.album.uri)))
+          } catch (err) {
+            console.error(err)
+          }
+        }
+
+        searchQuery()
+
+        return () => {
+          setTrackResults([])
+        }
     }, [search, accessToken])
+
 
     useEffect(() => {
         if (!newTrack) return

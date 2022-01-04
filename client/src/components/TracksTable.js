@@ -36,10 +36,7 @@ export default function TracksTable({content, page, trackDepth }) {
         setLikedTracks([])
       }
     }, [content])
-  
-      // useEffect(() => {
-      //   setNewTrack({})
-      // }, [setNewTrack])
+
 
       useEffect(() => {
 
@@ -145,9 +142,7 @@ export default function TracksTable({content, page, trackDepth }) {
             <table className='artistTable' cellSpacing='0' cellPadding='0'>
             <tbody>
             {content.slice(0,trackDepth).map(cont =>
-              <tr className='trackTableRow' key={cont.id} style={{color: 'white'}}>
-           
-                
+              <tr className='trackTableRow' key={cont.id} style={{color: 'white'}}>              
               {(cont.uri === nowPlaying.trackUri && !nowPlaying.isPaused)?
                   <td className='rowFirst tdRegTrack'>
                     <div className='tablePlayingBox'>
@@ -161,14 +156,10 @@ export default function TracksTable({content, page, trackDepth }) {
                   <td className='rowFirst tdRegTrack'>
                     <span className='trackTableIndex'>{cont.num}</span>
                     <div className='trackTablePlayIcon'
-                    style={(rightClick.id === cont.id)? {visibility: 'visible'} : {}}
-                    onClick={() => playTrack(accessToken, 
-                    {context_uri: cont.albUri,
-                     offset: { uri: cont.uri }})}></div>
+                         style={(rightClick.id === cont.id)? {visibility: 'visible'} : {}}
+                         onClick={() => playTrack(accessToken, {context_uri: cont.albumUri, offset: { uri: cont.uri }})}></div>
                   </td>
-                 } 
-
-                
+              } 
                 <td className='tableImgCol tdRegTrack'><img className='trackTableImage' src={cont.trackImage} alt=''/></td>
                 <td className='tdRegTrack' style={{width: '65%'}}>
                   <span style={(cont.uri === nowPlaying.trackUri)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</span>
@@ -193,8 +184,7 @@ export default function TracksTable({content, page, trackDepth }) {
                     <div className='dot'/>
                     <div className='dot'/>
                    </div>
-                </td>
-                
+                </td>              
               </tr>
             )}
             </tbody>
@@ -202,6 +192,8 @@ export default function TracksTable({content, page, trackDepth }) {
           </div>
         )
     }
+
+
     else if (page === 'album') {
         return (
           <div>
@@ -236,7 +228,7 @@ export default function TracksTable({content, page, trackDepth }) {
                     }}
                     style={(rightClick.id === cont.id)? {background: 'grey'} : {}} >
                 <td className='emptyCell'></td>
-                {(cont.albUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri && !nowPlaying.isPaused)?
+                {(cont.albumUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri && !nowPlaying.isPaused)?
                   <td className='rowFirst tdRegTrack'>
                     <div className='tablePlayingBox'>
                       <div className='tablePlayingBar1'/>
@@ -251,13 +243,13 @@ export default function TracksTable({content, page, trackDepth }) {
                     <div className='trackTablePlayIcon'
                     style={(rightClick.id === cont.id)? {visibility: 'visible'} : {}}
                     onClick={() => playTrack(accessToken, 
-                    {context_uri: cont.albUri,
+                    {context_uri: cont.albumUri,
                      offset: { uri: cont.uri }})}></div>
                   </td>
                  } 
                   <td className='tdRegTrack'>
                     <p className='tableTrackName' 
-                       style={(cont.albUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p>                     
+                       style={(cont.albumUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p>                     
                       {cont.artists.map((artist, index, artists) => 
                       <span key={artist.id} className='trackTableArtist'>                 
                         <span className='trackTableLink'
@@ -314,6 +306,8 @@ export default function TracksTable({content, page, trackDepth }) {
           </div>
         )
     }
+
+
     else if (page === 'playlist') {
         return (
           <div>
@@ -444,21 +438,13 @@ export default function TracksTable({content, page, trackDepth }) {
           </div>
         )
     }
+
+
     else if (page === 'playlistRecommend') {
       return (
         <div>
         <div id='tableHeader'></div>
         <table className='tableReg' cellSpacing='0' cellPadding='0'>
-        <thead>
-          <tr>
-            <th className='empty'></th>
-            <th className='blankHead'></th>
-            <th className='blankHead'></th>
-            <th className='blankHead'></th>
-            <th className='blankHead'></th>
-            <th className='empty'></th>
-          </tr>
-        </thead>
         <tbody>
         {content.slice(0, 10).map(cont =>
         <tr className='trackTableRow' key={cont.id}
@@ -516,7 +502,9 @@ export default function TracksTable({content, page, trackDepth }) {
       </table>
       </div>
       )
-  }
+    }
+
+    
     else if (page === 'search') {
       return (
        <div>

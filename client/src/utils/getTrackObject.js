@@ -12,6 +12,7 @@ export default function getTrackObject(track, index, contextUri) {
           artists: track.artists,
           albumName: track.album.name,
           albumId: track.album.id,
+          albumUri: track.album.uri,
           duration: toMinsSecs(track.duration_ms)
         }
       } else {
