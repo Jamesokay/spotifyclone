@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 export default function PanelGrid({ content, head }) {
     
     const accessToken = useContext(AuthContext)
-    const [colors, setColors] = useState([])
+    const [cardsWithColours, setCardsWithColours] = useState([]) 
     const [gradient, setGradient] = useState('')
     const { setCurrentTheme } = useContext(ThemeContext)
     const { nowPlaying } = useContext(TrackContext)
@@ -19,8 +19,17 @@ export default function PanelGrid({ content, head }) {
     const { currentWidth } = useContext(SideBarWidthContext)
     const breakPointMedium = 1215
     const breakPointSmall = 920
-    
 
+    
+    // Generate the array of objects to be rendered
+    useEffect(() => {
+        if (content.length === 0) return
+        setCardsWithColours(getColor(content))
+    }, [content])
+
+    
+    // Make both the width of each card and the length of the rendered array responsive to viewport resizes.
+    // Index is used as a variable determing how far to slice() into cardsWithColours, cardWidth sets the % width of each card.
     useEffect(() => {
         if ((width - currentWidth) <= breakPointSmall) {
           setIndex(4)
@@ -35,96 +44,77 @@ export default function PanelGrid({ content, head }) {
             setCardWidth(25)
         }
 
-        return function cleanUp() {
+        return () => {
             setIndex(8)
             setCardWidth(25)
         }
     }, [width, currentWidth])
 
- 
-    function getColor(itemId, imgUrl) {
+    // Function to draw the image of each card on an off-screen canvas, generating a pixel array from which the average RGB values of a
+    // specified region of the image can be calculated. This average colour is then added to the existing object as a property.
+    // The background and theme can thereby achieve the desired effect: background/theme colour changing to that of the card's bg/rgb
+    // property when hovered over.
+    function getColor(array) {
 
-        var canvas = document.createElement('canvas');
-        var ctx    = canvas.getContext('2d');
+        let newArray = []
 
-        var myImgElement = new Image() 
-        myImgElement.onload = function() {
+        for (const item of array) {
+          let canvas = document.createElement('canvas');
+          let ctx    = canvas.getContext('2d');
+          let myImgElement = new Image() 
+
+          myImgElement.onload = function() {
             canvas.width = myImgElement.naturalWidth
             canvas.height = myImgElement.naturalHeight
     
-            var yStart = Math.floor(canvas.height * 0.5)
+            let yStart = Math.floor(canvas.height * 0.5)
             ctx.drawImage( myImgElement, 0, 0 );
-            var imgdata = ctx.getImageData(0, yStart, 50, 50);
-            var pixels = imgdata.data;
+            let imgdata = ctx.getImageData(0, yStart, 50, 50);
+            let pixels = imgdata.data;
 
-
-            var red = 0
-            var green = 0
-            var blue = 0
-            var alpha = 0
+            let red = 0
+            let green = 0
+            let blue = 0
 
             for (let i = 0; i < pixels.length; i += 4) {
               red += pixels[i]
               green += pixels[i + 1]
               blue += pixels[i + 2]
-              alpha += pixels[i + 3]
-      
             }
 
             let avgRed = Math.floor(red / (pixels.length / 4))
             let avgGreen = Math.floor(green / (pixels.length / 4))
             let avgBlue = Math.floor(blue / (pixels.length / 4))
-            let avgAlpha = Math.floor(alpha / (pixels.length / 4))
 
-            let obj = {}
-            obj['id'] = itemId
-            obj['bg'] = 'rgba(' + avgRed + ',' + avgGreen + ',' + avgBlue + ',' + avgAlpha + ')'
-            obj['rgb'] = {red: avgRed, green: avgGreen, blue: avgBlue}
+            let obj = {
+              ...item,
+              bg: 'rgb(' + avgRed + ',' + avgGreen + ',' + avgBlue + ')',
+              rgb: {red: avgRed, green: avgGreen, blue: avgBlue}
+            }
+            newArray.push(obj)
+          }    
 
-            setColors(colors => [...colors, obj])
-        }        
-        myImgElement.src = imgUrl   
-        myImgElement.crossOrigin = ''
-    }
-
-    function changeBg(itemId) {
-       
-        var newBg = colors.filter(color => color.id === itemId)
-        if (newBg.length === 0) {
-            return
+        myImgElement.src = item.imgUrl   
+        myImgElement.crossOrigin = ''  
         }
-        else {
-           setGradient(newBg[0].bg) 
-        }     
-              
+      
+      return newArray
     }
-
-    function updateTheme(itemId) {
-        var newTheme = colors.filter(color => color.id === itemId)
-        if (newTheme.length === 0) {
-            return
-        }
-        else {
-           setCurrentTheme(newTheme[0].rgb) 
-        }  
-
-    }
-
 
 
     return (
         
         <div id='gridPanel' style={{background: gradient}}
          onLoad={()=> {
-             updateTheme(content[0].id)
-             changeBg(content[0].id)}}>
+            setGradient(cardsWithColours[0].bg) 
+            setCurrentTheme(cardsWithColours[0].rgb) }}>
         <div id='gridPanelLower'></div>
         <div id='dashGreeting'>
         {head}
         </div>
         
-        <div id='gridContent' style={{width: (width - currentWidth) - 30}}>
-        {content.slice(0, index).map(cont =>
+        <div id='gridContent'>
+        {cardsWithColours.slice(0, index).map(cont =>
           <Link className='gridCardLink' 
                 style={{flex: `0 1 calc(${cardWidth}% - 25px)`}}
                 key={cont.key} 
@@ -134,17 +124,15 @@ export default function PanelGrid({ content, head }) {
           <div className='gridCard'
                style={(rightClick.id === cont.id)? {backgroundColor: 'rgba(128, 128, 128, 0.7)'} : {}}
                onMouseOver={()=> {
-                   updateTheme(cont.id)
-                   changeBg(cont.id)
+                setGradient(cont.bg) 
+                setCurrentTheme(cont.rgb) 
                 }}
                onMouseLeave={()=> {
-                
-                   updateTheme(content[0].id)
-                   changeBg(content[0].id)
+                setGradient(cardsWithColours[0].bg) 
+                setCurrentTheme(cardsWithColours[0].rgb) 
                 }}
           >
-            <img className='gridCardImage' src={cont.imgUrl} alt=''
-                 onLoad={()=> getColor(cont.id, cont.imgUrl)} />
+            <img className='gridCardImage' src={cont.imgUrl} alt=''/>
             <div className='gridCardTitle' style={(rightClick.id === cont.id)? {textDecoration: 'underline'} : {}}>{cont.name}</div>
             <div className='gridPlayButton'
                 style={(cont.uri === nowPlaying.contextUri)? {opacity: '1'} : {opacity: '0'}}
