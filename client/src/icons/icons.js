@@ -31,3 +31,48 @@ export const CreatePlaylistIcon = () => {
         </svg>
     )
 }
+
+export const ClockIcon = () => {
+    return (
+        <svg className='timeIcon' style={{float: 'right'}} width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path className='clock' d="M7.999 3H6.999V7V8H7.999H9.999V7H7.999V3ZM7.5 0C3.358 0 0 3.358 0 7.5C0 11.642 3.358 15 7.5 15C11.642 15 15 11.642 15 7.5C15 3.358 11.642 0 7.5 0ZM7.5 14C3.916 14 1 11.084 1 7.5C1 3.916 3.916 1 7.5 1C11.084 1 14 3.916 14 7.5C14 11.084 11.084 14 7.5 14Z" fill="currentColor"></path>
+        </svg>
+    )
+}
+
+export const TablePlayingIcon = () => {
+    return (
+        <div className='tablePlayingBox'>
+          <div className='tablePlayingBar1'/>
+          <div className='tablePlayingBar2'/>
+          <div className='tablePlayingBar3'/>
+          <div className='tablePlayingBar4'/>
+        </div>
+    )
+}
+
+export const TableHeartOutlineIcon = () => {
+    return (
+        <svg className='trackTableLike' viewBox="0 0 32 32" stroke="none" fill="none">
+          <path className='tableHeartIcon' d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
+        </svg> 
+    )
+}
+
+export const TableHeartFilledIcon = () => {
+    return (
+        <svg className='trackTableLiked' viewBox="0 0 32 32" stroke="none" fill="none">
+          <path className='tableHeartIcon' d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
+        </svg> 
+    )
+}
+
+export const EllipsisIcon = () => {
+    return (
+        <div className='trackOptions'>
+          <div className='dot'/>
+          <div className='dot'/>
+          <div className='dot'/>
+       </div>
+    )
+}

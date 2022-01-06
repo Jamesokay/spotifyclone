@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { AuthContext, PlaylistContext, PageContext, TrackContext, RightClickContext, NotificationContext } from '../contexts'
+import { TablePlayingIcon, TableHeartOutlineIcon, TableHeartFilledIcon, ClockIcon, EllipsisIcon } from '../icons/icons'
 import playTrack from '../utils/playTrack'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
@@ -90,7 +91,31 @@ export default function TracksTable({content, page, trackDepth }) {
         })
       }
 
-     function likeSong(id) {
+
+     function handleLike(id) {
+
+      if (likedTracks.includes(id)) {
+        setLikedTracks(likedTracks => likedTracks.filter(item => item !== id))
+        setNotification({text: 'Removed from your Liked Songs',
+                       action: 'unlike' + id})
+        const options = {
+          url: `https://api.spotify.com/v1/me/tracks?ids=${id}`,
+          method: 'DELETE',
+          headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+          }
+        }
+
+        axios(options)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      }
+      else {
         setLikedTracks(likedTracks => [...likedTracks, id])
         setNotification({text: 'Added to your Liked Songs',
                          action: 'like' + id})
@@ -110,28 +135,7 @@ export default function TracksTable({content, page, trackDepth }) {
         .catch(error => {
           console.log(error)
         })
-     }
-
-     function unlikeSong(id) {
-      setLikedTracks(likedTracks => likedTracks.filter(item => item !== id))
-      setNotification({text: 'Removed from your Liked Songs',
-                       action: 'unlike' + id})
-      const options = {
-          url: `https://api.spotify.com/v1/me/tracks?ids=${id}`,
-          method: 'DELETE',
-          headers: {
-              'Authorization': `Bearer ${accessToken}`,
-              'Content-Type': 'application/json',
-          }
       }
-
-      axios(options)
-      .then(response => {
-        console.log(response)
-      })
-      .catch(error => {
-        console.log(error)
-      })
    }
 
 
@@ -145,12 +149,7 @@ export default function TracksTable({content, page, trackDepth }) {
               <tr className='trackTableRow' key={cont.id} style={{color: 'white'}}>              
               {(cont.uri === nowPlaying.trackUri && !nowPlaying.isPaused)?
                   <td className='rowFirst tdRegTrack'>
-                    <div className='tablePlayingBox'>
-                      <div className='tablePlayingBar1'/>
-                      <div className='tablePlayingBar2'/>
-                      <div className='tablePlayingBar3'/>
-                      <div className='tablePlayingBar4'/>
-                    </div>
+                    <TablePlayingIcon />
                   </td>
                   :
                   <td className='rowFirst tdRegTrack'>
@@ -165,25 +164,13 @@ export default function TracksTable({content, page, trackDepth }) {
                   <span style={(cont.uri === nowPlaying.trackUri)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</span>
                 </td>
                 <td style={{width: '7.5%'}}>
-                    <svg className={(likedTracks.includes(cont.id))? 'trackTableLiked' : 'trackTableLike'} viewBox="0 0 32 32" stroke="none" fill="none"
-                         onClick={() => {
-                           if (likedTracks.includes(cont.id)) {
-                             unlikeSong(cont.id)
-                           }
-                           else {
-                             likeSong(cont.id)
-                           }
-                         }}>
-                      <path className='tableHeartIcon' d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
-                    </svg>                 
+                  <div onClick={() => handleLike(cont.id)}> 
+                    {likedTracks.includes(cont.id)? <TableHeartFilledIcon /> : <TableHeartOutlineIcon />}
+                  </div>                                
                 </td>
                 <td className='tdRegTrack' style={{width: '5%'}}>{cont.duration}</td>
                 <td className='rowLast tdRegTrack' style={{width: '7.5%'}}>                   
-                   <div className='trackOptions'>
-                    <div className='dot'/>
-                    <div className='dot'/>
-                    <div className='dot'/>
-                   </div>
+                   <EllipsisIcon />
                 </td>              
               </tr>
             )}
@@ -206,9 +193,7 @@ export default function TracksTable({content, page, trackDepth }) {
                 <th>TITLE</th>
                 <th style={{width: '4%'}}></th>
                 <th style={{width: '2.5%'}}>
-                  <svg className='timeIcon' style={{float: 'right'}} width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path className='clock' d="M7.999 3H6.999V7V8H7.999H9.999V7H7.999V3ZM7.5 0C3.358 0 0 3.358 0 7.5C0 11.642 3.358 15 7.5 15C11.642 15 15 11.642 15 7.5C15 3.358 11.642 0 7.5 0ZM7.5 14C3.916 14 1 11.084 1 7.5C1 3.916 3.916 1 7.5 1C11.084 1 14 3.916 14 7.5C14 11.084 11.084 14 7.5 14Z" fill="currentColor"></path>
-                  </svg>
+                  <ClockIcon />
                 </th>
                 <th style={{width: '5%'}}></th>
                 <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
@@ -220,22 +205,15 @@ export default function TracksTable({content, page, trackDepth }) {
               </tr>            
               {content.map(cont =>
                 <tr className='trackTableRow' key={cont.id}
-                    onContextMenu={(e) => {                  
+                    onContextMenu={() => {                  
                       if (!preventProp) {
                         setRightClick({id: cont.id, type: 'track'})
-                      }
-                      else return
-                    }}
+                      }}}
                     style={(rightClick.id === cont.id)? {background: 'grey'} : {}} >
                 <td className='emptyCell'></td>
                 {(cont.albumUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri && !nowPlaying.isPaused)?
                   <td className='rowFirst tdRegTrack'>
-                    <div className='tablePlayingBox'>
-                      <div className='tablePlayingBar1'/>
-                      <div className='tablePlayingBar2'/>
-                      <div className='tablePlayingBar3'/>
-                      <div className='tablePlayingBar4'/>
-                    </div>
+                    <TablePlayingIcon />
                   </td>
                   :
                   <td className='rowFirst tdRegTrack'>
@@ -256,13 +234,13 @@ export default function TracksTable({content, page, trackDepth }) {
                               style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                               onMouseEnter={() => setPreventProp(true)}
                               onMouseLeave={() => setPreventProp(false)}
-                              onContextMenu={(e) => setRightClick({id: cont.id, type: 'artist'})}
-                            onClick={(e) => {
-                             e.preventDefault()
-                             history.push({
-                               pathname: `/artist/${artist.id}`,
-                               search: '', 
-                               state: artist.id
+                              onContextMenu={() => setRightClick({id: cont.id, type: 'artist'})}
+                              onClick={(e) => {
+                                e.preventDefault()
+                                history.push({
+                                  pathname: `/artist/${artist.id}`,
+                                  search: '', 
+                                  state: artist.id
                              })
                           }}
                         >{artist.name}</span>
@@ -277,26 +255,14 @@ export default function TracksTable({content, page, trackDepth }) {
                   </td>
 
                   <td>
-                    <svg className={(likedTracks.includes(cont.id))? 'trackTableLiked' : 'trackTableLike'} viewBox="0 0 32 32" stroke="none" fill="none"
-                         onClick={() => {
-                           if (likedTracks.includes(cont.id)) {
-                             unlikeSong(cont.id)
-                           }
-                           else {
-                             likeSong(cont.id)
-                           }
-                         }}>
-                      <path className='tableHeartIcon' d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
-                    </svg>                 
+                    <div onClick={() => handleLike(cont.id)}> 
+                      {likedTracks.includes(cont.id)? <TableHeartFilledIcon /> : <TableHeartOutlineIcon />}
+                    </div> 
                   </td>
 
                   <td className='tdRegTrack'><span className='tdTime'>{cont.duration}</span></td>
                   <td className='tdRegTrack rowLast'>
-                   <div className='trackOptions'>
-                    <div className='dot'/>
-                    <div className='dot'/>
-                    <div className='dot'/>
-                   </div>
+                    <EllipsisIcon />
                   </td>
                   <td className='emptyCell'></td>
                 </tr>
@@ -322,9 +288,7 @@ export default function TracksTable({content, page, trackDepth }) {
                 <th>ALBUM</th>
                 <th style={{width: '4%'}}></th>
                 <th style={{width: '2.5%'}}>
-                <svg className='timeIcon' style={{float: 'right'}} width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path className='clock' d="M7.999 3H6.999V7V8H7.999H9.999V7H7.999V3ZM7.5 0C3.358 0 0 3.358 0 7.5C0 11.642 3.358 15 7.5 15C11.642 15 15 11.642 15 7.5C15 3.358 11.642 0 7.5 0ZM7.5 14C3.916 14 1 11.084 1 7.5C1 3.916 3.916 1 7.5 1C11.084 1 14 3.916 14 7.5C14 11.084 11.084 14 7.5 14Z" fill="currentColor"></path>
-                </svg>
+                  <ClockIcon />
                 </th>
                 <th style={{width: '5%'}}></th>
                 <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
@@ -336,25 +300,17 @@ export default function TracksTable({content, page, trackDepth }) {
               </tr>
               {content.map(cont =>
                 <tr className='trackTableRow' 
-                    onContextMenu={(e) => {
+                    onContextMenu={() => {
                       if (!preventProp) {
                         setRightClick({id: cont.id, type: 'track'})
-                      }
-                      else return
-                    }
-                    }
+                      }}}
                     style={(rightClick.id === cont.id)? {background: 'grey'} : {}} 
                     key={cont.id}
                     >
                 <td className='emptyCell'></td>
                 {(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName && !nowPlaying.isPaused)?
                   <td className='rowFirst tdRegTrack'>
-                    <div className='tablePlayingBox'>
-                      <div className='tablePlayingBar1'/>
-                      <div className='tablePlayingBar2'/>
-                      <div className='tablePlayingBar3'/>
-                      <div className='tablePlayingBar4'/>
-                    </div>
+                    <TablePlayingIcon />
                   </td>
                   :
                   <td className='rowFirst tdRegTrack'>
@@ -378,7 +334,7 @@ export default function TracksTable({content, page, trackDepth }) {
                               style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                               onMouseEnter={() => setPreventProp(true)}
                               onMouseLeave={() => setPreventProp(false)}
-                              onContextMenu={(e) => setRightClick({id: cont.id, type: 'artist'})}
+                              onContextMenu={() => setRightClick({id: cont.id, type: 'artist'})}
                               onClick={(e) => {
                                 e.preventDefault()
                                 history.push({
@@ -400,7 +356,7 @@ export default function TracksTable({content, page, trackDepth }) {
                           style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                           onMouseEnter={() => setPreventProp(true)}
                           onMouseLeave={() => setPreventProp(false)}
-                          onContextMenu={(e) => setRightClick({id: cont.id, type: 'album'})}
+                          onContextMenu={() => setRightClick({id: cont.id, type: 'album'})}
                           onClick={() => {        
                              history.push({
                                pathname: `/album/${cont.albumId}`,
@@ -410,25 +366,13 @@ export default function TracksTable({content, page, trackDepth }) {
                           }}>{cont.albumName}</span>
                   </td>
                   <td>
-                    <svg className={(likedTracks.includes(cont.id))? 'trackTableLiked' : 'trackTableLike'} viewBox="0 0 32 32" stroke="none" fill="none"
-                         onClick={() => {
-                           if (likedTracks.includes(cont.id)) {
-                             unlikeSong(cont.id)
-                           }
-                           else {
-                             likeSong(cont.id)
-                           }
-                         }}>
-                      <path className='trackTableHeartIcon' d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
-                    </svg> 
+                    <div onClick={() => handleLike(cont.id)}> 
+                      {likedTracks.includes(cont.id)? <TableHeartFilledIcon /> : <TableHeartOutlineIcon />}
+                    </div> 
                   </td>
                   <td className='tdRegTrack'><span className='tdTime'>{cont.duration}</span></td>
                   <td className='tdRegTrack rowLast'>
-                   <div className='trackOptions'>
-                    <div className='dot'/>
-                    <div className='dot'/>
-                    <div className='dot'/>
-                   </div>
+                    <EllipsisIcon />
                   </td>
                   <td className='emptyCell'></td>
                 </tr>
@@ -448,12 +392,10 @@ export default function TracksTable({content, page, trackDepth }) {
         <tbody>
         {content.slice(0, 10).map(cont =>
         <tr className='trackTableRow' key={cont.id}
-            onContextMenu={(e) => {
+            onContextMenu={() => {
               if (!preventProp) {
                 setRightClick({id: cont.id, type: 'track'})
-              }
-              else return
-              }}
+              }}}
             style={(rightClick.id === cont.id)? {background: 'grey'} : {}}>
         <td className='emptyCell'></td>
           <td className='rowFirst tdRegTrack'>
@@ -485,7 +427,7 @@ export default function TracksTable({content, page, trackDepth }) {
                 style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                 onMouseEnter={() => setPreventProp(true)}
                 onMouseLeave={() => setPreventProp(false)}
-                onContextMenu={(e) => setRightClick({id: cont.id, type: 'album'})}>
+                onContextMenu={() => setRightClick({id: cont.id, type: 'album'})}>
             {cont.albumName}
           </span>
           </td>
@@ -513,12 +455,10 @@ export default function TracksTable({content, page, trackDepth }) {
           <tbody>
           {content.map(cont =>
           <tr className='trackTableRow' key={cont.id}
-              onContextMenu={(e) => {
+              onContextMenu={() => {
                 if (!preventProp) {
                   setRightClick({id: cont.id, type: 'track'})
-                }
-                else return
-              }}
+                }}}
               style={(rightClick.id === cont.id)? {background: 'grey'} : {}}>
             <td className='rowFirst tdSmallTrack' style={{width: '10%'}}>
               <img className='searchTableTrackImage' src={cont.trackImage} alt='' />
@@ -535,7 +475,7 @@ export default function TracksTable({content, page, trackDepth }) {
                         style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                         onMouseEnter={() => setPreventProp(true)}
                         onMouseLeave={() => setPreventProp(false)}
-                        onContextMenu={(e) => setRightClick({id: cont.id, type: 'artist'})}
+                        onContextMenu={() => setRightClick({id: cont.id, type: 'artist'})}
                         onClick={(e) => {
                              e.preventDefault()
                              history.push({
@@ -554,25 +494,13 @@ export default function TracksTable({content, page, trackDepth }) {
             )}
             </td>
             <td style={{width: '10%', minWidth: '42px'}}>
-            <svg className={(likedTracks.includes(cont.id))? 'trackTableLiked' : 'trackTableLike'} viewBox="0 0 32 32" stroke="none" fill="none"
-                         onClick={() => {
-                           if (likedTracks.includes(cont.id)) {
-                             unlikeSong(cont.id)
-                           }
-                           else {
-                             likeSong(cont.id)
-                           }
-                         }}>
-                      <path className='tableHeartIcon' d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619z"></path>
-                    </svg>  
+              <div onClick={() => handleLike(cont.id)}> 
+                {likedTracks.includes(cont.id)? <TableHeartFilledIcon /> : <TableHeartOutlineIcon />}
+               </div> 
             </td>
             <td className='tdSmallTrack' style={{width: '5%'}}>{cont.duration}</td>
             <td className='rowLast tdSmallTrack' style={{width: '10%', minWidth: '42px'}}>
-            <div className='trackOptions'>
-                    <div className='dot'/>
-                    <div className='dot'/>
-                    <div className='dot'/>
-                   </div>
+              <EllipsisIcon />
             </td>
           </tr>
           )}
