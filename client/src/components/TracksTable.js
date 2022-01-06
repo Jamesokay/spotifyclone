@@ -281,17 +281,16 @@ export default function TracksTable({content, page, trackDepth }) {
             <table className='tableReg' cellSpacing='0' cellPadding='0'>
               <thead>
                 <tr id='tableTop' style={(scrolling)? {backgroundColor:'rgb(24, 24, 24)'} : {backgroundColor: 'transparent'}}>
-                <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
-                <th style={{textAlign: 'center'}}>#</th>
-                <th>TITLE</th>
-                <th></th>
-                <th>ALBUM</th>
-                <th style={{width: '4%'}}></th>
-                <th style={{width: '2.5%'}}>
-                  <ClockIcon />
-                </th>
-                <th style={{width: '5%'}}></th>
-                <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
+                  <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
+                  <th style={{textAlign: 'center'}}>#</th>
+                  <th>TITLE</th>           
+                  <th>ALBUM</th>
+                  <th style={{width: '4%'}} />
+                  <th style={{width: '2.5%'}}>
+                    <ClockIcon />
+                  </th>
+                  <th style={{width: '5%'}} />
+                  <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
                 </tr>
               </thead>
               <tbody>
@@ -324,11 +323,13 @@ export default function TracksTable({content, page, trackDepth }) {
                     ></div>
                   </td>
                 }
-                  <td className='tableImgCol tdRegTrack'><img className='trackTableImage' src={cont.trackImage} alt='' /></td>
-                  <td className='tdRegTrack'>
-                    <p className='tableTrackName'
-                       style={(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p> 
-                    {cont.artists.map((artist, index, artists) => 
+                  
+                  <td className='tdRegTrack' style={{display: 'inline-flex'}}>
+                    <img className='trackTableImage' src={cont.trackImage} alt='' />
+                    <div>
+                      <p className='tableTrackName'
+                         style={(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p> 
+                      {cont.artists.map((artist, index, artists) => 
                       <span key={artist.id} className='trackTableArtist'>                 
                         <span className='trackTableLink'
                               style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
@@ -350,6 +351,7 @@ export default function TracksTable({content, page, trackDepth }) {
                         }
                       </span>
                       )}
+                    </div>
                   </td>
                   <td className='tdRegTrack' style={{width: '505px'}}>
                     <span className='trackTableLink'
@@ -413,7 +415,7 @@ export default function TracksTable({content, page, trackDepth }) {
                       style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                       onMouseEnter={() => setPreventProp(true)}
                       onMouseLeave={() => setPreventProp(false)}
-                      onContextMenu={(e) => setRightClick({id: cont.id, type: 'artist'})}>{artist.name}</span>
+                      onContextMenu={() => setRightClick({id: cont.id, type: 'artist'})}>{artist.name}</span>
                 {(index < artists.length - 1)?
                 <span>, </span>
                 :
