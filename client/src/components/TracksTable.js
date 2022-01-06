@@ -278,18 +278,16 @@ export default function TracksTable({content, page, trackDepth }) {
         return (
           <div>
             <div id='tableHeader'></div>
-            <table className='tableReg' cellSpacing='0' cellPadding='0'>
+            <table className='tableReg' cellSpacing='1' cellPadding='0'>
               <thead>
                 <tr id='tableTop' style={(scrolling)? {backgroundColor:'rgb(24, 24, 24)'} : {backgroundColor: 'transparent'}}>
                   <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
                   <th style={{textAlign: 'center'}}>#</th>
                   <th>TITLE</th>           
                   <th>ALBUM</th>
-                  <th style={{width: '4%'}} />
-                  <th style={{width: '2.5%'}}>
+                  <th style={{textAlign: 'center'}}>
                     <ClockIcon />
                   </th>
-                  <th style={{width: '5%'}} />
                   <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
                 </tr>
               </thead>
@@ -353,7 +351,7 @@ export default function TracksTable({content, page, trackDepth }) {
                       )}
                     </div>
                   </td>
-                  <td className='tdRegTrack' style={{width: '505px'}}>
+                  <td className='tdRegTrack'>
                     <span className='trackTableLink'
                           style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                           onMouseEnter={() => setPreventProp(true)}
@@ -367,15 +365,18 @@ export default function TracksTable({content, page, trackDepth }) {
                              })
                           }}>{cont.albumName}</span>
                   </td>
-                  <td>
+
+                  <td className='tdRegTrack rowLast'>
+                  <div style={{display: 'flex', justifyContent: 'space-around', backgroundColor: 'red'}}>
                     <div onClick={() => handleLike(cont.id)}> 
                       {likedTracks.includes(cont.id)? <TableHeartFilledIcon /> : <TableHeartOutlineIcon />}
                     </div> 
-                  </td>
-                  <td className='tdRegTrack'><span className='tdTime'>{cont.duration}</span></td>
-                  <td className='tdRegTrack rowLast'>
+                    <span>{cont.duration}</span>
                     <EllipsisIcon />
+                  </div>
+                  
                   </td>
+
                   <td className='emptyCell'></td>
                 </tr>
               )}

@@ -1643,9 +1643,6 @@ th {
     padding-bottom: 6px;
 }
 
-.tdTime {
-    float: right;
-}
 
 .tdSmallTrack {
     padding-top: 5px;
@@ -1699,7 +1696,7 @@ th {
 
 .trackTableRow {
     color: rgb(168, 168, 168);
-    height: max(3.47vw, 55px);
+
 }
 
 .trackTablePlayIcon {
@@ -1848,11 +1845,11 @@ th {
 }
 
 .trackTableLike {
-    transform: scale(0.35);
+    width: 17.5px;
 }
 
 .trackTableLiked {
-    transform: scale(0.35);
+    width: 17.5px;
     stroke: #1ed760;
     fill:#1ed760;
     visibility: visible;
@@ -1873,9 +1870,10 @@ th {
 .trackOptions {
     margin: auto;
     display: flex;
-    justify-content: space-between;
-    width: 25%;
+    justify-content: space-evenly;
+    width: 25px;
     visibility: hidden;
+    background-color: blue;
 }
 
 .dot {
