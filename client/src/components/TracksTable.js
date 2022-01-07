@@ -278,7 +278,7 @@ export default function TracksTable({content, page, trackDepth }) {
         return (
           <div>
             <div id='tableHeader'></div>
-            <table className='tableReg' cellSpacing='1' cellPadding='0'>
+            <table className='tableReg' cellSpacing='0' cellPadding='0'>
               <thead>
                 <tr id='tableTop' style={(scrolling)? {backgroundColor:'rgb(24, 24, 24)'} : {backgroundColor: 'transparent'}}>
                   <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
@@ -293,7 +293,7 @@ export default function TracksTable({content, page, trackDepth }) {
               </thead>
               <tbody>
               <tr>
-                <td style={{height: '10px'}}></td>
+                <td style={{height: '15px'}}></td>
               </tr>
               {content.map(cont =>
                 <tr className='trackTableRow' 
@@ -322,13 +322,14 @@ export default function TracksTable({content, page, trackDepth }) {
                   </td>
                 }
                   
-                  <td className='tdRegTrack' style={{display: 'inline-flex'}}>
+                  <td className='tdRegTrack'>
+                  <div style={{display: 'inline-flex', alignItems:'center'}}>
                     <img className='trackTableImage' src={cont.trackImage} alt='' />
                     <div>
                       <p className='tableTrackName'
                          style={(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p> 
                       {cont.artists.map((artist, index, artists) => 
-                      <span key={artist.id} className='trackTableArtist'>                 
+                      <span key={artist.id}>                 
                         <span className='trackTableLink'
                               style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                               onMouseEnter={() => setPreventProp(true)}
@@ -350,6 +351,7 @@ export default function TracksTable({content, page, trackDepth }) {
                       </span>
                       )}
                     </div>
+                  </div>
                   </td>
                   <td className='tdRegTrack'>
                     <span className='trackTableLink'
@@ -367,10 +369,10 @@ export default function TracksTable({content, page, trackDepth }) {
                   </td>
 
                   <td className='tdRegTrack rowLast'>
-                  <div style={{display: 'flex', justifyContent: 'space-around', backgroundColor: 'red'}}>
-                    <div onClick={() => handleLike(cont.id)}> 
+                  <div className='trackOptionsFlex'>
+                    <span onClick={() => handleLike(cont.id)}> 
                       {likedTracks.includes(cont.id)? <TableHeartFilledIcon /> : <TableHeartOutlineIcon />}
-                    </div> 
+                    </span> 
                     <span>{cont.duration}</span>
                     <EllipsisIcon />
                   </div>

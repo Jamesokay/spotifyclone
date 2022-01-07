@@ -668,7 +668,7 @@ body::-webkit-scrollbar {
 
 
 .pageContainer {
-    margin-top: min(-6.5vw, -93px);
+    margin-top: min(-18.5vw, -266px);
     background-color:rgba(0, 0, 0, 0.1);
     min-width: 550px;
     padding-bottom: 100px;
@@ -1616,8 +1616,6 @@ li:hover .sideBarImg {
 
 .tableTrackName {
     color: white;
-    width: 34.72vw;
-    min-width: 300px;
     overflow: hidden; 
     text-overflow: ellipsis; 
     white-space: nowrap;
@@ -1638,10 +1636,8 @@ th {
 }
 
 
-.tdRegTrack {
-    padding-top: 6px;
-    padding-bottom: 6px;
-}
+/* .tdRegTrack {
+} */
 
 
 .tdSmallTrack {
@@ -1662,7 +1658,7 @@ th {
     height: 40px; 
     width: 40px; 
     object-fit: cover;
-    margin-right: 10px;
+    margin-right: 15px;
 }
 
 .searchTableTrackImage {
@@ -1696,6 +1692,7 @@ th {
 
 .trackTableRow {
     color: rgb(168, 168, 168);
+    height: 60px;
 
 }
 
@@ -1808,9 +1805,9 @@ th {
     border-bottom-left-radius: 5px;
 }
 
-.tableImgCol {
+/* .tableImgCol {
     width: 60px; 
-}
+} */
 
 .rowSecond {
     padding-left: 10px;
@@ -1844,6 +1841,13 @@ th {
     box-shadow: 0px 5px 10px 2px #121212;
 }
 
+.trackOptionsFlex {
+    display: flex;
+    margin: auto;
+    align-items: center;
+    justify-content: space-around;
+}
+
 .trackTableLike {
     width: 17.5px;
 }
@@ -1868,12 +1872,10 @@ th {
 }
 
 .trackOptions {
-    margin: auto;
     display: flex;
     justify-content: space-evenly;
     width: 25px;
     visibility: hidden;
-    background-color: blue;
 }
 
 .dot {
@@ -1896,7 +1898,7 @@ th {
 #headerPanel {
     cursor: default;
     min-width: 550px;
-    height: max(30vw, 436px);
+    height: max(42vw, 604px);
 }
 
 #headerPanelUpper {
