@@ -1771,11 +1771,11 @@ th {
 
 
 .trackTableLike {
-    width: 17.5px;
+    width: 15px;
 }
 
 .trackTableLiked {
-    width: 17.5px;
+    width: 15px;
     stroke: #1ed760;
     fill:#1ed760;
     visibility: visible;
@@ -1929,6 +1929,7 @@ th {
 #headerImage {
     object-fit: cover;
     align-self: flex-end;
+    box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
 }
 
 #headerImageChange {
@@ -2106,6 +2107,15 @@ th {
     background-color: transparent;
 }
 
+.trackHead {
+    text-align: center;
+}
+
+.trackFunctions {
+    width: 10%;
+    min-width: 120px;
+}
+
 .trackRow {
     color: rgb(168, 168, 168);
     height: 60px;
@@ -2181,11 +2191,23 @@ th {
 
 .trackName {
     color: white;
+    margin-bottom: 0px;
+    margin-top: 0px;  
+    text-overflow: ellipsis; 
+    overflow: hidden; 
+    white-space: nowrap;
+}
+
+.trackText {
     overflow: hidden; 
     text-overflow: ellipsis; 
     white-space: nowrap;
-    margin-bottom: 0px;
-    margin-top: 0px;
+    width: 85%;
+}
+
+.trackDetails {
+    display: flex;
+    align-items: center;
 }
 
 .trackLink {

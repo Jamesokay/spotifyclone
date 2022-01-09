@@ -189,9 +189,9 @@ export default function TracksTable({content, page, trackDepth }) {
               <thead>
                 <tr id='tableTop' style={(scrolling)? {backgroundColor:'rgb(24, 24, 24)'} : {backgroundColor: 'transparent'}}>
                   <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
-                  <th style={{textAlign: 'center'}}>#</th>
+                  <th className='trackHead'>#</th>
                   <th>TITLE</th>
-                  <th style={{textAlign: 'center'}}>
+                  <th className='trackHead trackFunctions'>
                     <ClockIcon />
                   </th>
                   <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
@@ -256,7 +256,6 @@ export default function TracksTable({content, page, trackDepth }) {
                       <EllipsisIcon />
                     </div>
                   </td>
-                  <td className='emptyCell'></td>
                 </tr>
                )}
               </tbody>
@@ -274,10 +273,10 @@ export default function TracksTable({content, page, trackDepth }) {
               <thead>
                 <tr id='tableTop' style={(scrolling)? {backgroundColor:'rgb(24, 24, 24)'} : {backgroundColor: 'transparent'}}>
                   <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
-                  <th style={{textAlign: 'center'}}>#</th>
+                  <th className='trackHead'>#</th>
                   <th>TITLE</th>           
-                  <th>ALBUM</th>
-                  <th style={{textAlign: 'center'}}>
+                  <th style={{width: '40%', minWidth: '200px'}}>ALBUM</th>
+                  <th className='trackHead trackFunctions'>
                     <ClockIcon />
                   </th>
                   <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
@@ -314,10 +313,10 @@ export default function TracksTable({content, page, trackDepth }) {
                   </td>
                 }
                   
-                  <td className='trackCell'>
-                  <div style={{display: 'inline-flex', alignItems:'center'}}>
+                  <td className='trackCell' style={{maxWidth: '300px'}}>
+                  <div className='trackDetails'>
                     <img className='trackImage' src={cont.trackImage} alt='' />
-                    <div>
+                    <div className='trackText'>
                       <p className='trackName'
                          style={(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p> 
                       {cont.artists.map((artist, index, artists) => 
@@ -370,8 +369,6 @@ export default function TracksTable({content, page, trackDepth }) {
                   </div>
                   
                   </td>
-
-                  <td className='emptyCell'></td>
                 </tr>
               )}
               </tbody>
