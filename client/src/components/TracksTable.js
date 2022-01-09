@@ -142,132 +142,124 @@ export default function TracksTable({content, page, trackDepth }) {
     if (page === 'artist') {
         return (
           <div>
-            <div id='tableHeader'></div>        
+            <div id='tableHeader' />        
             <table className='artistTable' cellSpacing='0' cellPadding='0'>
             <tbody>
             {content.slice(0,trackDepth).map(cont =>
-              <tr className='trackTableRow' key={cont.id} style={{color: 'white'}}>              
+            <tr className='trackRow' key={cont.id} style={{color: 'white'}}>              
               {(cont.uri === nowPlaying.trackUri && !nowPlaying.isPaused)?
-                  <td className='rowFirst tdRegTrack'>
-                    <TablePlayingIcon />
-                  </td>
-                  :
-                  <td className='rowFirst tdRegTrack'>
-                    <span className='trackTableIndex'>{cont.num}</span>
-                    <div className='trackTablePlayIcon'
-                         style={(rightClick.id === cont.id)? {visibility: 'visible'} : {}}
-                         onClick={() => playTrack(accessToken, {context_uri: cont.albumUri, offset: { uri: cont.uri }})}></div>
-                  </td>
+                <td className='trackCell firstCell'>
+                  <TablePlayingIcon />
+                </td>
+              :
+              <td className='trackCell firstCell'>
+                <span className='trackIndex'>{cont.num}</span>
+                <div className='trackTablePlayIcon'
+                     style={(rightClick.id === cont.id)? {visibility: 'visible'} : {}}
+                     onClick={() => playTrack(accessToken, {context_uri: cont.albumUri, offset: { uri: cont.uri }})} />
+              </td>
               } 
-                <td className='tableImgCol tdRegTrack'><img className='trackTableImage' src={cont.trackImage} alt=''/></td>
-                <td className='tdRegTrack' style={{width: '65%'}}>
+              <td className='trackCell'>
+                <div style={{display: 'inline-flex', alignItems: 'center'}}>
+                  <img className='trackImage' src={cont.trackImage} alt=''/>
                   <span style={(cont.uri === nowPlaying.trackUri)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</span>
-                </td>
-                <td style={{width: '7.5%'}}>
-                  <div onClick={() => handleLike(cont.id)}> 
+                </div>
+              </td>
+              <td className='trackCell lastCell'>
+                <div className='trackOptionsFlex'>
+                  <span onClick={() => handleLike(cont.id)}> 
                     {likedTracks.includes(cont.id)? <TableHeartFilledIcon /> : <TableHeartOutlineIcon />}
-                  </div>                                
-                </td>
-                <td className='tdRegTrack' style={{width: '5%'}}>{cont.duration}</td>
-                <td className='rowLast tdRegTrack' style={{width: '7.5%'}}>                   
-                   <EllipsisIcon />
-                </td>              
-              </tr>
+                  </span> 
+                  <span>{cont.duration}</span>
+                  <EllipsisIcon />
+                </div>
+              </td>            
+            </tr>
             )}
             </tbody>
             </table>
           </div>
         )
     }
-
-
     else if (page === 'album') {
         return (
           <div>
-           <div id='tableHeader'></div>
+            <div id='tableHeader'></div>
             <table className='tableReg' cellSpacing='0' cellPadding='0'>
-            <thead>
-              <tr id='tableTop' style={(scrolling)? {backgroundColor:'rgb(24, 24, 24)'} : {backgroundColor: 'transparent'}}>
-                <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
-                <th style={{textAlign: 'center'}}>#</th>
-                <th>TITLE</th>
-                <th style={{width: '4%'}}></th>
-                <th style={{width: '2.5%'}}>
-                  <ClockIcon />
-                </th>
-                <th style={{width: '5%'}}></th>
-                <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
-              </tr>
+              <thead>
+                <tr id='tableTop' style={(scrolling)? {backgroundColor:'rgb(24, 24, 24)'} : {backgroundColor: 'transparent'}}>
+                  <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
+                  <th style={{textAlign: 'center'}}>#</th>
+                  <th>TITLE</th>
+                  <th style={{textAlign: 'center'}}>
+                    <ClockIcon />
+                  </th>
+                  <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
+                </tr>
               </thead>
               <tbody>
-              <tr>
-                <td className='tdRegTrack'></td>
-              </tr>            
-              {content.map(cont =>
-                <tr className='trackTableRow' key={cont.id}
+                <tr>
+                  <td style={{height: '15px'}}></td>
+                </tr>            
+                {content.map(cont =>
+                <tr className='trackRow' key={cont.id}
                     onContextMenu={() => {                  
                       if (!preventProp) {
                         setRightClick({id: cont.id, type: 'track'})
                       }}}
                     style={(rightClick.id === cont.id)? {background: 'grey'} : {}} >
-                <td className='emptyCell'></td>
-                {(cont.albumUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri && !nowPlaying.isPaused)?
-                  <td className='rowFirst tdRegTrack'>
+                  <td className='emptyCell' />
+                  {(cont.albumUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri && !nowPlaying.isPaused)?
+                  <td className='trackCell firstCell'>
                     <TablePlayingIcon />
                   </td>
                   :
-                  <td className='rowFirst tdRegTrack'>
-                    <span className='trackTableIndex'>{cont.num}</span>
+                  <td className='trackCell firstCell'>
+                    <span className='trackIndex'>{cont.num}</span>
                     <div className='trackTablePlayIcon'
-                    style={(rightClick.id === cont.id)? {visibility: 'visible'} : {}}
-                    onClick={() => playTrack(accessToken, 
-                    {context_uri: cont.albumUri,
-                     offset: { uri: cont.uri }})}></div>
+                         style={(rightClick.id === cont.id)? {visibility: 'visible'} : {}}
+                         onClick={() => playTrack(accessToken, {context_uri: cont.albumUri, offset: { uri: cont.uri }})} />
                   </td>
-                 } 
-                  <td className='tdRegTrack'>
-                    <p className='tableTrackName' 
+                  } 
+                  <td className='trackCell'>
+                    <p className='trackName' 
                        style={(cont.albumUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p>                     
-                      {cont.artists.map((artist, index, artists) => 
-                      <span key={artist.id} className='trackTableArtist'>                 
-                        <span className='trackTableLink'
-                              style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
-                              onMouseEnter={() => setPreventProp(true)}
-                              onMouseLeave={() => setPreventProp(false)}
-                              onContextMenu={() => setRightClick({id: cont.id, type: 'artist'})}
-                              onClick={(e) => {
-                                e.preventDefault()
-                                history.push({
+                    {cont.artists.map((artist, index, artists) => 
+                    <span key={artist.id}>                 
+                      <span className='trackLink'
+                            style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
+                            onMouseEnter={() => setPreventProp(true)}
+                            onMouseLeave={() => setPreventProp(false)}
+                            onContextMenu={() => setRightClick({id: cont.id, type: 'artist'})}
+                            onClick={(e) => {
+                              e.preventDefault()
+                              history.push({
                                   pathname: `/artist/${artist.id}`,
                                   search: '', 
                                   state: artist.id
-                             })
-                          }}
-                        >{artist.name}</span>
-                        {(index < artists.length - 1)?
-                        <span>, </span>
-                        :
-                        <span></span>
-                        }
-                      </span>
-                      )}
-                    
-                  </td>
-
-                  <td>
-                    <div onClick={() => handleLike(cont.id)}> 
+                              })}}
+                      >{artist.name}</span>
+                      {(index < artists.length - 1)?
+                      <span>, </span>
+                      :
+                      <></>
+                      }
+                    </span>
+                    )}               
+                  </td>             
+                  <td className='trackCell lastCell'>
+                    <div className='trackOptionsFlex'>
+                      <span onClick={() => handleLike(cont.id)}> 
                       {likedTracks.includes(cont.id)? <TableHeartFilledIcon /> : <TableHeartOutlineIcon />}
-                    </div> 
-                  </td>
-
-                  <td className='tdRegTrack'><span className='tdTime'>{cont.duration}</span></td>
-                  <td className='tdRegTrack rowLast'>
-                    <EllipsisIcon />
+                      </span> 
+                      <span>{cont.duration}</span>
+                      <EllipsisIcon />
+                    </div>
                   </td>
                   <td className='emptyCell'></td>
                 </tr>
                )}
-               </tbody>
+              </tbody>
             </table>
           </div>
         )
@@ -296,7 +288,7 @@ export default function TracksTable({content, page, trackDepth }) {
                 <td style={{height: '15px'}}></td>
               </tr>
               {content.map(cont =>
-                <tr className='trackTableRow' 
+                <tr className='trackRow' 
                     onContextMenu={() => {
                       if (!preventProp) {
                         setRightClick({id: cont.id, type: 'track'})
@@ -306,12 +298,12 @@ export default function TracksTable({content, page, trackDepth }) {
                     >
                 <td className='emptyCell'></td>
                 {(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName && !nowPlaying.isPaused)?
-                  <td className='rowFirst tdRegTrack'>
+                  <td className='trackCell firstCell'>
                     <TablePlayingIcon />
                   </td>
                   :
-                  <td className='rowFirst tdRegTrack'>
-                    <span className='trackTableIndex'>{cont.num}</span>
+                  <td className='trackCell firstCell'>
+                    <span className='trackIndex'>{cont.num}</span>
                     <div className='trackTablePlayIcon'
                     style={(rightClick.id === cont.id)? {visibility: 'visible'} : {}}
                     onClick={() => 
@@ -322,15 +314,15 @@ export default function TracksTable({content, page, trackDepth }) {
                   </td>
                 }
                   
-                  <td className='tdRegTrack'>
+                  <td className='trackCell'>
                   <div style={{display: 'inline-flex', alignItems:'center'}}>
-                    <img className='trackTableImage' src={cont.trackImage} alt='' />
+                    <img className='trackImage' src={cont.trackImage} alt='' />
                     <div>
-                      <p className='tableTrackName'
+                      <p className='trackName'
                          style={(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p> 
                       {cont.artists.map((artist, index, artists) => 
                       <span key={artist.id}>                 
-                        <span className='trackTableLink'
+                        <span className='trackLink'
                               style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                               onMouseEnter={() => setPreventProp(true)}
                               onMouseLeave={() => setPreventProp(false)}
@@ -353,8 +345,8 @@ export default function TracksTable({content, page, trackDepth }) {
                     </div>
                   </div>
                   </td>
-                  <td className='tdRegTrack'>
-                    <span className='trackTableLink'
+                  <td className='trackCell'>
+                    <span className='trackLink'
                           style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                           onMouseEnter={() => setPreventProp(true)}
                           onMouseLeave={() => setPreventProp(false)}
@@ -368,7 +360,7 @@ export default function TracksTable({content, page, trackDepth }) {
                           }}>{cont.albumName}</span>
                   </td>
 
-                  <td className='tdRegTrack rowLast'>
+                  <td className='trackCell lastCell'>
                   <div className='trackOptionsFlex'>
                     <span onClick={() => handleLike(cont.id)}> 
                       {likedTracks.includes(cont.id)? <TableHeartFilledIcon /> : <TableHeartOutlineIcon />}
@@ -396,25 +388,25 @@ export default function TracksTable({content, page, trackDepth }) {
         <table className='tableReg' cellSpacing='0' cellPadding='0'>
         <tbody>
         {content.slice(0, 10).map(cont =>
-        <tr className='trackTableRow' key={cont.id}
+        <tr className='trackRow' key={cont.id}
             onContextMenu={() => {
               if (!preventProp) {
                 setRightClick({id: cont.id, type: 'track'})
               }}}
             style={(rightClick.id === cont.id)? {background: 'grey'} : {}}>
         <td className='emptyCell'></td>
-          <td className='rowFirst tdRegTrack'>
+          <td className='trackCell firstCell'>
             <img className='searchTableTrackImage' src={cont.trackImage} alt='' />
             <div className='searchTableTrackPlayIcon'
                  style={(rightClick.id === cont.id)? {visibility: 'visible'} : {}}
                  onClick={() => playTrack(accessToken, {uris: [cont.uri]})}
             ></div>
           </td>
-          <td className='rowSecond tdRegTrack'>
-          <p className='tableTrackName'>{cont.name}</p>
-          {cont.artists.map((artist, index, artists) => 
-                <span key={artist.id} className='trackTableArtist'>                 
-                <span className='trackTableLink'
+          <td className='trackCell'>
+            <p className='trackName'>{cont.name}</p>
+            {cont.artists.map((artist, index, artists) => 
+              <span key={artist.id}>                 
+                <span className='trackLink'
                       style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                       onMouseEnter={() => setPreventProp(true)}
                       onMouseLeave={() => setPreventProp(false)}
@@ -422,22 +414,20 @@ export default function TracksTable({content, page, trackDepth }) {
                 {(index < artists.length - 1)?
                 <span>, </span>
                 :
-                <span></span>
+                <></>
                 }
-                </span>
+              </span>
           )}
           </td>
-          <td className='tdRegTrack'>
-          <span className='trackTableLink'
-                style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
-                onMouseEnter={() => setPreventProp(true)}
-                onMouseLeave={() => setPreventProp(false)}
-                onContextMenu={() => setRightClick({id: cont.id, type: 'album'})}>
-            {cont.albumName}
-          </span>
+          <td className='trackCell'>
+            <span className='trackLink'
+                  style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
+                  onMouseEnter={() => setPreventProp(true)}
+                  onMouseLeave={() => setPreventProp(false)}
+                  onContextMenu={() => setRightClick({id: cont.id, type: 'album'})}
+            >{cont.albumName}</span>
           </td>
-
-          <td className='rowLast tdRegTrack'>
+          <td className='trackCell lastCell'>
             <div className='addTrack' onClick={() => addTrack({uris: [cont.uri]}, cont)}>
               <span>ADD</span>
             </div>

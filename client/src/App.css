@@ -1482,10 +1482,6 @@ li:hover .sideBarImg {
     width: 48vw;
 }
 
-/* .trackTableSearchCell {
-   padding-top: 5px !important;
-   padding-bottom: 5px !important;
-} */
 
 @keyframes skeleton-load {
     0% {
@@ -1598,6 +1594,7 @@ li:hover .sideBarImg {
 
 .emptyCell {
     pointer-events: none;
+    visibility: hidden;
 }
 
 
@@ -1636,29 +1633,10 @@ th {
 }
 
 
-/* .tdRegTrack {
-} */
-
 
 .tdSmallTrack {
     padding-top: 5px;
     padding-bottom: 5px;
-}
-
-.trackTableLink {
-    font-size: 10pt;
-}
-
-.trackTableLink:hover {
-    color: white;
-    text-decoration: underline;
-}
-
-.trackTableImage {
-    height: 40px; 
-    width: 40px; 
-    object-fit: cover;
-    margin-right: 15px;
 }
 
 .searchTableTrackImage {
@@ -1666,10 +1644,6 @@ th {
     width: 40px; 
     object-fit: cover;
     margin-top: 5px;
-}
-
-.trackTableRow:hover .searchTableTrackImage {
-    opacity: 0.5;
 }
 
 .searchTableTrackPlayIcon {
@@ -1684,17 +1658,6 @@ th {
     visibility: hidden;
 }
 
-.trackTableRow:hover .searchTableTrackPlayIcon {
-    visibility: visible;
-}
-
-
-
-.trackTableRow {
-    color: rgb(168, 168, 168);
-    height: 60px;
-
-}
 
 .trackTablePlayIcon {
     width: 0;
@@ -1786,41 +1749,6 @@ th {
     }
 }
 
-.trackTableRow:hover .trackTableIndex {
-    visibility: hidden;
-}
-
-
-.trackTableRow:hover .trackTablePlayIcon {
-    visibility: visible;
-}
-
-.rowFirst {
-    position: relative;
-    width: 3.47vw;
-    min-width: 50px;
-    font-size: 12pt;
-    text-align: center;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-
-/* .tableImgCol {
-    width: 60px; 
-} */
-
-.rowSecond {
-    padding-left: 10px;
-}
-
-.rowSecondSearch {
-    padding-left: 10px;
-}
-
-.rowLast {
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
 
 .likedNotification {
     font-family: Arial, Helvetica, sans-serif;
@@ -1841,12 +1769,6 @@ th {
     box-shadow: 0px 5px 10px 2px #121212;
 }
 
-.trackOptionsFlex {
-    display: flex;
-    margin: auto;
-    align-items: center;
-    justify-content: space-around;
-}
 
 .trackTableLike {
     width: 17.5px;
@@ -1859,17 +1781,6 @@ th {
     visibility: visible;
 }
 
-.trackTableRow:hover .trackTableLike {
-    stroke: rgb(168, 168, 168);
-}
-
-.trackTableLike:hover {
-    stroke: white !important;
-}
-
-.trackTableRow:hover .trackOptions {
-    visibility: visible;
-}
 
 .trackOptions {
     display: flex;
@@ -1885,14 +1796,6 @@ th {
     border-radius: 50%;
 }
 
-.trackTableRow:hover {
-    color: white;
-    background: rgb(53, 53, 53);
-}
-
-.trackTableRow:hover .emptyCell{
-    visibility: hidden;
-}
 
 
 #headerPanel {
@@ -2188,6 +2091,119 @@ th {
     transform: scale(1.05)
 }
 
-.trackTableRow:hover .addTrack {
+
+/* TRACK TABLE */
+
+#tableTop {
+    position: sticky;
+    top: 7.5vh;
+    z-index: 1;
+}
+
+#tableHeader {
+    width: 100%;
+    height: 1px;
+    background-color: transparent;
+}
+
+.trackRow {
+    color: rgb(168, 168, 168);
+    height: 60px;
+}
+
+.trackRow:hover .trackIndex {
+    visibility: hidden;
+}
+
+.trackRow:hover .trackTablePlayIcon {
+    visibility: visible;
+}
+
+.trackRow:hover .trackTableLike {
+    stroke: rgb(168, 168, 168);
+}
+
+.trackRow:hover .trackOptions {
+    visibility: visible;
+}
+
+.trackRow:hover {
+    color: white;
+    background: rgb(53, 53, 53);
+}
+
+.trackRow:hover .addTrack {
     border-color: white;
+}
+
+.trackRow:hover .searchTableTrackPlayIcon {
+    visibility: visible;
+}
+
+.trackRow:hover .searchTableTrackImage {
+    opacity: 0.5;
+}
+
+.empty {
+    width: 2.5vw;
+    min-width: 36px;
+    border-bottom: none;
+}
+
+.emptyCell {
+    width: 2.5vw;
+    min-width: 36px;
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.firstCell {
+    position: relative;
+    width: 3.47vw;
+    min-width: 50px;
+    font-size: 12pt;
+    text-align: center;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.lastCell {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.trackImage {
+    height: 40px; 
+    width: 40px; 
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.trackName {
+    color: white;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.trackLink {
+    font-size: 10pt;
+}
+
+.trackLink:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.trackOptionsFlex {
+    display: flex;
+    margin: auto;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.trackTableLike:hover {
+    stroke: white !important;
 }

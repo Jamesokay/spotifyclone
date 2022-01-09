@@ -23,7 +23,7 @@ export default function NavBar() {
     
     function calculateChange(startNum) {
       var distance = 18 - startNum
-      var change = Math.floor(distance * 0.7)
+      var change = Math.floor(distance * 0.625)
       return startNum + change
     }
 
