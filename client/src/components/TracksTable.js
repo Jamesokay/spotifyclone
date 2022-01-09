@@ -274,8 +274,8 @@ export default function TracksTable({content, page, trackDepth }) {
                 <tr id='tableTop' style={(scrolling)? {backgroundColor:'rgb(24, 24, 24)'} : {backgroundColor: 'transparent'}}>
                   <th className='empty' style={(scrolling)? {borderBottom: '1px solid rgb(105, 105, 105, 0.3)'} : {borderBottom: 'none'}}></th>
                   <th className='trackHead'>#</th>
-                  <th>TITLE</th>           
-                  <th style={{width: '40%', minWidth: '200px'}}>ALBUM</th>
+                  <th style={{width: '40%'}}>TITLE</th>           
+                  <th>ALBUM</th>
                   <th className='trackHead trackFunctions'>
                     <ClockIcon />
                   </th>
@@ -313,7 +313,7 @@ export default function TracksTable({content, page, trackDepth }) {
                   </td>
                 }
                   
-                  <td className='trackCell' style={{maxWidth: '300px'}}>
+                  <td className='trackCell'>
                   <div className='trackDetails'>
                     <img className='trackImage' src={cont.trackImage} alt='' />
                     <div className='trackText'>
@@ -345,6 +345,7 @@ export default function TracksTable({content, page, trackDepth }) {
                   </div>
                   </td>
                   <td className='trackCell'>
+                  <div className='trackText'>
                     <span className='trackLink'
                           style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                           onMouseEnter={() => setPreventProp(true)}
@@ -357,7 +358,9 @@ export default function TracksTable({content, page, trackDepth }) {
                                state: cont.albumId
                              })
                           }}>{cont.albumName}</span>
+                   </div>
                   </td>
+                  
 
                   <td className='trackCell lastCell'>
                   <div className='trackOptionsFlex'>
