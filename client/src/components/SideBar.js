@@ -45,9 +45,7 @@ export default function SideBar() {
 
     return (  
         <div className='sideBar' onContextMenu={(e) => e.preventDefault()}>
-          <div id='logoContainer'>
-            <Logo />
-          </div>
+          <Logo /> 
           <ul className='sideBarList'>
             <li>
               <NavLink className='sideBarLink' draggable="false" to="/" exact={true} activeClassName="sideBarActive">
@@ -85,7 +83,7 @@ export default function SideBar() {
           <ul className='sideBarList' style={{overflowY: 'scroll'}}>
           {userPlaylists.map(playlist => 
             <li key={playlist.key} className='playlistLi' onContextMenu={(e) => setRightClick({type: playlist.type, yPos: e.screenY, xPos: e.screenX, id: playlist.id})}>
-              <NavLink className='sideBarPlaylist' draggable="false" to={{pathname: `/playlist/${playlist.id}`, state: playlist.id }} activeClassName="sideBarPlaylistActive" onContextMenu={(e) => setRightClick({type: playlist.type, yPos: e.screenY, xPos: e.screenX, id: playlist.id})}>
+              <NavLink className='sideBarPlaylist' draggable="false" to={{pathname: `/playlist/${playlist.id}`, state: playlist.id }} activeClassName="sideBarPlaylistActive" onContextMenu={(e) => setRightClick({type: playlist.type, id: playlist.id})}>
                 <span className='playlistTitle' style={(rightClick.id === playlist.id)? {color: 'white'} : {}}>{playlist.name}</span>
               </NavLink>
             </li>
