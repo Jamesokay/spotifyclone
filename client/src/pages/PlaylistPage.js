@@ -114,6 +114,7 @@ export default function PlaylistPage({ location }) {
         try {
           const data = await spotifyApi.containsMySavedTracks(trax)
           setSavedArray(data.body)
+          setLoading(false)
         } catch (err) {
           console.error(err)
         }
@@ -123,6 +124,7 @@ export default function PlaylistPage({ location }) {
 
       return function cleanUp() {
         setSavedArray([])
+        setLoading(true)
       }
       
     }, [tracks, accessToken])
@@ -132,11 +134,9 @@ export default function PlaylistPage({ location }) {
       if (isEmpty) return
     
       setTracksFinal(flagSavedTracks(tracks.slice(0, 50), savedArray))
-      setLoading(false)
 
       return function cleanUp() {
         setTracksFinal([])
-        setLoading(true)
       }
     }, [isEmpty, tracks, savedArray])
 

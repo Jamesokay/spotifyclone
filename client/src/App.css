@@ -957,6 +957,14 @@ body::-webkit-scrollbar {
 }
 
 .skeletonTitle {
+    width: 30%;
+    height: 0.9rem;
+    margin-bottom: 0.25rem;
+    border-radius: 0.25rem;
+    animation: skeleton-load 1s linear infinite alternate;
+}
+
+.skeletonTitlePlaylist {
     width: 60%;
     height: 0.9rem;
     margin-bottom: 0.25rem;
@@ -965,6 +973,13 @@ body::-webkit-scrollbar {
 }
 
 .skeletonArtist {
+    width: 15%;
+    height: 0.75rem;
+    border-radius: 0.25rem;
+    animation: skeleton-load 1s linear infinite alternate;
+}
+
+.skeletonArtistPlaylist {
     width: 30%;
     height: 0.75rem;
     border-radius: 0.25rem;
@@ -982,6 +997,7 @@ body::-webkit-scrollbar {
 .skeletonImg {
     height: 40px;
     width: 40px;
+    margin-right: 1rem;
     border-radius: 5px;
     animation: skeleton-load 1s linear infinite alternate;
 }
@@ -995,10 +1011,9 @@ body::-webkit-scrollbar {
 }
 
 .skeletonTime {
-    width: 100%;
-    float: right;
+    width: 50%;
     height: 0.9rem;
-    margin-bottom: 0.25rem;
+    margin: auto;
     border-radius: 0.25rem;
     animation: skeleton-load 1s linear infinite alternate;
 }
