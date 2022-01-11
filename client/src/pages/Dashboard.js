@@ -85,7 +85,6 @@ export default function Dashboard() {
           }
         }
       }
-
       return newArray
     }
     
@@ -126,8 +125,7 @@ export default function Dashboard() {
           const data = await spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
           setRecentSeeds(data.body.items.slice(0, 5).map(item => item.track.id))
           let recentFiltered = getUniqueById(data.body.items)
-          let recentlyPlayed = await spotifyContextQuery(recentFiltered)
-          setRecent(recentlyPlayed)
+          setRecent(await spotifyContextQuery(recentFiltered))
           setLoading(false)
         } catch (err) {
           console.error(err)
@@ -139,7 +137,6 @@ export default function Dashboard() {
       return function cleanUp() {
         setRecent([])
         setRecentSeeds([])
-        setRecentReversed([])
         setLoading(true)
       }
     }, [accessToken])
@@ -270,22 +267,22 @@ export default function Dashboard() {
           :
           <div>
           <span className='panelTitle'>{greeting}</span>
-          <Panel content={recent.slice(0, 5)} />
+          <Panel content={recent} />
           </div>
         
         }
 
         <span className='panelTitle'>{'More like ' + relatedArtistsSeed}</span>
-        <Panel content={moreLike.slice(0, 5)} />
+        <Panel content={moreLike} />
         <span className='panelTitle'>Album picks</span>
         <span className='panelTitleSub'>Albums for you based on what you like to listen to.</span>
-        <Panel content={recommend.slice(0, 5)} />   
+        <Panel content={recommend} />   
         <span className='panelTitle'>Jump back in</span> 
-        <Panel content={recentReversed.slice(0, 5)} />  
+        <Panel content={recentReversed} />  
         <span className='panelTitle'>{'For fans of ' + customArtistName}</span>
-        <Panel content={customArtistPanel.slice(0, 5)} /> 
+        <Panel content={customArtistPanel} /> 
         <span className='panelTitle'>Recommended for today</span>
-        <Panel content={forToday.slice(0, 5)} />
+        <Panel content={forToday} />
 
       </div>
     )

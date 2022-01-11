@@ -23,8 +23,11 @@ export default function PanelGrid({ content, head }) {
     
     // Generate the array of objects to be rendered
     useEffect(() => {
-        if (content.length === 0) return
-        setCardsWithColours(getColor(content))
+        getColor(content.slice(0, 8))
+
+        return () => {
+            setCardsWithColours([])
+        }
     }, [content])
 
     
@@ -54,9 +57,7 @@ export default function PanelGrid({ content, head }) {
     // specified region of the image can be calculated. This average colour is then added to the existing object as a property.
     // The background and theme can thereby achieve the desired effect: background/theme colour changing to that of the card's bg/rgb
     // property when hovered over.
-    function getColor(array) {
-
-        let newArray = []
+    const getColor = array => {
 
         for (const item of array) {
           let canvas = document.createElement('canvas');
@@ -91,35 +92,29 @@ export default function PanelGrid({ content, head }) {
               bg: 'rgb(' + avgRed + ',' + avgGreen + ',' + avgBlue + ')',
               rgb: {red: avgRed, green: avgGreen, blue: avgBlue}
             }
-            newArray.push(obj)
+            setCardsWithColours(cardsWithColours => [...cardsWithColours, obj])
           }    
 
         myImgElement.src = item.imgUrl   
         myImgElement.crossOrigin = ''  
         }
-      
-      return newArray
     }
 
 
-    return (
-        
+    return (     
         <div id='gridPanel' style={{background: gradient}}
          onLoad={()=> {
             setGradient(cardsWithColours[0].bg) 
             setCurrentTheme(cardsWithColours[0].rgb) }}>
-        <div id='gridPanelLower'></div>
-        <div id='dashGreeting'>
-        {head}
-        </div>
-        
+        <div id='gridPanelLower' />
+        <div id='dashGreeting'>{head}</div>     
         <div id='gridContent'>
         {cardsWithColours.slice(0, index).map(cont =>
           <Link className='gridCardLink' 
                 style={{flex: `0 1 calc(${cardWidth}% - 25px)`}}
                 key={cont.key} 
                 to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}
-                onContextMenu={(e) => setRightClick({type: cont.type, id: cont.id})}
+                onContextMenu={() => setRightClick({type: cont.type, id: cont.id})}
                 >
           <div className='gridCard'
                style={(rightClick.id === cont.id)? {backgroundColor: 'rgba(128, 128, 128, 0.7)'} : {}}
