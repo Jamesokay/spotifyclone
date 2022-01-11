@@ -101,7 +101,7 @@ export default function PanelGrid({ content, head }) {
     }
 
 
-    return (     
+    return cardsWithColours.length === 8? (     
         <div id='gridPanel' style={{background: gradient}}
          onLoad={()=> {
             setGradient(cardsWithColours[0].bg) 
@@ -153,4 +153,6 @@ export default function PanelGrid({ content, head }) {
 
         </div>
     )
+    :
+    <div id='gridPanel' />
 }
