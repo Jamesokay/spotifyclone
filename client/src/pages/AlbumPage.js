@@ -140,7 +140,7 @@ export default function AlbumPage({ location }) {
                 const data = await spotifyApi.getArtistAlbums(album.artists[0].id, {limit: 50})
                 let filteredAlbums = getUniqueByName(data.body.items)
                 let albumIds = filteredAlbums.map(item => item.id)
-                setMoreByArtist(await getAlbumObjects(albumIds))
+                setMoreByArtist(await getAlbumObjects(albumIds.slice(0, 5)))
             } catch (err) {
                 console.error(err)
             }
@@ -187,7 +187,7 @@ export default function AlbumPage({ location }) {
               <TracksTable content={tracksFinal} page='album' />
             }   
             <span className='panelTitle'>{(album.artists)? 'More by ' + album.artists[0].name : ''}</span>
-            <Panel content={moreByArtist.slice(0, 5)} /> 
+            <Panel content={moreByArtist} /> 
           </div>
         </div>
     )
