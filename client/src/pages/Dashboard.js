@@ -87,6 +87,20 @@ export default function Dashboard() {
       }
       return newArray
     }
+
+    // async function getArtistAlbum(array) {
+    //   let newArray = []
+    //   for (const item of array) {
+    //     try {
+    //       const data = await spotifyApi.getArtistAlbums(item.id, {limit: 1, album_type: 'album'})
+    //       console.log(data.body)
+    //     //  newArray.push(getDataObject(data.body))
+    //     } catch (err) {
+    //       console.error(err)
+    //     }
+    //   }
+    //   return newArray
+    // }
     
 
     useEffect(() => {
@@ -171,8 +185,18 @@ export default function Dashboard() {
        }
      }
 
+     const getRelatedArtists = async () => {
+      try {
+        const data = await spotifyApi.getArtistRelatedArtists([topArtists[artistIndex].key])
+        console.log(data.body.artists)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
      getMoreLike()
      getRecommend()
+     getRelatedArtists()
 
     return function cleanUp() {
       setMoreLike([])

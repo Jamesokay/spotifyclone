@@ -39,21 +39,28 @@ export default function ArtistPage({ location }) {
       }
 
 
-    async function getAlbumObjects(array) {
+    async function getAlbumObjects(array, type) {
       let newArray = []
-
-      for (const item of array) {
-        try {
-          const data = await spotifyApi.getAlbum(item)
-          newArray.push({...getDataObject(data.body), 
-                         onArtistPage: true,
-                         year: parseInt(data.body.release_date.slice(0, 4)),
-                         subtitle: data.body.release_date.slice(0, 4) + ' • ' + data.body.album_type.charAt(0).toUpperCase() + data.body.album_type.slice(1)})
-        } catch (err) {
-          console.error(err)
+      
+      if (type === 'popular') {
+        for (const item of array) {
+          try {
+            const data = await spotifyApi.getAlbum(item)
+            newArray.push({...getDataObject(data.body), 
+                           onArtistPage: true})
+          } catch (err) {
+            console.error(err)
+          }
         }
+        return newArray
       }
-      return newArray
+      else {
+        for (const item of array) {
+          newArray.push({...getDataObject(item), 
+            onArtistPage: true})
+        }
+        return newArray
+      }
     }
 
 
@@ -98,7 +105,7 @@ export default function ArtistPage({ location }) {
             const data = await spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'single,album'})
             let albumsFiltered = getUniqueByName(data.body.items)
             let albumIds = albumsFiltered.map(item => item.id)
-            setPopularReleases(await getAlbumObjects(albumIds))
+            setPopularReleases(await getAlbumObjects(albumIds, 'popular'))
           } catch (err) {
             console.error(err)
           }
@@ -107,9 +114,9 @@ export default function ArtistPage({ location }) {
         const getAlbums = async () => {
           try {
             const data = await spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'album'})
+            console.log(data.body.items)
             let albumsFiltered = getUniqueByName(data.body.items)
-            let albumIds = albumsFiltered.map(item => item.id)
-            setArtistAlbumsRaw(await getAlbumObjects(albumIds))
+            setArtistAlbumsRaw(await getAlbumObjects(albumsFiltered, 'albums'))
           } catch (err) {
             console.error(err)
           }
@@ -119,27 +126,28 @@ export default function ArtistPage({ location }) {
           try {
             const data = await spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'single'})
             let albumsFiltered = getUniqueByName(data.body.items)
-            let albumIds = albumsFiltered.map(item => item.id)
-            setSingles(await getAlbumObjects(albumIds))
+            setSingles(await getAlbumObjects(albumsFiltered, 'singles'))
           } catch (err) {
             console.error(err)
           }
         }
+
+        const getRelatedArtists = async () => {
+          try {
+            const data = await spotifyApi.getArtistRelatedArtists(id)
+            setAlsoLike(data.body.artists.map(getDataObject))
+          } catch (err) {
+            console.error(err)
+          }
+        }
+
         getArtistData()
         getTopTracks()
         getPopularReleases()
         getAlbums()
         getSingles()
+        getRelatedArtists()
 
-
-
-        spotifyApi.getArtistRelatedArtists(id)
-        .then(data => {
-          setAlsoLike(data.body.artists.map(getDataObject))
-        })
-        .catch(error => {
-          console.log(error)
-        })
 
         return function cleanUp() {
             setArtist({})
@@ -207,6 +215,7 @@ export default function ArtistPage({ location }) {
         })
 
     }, [accessToken, id, popularReleases, artistAlbumsRaw, singles])
+
 
     useEffect(() => {
         if (!currentTheme) return

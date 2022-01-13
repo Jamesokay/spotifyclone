@@ -19,7 +19,8 @@ export default function getDataObject(dataObject) {
           imgUrl: imgSrc,
           artists: dataObject.artists,
           popularity: dataObject.popularity,
-          subtitle: dataObject.release_date.slice(0, 4)
+          subtitle: dataObject.release_date.slice(0, 4) + ' • ' + capitalizeFirstLetter(dataObject.album_type),
+          year: dataObject.release_date.slice(0, 4)
         }
       }
       else if (dataObject.type === 'playlist') {
