@@ -2152,8 +2152,6 @@ th {
 }
 
 .empty {
-    width: 2.5vw;
-    min-width: 36px;
     border-bottom: none;
 }
 

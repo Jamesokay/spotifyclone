@@ -155,7 +155,8 @@ export default function Dashboard() {
       const getMoreLike = async () => {
         try {
           const data = await spotifyApi.getRecommendations({seed_artists: [topArtists[artistIndex].key], min_popularity: 50})
-          setMoreLike(data.body.tracks.map(track => getDataObject(track.album)))
+          let filtered = data.body.tracks.filter(track => track.artists[0].id !== topArtists[artistIndex].key)
+          setMoreLike(filtered.map(track => getDataObject(track.album)))
         } catch (err) {
           console.error(err)
         }

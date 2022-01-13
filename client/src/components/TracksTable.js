@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
-import { AuthContext, PlaylistContext, PageContext, TrackContext, RightClickContext, NotificationContext } from '../contexts'
+import { AuthContext, PlaylistContext, PageContext, TrackContext, RightClickContext, NotificationContext, SideBarWidthContext } from '../contexts'
 import { TablePlayingIcon, TableHeartOutlineIcon, TableHeartFilledIcon, ClockIcon, EllipsisIcon } from '../icons/icons'
+import useViewport from '../hooks/useViewPort'
 import playTrack from '../utils/playTrack'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
@@ -17,6 +18,9 @@ export default function TracksTable({content, page, trackDepth }) {
     const { rightClick, setRightClick } = useContext(RightClickContext)
     const [preventProp, setPreventProp] = useState(false)
     const { setNotification } = useContext(NotificationContext)
+    const { width } = useViewport()
+    const { currentWidth } = useContext(SideBarWidthContext)
+    const breakPoint = 800
 
 
     function getLikedIds(arr) {
@@ -208,7 +212,7 @@ export default function TracksTable({content, page, trackDepth }) {
                         setRightClick({id: cont.id, type: 'track'})
                       }}}
                     style={(rightClick.id === cont.id)? {background: 'grey'} : {}} >
-                  <td className='emptyCell' />
+                  <td className='emptyCell' style={((width - currentWidth) <= breakPoint)? {width: '1.125vw', minWidth: '16px'} : {}} />
                   {(cont.albumUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri && !nowPlaying.isPaused)?
                   <td className='trackCell firstCell'>
                     <TablePlayingIcon />
@@ -256,6 +260,7 @@ export default function TracksTable({content, page, trackDepth }) {
                       <EllipsisIcon />
                     </div>
                   </td>
+                  <td className='emptyCell' />
                 </tr>
                )}
               </tbody>
@@ -295,7 +300,7 @@ export default function TracksTable({content, page, trackDepth }) {
                     style={(rightClick.id === cont.id)? {background: 'grey'} : {}} 
                     key={cont.id}
                     >
-                <td className='emptyCell'></td>
+                <td className='emptyCell' style={((width - currentWidth) <= breakPoint)? {width: '1.125vw', minWidth: '16px'} : {}} />
                 {(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName && !nowPlaying.isPaused)?
                   <td className='trackCell firstCell'>
                     <TablePlayingIcon />
@@ -311,67 +316,64 @@ export default function TracksTable({content, page, trackDepth }) {
                      offset: { uri: cont.uri }})}
                     ></div>
                   </td>
-                }
-                  
+                }       
                   <td className='trackCell'>
-                  <div className='trackDetails'>
-                    <img className='trackImage' src={cont.trackImage} alt='' />
-                    <div className='trackText'>
-                      <p className='trackName'
-                         style={(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p> 
-                      {cont.artists.map((artist, index, artists) => 
-                      <span key={artist.id}>                 
-                        <span className='trackLink'
-                              style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
-                              onMouseEnter={() => setPreventProp(true)}
-                              onMouseLeave={() => setPreventProp(false)}
-                              onContextMenu={() => setRightClick({id: cont.id, type: 'artist'})}
-                              onClick={(e) => {
-                                e.preventDefault()
-                                history.push({
+                    <div className='trackDetails'>
+                      <img className='trackImage' src={cont.trackImage} alt='' />
+                      <div className='trackText'>
+                        <p className='trackName'
+                           style={(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName)? {color: '#1ed760'} : {color: 'white'}}>{cont.name}</p> 
+                        {cont.artists.map((artist, index, artists) => 
+                        <span key={artist.id}>                 
+                          <span className='trackLink'
+                                style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
+                                onMouseEnter={() => setPreventProp(true)}
+                                onMouseLeave={() => setPreventProp(false)}
+                                onContextMenu={() => setRightClick({id: cont.id, type: 'artist'})}
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  history.push({
                                   pathname: `/artist/${artist.id}`,
                                   search: '', 
                                   state: artist.id
-                                })
-                              }}>{artist.name}</span>
-                        {(index < artists.length - 1)?
-                        <span>, </span>
-                        :
-                        <span></span>
-                        }
-                      </span>
-                      )}
+                                  })}}
+                          >{artist.name}</span>
+                          {(index < artists.length - 1)?
+                          <span>, </span>
+                          :
+                          <span></span>
+                          }
+                        </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
                   </td>
                   <td className='trackCell'>
-                  <div className='trackText'>
-                    <span className='trackLink'
-                          style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
-                          onMouseEnter={() => setPreventProp(true)}
-                          onMouseLeave={() => setPreventProp(false)}
-                          onContextMenu={() => setRightClick({id: cont.id, type: 'album'})}
-                          onClick={() => {        
+                    <div className='trackText'>
+                      <span className='trackLink'
+                            style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
+                            onMouseEnter={() => setPreventProp(true)}
+                            onMouseLeave={() => setPreventProp(false)}
+                            onContextMenu={() => setRightClick({id: cont.id, type: 'album'})}
+                            onClick={() => {        
                              history.push({
                                pathname: `/album/${cont.albumId}`,
                                search: '', 
                                state: cont.albumId
-                             })
-                          }}>{cont.albumName}</span>
-                   </div>
+                             })}}
+                      >{cont.albumName}</span>
+                    </div>
                   </td>
-                  
-
                   <td className='trackCell lastCell'>
-                  <div className='trackOptionsFlex'>
-                    <span onClick={() => handleLike(cont.id)}> 
-                      {likedTracks.includes(cont.id)? <TableHeartFilledIcon /> : <TableHeartOutlineIcon />}
-                    </span> 
-                    <span>{cont.duration}</span>
-                    <EllipsisIcon />
-                  </div>
-                  
+                    <div className='trackOptionsFlex'>
+                      <span onClick={() => handleLike(cont.id)}> 
+                        {likedTracks.includes(cont.id)? <TableHeartFilledIcon /> : <TableHeartOutlineIcon />}
+                      </span> 
+                      <span>{cont.duration}</span>
+                      <EllipsisIcon />
+                    </div>   
                   </td>
+                  <td className='emptyCell' />
                 </tr>
               )}
               </tbody>
