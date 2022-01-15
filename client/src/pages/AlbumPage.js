@@ -31,16 +31,14 @@ export default function AlbumPage({ location }) {
 
 
     async function getAlbumObjects(array) {
-        let newArray = []
         for (const item of array) {
             try {
                 const data = await spotifyApi.getAlbum(item)
-                newArray.push({...getDataObject(data.body), onAlbumPage: true})
+                setMoreByArtist(moreByArtist => [...moreByArtist, {...getDataObject(data.body), onAlbumPage: true}])
             } catch (err) {
                 console.error(err)
             }
         }
-        return newArray
     }
 
 
@@ -137,10 +135,10 @@ export default function AlbumPage({ location }) {
 
         const getOtherAlbums = async () => {
             try {
-                const data = await spotifyApi.getArtistAlbums(album.artists[0].id, {limit: 50})
+                const data = await spotifyApi.getArtistAlbums(album.artists[0].id, {limit: 50, album_type: 'album'})
                 let filteredAlbums = getUniqueByName(data.body.items)
                 let albumIds = filteredAlbums.map(item => item.id)
-                setMoreByArtist(await getAlbumObjects(albumIds.slice(0, 5)))
+                getAlbumObjects(albumIds)
             } catch (err) {
                 console.error(err)
             }

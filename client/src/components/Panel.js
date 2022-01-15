@@ -12,7 +12,7 @@ export default function Panel({ content, type }) {
     const { nowPlaying } = useContext(TrackContext)
     const history = useHistory()
     const { rightClick, setRightClick } = useContext(RightClickContext)
-    const [index, setIndex] = useState(8)
+    const [index, setIndex] = useState(5)
     const [cardWidth, setCardWidth] = useState('17.8%')
     const { width } = useViewport()
     const { currentWidth } = useContext(SideBarWidthContext)
@@ -41,7 +41,7 @@ export default function Panel({ content, type }) {
         }
 
         return function cleanUp() {
-            setIndex(8)
+            setIndex(5)
             setCardWidth('17.8%')
         }
     }, [width, currentWidth])

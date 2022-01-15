@@ -31,6 +31,7 @@ export default function Search() {
     const { nowPlaying } = useContext(TrackContext)
     const { setRightClick } = useContext(RightClickContext)
     const [userArtists, setUserArtists] = useState([])
+//    const [userTracks, setUserTracks] = useState([])
     const [featuringArtist, setFeaturingArtist] = useState([])
     const [loading, setLoading] = useState(true)
     const [topResultWidth, setTopResultWidth] = useState(37.5)
@@ -120,7 +121,7 @@ export default function Search() {
 
     // API call to get user's top artists
     useEffect(() => {
-        const options = {
+        const optionsArtists = {
             url: `https://api.spotify.com/v1/me/top/artists`,
             method: 'GET',
             headers: {
@@ -131,14 +132,33 @@ export default function Search() {
         
         const getUserArtists = async () => {
             try {
-                const response = await axios(options)
+                const response = await axios(optionsArtists)
                 setUserArtists(response.data.items.map(item => item.id))
             } catch (err) {
                 console.error(err)
             }
         }
 
+        // const optionsTracks = {
+        //     url: `https://api.spotify.com/v1/me/top/tracks`,
+        //     method: 'GET',
+        //     headers: {
+        //         'Authorization': `Bearer ${accessToken}`,
+        //         'Content-Type': 'application/json',
+        //         }
+        //     }
+        
+        // const getUserTracks = async () => {
+        //     try {
+        //         const response = await axios(optionsTracks)
+        //         setUserTracks(response.data.items.map(item => item.id))
+        //     } catch (err) {
+        //         console.error(err)
+        //     }
+        // }
+
         getUserArtists()
+     //   getUserTracks()
 
         return () => {
             setUserArtists([])
@@ -169,7 +189,6 @@ export default function Search() {
                 setArtistResults(response.data.artists.items.map(getDataObject))
                 setAlbumResults(response.data.albums.items.map(getDataObject))
                 setPlaylistResults(response.data.playlists.items.map(getDataObject))
-                setLoading(false)
             } catch (err) {
                 console.error(err)
             }
@@ -183,9 +202,20 @@ export default function Search() {
             setAlbumResults([])
             setPlaylistResults([])
             setTopResult({})
-            setLoading(true)
         }
     }, [search, accessToken, userArtists])
+
+    
+    // 1 second timeout while search results render
+    useEffect(() => {
+        if (!search) return
+        setLoading(true)
+        const awaitSearch = setTimeout(() => { 
+            setLoading(false) }, 1000)
+        return () => {
+            setLoading(true)
+            clearTimeout(awaitSearch)}
+    }, [search])
 
 
     // Generate additional 'Featuring {Artist}' panel if top result is of type 'ARTIST'
@@ -248,12 +278,11 @@ export default function Search() {
               spellCheck='false'
               onChange={e => {
                   setSearch(e.target.value)
-                  setLoading(true)}}
+                  }}
               />
             </form>
         {(search)?
-            <div id='searchResults'
-                     style={(loading)? {visibility: 'hidden'} : {visibility: 'visible'}}>        
+            <div id='searchResults' style={(loading)? {visibility: 'hidden'} : {visibility: 'visible'}}>        
             <div id='searchResultsHead'>
 
           <Link id='topResultLink' style={{width: topResultWidth + '%'}} to={{pathname: `/${topResult.type}/${topResult.id}`, state: topResult.id }}
@@ -322,11 +351,11 @@ export default function Search() {
             <div></div>
             }
             <span className='panelTitle'>Artists</span>
-            <Panel content={artistResults.slice(0, 5)} />
+            <Panel content={artistResults} />
             <span className='panelTitle'>Albums</span>
-            <Panel content={albumResults.slice(0, 5)} />
+            <Panel content={albumResults} />
             <span className='panelTitle'>Playlists</span>
-            <Panel content={playlistResults.slice(0, 5)} />
+            <Panel content={playlistResults} />
             </div>
             
             :
