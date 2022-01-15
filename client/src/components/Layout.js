@@ -4,6 +4,7 @@ import WebPlayer from './WebPlayer'
 import Menu from './Menu'
 import { AuthContext, NotificationContext, SideBarWidthContext  } from '../contexts'
 import { useContext, useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 export default function Layout({ children }) {
     const accessToken = useContext(AuthContext)
@@ -11,6 +12,11 @@ export default function Layout({ children }) {
     const [show, setShow] = useState(false) 
     const [resizing, setResizing] = useState(false)
     const { currentWidth, setCurrentWidth } = useContext(SideBarWidthContext)
+    const location = useLocation()
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [location])
     
     useEffect(() => {
         if (!notification.action) return

@@ -39,28 +39,15 @@ export default function ArtistPage({ location }) {
       }
 
 
-    async function getAlbumObjects(array, type) {
-      let newArray = []
-      
-      if (type === 'popular') {
+    async function getPopularAlbumObjects(array) {
         for (const item of array) {
           try {
             const data = await spotifyApi.getAlbum(item)
-            newArray.push({...getDataObject(data.body), 
-                           onArtistPage: true})
+            setPopularReleases(popularReleases => [...popularReleases, {...getDataObject(data.body), onArtistPage: true}])
           } catch (err) {
             console.error(err)
           }
         }
-        return newArray
-      }
-      else {
-        for (const item of array) {
-          newArray.push({...getDataObject(item), 
-            onArtistPage: true})
-        }
-        return newArray
-      }
     }
 
 
@@ -105,7 +92,7 @@ export default function ArtistPage({ location }) {
             const data = await spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'single,album'})
             let albumsFiltered = getUniqueByName(data.body.items)
             let albumIds = albumsFiltered.map(item => item.id)
-            setPopularReleases(await getAlbumObjects(albumIds, 'popular'))
+            getPopularAlbumObjects(albumIds)
           } catch (err) {
             console.error(err)
           }
@@ -116,7 +103,7 @@ export default function ArtistPage({ location }) {
             const data = await spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'album'})
             console.log(data.body.items)
             let albumsFiltered = getUniqueByName(data.body.items)
-            setArtistAlbumsRaw(await getAlbumObjects(albumsFiltered, 'albums'))
+            setArtistAlbumsRaw(albumsFiltered.map(album => { return {...getDataObject(album), onArtistPage: true}}))
           } catch (err) {
             console.error(err)
           }
@@ -126,7 +113,7 @@ export default function ArtistPage({ location }) {
           try {
             const data = await spotifyApi.getArtistAlbums(id, {limit: 50, album_type: 'single'})
             let albumsFiltered = getUniqueByName(data.body.items)
-            setSingles(await getAlbumObjects(albumsFiltered, 'singles'))
+            setSingles(albumsFiltered.map(album => { return {...getDataObject(album), onArtistPage: true}}))
           } catch (err) {
             console.error(err)
           }

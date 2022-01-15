@@ -10,11 +10,11 @@ import CollectionAlbum from './pages/CollectionAlbum'
 import CollectionArtist from './pages/CollectionArtist'
 import { useState, useEffect } from 'react'
 import { AuthContext, ThemeContext, UserContext, PageContext, PlaylistContext, TrackContext, SidebarContext, SideBarWidthContext, RightClickContext, NotificationContext } from './contexts'
+import { DashContextProvider } from './DashContext'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import CollectionTrack from './pages/CollectionTrack'
-import { useLocation } from 'react-router-dom'
 import getDataObject from './utils/getDataObject'
 
 
@@ -57,22 +57,23 @@ function App() {
 
   const [currentWidth, setCurrentWidth] = useState(window.innerWidth * 0.15)
   const sideWidth = {currentWidth, setCurrentWidth}
-  
-  const location = useLocation()
 
 
   useEffect(() => {
     if (!code) return
 
-    axios
-      .post("/login", {code})
-      .then(res => {
-        setAccessToken(res.data.accessToken)
+    const logIn = async () => {
+      try {
+        const response = await axios.post("/login", {code})
+        setAccessToken(response.data.accessToken)
         window.history.pushState({}, null, "/")
-      })
-      .catch(error => {
-        console.log(error)
-      })
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    logIn()
+
   }, [code])
 
   useEffect(() => {
@@ -86,15 +87,17 @@ function App() {
           'Content-Type': 'application/json',
           }
       }
+
+    const getUser = async () => {
+      try {
+        const response = await axios(options)
+        setUser(response.data)
+      } catch (err) {
+        console.error(err)
+      }
+    }
   
-    axios(options)
-    .then(response => {
-       console.log(response.data)
-       setUser(response.data)
-    })
-    .catch(error => {
-      console.log(error)
-    })
+    getUser()
 
   }, [accessToken])
 
@@ -109,20 +112,19 @@ function App() {
           'Content-Type': 'application/json',
           }
       }
-  
-    axios(options)
-    .then(response => {
-       setUserPlaylists(response.data.items.map(getDataObject))
-    })
-    .catch(error => {
-      console.log(error)
-    })
+    
+    const getUserPlaylists = async () => {
+      try {
+        const response = await axios(options)
+        setUserPlaylists(response.data.items.map(getDataObject))
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    
+    getUserPlaylists()
 
   }, [accessToken])
-
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [location])
 
   
 
@@ -137,6 +139,7 @@ function App() {
       <RightClickContext.Provider value={rightClickedEl}>
       <NotificationContext.Provider value={message}>
       <SideBarWidthContext.Provider value={sideWidth}>
+      <DashContextProvider>
       
         <Layout>
         <Route path='/' exact component={(accessToken)? Dashboard : Login} />
@@ -149,7 +152,8 @@ function App() {
         <Route path="/collection/albums" component={CollectionAlbum} />
         <Route path="/collection/tracks" component={CollectionTrack} />
         </Layout>
-
+        
+      </DashContextProvider>
       </SideBarWidthContext.Provider>
       </NotificationContext.Provider>
       </RightClickContext.Provider>
