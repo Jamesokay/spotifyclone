@@ -236,12 +236,6 @@ body::-webkit-scrollbar {
 }
 
 
-/* #artistPage {
-    padding-bottom: 90px;
-    background-image: linear-gradient(rgb(117, 184, 238) 5%, #121212 20% 100%);
-    top: 0;
-} */
-
 #sideBarContainer {
     position: fixed;
     left: 0;
@@ -250,8 +244,6 @@ body::-webkit-scrollbar {
     height: 100vh; 
     display: inline-flex;
 }
-
-
 
 
 #sideBarDrag {
@@ -270,8 +262,6 @@ body::-webkit-scrollbar {
     height: 2.77vw;
     min-height: 40px;
 }
-
-
 
 .contextMenuDash {
     position: absolute;
@@ -755,176 +745,6 @@ body::-webkit-scrollbar {
     text-decoration: underline;
 }
 
-.searchBar {
-    border-radius: 20px;
-    height: 6vh;
-    width: 25%;
-    font-family: Verdana, sans-serif;
-    padding: 20px;
-    position: fixed;
-    left: max(24vw, 345px);
-    top: 1vh;
-    z-index: 3;
-    border-style: hidden;
-}
-
-.searchBar:focus {
-    outline: none;
-}
-
-#searchResults {
-  padding-top: 8vh;
-}
-
-#searchResultsHead {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    margin-left: max(1.736vw, 24px);
-    width: 95%;
-}
-
-.resultTitle {
-    font-size: 150%;
-    font-family: Arial, sans-serif;
-    color: white;
-    cursor: default;
-    display: inline-block;
-    margin-top: max(1.736vw, 24px);
-}
-
-#topResultContainer {
-    width: 100%;
-    cursor: default;
-}
-
-
-
-#topResultLink {
-    /* width: 32.5vw; */
-    min-width: 300px;
-    text-decoration: none;
-    margin-right: max(1.736vw, 24px);
-}
-
-
-
-#topResult {
-    position: relative;
-    background-color: rgb(24, 24, 24);
-    min-height: 230px;
-    width: 100%;
-    border-radius: 5px;
-    transition: background-color 0.2s ease-in-out;
-    margin-top: max(1.736vw, 24px);
-}
-
-#topResult:hover {
-    background-color: rgb(40, 40, 40);
-}
-
-#topResultPlayButton {
-    display: flex;
-    position: absolute;
-    right: 20px;
-    bottom: 15px;
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    background: #1ed760;
-    box-shadow: 0px 5px 6px 2px rgba(0, 0, 0, 0.4);
-    opacity: 0;
-    transition: bottom 0.2s ease-in-out, opacity 0.2s ease-in-out;
-}
-
-#topResult:hover #topResultPlayButton {
-    bottom: 20px !important;
-    opacity: 1 !important;
-}
-
-#topResultPlayButton:hover {
-    transform: scale(1.05)
-}
-
-.topResultPlayIcon {
-    width: 0;
-    height: 0;
-    margin: auto;
-    margin-left: 40%;
-    border-top: 10px solid transparent;
-    border-left: 16px solid white;
-    border-bottom: 10px solid transparent;
-}
-
-.topResultPauseIcon {
-    width: 7px;
-    height: 22px;
-    border-right: 5px solid white;
-    border-left: 5px solid white;
-    margin: auto;
-}
-
-#topResultImage {
-    height: 95px;
-    width: 95px;
-    object-fit: cover;
-    margin-top: 20px;
-    margin-left: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0px 5px 10px 2px #121212;
-    border-radius: 2.5px;
-}
-
-#topResultImageArtist {
-    height: 95px;
-    width: 95px;
-    object-fit: cover;
-    margin-top: 20px;
-    margin-left: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0px 0px 10px 2px #121212;
-    border-radius: 50%;
-}
-
-#topResultTitle {
-    font-family: Arial, Helvetica, sans-serif;
-    color: white;
-    font-size: 22pt;
-    margin-left: 20px;
-    margin-bottom: 0;
-    margin-top: 0;
-    overflow: hidden; 
-    text-overflow: ellipsis; 
-    white-space: nowrap;
-    max-width: 85%;
-}
-
-#topResultSub {
-    font-family: Arial, Helvetica, sans-serif;
-    color: rgb(168, 168, 168);
-    font-size: 11pt;
-    margin-left: 20px;
-    margin-right: 10px;
-    margin-top: 10px;
-    float: left;
-}
-
-#topResultsType {
-    margin-top: 5px;
-    border-radius: 20px;
-    width: auto;
-    float: left;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    background-color: #121212;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 10pt;
-    letter-spacing: 1px;
-}
-
 .searchTable {
     font-family: Arial, sans-serif;
     cursor: default;
@@ -1227,32 +1047,6 @@ body::-webkit-scrollbar {
     border-radius: 50%;
 }
 
-.emptyPlaylist {
-    width: 80vw;
-    border: none;
-    height: 1px;
-    background-color: rgb(40, 40, 40);
-    margin-top: 0;
-}
-
-.playlistLowerHeading {
-    margin-top: 7.5vh;
-    margin-bottom: 2.5vh;
-    margin-left: 2.5%;
-}
-
-.playlistLowerTitle {
-    font-family: Arial, sans-serif;
-    font-size: 16pt;
-    color: white;
-}
-
-.playlistLowerSub {
-    font-family: Arial, sans-serif;
-    font-size: 11pt;
-    color: rgb(168, 168, 168);
-}
-
 .playlistSearchBar {
     border-radius: 10px;
     margin-left: 2.5%;
@@ -1294,6 +1088,204 @@ body::-webkit-scrollbar {
     transform: scale(1.05)
 }
 
+/* PLAYLIST PAGE */
+
+.emptyPlaylist {
+    width: 80vw;
+    border: none;
+    height: 1px;
+    background-color: rgb(40, 40, 40);
+    margin-top: 0;
+}
+
+.playlistLowerHeading {
+    margin-top: 7.5vh;
+    margin-bottom: 2.5vh;
+    margin-left: 2.5%;
+}
+
+.playlistLowerTitle {
+    font-family: Arial, sans-serif;
+    font-size: 16pt;
+    color: white;
+}
+
+.playlistLowerSub {
+    font-family: Arial, sans-serif;
+    font-size: 11pt;
+    color: rgb(168, 168, 168);
+}
+
+
+/* SEARCH PAGE */
+
+.searchBar {
+    border-radius: 20px;
+    height: 6vh;
+    width: 25%;
+    font-family: Verdana, sans-serif;
+    padding: 20px;
+    position: fixed;
+    left: max(24vw, 345px);
+    top: 1vh;
+    z-index: 3;
+    border-style: hidden;
+}
+
+.searchBar:focus {
+    outline: none;
+}
+
+#searchResults {
+  padding-top: 8vh;
+}
+
+#searchResultsHead {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-left: max(1.736vw, 24px);
+    width: 95%;
+}
+
+.resultTitle {
+    font-size: 150%;
+    font-family: Arial, sans-serif;
+    color: white;
+    cursor: default;
+    display: inline-block;
+    margin-top: max(1.736vw, 24px);
+}
+
+#topResultContainer {
+    width: 100%;
+    cursor: default;
+}
+
+#topResultLink {
+    min-width: 300px;
+    text-decoration: none;
+    margin-right: max(1.736vw, 24px);
+}
+
+#topResult {
+    position: relative;
+    background-color: rgb(24, 24, 24);
+    min-height: 230px;
+    width: 100%;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out;
+    margin-top: max(1.736vw, 24px);
+}
+
+#topResult:hover {
+    background-color: rgb(40, 40, 40);
+}
+
+#topResultPlayButton {
+    display: flex;
+    position: absolute;
+    right: 20px;
+    bottom: 15px;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background: #1ed760;
+    box-shadow: 0px 5px 6px 2px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transition: bottom 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+#topResult:hover #topResultPlayButton {
+    bottom: 20px !important;
+    opacity: 1 !important;
+}
+
+#topResultPlayButton:hover {
+    transform: scale(1.05)
+}
+
+.topResultPlayIcon {
+    width: 0;
+    height: 0;
+    margin: auto;
+    margin-left: 40%;
+    border-top: 10px solid transparent;
+    border-left: 16px solid white;
+    border-bottom: 10px solid transparent;
+}
+
+.topResultPauseIcon {
+    width: 7px;
+    height: 22px;
+    border-right: 5px solid white;
+    border-left: 5px solid white;
+    margin: auto;
+}
+
+#topResultImage {
+    height: 95px;
+    width: 95px;
+    object-fit: cover;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 5px 10px 2px #121212;
+    border-radius: 2.5px;
+}
+
+#topResultImageArtist {
+    height: 95px;
+    width: 95px;
+    object-fit: cover;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 10px 2px #121212;
+    border-radius: 50%;
+}
+
+#topResultTitle {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    font-size: 22pt;
+    margin-left: 20px;
+    margin-bottom: 0;
+    margin-top: 0;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+    max-width: 85%;
+}
+
+#topResultSub {
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(168, 168, 168);
+    font-size: 11pt;
+    margin-left: 20px;
+    margin-right: 10px;
+    margin-top: 10px;
+    float: left;
+}
+
+#topResultsType {
+    margin-top: 5px;
+    border-radius: 20px;
+    width: auto;
+    float: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #121212;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    letter-spacing: 1px;
+}
+
+
+
 /* NAVBAR COMPONENT */
 
 #navBar {
@@ -1304,7 +1296,6 @@ body::-webkit-scrollbar {
     cursor: default;
     transition: background-color 0.1s ease;
 }
-
 
 #user {
     width: 14%;

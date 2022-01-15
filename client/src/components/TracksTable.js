@@ -451,24 +451,24 @@ export default function TracksTable({content, page, trackDepth }) {
         <table className='searchTable' cellSpacing='0' cellPadding='0'>
           <tbody>
           {content.map(cont =>
-          <tr className='trackTableRow' key={cont.id}
+          <tr className='trackRow' key={cont.id}
               onContextMenu={() => {
                 if (!preventProp) {
                   setRightClick({id: cont.id, type: 'track'})
                 }}}
               style={(rightClick.id === cont.id)? {background: 'grey'} : {}}>
-            <td className='rowFirst tdSmallTrack' style={{width: '10%'}}>
+            <td className='trackCell firstCell'>
               <img className='searchTableTrackImage' src={cont.trackImage} alt='' />
               <div className='searchTableTrackPlayIcon'
                    style={(rightClick.id === cont.id)? {visibility: 'visible'} : {}}
                    onClick={() => playTrack(accessToken, {uris: [cont.uri]})}
               ></div>
             </td>
-            <td className='rowSecondSearch tdSmallTrack'>
-            <p className='tableTrackName'>{cont.name}</p>
+            <td className='trackCell'>
+            <p className='trackName'>{cont.name}</p>
             {cont.artists.map((artist, index, artists) => 
-                  <span key={artist.id} className='trackTableArtist'>                 
-                  <span className='trackTableLink'
+                  <span key={artist.id}>                 
+                  <span className='trackLink'
                         style={(rightClick.id === cont.id)? {color: 'white', textDecoration: 'underline'} : {}}
                         onMouseEnter={() => setPreventProp(true)}
                         onMouseLeave={() => setPreventProp(false)}
@@ -490,14 +490,14 @@ export default function TracksTable({content, page, trackDepth }) {
                   </span>
             )}
             </td>
-            <td style={{width: '10%', minWidth: '42px'}}>
-              <div onClick={() => handleLike(cont.id)}> 
-                {likedTracks.includes(cont.id)? <TableHeartFilledIcon /> : <TableHeartOutlineIcon />}
-               </div> 
-            </td>
-            <td className='tdSmallTrack' style={{width: '5%'}}>{cont.duration}</td>
-            <td className='rowLast tdSmallTrack' style={{width: '10%', minWidth: '42px'}}>
-              <EllipsisIcon />
+            <td className='trackCell lastCell'>
+              <div className='trackOptionsFlex'>
+                <span onClick={() => handleLike(cont.id)}> 
+                  {likedTracks.includes(cont.id)? <TableHeartFilledIcon /> : <TableHeartOutlineIcon />}
+                </span> 
+                <span>{cont.duration}</span>
+                <EllipsisIcon />
+              </div>  
             </td>
           </tr>
           )}
