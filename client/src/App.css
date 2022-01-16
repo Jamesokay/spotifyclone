@@ -17,9 +17,9 @@
 }
 
 #likedSongsContainer {
-    min-width: 360px;
+    min-width: 380px;
     min-height: 260px;
-    max-width: 560px;
+    max-width: 580px;
     max-height: 330px;
     margin-bottom: max(1.736vw, 24px);
     margin-right: max(1.75%, 20px);
@@ -157,6 +157,7 @@ body::-webkit-scrollbar {
     margin-top: 0;
     min-width: 550px;
     padding-top: 18vh;
+    padding-bottom: 90px;
     display: flex;
 }
 

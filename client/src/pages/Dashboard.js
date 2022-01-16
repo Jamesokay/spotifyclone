@@ -11,7 +11,7 @@ export default function Dashboard() {
     const timeMod = parseInt(time.replace(/:/g, ''))
     const greeting = greetingMessage(timeMod)
 
-    const {recent, recentReversed, forToday, moreLike, recommend, relatedArtistsSeed, customArtistName, customArtistPanel, loading} = useContext(DashContext)
+    const {recent, recentReversed, forToday, moreLike, recommend, relatedArtistsSeed, loading} = useContext(DashContext)
 
     // Set greeting message based on time of day
     function greetingMessage(time) {
@@ -44,9 +44,7 @@ export default function Dashboard() {
         <span className='panelTitleSub'>Albums for you based on what you like to listen to.</span>
         <Panel content={recommend} />   
         <span className='panelTitle'>Jump back in</span> 
-        <Panel content={recentReversed} />  
-        <span className='panelTitle'>{'For fans of ' + customArtistName}</span>
-        <Panel content={customArtistPanel} /> 
+        <Panel content={recentReversed} />
         <span className='panelTitle'>Recommended for today</span>
         <Panel content={forToday} />
 

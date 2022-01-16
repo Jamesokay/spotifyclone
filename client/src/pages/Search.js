@@ -31,7 +31,6 @@ export default function Search() {
     const { nowPlaying } = useContext(TrackContext)
     const { setRightClick } = useContext(RightClickContext)
     const [userArtists, setUserArtists] = useState([])
-//    const [userTracks, setUserTracks] = useState([])
     const [featuringArtist, setFeaturingArtist] = useState([])
     const [loading, setLoading] = useState(true)
     const [topResultWidth, setTopResultWidth] = useState(37.5)
@@ -139,26 +138,7 @@ export default function Search() {
             }
         }
 
-        // const optionsTracks = {
-        //     url: `https://api.spotify.com/v1/me/top/tracks`,
-        //     method: 'GET',
-        //     headers: {
-        //         'Authorization': `Bearer ${accessToken}`,
-        //         'Content-Type': 'application/json',
-        //         }
-        //     }
-        
-        // const getUserTracks = async () => {
-        //     try {
-        //         const response = await axios(optionsTracks)
-        //         setUserTracks(response.data.items.map(item => item.id))
-        //     } catch (err) {
-        //         console.error(err)
-        //     }
-        // }
-
         getUserArtists()
-     //   getUserTracks()
 
         return () => {
             setUserArtists([])

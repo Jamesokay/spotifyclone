@@ -19,13 +19,15 @@ export default function CollectionPlaylist() {
   const [savedTracksTotal, setSavedTracksTotal] = useState(0)
   const [playlists, setPlaylists] = useState([])
   const { setCurrentTheme } = useContext(ThemeContext)
-  const [cardWidth, setCardWidth] = useState(17.8)
-  const [likedSongsCardWidth, setLikedSongsCardWidth] = useState(37.3)
   const { width } = useViewport()
   const { currentWidth } = useContext(SideBarWidthContext)
-  const breakPointLarge = 1060
-  const breakPointMedium = 860
-  const breakPointSmall = 620
+  const viewPort = width - currentWidth
+  const marginOffset = Math.max(viewPort * 0.0175, 20)
+  const breakPointLarge = 1100
+  const breakPointMedium = 900
+  const breakPointSmall = 700
+  const [cardWidth, setCardWidth] = useState(0)
+  const [likedSongsCardWidth, setLikedSongsCardWidth] = useState(0)
 
   useEffect(() => {
     if (!accessToken) return
@@ -40,28 +42,28 @@ export default function CollectionPlaylist() {
   
   // Make cards responsive to viewport breakpoints
   useEffect(() => {
-      if ((width - currentWidth) <= breakPointSmall) {
-        setLikedSongsCardWidth(91)
-        setCardWidth(44.5)
+      if (viewPort <= breakPointSmall) {
+        setLikedSongsCardWidth((viewPort * 0.89))
+        setCardWidth(viewPort * 0.445)
       }
-      else if ((width - currentWidth) > breakPointSmall && (width - currentWidth) <= breakPointMedium) {
-        setLikedSongsCardWidth(61)
-        setCardWidth(29.6)
+      else if (viewPort > breakPointSmall && viewPort <= breakPointMedium) {
+        setLikedSongsCardWidth((viewPort * 0.592))
+        setCardWidth(viewPort * 0.296)
       }
-      else if ((width - currentWidth) > breakPointMedium && (width - currentWidth) < breakPointLarge) {
-        setLikedSongsCardWidth(46.2)
-        setCardWidth(22.25)
+      else if (viewPort > breakPointMedium && viewPort < breakPointLarge) {
+        setLikedSongsCardWidth((viewPort * 0.445))
+        setCardWidth(viewPort * 0.2225)
       }
-      else if ((width - currentWidth) >= breakPointLarge) {
-        setLikedSongsCardWidth(37.3)
-        setCardWidth(17.8)
+      else if (viewPort >= breakPointLarge) {
+        setLikedSongsCardWidth((viewPort * 0.356))
+        setCardWidth(viewPort * 0.178)
       }
 
       return () => {
-          setLikedSongsCardWidth(37.3)
-          setCardWidth(17.8)
+          setLikedSongsCardWidth((viewPort * 0.356))
+          setCardWidth(viewPort * 0.178)
       }
-  }, [width, currentWidth])
+  }, [viewPort])
 
   
   // Get user's saved tracks, the names and artists of which will be rendered on Liked Songs card
@@ -128,7 +130,7 @@ export default function CollectionPlaylist() {
      <CollectionNav />
      <span className='collectionTitle'>Playlists</span> 
      <div className='panel'>
-     <Link id='likedSongsContainer' to={{pathname:'/collection/tracks'}} style={{width: likedSongsCardWidth + '%'}}>
+     <Link id='likedSongsContainer' to={{pathname:'/collection/tracks'}} style={{width: likedSongsCardWidth + marginOffset}}>
         <div id='likedSongsCard'>
            <span id='lsCardPreview'>
             {preview.map(prev =>
@@ -146,7 +148,7 @@ export default function CollectionPlaylist() {
       </div>
       </Link>
       {playlists.map(cont =>
-        <Link className='cardLink' style={{width: cardWidth + '%'}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
+        <Link className='cardLink' style={{width: cardWidth}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}>
         <div className='cardBody'>
           <div className='cardImageBox'>
             <img className='cardImage' src={cont.imgUrl} alt='' />

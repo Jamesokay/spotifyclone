@@ -23,8 +23,6 @@ const DashContextProvider = ({ children }) => {
     const [moreLike, setMoreLike] = useState([])
     const [recommend, setRecommend] = useState([])
     const [relatedArtistsSeed, setRelatedArtistsSeed] = useState('')
-    const [customArtistPanel, setCustomArtistPanel] = useState([])
-    const [customArtistName, setCustomArtistName] = useState('')
     const [loading, setLoading] = useState(true)
     
 
@@ -98,7 +96,6 @@ const DashContextProvider = ({ children }) => {
     } , [accessToken])
 
 
-    
     // Store top 5 ids as seeds for generating recommendations
     // Get recently played tracks
     // These are then filtered by getUniqueById() to remove null and duplicate contexts
@@ -134,7 +131,7 @@ const DashContextProvider = ({ children }) => {
       if (!accessToken) return     
       if (topArtists.length < 20) return
 
-      var artistIndex = Math.floor(Math.random() * (11 - 5) + 5)
+      var artistIndex = Math.floor(Math.random() * 20)
       
       setRelatedArtistsSeed(topArtists[artistIndex].name)
 
@@ -191,49 +188,6 @@ const DashContextProvider = ({ children }) => {
     }, [recent])
 
 
-    // Generate custom artist panel
-    // Composed of both Spotify-made playlists and artist albums
-    // Based on randomised index into topArtists array, with random number produced in such a way
-    // that it will always be different to the one produced above, preventing 'More like {artist}' and
-    // custom artist panel from being based on the same artist
-    useEffect(() => {
-      if (!accessToken) return
-      if (topArtists.length < 5) return
-      
-      var artistIndex = Math.floor(Math.random() * 4)
-
-      setCustomArtistName(topArtists[artistIndex].name)
-      
-      const getCustomPanelPlaylists = async () => {
-        try {
-          const data = await spotifyApi.searchPlaylists(topArtists[artistIndex].name)
-          let playlists = data.body.playlists.items.filter(item => item.owner.display_name === 'Spotify')
-          playlists.slice(0, 2).forEach(playlist => setCustomArtistPanel(customArtistPanel => [...customArtistPanel, getDataObject(playlist)]))         
-        } catch (err) {
-          console.error(err)
-        }
-      }
-          
-      const getCustomPanelAlbums = async () => {
-        try {
-          const data = await spotifyApi.getArtistAlbums(topArtists[artistIndex].key, {album_type: 'album', limit: 5})
-          data.body.items.forEach(album => setCustomArtistPanel(customArtistPanel => [...customArtistPanel, getDataObject(album)]))
-        } catch (err) {
-          console.error(err)
-        }
-      }
-      
-      getCustomPanelPlaylists()
-      getCustomPanelAlbums()
-
-      return function cleanUp() {
-        setCustomArtistName('')
-        setCustomArtistPanel([])
-      }
-
-    }, [accessToken, topArtists])
-
-
     // Generate array for 'Recommended for today' panel
     // Same pattern as used above for generating 'Album picks' and 'More like {artist}'
     // Only difference being the seeds are derived from recently played tracks rather than top artists
@@ -259,7 +213,7 @@ const DashContextProvider = ({ children }) => {
     
   
     return (
-      <DashContext.Provider value={{recent, recentReversed, forToday, moreLike, recommend, relatedArtistsSeed, customArtistName, customArtistPanel, loading}}>
+      <DashContext.Provider value={{recent, recentReversed, forToday, moreLike, recommend, relatedArtistsSeed, loading}}>
         {children}
       </DashContext.Provider>
     );
