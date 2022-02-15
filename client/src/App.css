@@ -123,6 +123,7 @@ body {
     background: rgb(18, 18, 18);
 }
 
+
 body::-webkit-scrollbar {
     display: none
 }
@@ -315,6 +316,7 @@ body::-webkit-scrollbar {
 
 
 #dash {
+    width: 100%;
     min-width: 550px;
     padding-top: 65px;
     padding-bottom: 90px;
@@ -1457,6 +1459,7 @@ body::-webkit-scrollbar {
 /* PANEL COMPONENT */
 
 .panel {
+    width: 100%;
     display: flex;
     justify-content: flex-start;
     margin-left: max(1.75vw, 20px);
@@ -1896,7 +1899,7 @@ body::-webkit-scrollbar {
 }
 
 .gridCardLink {
-    margin-right: max(1.74%, 23px);
+    margin-right: 23px;
     min-width: 250px; 
     flex: 0 1 calc(25% - 25px)
 }
@@ -1927,8 +1930,8 @@ body::-webkit-scrollbar {
 
 .gridCardImage {
     background-color: white;
-    width: 10.8vh;
-    height: 10.8vh;
+    width: 5.55vw;
+    height: 5.55vw;
     min-height: 80px;
     min-width: 80px;
     float: left;
