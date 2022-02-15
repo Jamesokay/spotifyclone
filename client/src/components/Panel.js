@@ -14,7 +14,7 @@ export default function Panel({ content, type }) {
     const { rightClick, setRightClick } = useContext(RightClickContext)
     const [index, setIndex] = useState(5)
     const [cardWidth, setCardWidth] = useState('17.8%')
-    const { width } = useViewport()
+    const { width } = useViewport() 
     const { currentWidth } = useContext(SideBarWidthContext)
     const breakPointLarge = 1060
     const breakPointMedium = 860

@@ -115,7 +115,8 @@
 
 
 body {
-    margin: 0px;
+    margin: 0;
+    padding: 0;
     overscroll-behavior-y: none;
     overscroll-behavior-x: none;
     overflow-x: hidden;
@@ -242,7 +243,7 @@ body::-webkit-scrollbar {
     left: 0;
     top: 0;   
     min-width: 215px;
-    height: 100vh; 
+    height: 100%; 
     display: inline-flex;
 }
 
@@ -403,7 +404,7 @@ body::-webkit-scrollbar {
     position: fixed;
     display: flex;
     height: 6.4vw;
-    width: 100vw;
+    width: 100%;
     min-width: 765px;
     min-height: 92px;
     background: rgb(24, 24, 24);
@@ -1845,6 +1846,7 @@ body::-webkit-scrollbar {
 }
 
 #gridPanel {
+    position: relative;
     height: 20.5vw;
     width: 100%;
     min-height: 295px;
@@ -2056,7 +2058,7 @@ li:hover .sideBarImg {
     font-family: Arial, sans-serif;
     margin-bottom: 0;
     margin-top: 0;
-    max-height: 36.9vh;
+    max-height: 35%;
 }
 
 .sideBarDivider {

@@ -5,6 +5,7 @@ import Menu from './Menu'
 import { AuthContext, NotificationContext, SideBarWidthContext  } from '../contexts'
 import { useContext, useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import useViewport from '../hooks/useViewPort'
 
 export default function Layout({ children }) {
     const accessToken = useContext(AuthContext)
@@ -12,6 +13,7 @@ export default function Layout({ children }) {
     const [show, setShow] = useState(false) 
     const [resizing, setResizing] = useState(false)
     const { currentWidth, setCurrentWidth } = useContext(SideBarWidthContext)
+    const { width } = useViewport() 
     const location = useLocation()
 
     useEffect(() => {
@@ -56,7 +58,7 @@ export default function Layout({ children }) {
                 style={(resizing)? {background: 'linear-gradient(to right, black 80%, rgb(168, 168, 168) 20%)'}:{}}
                 onMouseDown={() => setResizing(true)}/>
           </div>
-          <div style={{marginLeft: currentWidth}}>
+          <div style={{marginLeft: currentWidth, width: width - currentWidth}}>
             {children}
           </div>
           <div className='likedNotification' style={(show)? {opacity: '1'} : {opacity: '0'}}>{notification.text}</div>
