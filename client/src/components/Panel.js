@@ -16,6 +16,7 @@ export default function Panel({ content, type }) {
     const [cardWidth, setCardWidth] = useState('17.8%')
     const { width } = useViewport() 
     const { currentWidth } = useContext(SideBarWidthContext)
+    const breakPointExtraLarge = 1600
     const breakPointLarge = 1060
     const breakPointMedium = 860
     const breakPointSmall = 620
@@ -35,9 +36,13 @@ export default function Panel({ content, type }) {
           setIndex(4)
           setCardWidth('22.25%')
         }
-        else if ((width - currentWidth) >= breakPointLarge) {
+        else if ((width - currentWidth) > breakPointLarge && (width - currentWidth) < breakPointExtraLarge) {
           setIndex(5)
           setCardWidth('17.8%')
+        }
+        else if ((width - currentWidth) >= breakPointExtraLarge) {
+          setIndex(10)
+          setCardWidth('8.9%')
         }
 
         return function cleanUp() {

@@ -1484,7 +1484,7 @@ body::-webkit-scrollbar {
     max-height: 360px;
     margin-bottom: max(1.736vw, 24px);
     text-decoration: none;
-    margin-right: max(1.75%, 20px);
+    margin-right: 20px;
 }
 
 .cardImage {
@@ -1985,8 +1985,7 @@ body::-webkit-scrollbar {
 .sideBarLink {
     text-decoration: none;
     color: rgb(168, 168, 168);
-    height: 2.77vw;
-    min-height: 40px;
+    height: 2.5rem;
     display: flex;
     align-items: center;
 }
@@ -2007,21 +2006,21 @@ body::-webkit-scrollbar {
 
 .sideBarIcon {
     transition: color 0.2s ease-in-out;
-    margin-left: max(1.11vw, 16px);
+    margin-left: 1rem;
 }
 
 .sideBarImg {
     width: 25px;
     height: 25px;
-    margin-left: max(1.11vw, 16px);
-    border-radius: 2px;
+    margin-left: 1rem;
+    border-radius: 0.2rem;
     opacity: 0.6;
     transition: opacity 0.2s ease-in-out;
 }
 
 .sideBarText {
-    font-size: 11pt;
-    margin-left: 18px;
+    font-size: 0.9rem;
+    margin-left: 1.2rem;
     transition: color 0.2s ease-in-out;
 }
 
@@ -2044,10 +2043,10 @@ li:hover .sideBarImg {
 .sideBarPlaylist {
     color: rgb(168, 168, 168);
     text-decoration: none;
-    font-size: 10pt;
-    margin-left: 15px;
+    font-size: 0.85rem;
+    margin-left: 1rem;
     display: block;
-    height: 32px;
+    height: 2rem;
     overflow: hidden; 
     text-overflow: ellipsis; 
     white-space: nowrap;
@@ -2057,7 +2056,7 @@ li:hover .sideBarImg {
 .sideBarList {
     list-style-type: none;
     padding-left: 0;
-    margin-left: max(0.7vw, 9px);
+    margin-left: 0.5rem;
     font-family: Arial, sans-serif;
     margin-bottom: 0;
     margin-top: 0;
@@ -2069,9 +2068,9 @@ li:hover .sideBarImg {
     border: none;
     background-color: rgb(40, 40, 40);
     height: 0.5px;
-    margin-left: max(1.736vw, 25px); 
-    margin-bottom: max(1.38vw, 20px); 
-    margin-top: max(1.04vw, 15px);
+    margin-left: 1.5rem; 
+    margin-bottom: 1.5rem; 
+    margin-top: 1.5rem;
 }
 
 
