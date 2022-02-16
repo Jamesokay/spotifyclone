@@ -1983,6 +1983,10 @@ body::-webkit-scrollbar {
     align-items: center;
 }
 
+.bottomLink {
+    margin-bottom: 1.25rem;
+}
+
 .sideBarActive {
     background-color: rgb(40, 40, 40);
     width: 98%;
@@ -2053,17 +2057,17 @@ li:hover .sideBarImg {
     font-family: Arial, sans-serif;
     margin-bottom: 0;
     margin-top: 0;
-    max-height: 35%;
+    max-height: 37.5%;
 }
 
 .sideBarDivider {
     width: 80%; 
     border: none;
-    background-color: rgb(40, 40, 40);
+    background-color: rgb(61, 61, 61);
     height: 0.5px;
     margin-left: 1.5rem; 
-    margin-bottom: 1.5rem; 
-    margin-top: 1.5rem;
+    margin-bottom: 1rem; 
+    margin-top: 0.75rem;
 }
 
 

@@ -62,12 +62,11 @@ export default function SideBar() {
               </NavLink>
             </li>
             <li>
-              <NavLink className='sideBarLink' draggable="false" to="/collection/playlists" activeClassName="sideBarActive">
+              <NavLink className='sideBarLink bottomLink' draggable="false" to="/collection/playlists" activeClassName="sideBarActive">
                 <CollectionIcon />
                 <span className='sideBarText'>Your Library</span>
               </NavLink>
             </li>
-            <li className='sideBarLink'/>
             <li className='sideBarLink' onClick={()=> createPlaylist()}>
               <CreatePlaylistIcon />
               <span className='sideBarText'>Create Playlist</span>
