@@ -1462,8 +1462,7 @@ body::-webkit-scrollbar {
     width: 100%;
     display: flex;
     justify-content: flex-start;
-    margin-left: max(1.75vw, 20px);
-    flex-wrap: wrap;
+    margin-left: 20px;
 }
 
 .cardBody  {    
@@ -1478,10 +1477,6 @@ body::-webkit-scrollbar {
 }
 
 .cardLink {
-    min-width: 180px;
-    min-height: 260px;
-    max-width: 280px;
-    max-height: 360px;
     margin-bottom: max(1.736vw, 24px);
     text-decoration: none;
     margin-right: 20px;
@@ -1862,11 +1857,9 @@ body::-webkit-scrollbar {
 #gridPanelLower {
     position: absolute;
     width: 100%;
-    height: 20.5vw;
-    min-height: 295px;
-    min-width: 550px;
-    padding-top: max(10.2vw, 145px);
-    margin-top: min(-10.2vw, -145px);
+    height: 100%;
+    bottom: -5px;
+    left: 0;
     background-image: linear-gradient(to top, 
     rgb(18, 18, 18) 0%,
     rgba(18, 18, 18, 0.94) 21%, 
@@ -1885,7 +1878,7 @@ body::-webkit-scrollbar {
     height: max(13vw, 187px);
     min-width: 550px;
     margin-top: max(5.05vw, 72px);
-    margin-left: max(2vw, 32px);
+    margin-left: 20px;
 }
 
 

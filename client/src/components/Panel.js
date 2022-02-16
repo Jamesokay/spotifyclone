@@ -5,8 +5,9 @@ import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 import { useState, useEffect, useContext } from 'react'
 import useViewport from '../hooks/useViewPort'
+import LikedSongsCard from './LikedSongsCard'
 
-export default function Panel({ content, type }) {
+export default function Panel({ content, type, likedSongsCard }) {
   
     const accessToken = useContext(AuthContext)
     const { nowPlaying } = useContext(TrackContext)
@@ -68,7 +69,8 @@ export default function Panel({ content, type }) {
 
     
     return (
-        <div className='panel'> 
+        <div className='panel' style={type === 'collection'? {flexWrap: 'wrap'} : {}}> 
+        {likedSongsCard? <LikedSongsCard /> : <></>}
         {array.map(cont =>
           <Link className='cardLink' style={{width: cardWidth}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}
                 onContextMenu={() => setRightClick({type: cont.type, id: cont.id})}>
