@@ -1,3 +1,4 @@
+
 .artistTitle {
     font-family: Arial, sans-serif;
     font-weight: 900;
@@ -724,8 +725,8 @@ body::-webkit-scrollbar {
 
 
 .panelTitle {
-    font-size: 150%;
-    font-family: Arial, sans-serif;
+    font-size: 1.4rem;
+    font-family: Arial;
     color: white;
     margin-top: max(3.125vw, 44px);
     margin-bottom: max(1.736vw, 24px);
@@ -1838,7 +1839,7 @@ body::-webkit-scrollbar {
     font-family: Arial, sans-serif;
     color: white;
     margin-top: max(1.28vw, 18px);
-    margin-left: max(1.75vw, 25px);
+    margin-left: 20px;
     cursor: default;
     position: absolute;
 }
@@ -1933,7 +1934,7 @@ body::-webkit-scrollbar {
 }
 
 .gridCardTitle {
-    font-family: Verdana, sans-serif;
+    font-family: Arial, sans-serif;
     color: white;
     width: 45%;
     float: right;
