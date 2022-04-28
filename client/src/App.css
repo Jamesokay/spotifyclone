@@ -1,6 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+*{
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
 
 .artistTitle {
-    font-family: Arial, sans-serif;
     font-weight: 900;
     color: white; 
     font-size: 10vw;
@@ -11,7 +16,6 @@
 #artistTableTitle {
     color: white;
     font-size: 15pt;
-    font-family: Arial, sans-serif;
     font-weight: bold;
     margin-top: 0;
     margin-left: 5vh;
@@ -38,7 +42,6 @@
 
 #lsCardPreview {
     position: absolute;
-    font-family: Arial, sans-serif;
     top: 40%;
     width: 90%;
     left: 5%;
@@ -62,7 +65,6 @@
 
 #lsCardTitle {
     color: white;
-    font-family: Arial, sans-serif;
     font-weight: bold;
     font-size: 22pt;
     position: absolute;
@@ -72,7 +74,6 @@
 
 #lsCount {
     color: white;
-    font-family: Arial, sans-serif;
     position: absolute;
     bottom: 7.5%;
     left: 5%;
@@ -168,7 +169,6 @@ body::-webkit-scrollbar {
     margin-left: 1.75vw;
     color: white;
     position: absolute;
-    font-family: Arial, sans-serif;
     top: 12%;
     font-size: 18pt;
 }
@@ -281,7 +281,6 @@ body::-webkit-scrollbar {
 .contextMenuOptions {
     color: white;
     list-style: none;
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 10pt;
     padding-left: 0;
     margin-top: 2%;
@@ -714,7 +713,6 @@ body::-webkit-scrollbar {
 
 .repeatOne {
     font-size: 5pt;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 .playerPunc {
@@ -726,7 +724,6 @@ body::-webkit-scrollbar {
 
 .panelTitle {
     font-size: 1.4rem;
-    font-family: Arial;
     color: white;
     margin-top: max(3.125vw, 44px);
     margin-bottom: max(1.736vw, 24px);
@@ -737,7 +734,6 @@ body::-webkit-scrollbar {
 
 .panelTitleSub {
     font-size: 85%;
-    font-family: Arial, sans-serif;
     color: rgb(168, 168, 168);
     margin-top: min(-1.388vw, -20px);
     margin-bottom: max(1.25vw, 18px);
@@ -751,7 +747,6 @@ body::-webkit-scrollbar {
 }
 
 .searchTable {
-    font-family: Arial, sans-serif;
     cursor: default;
     font-size: 11pt;
     margin-top: max(1.736vw, 24px);
@@ -847,15 +842,13 @@ body::-webkit-scrollbar {
 
 .tableReg {
     width: 100%;
-    font-family: Arial, sans-serif;
     cursor: default;
     font-size: 11.5pt;    
 }
 
 .artistTable {
     width: 55%;
-    margin-left: 3%;   
-    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 3%;
     cursor: default;
     font-size: 11.5pt; 
 }
@@ -863,7 +856,6 @@ body::-webkit-scrollbar {
 .seeMore {
     display: block;
     width: 7.5%;
-    font-family: Arial, Helvetica, sans-serif;
     color: rgb(168, 168, 168);
     font-size: 9pt;
     letter-spacing: 1px;
@@ -1007,7 +999,6 @@ body::-webkit-scrollbar {
 
 
 .likedNotification {
-    font-family: Arial, Helvetica, sans-serif;
     display: flex;
     padding-top: 1%;
     padding-bottom: 1%;
@@ -1057,7 +1048,6 @@ body::-webkit-scrollbar {
     margin-left: 2.5%;
     height: 6vh;
     width: 27.5%;
-    font-family: Arial, sans-serif;
     padding: 20px;
     border-style: hidden;
     background-color: #212121;
@@ -1110,13 +1100,11 @@ body::-webkit-scrollbar {
 }
 
 .playlistLowerTitle {
-    font-family: Arial, sans-serif;
     font-size: 16pt;
     color: white;
 }
 
 .playlistLowerSub {
-    font-family: Arial, sans-serif;
     font-size: 11pt;
     color: rgb(168, 168, 168);
 }
@@ -1155,7 +1143,6 @@ body::-webkit-scrollbar {
 
 .resultTitle {
     font-size: 150%;
-    font-family: Arial, sans-serif;
     color: white;
     cursor: default;
     display: inline-block;
@@ -1251,7 +1238,6 @@ body::-webkit-scrollbar {
 }
 
 #topResultTitle {
-    font-family: Arial, Helvetica, sans-serif;
     color: white;
     font-size: 22pt;
     margin-left: 20px;
@@ -1264,7 +1250,6 @@ body::-webkit-scrollbar {
 }
 
 #topResultSub {
-    font-family: Arial, Helvetica, sans-serif;
     color: rgb(168, 168, 168);
     font-size: 11pt;
     margin-left: 20px;
@@ -1284,7 +1269,6 @@ body::-webkit-scrollbar {
     padding-bottom: 5px;
     background-color: #121212;
     color: white;
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 10pt;
     letter-spacing: 1px;
 }
@@ -1331,7 +1315,6 @@ body::-webkit-scrollbar {
 
 #userName {
     color: white;
-    font-family: Arial, sans-serif;
     margin: auto;
     font-size: 90%;
 }
@@ -1350,7 +1333,6 @@ body::-webkit-scrollbar {
 #userMenuOptions {
     color: white;
     list-style: none;
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 11pt;
     padding-left: 0;
     margin-top: 2.5%;
@@ -1378,7 +1360,6 @@ body::-webkit-scrollbar {
 
 #navCurrentPage {
     color: white;
-    font-family: Arial, sans-serif;
     display: flex;
     align-items: center;
     font-size: 150%;
@@ -1623,7 +1604,6 @@ body::-webkit-scrollbar {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 8.5pt;
     letter-spacing: 1.5px;
     color: white;
@@ -1745,7 +1725,6 @@ body::-webkit-scrollbar {
     position: absolute;
     top: 0%;
     color: white;
-    font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1764,7 +1743,6 @@ body::-webkit-scrollbar {
 }
 
 .headerTitle {
-    font-family: Arial, sans-serif;
     font-weight: bold;
     color: white;
     letter-spacing: min(-0.25vw, -3.6px);
@@ -1798,7 +1776,6 @@ body::-webkit-scrollbar {
 }
 
 .headerSubArtist {
-    font-family: Arial, sans-serif;
     color: white; 
     font-size: 12pt;
     margin-top: 1%;
@@ -1836,7 +1813,6 @@ body::-webkit-scrollbar {
 #dashGreeting {
     font-size: 170%;
     font-weight: 600;
-    font-family: Arial, sans-serif;
     color: white;
     margin-top: max(1.28vw, 18px);
     margin-left: 20px;
@@ -1934,7 +1910,6 @@ body::-webkit-scrollbar {
 }
 
 .gridCardTitle {
-    font-family: Arial, sans-serif;
     color: white;
     width: 45%;
     float: right;
@@ -2055,7 +2030,6 @@ li:hover .sideBarImg {
     list-style-type: none;
     padding-left: 0;
     margin-left: 0.5rem;
-    font-family: Arial, sans-serif;
     margin-bottom: 0;
     margin-top: 0;
     max-height: 37.5%;
@@ -2089,7 +2063,6 @@ li:hover .sideBarImg {
 th {
     color: rgb(168, 168, 168);
     text-align: left;
-    font-family: Arial, sans-serif;
     font-size: 9pt;
     font-weight: normal;
     letter-spacing: 1px;
