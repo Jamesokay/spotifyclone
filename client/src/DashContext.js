@@ -99,8 +99,7 @@ const DashContextProvider = ({ children }) => {
     // These are then filtered by getUniqueById() to remove null and duplicate contexts
     // Filtered array is then passed through spotifyContextQuery() to generate the final array of objects to be rendered
     useEffect(() => {   
-      if (!accessToken) return   
-
+      if (!accessToken) return
       const getRecent = async () => {
         try {
           const response = await fetch(`https://api.spotify.com/v1/me/player/recently-played?limit=50`, 
@@ -110,7 +109,6 @@ const DashContextProvider = ({ children }) => {
           }})
           if (!response.ok) {throw new Error(`An error has occured: ${response.status}`)}
           let recentlyPlayed = await response.json()
-          console.log(recentlyPlayed)
           setRecentSeeds(recentlyPlayed.items.slice(0, 5).map(item => item.track.id))
           let recentFiltered = getUniqueById(recentlyPlayed.items)
           setRecent(await spotifyContextQuery(recentFiltered))
@@ -119,9 +117,7 @@ const DashContextProvider = ({ children }) => {
           console.error(err)
         }
       }
-
       getRecent()
-
       return function cleanUp() {
         setRecent([])
         setRecentSeeds([])
@@ -142,8 +138,14 @@ const DashContextProvider = ({ children }) => {
 
       const getMoreLike = async () => {
         try {
-          const data = await spotifyApi.getRecommendations({seed_artists: [topArtists[artistIndex].key], min_popularity: 50})
-          let filtered = data.body.tracks.filter(track => track.artists[0].id !== topArtists[artistIndex].key)
+          const response = await fetch(`https://api.spotify.com/v1/recommendations?seed_artists=${topArtists[artistIndex].key}`, 
+          {headers: { 
+            'Authorization': `Bearer ${accessToken}`, 
+            'Content-Type': 'application/json'
+          }})
+          if (!response.ok) {throw new Error(`An error has occured: ${response.status}`)}
+          let relatedTracks = await response.json()
+          let filtered = relatedTracks.tracks.filter(track => track.artists[0].id !== topArtists[artistIndex].key)
           setMoreLike(filtered.map(track => getDataObject(track.album)))
         } catch (err) {
           console.error(err)
@@ -152,25 +154,21 @@ const DashContextProvider = ({ children }) => {
 
      const getRecommend = async () => {
        try {
-         const data = await spotifyApi.getRecommendations({seed_artists: [topArtists[1].key, topArtists[2].key, topArtists[3].key], min_popularity: 50})
-         setRecommend(data.body.tracks.map(track => getDataObject(track.album)))
+         const response = await fetch(`https://api.spotify.com/v1/recommendations?seed_artists=${topArtists[1].key},${topArtists[2].key},${topArtists[3].key}&min_popularity: 50`, 
+         {headers: { 
+           'Authorization': `Bearer ${accessToken}`, 
+           'Content-Type': 'application/json'
+         }})
+         if (!response.ok) {throw new Error(`An error has occured: ${response.status}`)}
+         let recommended = await response.json()
+         setRecommend(recommended.tracks.map(track => getDataObject(track.album)))
        } catch (err) {
          console.error(err)
        }
      }
 
-     const getRelatedArtists = async () => {
-      try {
-        const data = await spotifyApi.getArtistRelatedArtists([topArtists[artistIndex].key])
-        console.log(data.body.artists)
-      } catch (err) {
-        console.error(err)
-      }
-    }
-
      getMoreLike()
      getRecommend()
-     getRelatedArtists()
 
     return function cleanUp() {
       setMoreLike([])
@@ -197,12 +195,19 @@ const DashContextProvider = ({ children }) => {
     // Same pattern as used above for generating 'Album picks' and 'More like {artist}'
     // Only difference being the seeds are derived from recently played tracks rather than top artists
     useEffect(() => {
+      if (!accessToken) return
       if (recentSeeds.length === 0) return
 
       const getForToday = async () => {
         try {
-          const data = await spotifyApi.getRecommendations({seed_tracks: recentSeeds, min_popularity: 50})
-          setForToday(data.body.tracks.map(track => getDataObject(track.album)))
+          const response = await fetch(`https://api.spotify.com/v1/recommendations?seed_tracks=${String(recentSeeds)}&min_popularity=50`, 
+          {headers: { 
+            'Authorization': `Bearer ${accessToken}`, 
+            'Content-Type': 'application/json'
+          }})
+          if (!response.ok) {throw new Error(`An error has occured: ${response.status}`)}
+          let recommendedForToday = await response.json()
+          setForToday(recommendedForToday.tracks.map(track => getDataObject(track.album)))
         } catch (err) {
           console.error(err)
         }
@@ -213,7 +218,7 @@ const DashContextProvider = ({ children }) => {
       return function cleanUp() {
         setForToday([])
       }
-    }, [recentSeeds])
+    }, [accessToken, recentSeeds])
   
     
   
