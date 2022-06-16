@@ -1,11 +1,6 @@
 import {useState, useEffect, createContext, useContext } from 'react'
-import SpotifyWebApi from 'spotify-web-api-node'
 import { AuthContext } from './contexts'
 import getDataObject from './utils/getDataObject'
-
-const spotifyApi = new SpotifyWebApi({
-    clientId: localStorage.getItem('clientId')
- })
 
 // Dashboard API calls all carried out in this context rather than Dashboard itself, such that results are consistent across session
 // and the relatively resource intensive work is required only on the initial load
@@ -25,56 +20,12 @@ const DashContextProvider = ({ children }) => {
     const [loading, setLoading] = useState(true)
     
     // Function for removing null and duplicate listening contexts in Recently Played
-    function getUniqueById(array) {
-        
-        const clearUndefinedValues = array.filter(item => {
-            return item.context !== null
-          })
-
-          const uris = clearUndefinedValues.map(item => item.context.uri)      
-          const filtered = clearUndefinedValues.filter((item, index) => !uris.includes(item.context.uri, index + 1))
-          return filtered
+    function getUniqueById(array) {    
+        const clearUndefinedValues = array.filter(item => { return item.context !== null })
+        const uris = clearUndefinedValues.map(item => item.context.uri)      
+        const filtered = clearUndefinedValues.filter((item, index) => !uris.includes(item.context.uri, index + 1))
+        return filtered
     }
-    
-    // Function to retrieve data from relevant API endpoints based on Recently Played track contexts
-    async function spotifyContextQuery(array) {
-
-     let newArray = []
-
-     for (const item of array) {
-        if (item.context.type === 'playlist') {
-          try {
-            const data = await spotifyApi.getPlaylist(item.context.uri.substr(17))
-            newArray.push(getDataObject(data.body))
-          } catch (err) {
-            console.error(err)
-          }
-        }
-        else if (item.context.type === 'artist') {
-          try {
-            const data = await spotifyApi.getArtist(item.context.uri.substr(15))
-            newArray.push(getDataObject(data.body))
-          } catch (err) {
-            console.error(err)
-          }
-        }
-        else if (item.context.type === 'album') {
-          try {
-          const data = await spotifyApi.getAlbum(item.context.uri.substr(14))
-          newArray.push(getDataObject(data.body))
-          } catch (err) {
-            console.error(err)
-          }
-        }
-      }
-      return newArray
-    }    
-
-    useEffect(() => {
-      if (!accessToken) return
-      spotifyApi.setAccessToken(accessToken)
-    }, [accessToken])
-
 
     useEffect(() => {
       if (!accessToken) return 
@@ -100,6 +51,48 @@ const DashContextProvider = ({ children }) => {
     // Filtered array is then passed through spotifyContextQuery() to generate the final array of objects to be rendered
     useEffect(() => {   
       if (!accessToken) return
+      const fetchObjectData = async (type, id) => {
+        const response = await fetch(`https://api.spotify.com/v1/${type}/${id}`, 
+        {headers: { 
+          'Authorization': `Bearer ${accessToken}`, 
+          'Content-Type': 'application/json'
+        }})
+        if (!response.ok) {throw new Error(`An error has occured: ${response.status}`)}
+        let resObject = await response.json()
+        return resObject
+      }
+      
+      async function spotifyContextQuery(array) {
+       let newArray = []
+       for (const item of array) {
+          if (item.context.type === 'playlist') {
+            try {
+              const data = await fetchObjectData('playlists', item.context.uri.substr(17))
+              newArray.push(getDataObject(data))
+            } catch (err) {
+              console.error(err)
+            }
+          }
+          else if (item.context.type === 'artist') {
+            try {
+              const data = await fetchObjectData('artists', item.context.uri.substr(15))
+              newArray.push(getDataObject(data))
+            } catch (err) {
+              console.error(err)
+            }
+          }
+          else if (item.context.type === 'album') {
+            try {
+            const data = await fetchObjectData('albums', item.context.uri.substr(14))
+            newArray.push(getDataObject(data))
+            } catch (err) {
+              console.error(err)
+            }
+          }
+        }
+        return newArray
+      }    
+
       const getRecent = async () => {
         try {
           const response = await fetch(`https://api.spotify.com/v1/me/player/recently-played?limit=50`, 
@@ -190,7 +183,6 @@ const DashContextProvider = ({ children }) => {
       }
     }, [recent])
 
-
     // Generate array for 'Recommended for today' panel
     // Same pattern as used above for generating 'Album picks' and 'More like {artist}'
     // Only difference being the seeds are derived from recently played tracks rather than top artists
@@ -212,16 +204,12 @@ const DashContextProvider = ({ children }) => {
           console.error(err)
         }
       }
-
       getForToday()
-
       return function cleanUp() {
         setForToday([])
       }
     }, [accessToken, recentSeeds])
-  
-    
-  
+
     return (
       <DashContext.Provider value={{recent, recentReversed, forToday, moreLike, recommend, relatedArtistsSeed, loading}}>
         {children}
