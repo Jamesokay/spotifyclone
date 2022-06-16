@@ -12,8 +12,7 @@ const spotifyApi = new SpotifyWebApi({
 
 const DashContext = createContext()
 
-const DashContextProvider = ({ children }) => {
-    
+const DashContextProvider = ({ children }) => {   
     const accessToken = useContext(AuthContext)
     const [topArtists, setTopArtists] = useState([])
     const [recent, setRecent] = useState([])
@@ -25,8 +24,6 @@ const DashContextProvider = ({ children }) => {
     const [relatedArtistsSeed, setRelatedArtistsSeed] = useState('')
     const [loading, setLoading] = useState(true)
     
-
-
     // Function for removing null and duplicate listening contexts in Recently Played
     function getUniqueById(array) {
         
@@ -91,7 +88,7 @@ const DashContextProvider = ({ children }) => {
           if (!response.ok) {throw new Error(`An error has occured: ${response.status}`)}
           let artists = await response.json()
           setTopArtists(artists.items.map(getDataObject))
-        } catch (err) { console.error(err) } 
+        } catch (err) {console.error(err)} 
       }
       getArtists()
     }, [accessToken])
@@ -106,10 +103,16 @@ const DashContextProvider = ({ children }) => {
 
       const getRecent = async () => {
         try {
-          const data = await spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
-
-          setRecentSeeds(data.body.items.slice(0, 5).map(item => item.track.id))
-          let recentFiltered = getUniqueById(data.body.items)
+          const response = await fetch(`https://api.spotify.com/v1/me/player/recently-played?limit=50`, 
+          {headers: { 
+            'Authorization': `Bearer ${accessToken}`, 
+            'Content-Type': 'application/json'
+          }})
+          if (!response.ok) {throw new Error(`An error has occured: ${response.status}`)}
+          let recentlyPlayed = await response.json()
+          console.log(recentlyPlayed)
+          setRecentSeeds(recentlyPlayed.items.slice(0, 5).map(item => item.track.id))
+          let recentFiltered = getUniqueById(recentlyPlayed.items)
           setRecent(await spotifyContextQuery(recentFiltered))
           setLoading(false)
         } catch (err) {
