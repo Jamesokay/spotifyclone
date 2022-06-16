@@ -81,19 +81,20 @@ const DashContextProvider = ({ children }) => {
 
     useEffect(() => {
       if (!accessToken) return 
-
       const getArtists = async () => {
         try {
-          const data = await spotifyApi.getMyTopArtists({limit : 20})
-          setTopArtists(data.body.items.map(getDataObject))
-        } catch (err) {
-          console.error(err)
-        }
+          const response = await fetch(`https://api.spotify.com/v1/me/top/artists`, 
+            {headers: { 
+              'Authorization': `Bearer ${accessToken}`, 
+              'Content-Type': 'application/json'
+            }})
+          if (!response.ok) {throw new Error(`An error has occured: ${response.status}`)}
+          let artists = await response.json()
+          setTopArtists(artists.items.map(getDataObject))
+        } catch (err) { console.error(err) } 
       }
-
       getArtists()
-
-    } , [accessToken])
+    }, [accessToken])
 
 
     // Store top 5 ids as seeds for generating recommendations
@@ -106,6 +107,7 @@ const DashContextProvider = ({ children }) => {
       const getRecent = async () => {
         try {
           const data = await spotifyApi.getMyRecentlyPlayedTracks({limit : 50})
+
           setRecentSeeds(data.body.items.slice(0, 5).map(item => item.track.id))
           let recentFiltered = getUniqueById(data.body.items)
           setRecent(await spotifyContextQuery(recentFiltered))
