@@ -9,7 +9,7 @@ import CollectionPlaylist from './pages/CollectionPlaylist'
 import CollectionAlbum from './pages/CollectionAlbum'
 import CollectionArtist from './pages/CollectionArtist'
 import { useState, useEffect } from 'react'
-import { AuthContext, ThemeContext, UserContext, PageContext, PlaylistContext, TrackContext, SidebarContext, SideBarWidthContext, RightClickContext, NotificationContext } from './contexts'
+import { AuthContext, ThemeContext, UserContext, PageContext, PlaylistContext, TrackContext, SidebarContext, RightClickContext, NotificationContext } from './contexts'
 import { DashContextProvider } from './DashContext'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
@@ -54,9 +54,6 @@ function App() {
   const [notification, setNotification] = useState({text: '',
                                                     action: ''})
   const message = {notification, setNotification}
-
-  const [currentWidth, setCurrentWidth] = useState(window.innerWidth * 0.15)
-  const sideWidth = {currentWidth, setCurrentWidth}
 
 
   useEffect(() => {
@@ -138,7 +135,6 @@ function App() {
       <SidebarContext.Provider value={sidebarPlaylists}>
       <RightClickContext.Provider value={rightClickedEl}>
       <NotificationContext.Provider value={message}>
-      <SideBarWidthContext.Provider value={sideWidth}>
       <DashContextProvider>
       
         <Layout>
@@ -154,7 +150,6 @@ function App() {
         </Layout>
         
       </DashContextProvider>
-      </SideBarWidthContext.Provider>
       </NotificationContext.Provider>
       </RightClickContext.Provider>
       </SidebarContext.Provider>

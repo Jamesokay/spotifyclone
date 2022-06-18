@@ -1,12 +1,13 @@
 import { NavLink } from 'react-router-dom'
 import likedSongs from '../icons/likedSongs.png'
-import { AuthContext, UserContext, SidebarContext, SideBarWidthContext, RightClickContext } from '../contexts'
+import { AuthContext, UserContext, SidebarContext, RightClickContext } from '../contexts'
 import { Logo, SearchIcon, CollectionIcon, CreatePlaylistIcon } from '../icons/icons'
 import { useContext } from 'react'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import getDataObject from '../utils/getDataObject'
 import { useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 export default function SideBar() {
     const history = useHistory()
@@ -15,7 +16,7 @@ export default function SideBar() {
     const {userPlaylists, setUserPlaylists} = useContext(SidebarContext)
     const { rightClick, setRightClick } = useContext(RightClickContext)
     const location = useLocation()
-    const { currentWidth } = useContext(SideBarWidthContext)
+    const sidebarWidth = useSelector(state => state.page.sidebarWidth)
 
       
     // Function to create new playlist and then navigate to its page
@@ -78,7 +79,7 @@ export default function SideBar() {
              </NavLink>
             </li>
           </ul>
-          <hr className='sideBarDivider' style={{width: currentWidth - 50}}/>    
+          <hr className='sideBarDivider' style={{width: sidebarWidth - 50}}/>    
           <ul className='sideBarList' style={{overflowY: 'scroll'}}>
           {userPlaylists.map(playlist => 
             <li key={playlist.key} className='playlistLi' onContextMenu={(e) => setRightClick({type: playlist.type, yPos: e.screenY, xPos: e.screenX, id: playlist.id})}>
