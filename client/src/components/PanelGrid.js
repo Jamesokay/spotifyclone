@@ -1,16 +1,17 @@
 import { useState, useContext, useEffect } from 'react'
 import useViewport from '../hooks/useViewPort'
-import { AuthContext, ThemeContext, TrackContext, RightClickContext, SideBarWidthContext } from '../contexts'
+import { AuthContext, TrackContext, RightClickContext, SideBarWidthContext } from '../contexts'
 import playTrack from '../utils/playTrack'
 import pauseTrack from '../utils/pauseTrack'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { updateTheme } from '../pageSlice'
 
 export default function PanelGrid({ content, head }) {
     
     const accessToken = useContext(AuthContext)
     const [cardsWithColours, setCardsWithColours] = useState([]) 
     const [gradient, setGradient] = useState('')
-    const { setCurrentTheme } = useContext(ThemeContext)
     const { nowPlaying } = useContext(TrackContext)
     const { rightClick, setRightClick } = useContext(RightClickContext)
     const [index, setIndex] = useState(8)
@@ -19,6 +20,7 @@ export default function PanelGrid({ content, head }) {
     const { currentWidth } = useContext(SideBarWidthContext)
     const breakPointMedium = 1215
     const breakPointSmall = 920
+    const dispatch = useDispatch()
 
     
     // Generate the array of objects to be rendered
@@ -105,7 +107,7 @@ export default function PanelGrid({ content, head }) {
         <div id='gridPanel' style={{background: gradient}}
          onLoad={()=> {
             setGradient(cardsWithColours[0].bg) 
-            setCurrentTheme(cardsWithColours[0].rgb) }}>
+            dispatch(updateTheme({red: cardsWithColours[0].rgb.red, green: cardsWithColours[0].rgb.green, blue: cardsWithColours[0].rgb.blue }))}}>
         <div id='gridPanelLower' />
         <div id='dashGreeting'>{head}</div>     
         <div id='gridContent'>
@@ -119,12 +121,12 @@ export default function PanelGrid({ content, head }) {
           <div className='gridCard'
                style={(rightClick.id === cont.id)? {backgroundColor: 'rgba(128, 128, 128, 0.7)'} : {}}
                onMouseOver={()=> {
-                setGradient(cont.bg) 
-                setCurrentTheme(cont.rgb) 
+                setGradient(cont.bg)
+                dispatch(updateTheme({red: cont.rgb.red, green: cont.rgb.green, blue: cont.rgb.blue}))
                 }}
                onMouseLeave={()=> {
                 setGradient(cardsWithColours[0].bg) 
-                setCurrentTheme(cardsWithColours[0].rgb) 
+                dispatch(updateTheme({red: cardsWithColours[0].rgb.red, green: cardsWithColours[0].rgb.green, blue: cardsWithColours[0].rgb.blue }))
                 }}
           >
             <img className='gridCardImage' src={cont.imgUrl} alt=''/>

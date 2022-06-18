@@ -1,33 +1,24 @@
-import { useState, useEffect, useContext } from 'react'
-import { ThemeContext, PageContext, SideBarWidthContext } from '../contexts'
+import { useState, useEffect } from 'react'
 import useViewport from '../hooks/useViewPort'
-
-
+import { useDispatch, useSelector } from 'react-redux'
+import { updateTheme, updatePage } from '../pageSlice'
 
 export default function HeaderPanel({ content, type, creators, creatorImg, isOwner }) {
-
-    const { setCurrentTheme } = useContext(ThemeContext)
-    const { setCurrentPage } = useContext(PageContext)
     const [loading, setLoading] = useState(true)
     const [titleSize, setTitleSize] = useState(0)
     const [gradient, setGradient] = useState('linear-gradient(grey, #121212)')
     const [edgeColour, setEdgeColour] = useState('')
     const [imgSize, setImgSize] = useState(232)
     const { width } = useViewport()
-    const { currentWidth } = useContext(SideBarWidthContext)
+    const sidebarWidth = useSelector(state => state.page.sidebarWidth)
     const breakPointLarge = 1065
     const breakPointSmall = 800
+    const dispatch = useDispatch()
 
     function calculateFontSize(title) {
-      if (title.length <= 20) {
-        setTitleSize(550)
-      }
-      else if (title.length > 20 && title.length <= 30) {
-        setTitleSize(435)
-      }
-      else if (title.length > 30) {
-        setTitleSize(310)
-      }
+      if (title.length <= 20) { setTitleSize(550) }
+      else if (title.length > 20 && title.length <= 30) { setTitleSize(435) }
+      else if (title.length > 30) { setTitleSize(310) }
     }
 
     useEffect(() => {
@@ -37,36 +28,22 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
     
 
     useEffect(() => {
-        if ((width - currentWidth) <= breakPointSmall) {
-          setImgSize(195)
-        }
-        else if ((width - currentWidth) > breakPointSmall && (width - currentWidth) <= breakPointLarge) {
-          setImgSize(195)
-        }
-        else if ((width - currentWidth) >= breakPointLarge) {
-          setImgSize(232)
-        }
+        if ((width - sidebarWidth) <= breakPointSmall) { setImgSize(195) }
+        else if ((width - sidebarWidth) > breakPointSmall && (width - sidebarWidth) <= breakPointLarge) { setImgSize(195) }
+        else if ((width - sidebarWidth) >= breakPointLarge) { setImgSize(232) }
 
         return function cleanUp() {
           setImgSize(232)
         }
-    }, [width, currentWidth])
+    }, [width, sidebarWidth])
 
 
     useEffect(() => {
       if (!content.name) return
       if (content.name === 'Liked Songs') return
-
-      setCurrentPage({pageName: content.name,
-                      pageUri: content.uri
-      })
-
-    }, [content, content.name, content.uri, setCurrentPage])
-
-
-      
-
-
+      dispatch(updatePage({name: content.name, uri: content.uri
+      }))
+    }, [content, content.name, content.uri, dispatch])
     
     function getData() {
       var canvas = document.createElement('canvas');
@@ -129,7 +106,7 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
       let bg = 'rgba(' + avgRed + ',' + avgGreen + ',' + avgBlue + ',' + avgAlpha + ')'
       setEdgeColour('rgb(' + avgRedEdge + ',' + avgGreenEdge + ',' + avgBlueEdge + ')')
       setGradient('linear-gradient(' + bg + ', rgb(18, 18, 18))')
-      setCurrentTheme({red: avgRed, green: avgGreen, blue: avgBlue})
+      dispatch(updateTheme({red: avgRed, green: avgGreen, blue: avgBlue}))
       setLoading(false)     
       
     }
@@ -162,7 +139,7 @@ export default function HeaderPanel({ content, type, creators, creatorImg, isOwn
     :
     (
         <div id='headerPanel' style={(loading)? {visibility: 'hidden'} : {visibility: 'visible', backgroundImage: gradient}}>
-        <div className='headerBody' style={((width - currentWidth) <= breakPointSmall)? {marginLeft: 'max(1.125vw, 16px)'} : {}}>
+        <div className='headerBody' style={((width - sidebarWidth) <= breakPointSmall)? {marginLeft: 'max(1.125vw, 16px)'} : {}}>
         {(content.imgUrl)?
         <div className='headerImageBox'>
           <img id='headerImage' src={content.imgUrl} alt='' onLoad={()=> getData()} style={{width: imgSize, height: imgSize, minWidth: imgSize}}/>

@@ -1,20 +1,22 @@
 import { useState, useEffect, useContext } from 'react'
 import CollectionNav from '../components/CollectionNav'
-import { AuthContext, ThemeContext } from '../contexts'
+import { AuthContext } from '../contexts'
 import axios from 'axios'
 import getDataObject from '../utils/getDataObject'
 import Panel from '../components/Panel'
+import { useDispatch } from 'react-redux'
+import { updateTheme } from '../pageSlice'
 
 
 export default function CollectionPlaylist() {
   const accessToken = useContext(AuthContext)
   const [playlists, setPlaylists] = useState([])
-  const { setCurrentTheme } = useContext(ThemeContext)
+  const dispatch = useDispatch()
   
   // Set NavBar to black
   useEffect(() => {
-    setCurrentTheme({red: 0, green: 0, blue: 0})
-  }, [setCurrentTheme])
+    dispatch(updateTheme({red: 0, green: 0, blue: 0}))
+  }, [dispatch])
 
 
   // Get user's saved playlists

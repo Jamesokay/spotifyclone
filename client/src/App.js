@@ -9,7 +9,7 @@ import CollectionPlaylist from './pages/CollectionPlaylist'
 import CollectionAlbum from './pages/CollectionAlbum'
 import CollectionArtist from './pages/CollectionArtist'
 import { useState, useEffect } from 'react'
-import { AuthContext, ThemeContext, UserContext, PageContext, PlaylistContext, TrackContext, SidebarContext, RightClickContext, NotificationContext } from './contexts'
+import { AuthContext, UserContext, PlaylistContext, TrackContext, SidebarContext, RightClickContext, NotificationContext } from './contexts'
 import { DashContextProvider } from './DashContext'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
@@ -25,13 +25,6 @@ function App() {
 
   const [accessToken, setAccessToken] = useState(null)
   const [user, setUser] = useState(null)
-
-  const [currentTheme, setCurrentTheme] = useState({red: 0, green: 0, blue: 0})
-  const theme = {currentTheme, setCurrentTheme}
-
-  const [currentPage, setCurrentPage] = useState({pageName: '',
-                                                  pageUri: ''})
-  const page = {currentPage, setCurrentPage}
 
   const [newTrack, setNewTrack] = useState({})
   const track = {newTrack, setNewTrack}
@@ -127,9 +120,7 @@ function App() {
 
     return (
       <AuthContext.Provider value={accessToken}>
-      <ThemeContext.Provider value={theme}>
       <UserContext.Provider value={user}>
-      <PageContext.Provider value={page}>
       <PlaylistContext.Provider value={track}>
       <TrackContext.Provider value={currentTrack}>
       <SidebarContext.Provider value={sidebarPlaylists}>
@@ -155,9 +146,7 @@ function App() {
       </SidebarContext.Provider>
       </TrackContext.Provider>
       </PlaylistContext.Provider>
-      </PageContext.Provider>
       </UserContext.Provider>
-      </ThemeContext.Provider>
       </AuthContext.Provider>
     )
 

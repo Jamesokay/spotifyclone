@@ -1,25 +1,26 @@
 import { useHistory } from 'react-router-dom'
 import { useState, useContext, useEffect } from 'react'
-import { AuthContext, ThemeContext, UserContext, PageContext, TrackContext } from '../contexts'
+import { AuthContext, UserContext, TrackContext } from '../contexts'
 import defaultUser from '../icons/defaultUser.png'
 import { useLocation } from 'react-router-dom'
 import playTrack from '../utils/playTrack'
 import pauseTrack from '../utils/pauseTrack'
-
+import { useSelector } from 'react-redux'
 
 export default function NavBar() {
     const history = useHistory()
     const [alpha, setAlpha] = useState(0)
-    const { currentTheme } = useContext(ThemeContext)
     const user = useContext(UserContext)
     const accessToken = useContext(AuthContext)
-    const { currentPage } = useContext(PageContext)
     const { nowPlaying } = useContext(TrackContext)
     const [name, setName] = useState('')
     const [navPlayerShow, setNavPlayerShow] = useState(false)
     const location = useLocation()
     const [toggle, setToggle] = useState(false)
     const [adjustedColour, setAdjustedColour] = useState({red: 0, green: 0, blue: 0})
+    const theme = useSelector(state => state.page.theme)
+    const page = useSelector(state => state.page.name)
+    const uri = useSelector(state => state.page.uri)
     
     function calculateChange(startNum) {
       var distance = 18 - startNum
@@ -28,15 +29,14 @@ export default function NavBar() {
     }
 
     useEffect(() => {
-      if (!currentTheme) return
-      setAdjustedColour({red: calculateChange(currentTheme.red), 
-                         green: calculateChange(currentTheme.green), 
-                         blue: calculateChange(currentTheme.blue)})
+      setAdjustedColour({red: calculateChange(theme.red), 
+                         green: calculateChange(theme.green), 
+                         blue: calculateChange(theme.blue)})
 
       return function cleanUp() {
         setAdjustedColour({red: 0, green: 0, blue: 0})
       }
-    }, [currentTheme, currentTheme.red, currentTheme.green, currentTheme.blue])
+    }, [theme.red, theme.green, theme.blue])
     
 
     function test() {
@@ -98,19 +98,19 @@ export default function NavBar() {
                style={(navPlayerShow)? {visibility: 'visible'} : {}}
                onClick={(e) => {
                 e.preventDefault()
-                 if (currentPage.pageUri === nowPlaying.contextUri && !nowPlaying.isPaused) {
+                 if (uri === nowPlaying.contextUri && !nowPlaying.isPaused) {
                      pauseTrack(accessToken)
                  }
-                 else if (currentPage.pageUri === nowPlaying.contextUri && nowPlaying.isPaused) {
+                 else if (uri === nowPlaying.contextUri && nowPlaying.isPaused) {
                      playTrack(accessToken)
                  }
                  else {
-                 playTrack(accessToken, {context_uri: currentPage.pageUri})} 
+                 playTrack(accessToken, {context_uri: uri})} 
                 }
                }>
-            <div className={(!nowPlaying.isPaused && currentPage.pageUri === nowPlaying.contextUri)? 'navPauseIcon' : 'navPlayIcon'}></div>
+            <div className={(!nowPlaying.isPaused && uri === nowPlaying.contextUri)? 'navPauseIcon' : 'navPlayIcon'}></div>
           </div>
-          <span id='navCurrentTitle' style={(navPlayerShow)? {visibility: 'visible'} : {}}>{currentPage.pageName}</span>
+          <span id='navCurrentTitle' style={(navPlayerShow)? {visibility: 'visible'} : {}}>{page}</span>
         </div>
       }
 

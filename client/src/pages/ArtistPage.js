@@ -5,10 +5,11 @@ import HeaderPanel from '../components/HeaderPanel'
 import HeaderControls from '../components/HeaderControls'
 import getDataObject from '../utils/getDataObject'
 import TracksTable from '../components/TracksTable'
-import { AuthContext, ThemeContext } from '../contexts'
+import { AuthContext } from '../contexts'
 import flagSavedTracks from '../utils/flagSavedTracks'
 import ArtistLoader from './ArtistLoader'
 import getTrackObject from '../utils/getTrackObject'
+import { useSelector } from 'react-redux'
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -26,7 +27,7 @@ export default function ArtistPage({ location }) {
     const [tracksFinal, setTracksFinal] = useState([])
     const [savedArray, setSavedArray] = useState([])
     const [alsoLike, setAlsoLike] = useState([])
-    const { currentTheme } = useContext(ThemeContext)
+    const theme = useSelector(state => state.page.theme)
     const [adjustedColour, setAdjustedColour] = useState({red: 0, green: 0, blue: 0})
     const [loading, setLoading] = useState(true)
     const [showMoreTracks, setShowMoreTracks] = useState(false)
@@ -205,15 +206,14 @@ export default function ArtistPage({ location }) {
 
 
     useEffect(() => {
-        if (!currentTheme) return
-        setAdjustedColour({red: calculateChange(currentTheme.red), 
-                           green: calculateChange(currentTheme.green), 
-                           blue: calculateChange(currentTheme.blue)})
+        setAdjustedColour({red: calculateChange(theme.red), 
+                           green: calculateChange(theme.green), 
+                           blue: calculateChange(theme.blue)})
   
         return function cleanUp() {
           setAdjustedColour({red: 0, green: 0, blue: 0})
         }
-      }, [currentTheme, currentTheme.red, currentTheme.green, currentTheme.blue])
+      }, [theme.red, theme.green, theme.blue])
 
 
     return (
