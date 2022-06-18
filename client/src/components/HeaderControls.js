@@ -5,6 +5,8 @@ import unlike from '../utils/unlike'
 import like from '../utils/like'
 import playTrack from '../utils/playTrack'
 import pauseTrack from '../utils/pauseTrack'
+import { useDispatch } from 'react-redux'
+import { updateSidebarPlaylists } from '../pageSlice'
 
 export default function HeaderControls({URL, contextUri, contextId, isOwner, playlistObj, isEmpty, type}) {
     const accessToken = useContext(AuthContext)
@@ -12,11 +14,11 @@ export default function HeaderControls({URL, contextUri, contextId, isOwner, pla
     const {setUserPlaylists} = useContext(SidebarContext)
     const { setNotification } = useContext(NotificationContext)
     const [liked, setLiked] = useState(false)
-//    const [loading, setLoading] = useState(true)
+    const dispatch = useDispatch()
 
     function likePlaylist() {
         like(accessToken, `https://api.spotify.com/v1/playlists/${contextId}/followers`)
-        setUserPlaylists(userPlaylists => [...userPlaylists, playlistObj])
+        dispatch(updateSidebarPlaylists({ sidebarPlaylists: [...userPlaylists, playlistObj] }))
         setLiked(true)
         setNotification({text: 'Added to Your Library',
                          action: 'like' + contextId})

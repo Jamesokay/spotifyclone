@@ -15,7 +15,6 @@ import axios from 'axios'
 import { Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import CollectionTrack from './pages/CollectionTrack'
-import getDataObject from './utils/getDataObject'
 
 
 function App() {
@@ -90,33 +89,6 @@ function App() {
     getUser()
 
   }, [accessToken])
-
-  useEffect(() => {
-    if (!accessToken) return
-
-    const options = {
-      url: 'https://api.spotify.com/v1/me/playlists',
-      method: 'GET',
-      headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-          }
-      }
-    
-    const getUserPlaylists = async () => {
-      try {
-        const response = await axios(options)
-        setUserPlaylists(response.data.items.map(getDataObject))
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    
-    getUserPlaylists()
-
-  }, [accessToken])
-
-  
 
     return (
       <AuthContext.Provider value={accessToken}>

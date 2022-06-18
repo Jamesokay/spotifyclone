@@ -2,12 +2,13 @@ import { NavLink } from 'react-router-dom'
 import likedSongs from '../icons/likedSongs.png'
 import { AuthContext, UserContext, SidebarContext, RightClickContext } from '../contexts'
 import { Logo, SearchIcon, CollectionIcon, CreatePlaylistIcon } from '../icons/icons'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import getDataObject from '../utils/getDataObject'
 import { useLocation } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { updateSidebarPlaylists } from '../pageSlice'
 
 export default function SideBar() {
     const history = useHistory()
@@ -16,7 +17,30 @@ export default function SideBar() {
     const {userPlaylists, setUserPlaylists} = useContext(SidebarContext)
     const { rightClick, setRightClick } = useContext(RightClickContext)
     const location = useLocation()
+    const dispatch = useDispatch()
+    const playlists = useSelector(state => state.page.sidebarPlaylists)
     const sidebarWidth = useSelector(state => state.page.sidebarWidth)
+
+    useEffect(() => {
+      if (!accessToken) return
+      const options = {
+        url: 'https://api.spotify.com/v1/me/playlists',
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+            }
+        }      
+      const getUserPlaylists = async () => {
+        try {
+          const response = await axios(options)
+          dispatch(updateSidebarPlaylists({ sidebarPlaylists: response.data.items.map(getDataObject) }))
+        } catch (err) {
+          console.error(err)
+        }
+      } 
+      getUserPlaylists() 
+    }, [accessToken, dispatch])
 
       
     // Function to create new playlist and then navigate to its page
@@ -81,7 +105,7 @@ export default function SideBar() {
           </ul>
           <hr className='sideBarDivider' style={{width: sidebarWidth - 50}}/>    
           <ul className='sideBarList' style={{overflowY: 'scroll'}}>
-          {userPlaylists.map(playlist => 
+          {playlists.map(playlist => 
             <li key={playlist.key} className='playlistLi' onContextMenu={(e) => setRightClick({type: playlist.type, yPos: e.screenY, xPos: e.screenX, id: playlist.id})}>
               <NavLink className='sideBarPlaylist' draggable="false" to={{pathname: `/playlist/${playlist.id}`, state: playlist.id }} activeClassName="sideBarPlaylistActive" onContextMenu={(e) => setRightClick({type: playlist.type, id: playlist.id})}>
                 <span className='playlistTitle' style={(rightClick.id === playlist.id)? {color: 'white'} : {}}>{playlist.name}</span>
