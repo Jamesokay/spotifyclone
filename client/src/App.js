@@ -9,7 +9,7 @@ import CollectionPlaylist from './pages/CollectionPlaylist'
 import CollectionAlbum from './pages/CollectionAlbum'
 import CollectionArtist from './pages/CollectionArtist'
 import { useState, useEffect } from 'react'
-import { AuthContext, UserContext, PlaylistContext, TrackContext, SidebarContext, RightClickContext, NotificationContext } from './contexts'
+import { AuthContext, UserContext, PlaylistContext, TrackContext, RightClickContext } from './contexts'
 import { DashContextProvider } from './DashContext'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
@@ -28,24 +28,11 @@ function App() {
   const [newTrack, setNewTrack] = useState({})
   const track = {newTrack, setNewTrack}
 
-  const [nowPlaying, setNowPlaying] = useState({contextUri: '',
-                                                trackUri: '',
-                                                trackName: '',
-                                                isPaused: false})
+  const [nowPlaying, setNowPlaying] = useState({contextUri: '', trackUri: '', trackName: '', isPaused: false})
   const currentTrack = {nowPlaying, setNowPlaying}
-
-  const [userPlaylists, setUserPlaylists] = useState([])
-  const sidebarPlaylists = {userPlaylists, setUserPlaylists}
   
-  const [rightClick, setRightClick] = useState({type: '',
-                                                yPos: 0,
-                                                xPos: 0,
-                                                id: ''})
+  const [rightClick, setRightClick] = useState({type: '', yPos: 0, xPos: 0, id: ''})
   const rightClickedEl = {rightClick, setRightClick}
-
-  const [notification, setNotification] = useState({text: '',
-                                                    action: ''})
-  const message = {notification, setNotification}
 
 
   useEffect(() => {
@@ -95,9 +82,7 @@ function App() {
       <UserContext.Provider value={user}>
       <PlaylistContext.Provider value={track}>
       <TrackContext.Provider value={currentTrack}>
-      <SidebarContext.Provider value={sidebarPlaylists}>
       <RightClickContext.Provider value={rightClickedEl}>
-      <NotificationContext.Provider value={message}>
       <DashContextProvider>
       
         <Layout>
@@ -113,9 +98,7 @@ function App() {
         </Layout>
         
       </DashContextProvider>
-      </NotificationContext.Provider>
       </RightClickContext.Provider>
-      </SidebarContext.Provider>
       </TrackContext.Provider>
       </PlaylistContext.Provider>
       </UserContext.Provider>

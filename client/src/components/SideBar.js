@@ -105,7 +105,7 @@ export default function SideBar() {
           </ul>
           <hr className='sideBarDivider' style={{width: sidebarWidth - 50}}/>    
           <ul className='sideBarList' style={{overflowY: 'scroll'}}>
-          {playlists.map(playlist => 
+          {playlists.slice(0).reverse().map(playlist => 
             <li key={playlist.key} className='playlistLi' onContextMenu={(e) => setRightClick({type: playlist.type, yPos: e.screenY, xPos: e.screenX, id: playlist.id})}>
               <NavLink className='sideBarPlaylist' draggable="false" to={{pathname: `/playlist/${playlist.id}`, state: playlist.id }} activeClassName="sideBarPlaylistActive" onContextMenu={(e) => setRightClick({type: playlist.type, id: playlist.id})}>
                 <span className='playlistTitle' style={(rightClick.id === playlist.id)? {color: 'white'} : {}}>{playlist.name}</span>

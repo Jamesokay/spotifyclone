@@ -2,7 +2,7 @@ import SideBar from './SideBar'
 import NavBar from './NavBar'
 import WebPlayer from './WebPlayer'
 import Menu from './Menu'
-import { AuthContext, NotificationContext } from '../contexts'
+import { AuthContext } from '../contexts'
 import { useContext, useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import useViewport from '../hooks/useViewPort'
@@ -12,14 +12,13 @@ import { updateSidebarWidth } from '../pageSlice'
 
 export default function Layout({ children }) {
     const accessToken = useContext(AuthContext)
-    const { notification } = useContext(NotificationContext)
     const [show, setShow] = useState(false) 
     const [resizing, setResizing] = useState(false)
     const { width } = useViewport() 
     const location = useLocation()
-
     const dispatch = useDispatch()
     const sidebarWidth = useSelector(state => state.page.sidebarWidth)
+    const notification = useSelector(state => state.page.notification)
 
     const resizeSidebar = (newWidth) => {
       dispatch(updateSidebarWidth({sidebarWidth: newWidth}))
@@ -30,14 +29,14 @@ export default function Layout({ children }) {
     }, [location])
     
     useEffect(() => {
-        if (!notification.action) return
+        if (!notification) return
         setShow(true)
         const notify = setTimeout(() => { 
             setShow(false) }, 3000)
         return () => {
             setShow(false)
             clearTimeout(notify)}
-    }, [notification.action])
+    }, [notification])
 
 
     return (accessToken)?
@@ -70,7 +69,7 @@ export default function Layout({ children }) {
           <div style={{marginLeft: sidebarWidth, width: width - sidebarWidth}}>
             {children}
           </div>
-          <div className='likedNotification' style={(show)? {opacity: '1'} : {opacity: '0'}}>{notification.text}</div>
+          <div className='likedNotification' style={(show)? {opacity: '1'} : {opacity: '0'}}>{notification}</div>
           <WebPlayer />
         </div>
     

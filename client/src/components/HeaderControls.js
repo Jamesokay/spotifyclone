@@ -1,49 +1,44 @@
 import { useEffect, useState, useContext } from 'react'
-import { AuthContext, SidebarContext, TrackContext, NotificationContext } from '../contexts'
+import { AuthContext, TrackContext } from '../contexts'
 import axios from 'axios'
 import unlike from '../utils/unlike'
 import like from '../utils/like'
 import playTrack from '../utils/playTrack'
 import pauseTrack from '../utils/pauseTrack'
-import { useDispatch } from 'react-redux'
-import { updateSidebarPlaylists } from '../pageSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateSidebarPlaylists, updateNotification } from '../pageSlice'
 
 export default function HeaderControls({URL, contextUri, contextId, isOwner, playlistObj, isEmpty, type}) {
     const accessToken = useContext(AuthContext)
     const { nowPlaying } = useContext(TrackContext)
-    const {setUserPlaylists} = useContext(SidebarContext)
-    const { setNotification } = useContext(NotificationContext)
     const [liked, setLiked] = useState(false)
     const dispatch = useDispatch()
+    const sidebarPlaylists = useSelector(state => state.page.sidebarPlaylists)
 
     function likePlaylist() {
         like(accessToken, `https://api.spotify.com/v1/playlists/${contextId}/followers`)
-        dispatch(updateSidebarPlaylists({ sidebarPlaylists: [...userPlaylists, playlistObj] }))
+        dispatch(updateSidebarPlaylists({ sidebarPlaylists: [...sidebarPlaylists, playlistObj] }))
         setLiked(true)
-        setNotification({text: 'Added to Your Library',
-                         action: 'like' + contextId})
+        dispatch(updateNotification({notification: 'Added to Your Library'}))
     }
 
     function unlikePlaylist() {
         unlike(accessToken, `https://api.spotify.com/v1/playlists/${contextId}/followers`) 
-        setUserPlaylists(userPlaylists => userPlaylists.filter(item => item.id !== contextId))                    
+        dispatch(updateSidebarPlaylists({ sidebarPlaylists: sidebarPlaylists.filter(item => item.id !== contextId)}))       
         setLiked(false)
-        setNotification({text: 'Removed from Your Library',
-                         action: 'unlike' + contextId})
+        dispatch(updateNotification({notification: 'Removed from Your Library'}))
     }
 
     function likeAlbum() {
         like(accessToken, `https://api.spotify.com/v1/me/albums?ids=${contextId}`)
         setLiked(true)
-        setNotification({text: 'Added to Your Library',
-                         action: 'like' + contextId})
+        dispatch(updateNotification({notification: 'Added to Your Library'}))
     }
 
     function unlikeAlbum() {
         unlike(accessToken, `https://api.spotify.com/v1/me/albums?ids=${contextId}`)
         setLiked(false)
-        setNotification({text: 'Removed from Your Library',
-                         action: 'unlike' + contextId})
+        dispatch(updateNotification({notification: 'Removed from Your Library'}))
     }
 
     useEffect(() => {
