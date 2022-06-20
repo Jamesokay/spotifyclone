@@ -1,26 +1,27 @@
 import { useContext, useEffect, useState } from 'react'
-import { PlaylistContext, PageContext, TrackContext, RightClickContext, NotificationContext, SideBarWidthContext } from '../contexts'
+import { PlaylistContext, TrackContext, RightClickContext } from '../contexts'
 import { TablePlayingIcon, TableHeartOutlineIcon, TableHeartFilledIcon, ClockIcon, EllipsisIcon } from '../icons/icons'
 import useViewport from '../hooks/useViewPort'
 import playTrack from '../utils/playTrack'
 import { useHistory } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { updateNotification } from '../pageSlice'
 import axios from 'axios'
 
 export default function TracksTable({content, page, trackDepth }) {
 
     const accessToken = useSelector(state => state.user.token)
+    const dispatch = useDispatch()
     const history = useHistory()
     const [scrolling, setScrolling] = useState(false)
     const {setNewTrack} = useContext(PlaylistContext)
-    const {currentPage} = useContext(PageContext)
+    const uri = useSelector(state => state.page.uri)
     const { nowPlaying } = useContext(TrackContext)
     const [likedTracks, setLikedTracks] = useState([])
     const { rightClick, setRightClick } = useContext(RightClickContext)
     const [preventProp, setPreventProp] = useState(false)
-    const { setNotification } = useContext(NotificationContext)
     const { width } = useViewport()
-    const { currentWidth } = useContext(SideBarWidthContext)
+    const sidebarWidth = useSelector(state => state.page.sidebarWidth)
     const breakPoint = 800
 
 
@@ -45,7 +46,6 @@ export default function TracksTable({content, page, trackDepth }) {
 
 
       useEffect(() => {
-
         let options = {
           root: null,
           rootMargin: '-8.1% 0% 0% 0%',
@@ -73,8 +73,8 @@ export default function TracksTable({content, page, trackDepth }) {
       }, [])
 
       function addTrack(data, trackObj) {
-        setNotification('Added to playlist')
-        let playlistId = currentPage.pageUri.slice(17)
+        dispatch(updateNotification({notification: 'Added to playlist'}))
+        let playlistId = uri.slice(17)
         const options = {
           url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
           method: 'POST',
@@ -101,8 +101,7 @@ export default function TracksTable({content, page, trackDepth }) {
 
       if (likedTracks.includes(id)) {
         setLikedTracks(likedTracks => likedTracks.filter(item => item !== id))
-        setNotification({text: 'Removed from your Liked Songs',
-                       action: 'unlike' + id})
+        dispatch(updateNotification({notification: 'Removed from your Liked Songs'}))
         const options = {
           url: `https://api.spotify.com/v1/me/tracks?ids=${id}`,
           method: 'DELETE',
@@ -122,8 +121,7 @@ export default function TracksTable({content, page, trackDepth }) {
       }
       else {
         setLikedTracks(likedTracks => [...likedTracks, id])
-        setNotification({text: 'Added to your Liked Songs',
-                         action: 'like' + id})
+        dispatch(updateNotification({notification: 'Added to your Liked Songs'}))
         const options = {
             url: `https://api.spotify.com/v1/me/tracks?ids=${id}`,
             method: 'PUT',
@@ -213,7 +211,7 @@ export default function TracksTable({content, page, trackDepth }) {
                         setRightClick({id: cont.id, type: 'track'})
                       }}}
                     style={(rightClick.id === cont.id)? {background: 'grey'} : {}} >
-                  <td className='emptyCell' style={((width - currentWidth) <= breakPoint)? {width: '1.125vw', minWidth: '16px'} : {}} />
+                  <td className='emptyCell' style={((width - sidebarWidth) <= breakPoint)? {width: '1.125vw', minWidth: '16px'} : {}} />
                   {(cont.albumUri === nowPlaying.contextUri && cont.uri === nowPlaying.trackUri && !nowPlaying.isPaused)?
                   <td className='trackCell firstCell'>
                     <TablePlayingIcon />
@@ -301,7 +299,7 @@ export default function TracksTable({content, page, trackDepth }) {
                     style={(rightClick.id === cont.id)? {background: 'grey'} : {}} 
                     key={cont.id}
                     >
-                <td className='emptyCell' style={((width - currentWidth) <= breakPoint)? {width: '1.125vw', minWidth: '16px'} : {}} />
+                <td className='emptyCell' style={((width - sidebarWidth) <= breakPoint)? {width: '1.125vw', minWidth: '16px'} : {}} />
                 {(cont.context === nowPlaying.contextUri && cont.name === nowPlaying.trackName && !nowPlaying.isPaused)?
                   <td className='trackCell firstCell'>
                     <TablePlayingIcon />

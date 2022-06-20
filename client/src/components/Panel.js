@@ -1,4 +1,4 @@
-import { TrackContext, RightClickContext, SideBarWidthContext } from '../contexts'
+import { TrackContext, RightClickContext } from '../contexts'
 import playTrack from '../utils/playTrack'
 import pauseTrack from '../utils/pauseTrack'
 import { Link } from 'react-router-dom'
@@ -17,7 +17,7 @@ export default function Panel({ content, type, likedSongsCard }) {
     const [index, setIndex] = useState(5)
     const [cardWidth, setCardWidth] = useState('17.8%')
     const { width } = useViewport() 
-    const { currentWidth } = useContext(SideBarWidthContext)
+    const sidebarWidth = useSelector(state => state.page.sidebarWidth)
     const breakPointExtraLarge = 1600
     const breakPointLarge = 1060
     const breakPointMedium = 860
@@ -26,23 +26,23 @@ export default function Panel({ content, type, likedSongsCard }) {
     
 
     useEffect(() => {
-        if ((width - currentWidth) <= breakPointSmall) {
+        if ((width - sidebarWidth) <= breakPointSmall) {
           setIndex(2)
           setCardWidth('44.5%')
         }
-        else if ((width - currentWidth) > breakPointSmall && (width - currentWidth) <= breakPointMedium) {
+        else if ((width - sidebarWidth) > breakPointSmall && (width - sidebarWidth) <= breakPointMedium) {
           setIndex(3)
           setCardWidth('29.6%')
         }
-        else if ((width - currentWidth) > breakPointMedium && (width - currentWidth) < breakPointLarge) {
+        else if ((width - sidebarWidth) > breakPointMedium && (width - sidebarWidth) < breakPointLarge) {
           setIndex(4)
           setCardWidth('22.25%')
         }
-        else if ((width - currentWidth) > breakPointLarge && (width - currentWidth) < breakPointExtraLarge) {
+        else if ((width - sidebarWidth) > breakPointLarge && (width - sidebarWidth) < breakPointExtraLarge) {
           setIndex(5)
           setCardWidth('17.8%')
         }
-        else if ((width - currentWidth) >= breakPointExtraLarge) {
+        else if ((width - sidebarWidth) >= breakPointExtraLarge) {
           setIndex(10)
           setCardWidth('8.9%')
         }
@@ -51,7 +51,7 @@ export default function Panel({ content, type, likedSongsCard }) {
             setIndex(5)
             setCardWidth('17.8%')
         }
-    }, [width, currentWidth])
+    }, [width, sidebarWidth])
 
     useEffect(() => {
       if (type === 'collection') {

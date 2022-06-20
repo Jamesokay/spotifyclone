@@ -1,7 +1,7 @@
 import CollectionNav from '../components/CollectionNav'
 import SpotifyWebApi from 'spotify-web-api-node'
 import { useSelector } from 'react-redux'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import getDataObject from '../utils/getDataObject'
 import Panel from '../components/Panel'
 

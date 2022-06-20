@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import useViewport from '../hooks/useViewPort'
-import { TrackContext, RightClickContext, SideBarWidthContext } from '../contexts'
+import { TrackContext, RightClickContext } from '../contexts'
 import playTrack from '../utils/playTrack'
 import pauseTrack from '../utils/pauseTrack'
 import { Link } from 'react-router-dom'
@@ -17,7 +17,7 @@ export default function PanelGrid({ content, head }) {
     const [index, setIndex] = useState(8)
     const [cardWidth, setCardWidth] = useState(25)
     const { width } = useViewport()
-    const { currentWidth } = useContext(SideBarWidthContext)
+    const sidebarWidth = useSelector(state => state.page.sidebarWidth)
     const breakPointMedium = 1215
     const breakPointSmall = 920
     const dispatch = useDispatch()
@@ -36,15 +36,15 @@ export default function PanelGrid({ content, head }) {
     // Make both the width of each card and the length of the rendered array responsive to viewport resizes.
     // Index is used as a variable determing how far to slice() into cardsWithColours, cardWidth sets the % width of each card.
     useEffect(() => {
-        if ((width - currentWidth) <= breakPointSmall) {
+        if ((width - sidebarWidth) <= breakPointSmall) {
           setIndex(4)
           setCardWidth(50)
         }
-        else if ((width - currentWidth) > breakPointSmall && (width - currentWidth) <= breakPointMedium) {
+        else if ((width - sidebarWidth) > breakPointSmall && (width - sidebarWidth) <= breakPointMedium) {
             setIndex(6)
             setCardWidth(33.3)
         }
-        else if ((width - currentWidth) > breakPointMedium) {
+        else if ((width - sidebarWidth) > breakPointMedium) {
             setIndex(8)
             setCardWidth(25)
         }
@@ -53,7 +53,7 @@ export default function PanelGrid({ content, head }) {
             setIndex(8)
             setCardWidth(25)
         }
-    }, [width, currentWidth])
+    }, [width, sidebarWidth])
 
     // Function to draw the image of each card on an off-screen canvas, generating a pixel array from which the average RGB values of a
     // specified region of the image can be calculated. This average colour is then added to the existing object as a property.

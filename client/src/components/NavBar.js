@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom'
 import { useState, useContext, useEffect } from 'react'
-import { AuthContext, UserContext, TrackContext } from '../contexts'
+import { TrackContext } from '../contexts'
 import defaultUser from '../icons/defaultUser.png'
 import { useLocation } from 'react-router-dom'
 import playTrack from '../utils/playTrack'
@@ -10,10 +10,9 @@ import { useSelector } from 'react-redux'
 export default function NavBar() {
     const history = useHistory()
     const [alpha, setAlpha] = useState(0)
-    const user = useContext(UserContext)
+    const user = useSelector(state => state.user.profile)
     const accessToken = useSelector(state => state.user.token)
     const { nowPlaying } = useContext(TrackContext)
-    const [name, setName] = useState('')
     const [navPlayerShow, setNavPlayerShow] = useState(false)
     const location = useLocation()
     const [toggle, setToggle] = useState(false)
@@ -51,12 +50,6 @@ export default function NavBar() {
         window.removeEventListener("scroll", test)
       }
     })
-
-
-    useEffect(() => {
-       if (!user) return
-       setName(user.display_name)      
-    }, [user])
 
     useEffect(() => {
       if (alpha < 1) {
@@ -116,7 +109,7 @@ export default function NavBar() {
 
         <div id='user' style={(toggle)? {backgroundColor: '#373737'} : {backgroundColor: '#121212'}}>
             <img id='userImg' src={defaultUser} alt=''></img>
-            <span id='userName'>{name}</span>
+            <span id='userName'>{user.display_name? user.display_name : ''}</span>
         <svg className='userToggle'
              style={{marginRight: 'auto'}} xmlns="http://www.w3.org/2000/svg" 
              width="24" height="24" 

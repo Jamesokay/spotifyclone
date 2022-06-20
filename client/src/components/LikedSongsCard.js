@@ -1,5 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
-import { SideBarWidthContext } from '../contexts'
+import { useState, useEffect } from 'react'
 import useViewport from '../hooks/useViewPort'
 import SpotifyWebApi from 'spotify-web-api-node'
 import { Link } from 'react-router-dom'
@@ -14,8 +13,8 @@ export default function LikedSongsCard() {
     const [preview, setPreview] = useState([])
     const [savedTracksTotal, setSavedTracksTotal] = useState(0)
     const { width } = useViewport()
-    const { currentWidth } = useContext(SideBarWidthContext)
-    const viewPort = width - currentWidth
+    const sidebarWidth = useSelector(state => state.page.sidebarWidth)
+    const viewPort = width - sidebarWidth
     const breakPointLarge = 1100
     const breakPointMedium = 900
     const breakPointSmall = 700
@@ -45,7 +44,7 @@ export default function LikedSongsCard() {
         }
     }, [viewPort])
 
-      // Get user's saved tracks, the names and artists of which will be rendered on Liked Songs card
+    // Get user's saved tracks, the names and artists of which will be rendered on Liked Songs card
     useEffect(() => {
     if (!accessToken) return
 

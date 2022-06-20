@@ -51,7 +51,7 @@ function App() {
 
     logIn()
 
-  }, [code])
+  }, [code, dispatch])
 
   useEffect(() => {
     if (!accessToken) return
@@ -76,7 +76,7 @@ function App() {
   
     getUser()
 
-  }, [accessToken])
+  }, [accessToken, dispatch])
 
     return (
       <PlaylistContext.Provider value={track}>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
 import TracksTable from '../components/TracksTable'
-import { UserContext, PlaylistContext } from '../contexts'
+import { PlaylistContext } from '../contexts'
 import HeaderPanel from '../components/HeaderPanel'
 import getTotalDuration from '../utils/getTotalDuration'
 import flagSavedTracks from '../utils/flagSavedTracks'
@@ -20,7 +20,7 @@ const spotifyApi = new SpotifyWebApi({
 export default function PlaylistPage({ location }) {
     const id  = location.state
     const accessToken = useSelector(state => state.user.token)
-    const user = useContext(UserContext)
+    const user = useSelector(state => state.user.profile)
     const [playlist, setPlaylist] = useState({})
     const [tracks, setTracks] = useState([])
     const [savedArray, setSavedArray] = useState([])

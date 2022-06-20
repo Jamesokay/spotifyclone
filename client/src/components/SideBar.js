@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import likedSongs from '../icons/likedSongs.png'
-import { AuthContext, UserContext, SidebarContext, RightClickContext } from '../contexts'
+import { UserContext, RightClickContext } from '../contexts'
 import { Logo, SearchIcon, CollectionIcon, CreatePlaylistIcon } from '../icons/icons'
 import { useContext, useEffect } from 'react'
 import axios from 'axios'
@@ -14,7 +14,6 @@ export default function SideBar() {
     const history = useHistory()
     const accessToken = useSelector(state => state.user.token)
     const user = useContext(UserContext)
-    const {userPlaylists, setUserPlaylists} = useContext(SidebarContext)
     const { rightClick, setRightClick } = useContext(RightClickContext)
     const location = useLocation()
     const dispatch = useDispatch()
@@ -52,12 +51,12 @@ export default function SideBar() {
               'Authorization': `Bearer ${accessToken}`,
               'Content-Type': 'application/json',
               },
-          data: {name: 'My Playlist #' + (userPlaylists.length + 1)}
+          data: {name: 'My Playlist #' + (playlists.length + 1)}
           }
         
         try {
           const response = await axios(options)
-          setUserPlaylists(userPlaylists => [...userPlaylists, getDataObject(response.data)])
+          dispatch(updateSidebarPlaylists({ sidebarPlaylists: [...playlists, getDataObject(response.data)]}))
           let location = {
             pathname: '/playlist/' + response.data.id,
             state: response.data.id
