@@ -9,21 +9,22 @@ import CollectionPlaylist from './pages/CollectionPlaylist'
 import CollectionAlbum from './pages/CollectionAlbum'
 import CollectionArtist from './pages/CollectionArtist'
 import { useState, useEffect } from 'react'
-import { AuthContext, UserContext, PlaylistContext, TrackContext, RightClickContext } from './contexts'
+import { PlaylistContext, TrackContext, RightClickContext } from './contexts'
 import { DashContextProvider } from './DashContext'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import CollectionTrack from './pages/CollectionTrack'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateUser, updateToken } from './userSlice'
 
 
 function App() {
 
   const code = new URLSearchParams(window.location.search).get("code")
   localStorage.setItem('clientId', 'e39d5b5b499d4088a003eb0471c537bb')
-
-  const [accessToken, setAccessToken] = useState(null)
-  const [user, setUser] = useState(null)
+  const dispatch = useDispatch()
+  const accessToken = useSelector(state => state.user.token)
 
   const [newTrack, setNewTrack] = useState({})
   const track = {newTrack, setNewTrack}
@@ -41,7 +42,7 @@ function App() {
     const logIn = async () => {
       try {
         const response = await axios.post("/login", {code})
-        setAccessToken(response.data.accessToken)
+        dispatch(updateToken({token: response.data.accessToken}))
         window.history.pushState({}, null, "/")
       } catch (err) {
         console.error(err)
@@ -67,7 +68,7 @@ function App() {
     const getUser = async () => {
       try {
         const response = await axios(options)
-        setUser(response.data)
+        dispatch(updateUser({profile: response.data}))
       } catch (err) {
         console.error(err)
       }
@@ -78,8 +79,6 @@ function App() {
   }, [accessToken])
 
     return (
-      <AuthContext.Provider value={accessToken}>
-      <UserContext.Provider value={user}>
       <PlaylistContext.Provider value={track}>
       <TrackContext.Provider value={currentTrack}>
       <RightClickContext.Provider value={rightClickedEl}>
@@ -101,8 +100,6 @@ function App() {
       </RightClickContext.Provider>
       </TrackContext.Provider>
       </PlaylistContext.Provider>
-      </UserContext.Provider>
-      </AuthContext.Provider>
     )
 
 }

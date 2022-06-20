@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
 import toMinsSecs from '../utils/toMinsSecs'
 import getDataObject from '../utils/getDataObject'
 import TracksTable from '../components/TracksTable'
-import { AuthContext } from '../contexts'
+import { useSelector } from 'react-redux'
 import Panel from '../components/Panel'
 import HeaderPanel from '../components/HeaderPanel'
 import getTotalDuration from '../utils/getTotalDuration'
@@ -19,7 +19,7 @@ const spotifyApi = new SpotifyWebApi({
 
 export default function AlbumPage({ location }) {
     const id = location.state
-    const accessToken = useContext(AuthContext)
+    const accessToken = useSelector(state => state.user.token)
     const [loading, setLoading] = useState(true)
     const [album, setAlbum] = useState({})
     const [tracks, setTracks] = useState([])

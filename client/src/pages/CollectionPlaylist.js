@@ -1,15 +1,14 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import CollectionNav from '../components/CollectionNav'
-import { AuthContext } from '../contexts'
 import axios from 'axios'
 import getDataObject from '../utils/getDataObject'
 import Panel from '../components/Panel'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { updateTheme } from '../pageSlice'
 
 
 export default function CollectionPlaylist() {
-  const accessToken = useContext(AuthContext)
+  const accessToken = useSelector(state => state.user.token)
   const [playlists, setPlaylists] = useState([])
   const dispatch = useDispatch()
   

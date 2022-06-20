@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import SpotifyWebApi from 'spotify-web-api-node'
-import { AuthContext, UserContext } from '../contexts'
+import { UserContext } from '../contexts'
+import { useSelector } from 'react-redux'
 import toMinsSecs from '../utils/toMinsSecs'
 import likedSongs from '../icons/likedSongs.png'
 import TracksTable from '../components/TracksTable'
@@ -12,7 +13,7 @@ const spotifyApi = new SpotifyWebApi({
   })
 
 export default function CollectionTrack() {
-    const accessToken = useContext(AuthContext)
+    const accessToken = useSelector(state => state.user.token)
     const user = useContext(UserContext)
     const [tracks, setTracks] = useState([])
     const likedSongsObj = {

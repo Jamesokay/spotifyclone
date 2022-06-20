@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react'
-import { AuthContext, TrackContext } from '../contexts'
+import { TrackContext } from '../contexts'
 import axios from 'axios'
 import unlike from '../utils/unlike'
 import like from '../utils/like'
@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateSidebarPlaylists, updateNotification } from '../pageSlice'
 
 export default function HeaderControls({URL, contextUri, contextId, isOwner, playlistObj, isEmpty, type}) {
-    const accessToken = useContext(AuthContext)
+    const accessToken = useSelector(state => state.user.token)
     const { nowPlaying } = useContext(TrackContext)
     const [liked, setLiked] = useState(false)
     const dispatch = useDispatch()

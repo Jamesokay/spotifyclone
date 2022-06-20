@@ -1,5 +1,5 @@
 import {useState, useEffect, createContext, useContext } from 'react'
-import { AuthContext } from './contexts'
+import { useSelector } from 'react-redux'
 import getDataObject from './utils/getDataObject'
 
 // Dashboard API calls all carried out in this context rather than Dashboard itself, such that results are consistent across session
@@ -8,7 +8,7 @@ import getDataObject from './utils/getDataObject'
 const DashContext = createContext()
 
 const DashContextProvider = ({ children }) => {   
-    const accessToken = useContext(AuthContext)
+    const accessToken = useSelector(state => state.user.token)
     const [topArtists, setTopArtists] = useState([])
     const [recent, setRecent] = useState([])
     const [recentReversed, setRecentReversed] = useState([])

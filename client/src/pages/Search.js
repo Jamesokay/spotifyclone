@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Panel from '../components/Panel'
 import getDataObject from '../utils/getDataObject'
-import { AuthContext, ThemeContext, TrackContext, RightClickContext, SideBarWidthContext } from '../contexts'
+import { ThemeContext, TrackContext, RightClickContext, SideBarWidthContext } from '../contexts'
 import TracksTable from '../components/TracksTable'
 import axios from 'axios'
 import playTrack from '../utils/playTrack'
@@ -10,11 +10,12 @@ import Menu from '../components/Menu'
 import { Link } from 'react-router-dom'
 import useViewport from '../hooks/useViewPort'
 import getTrackObject from '../utils/getTrackObject'
+import { useSelector } from 'react-redux'
 
 
 export default function Search() {
 
-    const accessToken = useContext(AuthContext)
+    const accessToken = useSelector(state => state.user.token)
     const [search, setSearch] = useState('')
     const [trackResults, setTrackResults] = useState([])
     const [artistResults, setArtistResults] = useState([])

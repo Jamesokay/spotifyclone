@@ -1,4 +1,4 @@
-import { AuthContext, TrackContext, RightClickContext, SideBarWidthContext } from '../contexts'
+import { TrackContext, RightClickContext, SideBarWidthContext } from '../contexts'
 import playTrack from '../utils/playTrack'
 import pauseTrack from '../utils/pauseTrack'
 import { Link } from 'react-router-dom'
@@ -6,10 +6,11 @@ import { useHistory } from 'react-router-dom'
 import { useState, useEffect, useContext } from 'react'
 import useViewport from '../hooks/useViewPort'
 import LikedSongsCard from './LikedSongsCard'
+import { useSelector } from 'react-redux'
 
 export default function Panel({ content, type, likedSongsCard }) {
   
-    const accessToken = useContext(AuthContext)
+    const accessToken = useSelector(state => state.user.token)
     const { nowPlaying } = useContext(TrackContext)
     const history = useHistory()
     const { rightClick, setRightClick } = useContext(RightClickContext)

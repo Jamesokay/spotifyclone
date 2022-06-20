@@ -5,7 +5,6 @@ import HeaderPanel from '../components/HeaderPanel'
 import HeaderControls from '../components/HeaderControls'
 import getDataObject from '../utils/getDataObject'
 import TracksTable from '../components/TracksTable'
-import { AuthContext } from '../contexts'
 import flagSavedTracks from '../utils/flagSavedTracks'
 import ArtistLoader from './ArtistLoader'
 import getTrackObject from '../utils/getTrackObject'
@@ -18,7 +17,7 @@ const spotifyApi = new SpotifyWebApi({
 
 export default function ArtistPage({ location }) {
     const id = location.state
-    const accessToken = useContext(AuthContext)
+    const accessToken = useSelector(state => state.user.token)
     const [artist, setArtist] = useState({})
     const [artistAlbumsRaw, setArtistAlbumsRaw] = useState([])
     const [popularReleases, setPopularReleases] = useState([])

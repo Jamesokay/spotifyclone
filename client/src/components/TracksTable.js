@@ -1,14 +1,15 @@
 import { useContext, useEffect, useState } from 'react'
-import { AuthContext, PlaylistContext, PageContext, TrackContext, RightClickContext, NotificationContext, SideBarWidthContext } from '../contexts'
+import { PlaylistContext, PageContext, TrackContext, RightClickContext, NotificationContext, SideBarWidthContext } from '../contexts'
 import { TablePlayingIcon, TableHeartOutlineIcon, TableHeartFilledIcon, ClockIcon, EllipsisIcon } from '../icons/icons'
 import useViewport from '../hooks/useViewPort'
 import playTrack from '../utils/playTrack'
 import { useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import axios from 'axios'
 
 export default function TracksTable({content, page, trackDepth }) {
 
-    const accessToken = useContext(AuthContext)
+    const accessToken = useSelector(state => state.user.token)
     const history = useHistory()
     const [scrolling, setScrolling] = useState(false)
     const {setNewTrack} = useContext(PlaylistContext)

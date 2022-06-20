@@ -1,15 +1,16 @@
-import {useState, useEffect, useContext} from 'react'
-import { AuthContext, SideBarWidthContext } from '../contexts'
+import { useState, useEffect, useContext } from 'react'
+import { SideBarWidthContext } from '../contexts'
 import useViewport from '../hooks/useViewPort'
 import SpotifyWebApi from 'spotify-web-api-node'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const spotifyApi = new SpotifyWebApi({
     clientId: localStorage.getItem('clientId')
   })
 
 export default function LikedSongsCard() {
-    const accessToken = useContext(AuthContext)
+    const accessToken = useSelector(state => state.user.token)
     const [preview, setPreview] = useState([])
     const [savedTracksTotal, setSavedTracksTotal] = useState(0)
     const { width } = useViewport()

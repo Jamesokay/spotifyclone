@@ -12,7 +12,7 @@ import { updateSidebarPlaylists } from '../pageSlice'
 
 export default function SideBar() {
     const history = useHistory()
-    const accessToken = useContext(AuthContext)
+    const accessToken = useSelector(state => state.user.token)
     const user = useContext(UserContext)
     const {userPlaylists, setUserPlaylists} = useContext(SidebarContext)
     const { rightClick, setRightClick } = useContext(RightClickContext)

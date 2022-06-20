@@ -2,8 +2,7 @@ import SideBar from './SideBar'
 import NavBar from './NavBar'
 import WebPlayer from './WebPlayer'
 import Menu from './Menu'
-import { AuthContext } from '../contexts'
-import { useContext, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import useViewport from '../hooks/useViewPort'
 import { useSelector, useDispatch } from 'react-redux'
@@ -11,7 +10,7 @@ import { updateSidebarWidth } from '../pageSlice'
 
 
 export default function Layout({ children }) {
-    const accessToken = useContext(AuthContext)
+    const accessToken = useSelector(state => state.user.token)
     const [show, setShow] = useState(false) 
     const [resizing, setResizing] = useState(false)
     const { width } = useViewport() 

@@ -1,7 +1,7 @@
 import CollectionNav from '../components/CollectionNav'
 import SpotifyWebApi from 'spotify-web-api-node'
-import { AuthContext } from '../contexts'
-import { useState, useEffect, useContext } from 'react'
+import { useSelector } from 'react-redux'
+import { useState, useEffect } from 'react'
 import getDataObject from '../utils/getDataObject'
 import Panel from '../components/Panel'
 
@@ -10,7 +10,7 @@ const spotifyApi = new SpotifyWebApi({
   })
 
 export default function CollectionArtist() {
-    const accessToken = useContext(AuthContext)
+    const accessToken = useSelector(state => state.user.token)
     const [artists, setArtists] = useState([])
     
     useEffect(() => {

@@ -1,15 +1,15 @@
 import { useState, useContext, useEffect } from 'react'
 import useViewport from '../hooks/useViewPort'
-import { AuthContext, TrackContext, RightClickContext, SideBarWidthContext } from '../contexts'
+import { TrackContext, RightClickContext, SideBarWidthContext } from '../contexts'
 import playTrack from '../utils/playTrack'
 import pauseTrack from '../utils/pauseTrack'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { updateTheme } from '../pageSlice'
 
 export default function PanelGrid({ content, head }) {
     
-    const accessToken = useContext(AuthContext)
+    const accessToken = useSelector(state => state.user.token)
     const [cardsWithColours, setCardsWithColours] = useState([]) 
     const [gradient, setGradient] = useState('')
     const { nowPlaying } = useContext(TrackContext)

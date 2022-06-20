@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { AuthContext, PlaylistContext } from '../contexts'
+import { PlaylistContext } from '../contexts'
 import TracksTable from '../components/TracksTable'
 import axios from 'axios'
 import getTrackObject from '../utils/getTrackObject'
+import { useSelector } from 'react-redux'
 
 
 export default function Search() {
 
-    const accessToken = useContext(AuthContext)
+    const accessToken = useSelector(state => state.user.token)
     const [search, setSearch] = useState('')
     const [trackResults, setTrackResults] = useState([])
     const { newTrack } = useContext(PlaylistContext)

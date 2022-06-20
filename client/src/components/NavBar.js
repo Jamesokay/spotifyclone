@@ -11,7 +11,7 @@ export default function NavBar() {
     const history = useHistory()
     const [alpha, setAlpha] = useState(0)
     const user = useContext(UserContext)
-    const accessToken = useContext(AuthContext)
+    const accessToken = useSelector(state => state.user.token)
     const { nowPlaying } = useContext(TrackContext)
     const [name, setName] = useState('')
     const [navPlayerShow, setNavPlayerShow] = useState(false)
