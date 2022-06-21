@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Panel from '../components/Panel'
 import getDataObject from '../utils/getDataObject'
-import { ThemeContext, TrackContext, RightClickContext, SideBarWidthContext } from '../contexts'
+import { TrackContext, RightClickContext } from '../contexts'
 import TracksTable from '../components/TracksTable'
 import axios from 'axios'
 import playTrack from '../utils/playTrack'
@@ -10,25 +10,20 @@ import Menu from '../components/Menu'
 import { Link } from 'react-router-dom'
 import useViewport from '../hooks/useViewPort'
 import getTrackObject from '../utils/getTrackObject'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateTheme } from '../pageSlice'
 
 
 export default function Search() {
-
     const accessToken = useSelector(state => state.user.token)
     const [search, setSearch] = useState('')
     const [trackResults, setTrackResults] = useState([])
     const [artistResults, setArtistResults] = useState([])
     const [albumResults, setAlbumResults] = useState([])
     const [playlistResults, setPlaylistResults] = useState([])
-    const [topResult, setTopResult] = useState({
-        name: '',
-        creator: '',
-        imgUrl: '',
-        type:''
-    })
+    const [topResult, setTopResult] = useState({name: '', creator: '', imgUrl: '', type:''})
     const [topResultPlaying, setTopResultPlaying] = useState(false)
-    const { setCurrentTheme } = useContext(ThemeContext)
+    const dispatch = useDispatch()
     const { nowPlaying } = useContext(TrackContext)
     const { setRightClick } = useContext(RightClickContext)
     const [userArtists, setUserArtists] = useState([])
@@ -36,7 +31,7 @@ export default function Search() {
     const [loading, setLoading] = useState(true)
     const [topResultWidth, setTopResultWidth] = useState(37.5)
     const { width } = useViewport()
-    const { currentWidth } = useContext(SideBarWidthContext)
+    const sidebarWidth = useSelector(state => state.page.sidebarWidth)
     const breakPointLarge = 1055
     const breakPointSmall = 850
 
@@ -94,30 +89,18 @@ export default function Search() {
       })
     }
 
-
     // Set NavBar to black
     useEffect(() => {
-        setCurrentTheme({red: 0, green: 0, blue: 0}) 
-    }, [setCurrentTheme])
-
+        dispatch(updateTheme({red: 0, green: 0, blue: 0}))
+    }, [dispatch])
 
     // Make top result card responsive to viewport breakpoints
     useEffect(() => {
-        if ((width - currentWidth) <= breakPointSmall) {
-          setTopResultWidth(61)
-        }
-        else if ((width - currentWidth) > breakPointSmall && (width - currentWidth) < breakPointLarge) {
-          setTopResultWidth(46.4)
-        }
-        else if ((width - currentWidth) >= breakPointLarge) {
-          setTopResultWidth(37.5)
-        }
-
-        return () => {
-            setTopResultWidth(37.5)
-        }
-    }, [width, currentWidth])
-
+        if ((width - sidebarWidth) <= breakPointSmall) { setTopResultWidth(61) }
+        else if ((width - sidebarWidth) > breakPointSmall && (width - sidebarWidth) < breakPointLarge) { setTopResultWidth(46.4) }
+        else if ((width - sidebarWidth) >= breakPointLarge) { setTopResultWidth(37.5) }
+        return () => { setTopResultWidth(37.5) }
+    }, [width, sidebarWidth])
 
     // API call to get user's top artists
     useEffect(() => {

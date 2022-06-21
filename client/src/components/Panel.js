@@ -9,7 +9,6 @@ import LikedSongsCard from './LikedSongsCard'
 import { useSelector } from 'react-redux'
 
 export default function Panel({ content, type, likedSongsCard }) {
-  
     const accessToken = useSelector(state => state.user.token)
     const { nowPlaying } = useContext(TrackContext)
     const history = useHistory()
@@ -23,7 +22,6 @@ export default function Panel({ content, type, likedSongsCard }) {
     const breakPointMedium = 860
     const breakPointSmall = 620
     const [array, setArray] = useState([])
-    
 
     useEffect(() => {
         if ((width - sidebarWidth) <= breakPointSmall) {
@@ -46,7 +44,6 @@ export default function Panel({ content, type, likedSongsCard }) {
           setIndex(10)
           setCardWidth('8.9%')
         }
-
         return function cleanUp() {
             setIndex(5)
             setCardWidth('17.8%')
@@ -54,21 +51,11 @@ export default function Panel({ content, type, likedSongsCard }) {
     }, [width, sidebarWidth])
 
     useEffect(() => {
-      if (type === 'collection') {
-        setArray(content)
-      }
-      else {
-        setArray(content.slice(0, index))
-      }
-
-      return function cleanUp() {
-        setArray([])
-      }
+      if (type === 'collection') { setArray(content) }
+      else { setArray(content.slice(0, index)) }
+      return function cleanUp() { setArray([]) }
     }, [type, content, index])
-
-
-
-    
+  
     return (
         <div className='panel' style={type === 'collection'? {flexWrap: 'wrap'} : {}}> 
         {likedSongsCard? <LikedSongsCard /> : <></>}

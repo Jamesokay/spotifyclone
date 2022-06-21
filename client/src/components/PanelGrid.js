@@ -7,8 +7,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateTheme } from '../pageSlice'
 
-export default function PanelGrid({ content, head }) {
-    
+export default function PanelGrid({ content, head }) {  
     const accessToken = useSelector(state => state.user.token)
     const [cardsWithColours, setCardsWithColours] = useState([]) 
     const [gradient, setGradient] = useState('')
@@ -21,18 +20,13 @@ export default function PanelGrid({ content, head }) {
     const breakPointMedium = 1215
     const breakPointSmall = 920
     const dispatch = useDispatch()
-
-    
+ 
     // Generate the array of objects to be rendered
     useEffect(() => {
         getColor(content.slice(0, 8))
-
-        return () => {
-            setCardsWithColours([])
-        }
+        return () => { setCardsWithColours([]) }
     }, [content])
-
-    
+ 
     // Make both the width of each card and the length of the rendered array responsive to viewport resizes.
     // Index is used as a variable determing how far to slice() into cardsWithColours, cardWidth sets the % width of each card.
     useEffect(() => {
@@ -48,7 +42,6 @@ export default function PanelGrid({ content, head }) {
             setIndex(8)
             setCardWidth(25)
         }
-
         return () => {
             setIndex(8)
             setCardWidth(25)
@@ -60,7 +53,6 @@ export default function PanelGrid({ content, head }) {
     // The background and theme can thereby achieve the desired effect: background/theme colour changing to that of the card's bg/rgb
     // property when hovered over.
     const getColor = array => {
-
         for (const item of array) {
           let canvas = document.createElement('canvas');
           let ctx    = canvas.getContext('2d');
@@ -95,8 +87,7 @@ export default function PanelGrid({ content, head }) {
               rgb: {red: avgRed, green: avgGreen, blue: avgBlue}
             }
             setCardsWithColours(cardsWithColours => [...cardsWithColours, obj])
-          }    
-
+          }
         myImgElement.src = item.imgUrl   
         myImgElement.crossOrigin = ''  
         }

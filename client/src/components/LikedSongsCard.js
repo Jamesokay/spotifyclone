@@ -1,12 +1,7 @@
 import { useState, useEffect } from 'react'
 import useViewport from '../hooks/useViewPort'
-import SpotifyWebApi from 'spotify-web-api-node'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-
-const spotifyApi = new SpotifyWebApi({
-    clientId: localStorage.getItem('clientId')
-  })
 
 export default function LikedSongsCard() {
     const accessToken = useSelector(state => state.user.token)
@@ -21,51 +16,27 @@ export default function LikedSongsCard() {
     const [likedSongsCardWidth, setLikedSongsCardWidth] = useState(0)
 
     useEffect(() => {
-        if (!accessToken) return
-        spotifyApi.setAccessToken(accessToken)
-      }, [accessToken])
-
-    useEffect(() => {
-        if (viewPort <= breakPointSmall) {
-          setLikedSongsCardWidth((viewPort * 0.89))
-        }
-        else if (viewPort > breakPointSmall && viewPort <= breakPointMedium) {
-          setLikedSongsCardWidth((viewPort * 0.592))
-        }
-        else if (viewPort > breakPointMedium && viewPort < breakPointLarge) {
-          setLikedSongsCardWidth((viewPort * 0.445))
-        }
-        else if (viewPort >= breakPointLarge) {
-          setLikedSongsCardWidth((viewPort * 0.356))
-        }
-  
-        return () => {
-            setLikedSongsCardWidth((viewPort * 0.356))
-        }
+        if (viewPort <= breakPointSmall) { setLikedSongsCardWidth((viewPort * 0.89)) }
+        else if (viewPort > breakPointSmall && viewPort <= breakPointMedium) { setLikedSongsCardWidth((viewPort * 0.592)) }
+        else if (viewPort > breakPointMedium && viewPort < breakPointLarge) { setLikedSongsCardWidth((viewPort * 0.445)) }
+        else if (viewPort >= breakPointLarge) { setLikedSongsCardWidth((viewPort * 0.356)) }
+        return () => { setLikedSongsCardWidth((viewPort * 0.356)) }
     }, [viewPort])
 
     // Get user's saved tracks, the names and artists of which will be rendered on Liked Songs card
     useEffect(() => {
     if (!accessToken) return
-
     const getLikedSongsPreview = async () => {
       try {
-        const data = await spotifyApi.getMySavedTracks()
-        setSavedTracksTotal(data.body.items.length)
-        setPreview(data.body.items.map(item => {
-          return {
-            id: item.track.id,
-            name: item.track.name + ' ',
-            artist: item.track.artists[0].name + ' • '
-          }
-        }))
-      } catch (err) {
-        console.error(err)
-      }
+        const response = await fetch(`https://api.spotify.com/v1/me/tracks?limit=50`,
+          {headers: { 'Authorization': `Bearer ${accessToken}`,'Content-Type': 'application/json'}})
+        if (!response.ok) {throw new Error(`An error has occured: ${response.status}`)}
+        let tracks = await response.json()
+        setSavedTracksTotal(tracks.items.length)
+        setPreview(tracks.items.map(item => { return {id: item.track.id, name: item.track.name + ' ', artist: item.track.artists[0].name + ' • '}}))
+      } catch (err) { console.error(err) }
     }
-
     getLikedSongsPreview()
-
     return () => {
       setSavedTracksTotal(0)
       setPreview([])

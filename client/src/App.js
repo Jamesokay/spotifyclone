@@ -38,7 +38,6 @@ function App() {
 
   useEffect(() => {
     if (!code) return
-
     const logIn = async () => {
       try {
         const response = await axios.post("/login", {code})
@@ -48,34 +47,26 @@ function App() {
         console.error(err)
       }
     }
-
     logIn()
-
   }, [code, dispatch])
 
   useEffect(() => {
     if (!accessToken) return
-
-    const options = {
-      url: 'https://api.spotify.com/v1/me',
-      method: 'GET',
-      headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-          }
-      }
-
     const getUser = async () => {
       try {
-        const response = await axios(options)
-        dispatch(updateUser({profile: response.data}))
+        const response = await fetch(`https://api.spotify.com/v1/me`, 
+        {headers: { 
+          'Authorization': `Bearer ${accessToken}`, 
+          'Content-Type': 'application/json'
+        }})
+        if (!response.ok) {throw new Error(`An error has occured: ${response.status}`)}
+        let userProfile = await response.json()
+        dispatch(updateUser({profile: userProfile}))
       } catch (err) {
         console.error(err)
       }
-    }
-  
+    } 
     getUser()
-
   }, [accessToken, dispatch])
 
     return (

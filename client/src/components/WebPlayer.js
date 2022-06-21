@@ -1,9 +1,10 @@
 import { useContext, useState, useEffect } from 'react'
 import useInterval from '../hooks/useInterval'
 import toMinsSecs from '../utils/toMinsSecs'
-import { AuthContext, TrackContext } from '../contexts'
+import { TrackContext } from '../contexts'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const track = {
   name: "",
@@ -24,7 +25,7 @@ export default function WebPlayer() {
   const [currentTrack, setCurrentTrack] = useState(track)
 //  const [active, setActive] = useState(false)
   const [paused, setPaused] = useState(false);
-  const accessToken = useContext(AuthContext)
+  const accessToken = useSelector(state => state.user.token)
   const [devId, setDevId] = useState("")
   const [ready, setReady] = useState(false)
   
