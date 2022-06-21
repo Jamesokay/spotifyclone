@@ -10,7 +10,6 @@ import CollectionAlbum from './pages/CollectionAlbum'
 import CollectionArtist from './pages/CollectionArtist'
 import { useState, useEffect } from 'react'
 import { PlaylistContext, TrackContext, RightClickContext } from './contexts'
-import { DashContextProvider } from './DashContext'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
 import Layout from './components/Layout'
@@ -20,7 +19,6 @@ import { updateUser, updateToken } from './userSlice'
 
 
 function App() {
-
   const code = new URLSearchParams(window.location.search).get("code")
   localStorage.setItem('clientId', 'e39d5b5b499d4088a003eb0471c537bb')
   const dispatch = useDispatch()
@@ -35,7 +33,6 @@ function App() {
   const [rightClick, setRightClick] = useState({type: '', yPos: 0, xPos: 0, id: ''})
   const rightClickedEl = {rightClick, setRightClick}
 
-
   useEffect(() => {
     if (!code) return
     const logIn = async () => {
@@ -43,9 +40,7 @@ function App() {
         const response = await axios.post("/login", {code})
         dispatch(updateToken({token: response.data.accessToken}))
         window.history.pushState({}, null, "/")
-      } catch (err) {
-        console.error(err)
-      }
+      } catch (err) { console.error(err) }
     }
     logIn()
   }, [code, dispatch])
@@ -62,9 +57,7 @@ function App() {
         if (!response.ok) {throw new Error(`An error has occured: ${response.status}`)}
         let userProfile = await response.json()
         dispatch(updateUser({profile: userProfile}))
-      } catch (err) {
-        console.error(err)
-      }
+      } catch (err) { console.error(err) }
     } 
     getUser()
   }, [accessToken, dispatch])
@@ -73,7 +66,6 @@ function App() {
       <PlaylistContext.Provider value={track}>
       <TrackContext.Provider value={currentTrack}>
       <RightClickContext.Provider value={rightClickedEl}>
-      <DashContextProvider>
       
         <Layout>
         <Route path='/' exact component={(accessToken)? Dashboard : Login} />
@@ -86,8 +78,7 @@ function App() {
         <Route path="/collection/albums" component={CollectionAlbum} />
         <Route path="/collection/tracks" component={CollectionTrack} />
         </Layout>
-        
-      </DashContextProvider>
+
       </RightClickContext.Provider>
       </TrackContext.Provider>
       </PlaylistContext.Provider>

@@ -9,7 +9,7 @@ import { updateTheme } from '../pageSlice'
 
 export default function PanelGrid({ content, head }) {  
     const accessToken = useSelector(state => state.user.token)
-    const [cardsWithColours, setCardsWithColours] = useState([]) 
+    const [withColour, setWithColour] = useState([])
     const [gradient, setGradient] = useState('')
     const { nowPlaying } = useContext(TrackContext)
     const { rightClick, setRightClick } = useContext(RightClickContext)
@@ -20,11 +20,10 @@ export default function PanelGrid({ content, head }) {
     const breakPointMedium = 1215
     const breakPointSmall = 920
     const dispatch = useDispatch()
- 
-    // Generate the array of objects to be rendered
+
     useEffect(() => {
-        getColor(content.slice(0, 8))
-        return () => { setCardsWithColours([]) }
+      getColour(content.slice(0, 8))
+      return () => { setWithColour([])}
     }, [content])
  
     // Make both the width of each card and the length of the rendered array responsive to viewport resizes.
@@ -48,61 +47,51 @@ export default function PanelGrid({ content, head }) {
         }
     }, [width, sidebarWidth])
 
-    // Function to draw the image of each card on an off-screen canvas, generating a pixel array from which the average RGB values of a
-    // specified region of the image can be calculated. This average colour is then added to the existing object as a property.
-    // The background and theme can thereby achieve the desired effect: background/theme colour changing to that of the card's bg/rgb
-    // property when hovered over.
-    const getColor = array => {
-        for (const item of array) {
-          let canvas = document.createElement('canvas');
-          let ctx    = canvas.getContext('2d');
-          let myImgElement = new Image() 
+    const getColour = (array) => {
+      for (const item of array) {
+        let canvas = document.createElement('canvas')
+        let ctx = canvas.getContext('2d')
+        let myImgElement = new Image() 
 
-          myImgElement.onload = function() {
-            canvas.width = myImgElement.naturalWidth
-            canvas.height = myImgElement.naturalHeight
-    
-            let yStart = Math.floor(canvas.height * 0.5)
-            ctx.drawImage( myImgElement, 0, 0 );
-            let imgdata = ctx.getImageData(0, yStart, 50, 50);
-            let pixels = imgdata.data;
+        myImgElement.onload = function() {
+          canvas.width = myImgElement.naturalWidth
+          canvas.height = myImgElement.naturalHeight
+          let yStart = Math.floor(canvas.height * 0.5)
+          ctx.drawImage( myImgElement, 0, 0 )
+          let imgdata = ctx.getImageData(0, yStart, 50, 50);
+          let pixels = imgdata.data;
 
-            let red = 0
-            let green = 0
-            let blue = 0
+          let red = 0
+          let green = 0
+          let blue = 0
 
-            for (let i = 0; i < pixels.length; i += 4) {
-              red += pixels[i]
-              green += pixels[i + 1]
-              blue += pixels[i + 2]
-            }
-
-            let avgRed = Math.floor(red / (pixels.length / 4))
-            let avgGreen = Math.floor(green / (pixels.length / 4))
-            let avgBlue = Math.floor(blue / (pixels.length / 4))
-
-            let obj = {
-              ...item,
-              bg: 'rgb(' + avgRed + ',' + avgGreen + ',' + avgBlue + ')',
-              rgb: {red: avgRed, green: avgGreen, blue: avgBlue}
-            }
-            setCardsWithColours(cardsWithColours => [...cardsWithColours, obj])
+          for (let i = 0; i < pixels.length; i += 4) {
+            red += pixels[i]
+            green += pixels[i + 1]
+            blue += pixels[i + 2]
           }
-        myImgElement.src = item.imgUrl   
-        myImgElement.crossOrigin = ''  
+
+          let avgRed = Math.floor(red / (pixels.length / 4))
+          let avgGreen = Math.floor(green / (pixels.length / 4))
+          let avgBlue = Math.floor(blue / (pixels.length / 4))
+
+          setWithColour(withColour => [...withColour, { ...item, bg: `rgb(${avgRed},${avgGreen},${avgBlue})`, red: avgRed, green: avgGreen, blue: avgBlue }])
         }
-    }
+      myImgElement.src = item.imgUrl   
+      myImgElement.crossOrigin = ''  
+      }
+   }
 
 
-    return cardsWithColours.length === 8? (     
+    return (     
         <div id='gridPanel' style={{background: gradient}}
          onLoad={()=> {
-            setGradient(cardsWithColours[0].bg) 
-            dispatch(updateTheme({red: cardsWithColours[0].rgb.red, green: cardsWithColours[0].rgb.green, blue: cardsWithColours[0].rgb.blue }))}}>
+            setGradient(withColour[0].bg) 
+            dispatch(updateTheme({red: withColour[0].red, green: withColour[0].green, blue: withColour[0].blue }))}}>
         <div id='gridPanelLower' />
         <div id='dashGreeting'>{head}</div>     
         <div id='gridContent'>
-        {cardsWithColours.slice(0, index).map(cont =>
+        {withColour.slice(0, index).map(cont =>
           <Link className='gridCardLink' 
                 style={{flex: `0 1 calc(${cardWidth}% - 25px)`}}
                 key={cont.key} 
@@ -113,11 +102,11 @@ export default function PanelGrid({ content, head }) {
                style={(rightClick.id === cont.id)? {backgroundColor: 'rgba(128, 128, 128, 0.7)'} : {}}
                onMouseOver={()=> {
                 setGradient(cont.bg)
-                dispatch(updateTheme({red: cont.rgb.red, green: cont.rgb.green, blue: cont.rgb.blue}))
+                dispatch(updateTheme({red: cont.red, green: cont.green, blue: cont.blue}))
                 }}
                onMouseLeave={()=> {
-                setGradient(cardsWithColours[0].bg) 
-                dispatch(updateTheme({red: cardsWithColours[0].rgb.red, green: cardsWithColours[0].rgb.green, blue: cardsWithColours[0].rgb.blue }))
+                setGradient(content[0].bg) 
+                dispatch(updateTheme({red: withColour[0].red, green: withColour[0].green, blue: withColour[0].blue }))
                 }}
           >
             <img className='gridCardImage' src={cont.imgUrl} alt=''/>
@@ -146,6 +135,4 @@ export default function PanelGrid({ content, head }) {
 
         </div>
     )
-    :
-    <div id='gridPanel' />
 }
