@@ -16,6 +16,7 @@ import Layout from './components/Layout'
 import CollectionTrack from './pages/CollectionTrack'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUser, updateToken } from './userSlice'
+import { DashContextProvider } from './DashContext'
 
 
 function App() {
@@ -66,7 +67,7 @@ function App() {
       <PlaylistContext.Provider value={track}>
       <TrackContext.Provider value={currentTrack}>
       <RightClickContext.Provider value={rightClickedEl}>
-      
+      <DashContextProvider>
         <Layout>
         <Route path='/' exact component={(accessToken)? Dashboard : Login} />
         <Route path='/search' component={Search} />
@@ -78,7 +79,7 @@ function App() {
         <Route path="/collection/albums" component={CollectionAlbum} />
         <Route path="/collection/tracks" component={CollectionTrack} />
         </Layout>
-
+      </DashContextProvider>
       </RightClickContext.Provider>
       </TrackContext.Provider>
       </PlaylistContext.Provider>

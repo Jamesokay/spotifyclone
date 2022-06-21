@@ -1,14 +1,15 @@
 import Panel from '../components/Panel'
 import PanelGrid from '../components/PanelGrid'
 import Loader from './Loader'
-import useDash from '../hooks/useDash'
+import { useContext } from 'react'
+import { DashContext } from '../DashContext'
 
 export default function Dashboard() {
     const date = new Date()
     const time = date.toLocaleTimeString('en-GB')
     const timeMod = parseInt(time.replace(/:/g, ''))
     const greeting = greetingMessage(timeMod)
-    const {recent, recentReversed, forToday, moreLike, moreLikeSeed, recommend, loading} = useDash()
+    const {recent, recentReversed, forToday, moreLike, moreLikeSeed, recommend, loading} = useContext(DashContext)
 
     // Set greeting message based on time of day
     function greetingMessage(time) {
@@ -20,7 +21,7 @@ export default function Dashboard() {
     return loading? <Loader /> : (
       <div id='dash'>
         {recent.length > 7?
-          <PanelGrid content={recent} head={greeting}/>
+          <PanelGrid head={greeting}/>
           :
           <>
             <span className='panelTitle'>{greeting}</span>

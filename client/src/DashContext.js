@@ -1,13 +1,18 @@
-import {useState, useEffect } from 'react'
+import {useState, useEffect, createContext } from 'react'
 import { useSelector } from 'react-redux'
-import getDataObject from '../utils/getDataObject'
-import { getWithToken } from '../utils/getWithToken'
+import getDataObject from './utils/getDataObject'
+import { getWithToken } from './utils/getWithToken'
 
-// Custom hook making API calls necessary for Dashboard
-export default function useDash() {   
+const DashContext = createContext()
+
+// Dashboard API calls all carried out in this context rather than Dashboard itself, such that results are consistent across session
+// and the relatively resource intensive work is required only on the initial load
+
+export default function DashContextProvider({ children }) {   
     const accessToken = useSelector(state => state.user.token)
     const [topArtists, setTopArtists] = useState([])
     const [recent, setRecent] = useState([])
+    const [recentGrid, setRecentGrid] = useState([])
     const [recentReversed, setRecentReversed] = useState([])
     const [recentSeeds, setRecentSeeds] = useState([])
     const [forToday, setForToday] = useState([])
@@ -86,6 +91,47 @@ export default function useDash() {
       }
     }, [accessToken])
 
+    useEffect(() => {
+      if (recent.length < 8) return
+
+      const getColour = (array) => {
+        for (const item of array) {
+          let canvas = document.createElement('canvas')
+          let ctx = canvas.getContext('2d')
+          let myImgElement = new Image() 
+  
+          myImgElement.onload = function() {
+            canvas.width = myImgElement.naturalWidth
+            canvas.height = myImgElement.naturalHeight
+            let yStart = Math.floor(canvas.height * 0.5)
+            ctx.drawImage( myImgElement, 0, 0 )
+            let imgdata = ctx.getImageData(0, yStart, 50, 50);
+            let pixels = imgdata.data;
+  
+            let red = 0
+            let green = 0
+            let blue = 0
+  
+            for (let i = 0; i < pixels.length; i += 4) {
+              red += pixels[i]
+              green += pixels[i + 1]
+              blue += pixels[i + 2]
+            }
+  
+            let avgRed = Math.floor(red / (pixels.length / 4))
+            let avgGreen = Math.floor(green / (pixels.length / 4))
+            let avgBlue = Math.floor(blue / (pixels.length / 4))
+  
+            setRecentGrid(recentGrid => [...recentGrid, { ...item, bg: `rgb(${avgRed},${avgGreen},${avgBlue})`, red: avgRed, green: avgGreen, blue: avgBlue }])
+          }
+        myImgElement.src = item.imgUrl   
+        myImgElement.crossOrigin = ''  
+        }
+     }
+     getColour(recent.slice(0, 8))
+     return () => { setRecentGrid([]) }
+    }, [recent])
+
     
     // Generate arrays for 'More like {artist}' and 'Album picks'
     // Based on randomised index into topArtists array
@@ -141,5 +187,11 @@ export default function useDash() {
       return function cleanUp() { setForToday([]) }
     }, [accessToken, recentSeeds])
 
-    return {recent, recentReversed, forToday, moreLike, recommend, moreLikeSeed, loading}
+    return (
+      <DashContext.Provider value={{recent, recentGrid, recentReversed, forToday, moreLike, recommend, moreLikeSeed, loading}}>
+        {children}
+      </DashContext.Provider>
+    )
   }
+  
+  export { DashContext, DashContextProvider }
