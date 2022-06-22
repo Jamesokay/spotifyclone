@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from 'react'
 import useInterval from '../hooks/useInterval'
 import toMinsSecs from '../utils/toMinsSecs'
+import { putWithToken } from '../utils/putWithToken'
 import { TrackContext } from '../contexts'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
@@ -18,9 +19,7 @@ const track = {
   ]
 }
 
-
 export default function WebPlayer() {
-
   const [player, setPlayer] = useState(undefined)
   const [currentTrack, setCurrentTrack] = useState(track)
 //  const [active, setActive] = useState(false)
@@ -28,7 +27,6 @@ export default function WebPlayer() {
   const accessToken = useSelector(state => state.user.token)
   const [devId, setDevId] = useState("")
   const [ready, setReady] = useState(false)
-  
   const [vol, setVol] = useState(0)
   const [prevVol, setPrevVol] = useState(0)
   const [volDrag, setVolDrag] = useState(false)
@@ -36,33 +34,23 @@ export default function WebPlayer() {
   const [volLevel, setVolLevel] = useState("")
   const [volIconColour, setVolIconColour] = useState('grey')
   const [mute, setMute] = useState(false)
-  
-  
   const [counter, setCounter] = useState(0)
-  
   var total = currentTrack.duration_ms
   var percent = ((counter/total) * 100).toFixed(2)
   var playerDiv = document.getElementById('player')
   var bar = document.getElementById('playProgressBar')
-
   var volBar = document.getElementById('volumeBar')
-
-
   const [barHover, setBarHover] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [dragPos, setDragPos] = useState(0)
   const [shuffling, setShuffling] = useState(false)
   const [shuffleColour, setShuffleColour] = useState('grey')
- 
   const [repeat, setRepeat] = useState(0)
   const [repeatCheck, setRepeatCheck] = useState(0)
   const [repeatInit, setRepeatInit] = useState(false)
   const [repeatIconColour, setRepeatIconColour] = useState('grey')
-
-  const {nowPlaying, setNowPlaying} = useContext(TrackContext)
+  const { setNowPlaying } = useContext(TrackContext)
  
-  
-
   useEffect(() => {
     if (!accessToken) return
 
@@ -117,9 +105,7 @@ export default function WebPlayer() {
     if (!accessToken) return
     if (!devId) return
 
-    let data = {
-      device_ids: [devId]
-    }
+    let data = { device_ids: [devId] }
 
     const options = {
       url: 'https://api.spotify.com/v1/me/player/',
@@ -143,11 +129,7 @@ export default function WebPlayer() {
   useEffect(() => {
     if (!ready) return
     if (!player) return
-
-    player.getVolume().then(vol => {
-      setVol(vol * 100)
-    })
-
+    player.getVolume().then(vol => { setVol(vol * 100) })
   }, [ready, player])
 
   useEffect(() => {
@@ -164,32 +146,20 @@ export default function WebPlayer() {
         setRepeatInit(true)
       }
     })
-
   }, [currentTrack.name, player])
 
 
-
   useInterval(() => {
-    if (ready && !paused) {
-    setCounter(counter + 1000);
-    }
+    if (ready && !paused) { setCounter(counter + 1000) }
   }, 1000);
 
-
   useEffect(() => {
-    if (shuffling) {
-      setShuffleColour('#1ed760')
-    }
+    if (shuffling) { setShuffleColour('#1ed760') }
   }, [shuffling])
 
   useEffect(()=> {
-    if (repeat >= 1) {
-      setRepeatIconColour('#1ed760')
-    }
+    if (repeat >= 1) { setRepeatIconColour('#1ed760') }
   }, [repeat])
-
-
-
 
   useEffect(() => {
     if (!ready) return
@@ -198,185 +168,88 @@ export default function WebPlayer() {
   }, [ready, player, vol])
 
   useEffect(() => {
-    if (vol === 0) {
-      setVolLevel("M14 9.5 L19 14.5 M14 14.5 L19 9.5")
-    }
-    else if (vol < 25) {
-      setVolLevel("M14 9.5 a 5 5 0 0 1 0 5")
-    }
-    else if (vol > 25 && vol < 75) {
-      setVolLevel("M14 8.8 a 5 5 0 0 1 0 7")
-    }
-    else if (vol > 75) {
-      setVolLevel("M17 6 a10 10 0 0 1 0 12 M14 9 a4 4 0 0 1 0 6")
-    }
+    if (vol === 0) { setVolLevel("M14 9.5 L19 14.5 M14 14.5 L19 9.5") }
+    else if (vol < 25) { setVolLevel("M14 9.5 a 5 5 0 0 1 0 5") }
+    else if (vol > 25 && vol < 75) { setVolLevel("M14 8.8 a 5 5 0 0 1 0 7") }
+    else if (vol > 75) { setVolLevel("M17 6 a10 10 0 0 1 0 12 M14 9 a4 4 0 0 1 0 6") }
   }, [vol])
-
-
 
   useEffect(() => {
     if (!player) return
     if (!currentTrack.name) return
     player.getCurrentState()
     .then(res => {
-      setNowPlaying({contextUri: res.context.uri,
-                     trackUri: res.track_window.current_track.uri,
-                     trackName: res.track_window.current_track.name,
-                     isPaused: paused})
-    })
-    .catch(error => {
-      console.log(error)
-    })
-
+      setNowPlaying({contextUri: res.context.uri, trackUri: res.track_window.current_track.uri, trackName: res.track_window.current_track.name, isPaused: paused})
+    }).catch(error => { console.log(error) })
   }, [player, currentTrack.name, setNowPlaying, paused])
-
-
-  useEffect(() => {
-    console.log(nowPlaying)
-  }, [nowPlaying])
-
-
-
-  // FUNCTIONS
-
-  function toggleShuffle(bool) {
-    const options = {
-      url: `https://api.spotify.com/v1/me/player/shuffle?state=${bool}`,
-      method: 'PUT',
-      headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-      }
-    }
-
-    axios(options)
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  }
-
-
-  
-  function setNewPlayback(progress) {
-    let newPosition = Math.floor((currentTrack.duration_ms / 100) * progress)
-    setCounter(newPosition)
-
-    const options = {
-      url: `https://api.spotify.com/v1/me/player/seek?position_ms=${newPosition}`,
-      method: 'PUT',
-      headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-      }
-    }
-
-    axios(options)
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-
-  }
 
   useEffect(() => {
     if (!accessToken) return
     if (!repeatInit) return
+
+    const changeRepeat = async () => {
+      try {
+        const response = await putWithToken(`https://api.spotify.com/v1/me/player/repeat?state=${repeatMode}`, accessToken)
+        console.log(response)
+      } catch (err) { console.error(err) }
+    }
     
     let repeatMode
-    
-    if (repeat === 0) {
-      repeatMode = "off"
-    }
-    else if (repeat === 1) {
-      repeatMode = "context"
-    }
-    else if (repeat === 2) {
-      repeatMode = "track"
-    }
-    
-    const options = {
-      url: `https://api.spotify.com/v1/me/player/repeat?state=${repeatMode}`,
-      method: 'PUT',
-      headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-      }
-    }
+    if (repeat === 0) { repeatMode = "off" }
+    else if (repeat === 1) { repeatMode = "context" }
+    else if (repeat === 2) { repeatMode = "track" }
 
     if (repeatCheck !== repeat) {
+      changeRepeat()
+    }  
 
-      axios(options)
-      .then(response => {
-        console.log("updated " + response.status)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-   }
-    
   }, [accessToken, repeatCheck, repeat, repeatInit])
-  
 
+  // FUNCTIONS
+
+  const toggleShuffle = async (bool) => {
+    try {
+      const response = await putWithToken(`https://api.spotify.com/v1/me/player/shuffle?state=${bool}`, accessToken)
+      console.log(response)
+    } catch (err) { console.error(err) }
+  }
+
+  const setNewPlayback = async (progress) => {
+    let newPosition = Math.floor((currentTrack.duration_ms / 100) * progress)
+    setCounter(newPosition)
+    try {
+      const response = await putWithToken(`https://api.spotify.com/v1/me/player/seek?position_ms=${newPosition}`, accessToken)
+      console.log(response)
+    } catch (err) { console.error(err) }
+  }
 
  if (currentTrack.name) {
   return (
-
     <div className='playBar'
         onMouseMove={(e)=> {
         if (dragging) {
-          if (e.screenX < (bar.offsetLeft + playerDiv.offsetLeft)) {
-            setDragPos(0)
-          }
-          else if (e.screenX > (bar.offsetLeft + bar.offsetWidth + playerDiv.offsetLeft)) {
-            setDragPos(bar.offsetWidth)
-          }
-          else {
-            setDragPos(e.screenX - (bar.offsetLeft + playerDiv.offsetLeft))
-          }
+          if (e.screenX < (bar.offsetLeft + playerDiv.offsetLeft)) { setDragPos(0) }
+          else if (e.screenX > (bar.offsetLeft + bar.offsetWidth + playerDiv.offsetLeft)) { setDragPos(bar.offsetWidth) }
+          else { setDragPos(e.screenX - (bar.offsetLeft + playerDiv.offsetLeft)) }
         }
         if (volDrag) {
-          if (e.screenX < volBar.offsetLeft) {
-            setVol(0)
-          }
-          else if (e.screenX > (volBar.offsetLeft + volBar.offsetWidth)) {
-            setVol(100)
-          }
-          else {
-            setVol(e.screenX - volBar.offsetLeft)
-          }
+          if (e.screenX < volBar.offsetLeft) { setVol(0) }
+          else if (e.screenX > (volBar.offsetLeft + volBar.offsetWidth)) { setVol(100) }
+          else { setVol(e.screenX - volBar.offsetLeft) }
         }}}
         onMouseUp={(e) => {
         if (dragging) {
           setDragging(false)
-          if (e.screenX < (bar.offsetLeft + playerDiv.offsetLeft)) {
-            setNewPlayback(0)
-          }
-          else if (e.screenX > (bar.offsetLeft + bar.offsetWidth + playerDiv.offsetLeft)) {
-            setNewPlayback(100)
-          }
-          else {
-            setNewPlayback(Math.floor(((e.screenX - (bar.offsetLeft + playerDiv.offsetLeft)) / bar.offsetWidth) * 100))
-          }
+          if (e.screenX < (bar.offsetLeft + playerDiv.offsetLeft)) { setNewPlayback(0) }
+          else if (e.screenX > (bar.offsetLeft + bar.offsetWidth + playerDiv.offsetLeft)) { setNewPlayback(100) }
+          else { setNewPlayback(Math.floor(((e.screenX - (bar.offsetLeft + playerDiv.offsetLeft)) / bar.offsetWidth) * 100)) }
         }
         if (volDrag) {
           setVolDrag(false)
-          if (e.screenX < volBar.offsetLeft) {
-            setVol(0)
-          }
-          else if (e.screenX > (volBar.offsetLeft + volBar.offsetWidth)) {
-            setVol(100)
-          }
-          else {
-            setVol(e.screenX - volBar.offsetLeft)
-          }
-        }
-        
-        }}>
+          if (e.screenX < volBar.offsetLeft) { setVol(0) }
+          else if (e.screenX > (volBar.offsetLeft + volBar.offsetWidth)) { setVol(100) }
+          else { setVol(e.screenX - volBar.offsetLeft) }
+        }}}>
       <div className='playingTrack'>
       <div className='playingTrackImgContainer'>
         <img className='playingTrackImg' src={currentTrack.album.images[0].url} alt='' />
@@ -412,16 +285,8 @@ export default function WebPlayer() {
            height="16" 
            width="16" 
            viewBox="0 0 16 16"
-           onMouseOver={()=> {
-             if (!shuffling) {
-               setShuffleColour('white')
-             }
-            }}
-           onMouseLeave={()=> {
-             if (!shuffling) {
-               setShuffleColour('grey')
-             }
-            }}
+           onMouseOver={()=> { if (!shuffling) { setShuffleColour('white') } }}
+           onMouseLeave={()=> { if (!shuffling) { setShuffleColour('grey') } }}
            onClick={()=> {
              if (shuffling) {
                setShuffleColour('white')
@@ -437,44 +302,22 @@ export default function WebPlayer() {
         </svg>
         <div className='circle' style={(shuffling)? {visibility: 'visible'} : {visibility: 'hidden'}}/>
         </div>
-      <div className='prevBox' 
-           onClick={() => player.previousTrack()}>
-        <div className='prevTrackButton'></div>
+      <div className='prevBox' onClick={() => player.previousTrack()}>
+        <div className='prevTrackButton' />
       </div>
       <div className='playButton' onClick={() => player.togglePlay()}>
-      {(paused)?
-        <div className='playIcon'></div>
-        :
-        <div className='pauseIcon'></div>
-      }
+        {(paused)? <div className='playIcon' /> : <div className='pauseIcon' />}
       </div>
-      <div className='nextBox' 
-           onClick={() => player.nextTrack()}>
-        <div className='nextTrackButton'></div>
+      <div className='nextBox' onClick={() => player.nextTrack()}>
+        <div className='nextTrackButton' />
       </div>
-
       <div>
-      <svg className='repeatIcon'
-          role="img" 
-          height="16" 
-          width="16" 
-          viewBox="0 0 16 16"
-          onMouseOver={()=> { 
-            if (repeat === 0) {
-             setRepeatIconColour('white')
-            }}}
-          onMouseLeave={()=> {
-            if (repeat === 0) {
-              setRepeatIconColour('grey')
-            }}}
+      <svg className='repeatIcon' role="img" height="16" width="16" viewBox="0 0 16 16"
+          onMouseOver={()=> { if (repeat === 0) { setRepeatIconColour('white') } }}
+          onMouseLeave={()=> { if (repeat === 0) { setRepeatIconColour('grey') }}}
           onClick={()=> {
-            console.log("CLICK")
-            if (repeat === 0) {
-              setRepeat(1)
-            }
-            else if (repeat === 1) {
-              setRepeat(2)
-            }
+            if (repeat === 0) { setRepeat(1) }
+            else if (repeat === 1) { setRepeat(2) }
             else if (repeat === 2) {
               setRepeat(0)
               setRepeatIconColour('white')
@@ -542,8 +385,7 @@ export default function WebPlayer() {
                setMute(true)
                setPrevVol(vol)
                setVol(0)
-             }
-           }}
+             }}}
            >
             <polygon points="11,6 6,9 3,9 3,15 6,15 11,18 11,6"></polygon>
             <path d={volLevel}></path>
@@ -553,14 +395,10 @@ export default function WebPlayer() {
            onMouseOver={()=> setVolHover(true)} 
            onMouseLeave={()=> setVolHover(false)}  
            onMouseDown={(e)=> {
-             if ((e.screenX - volBar.offsetLeft) >= 0 && (e.screenX - volBar.offsetLeft) <= 100) {
-               setVol(e.screenX - volBar.offsetLeft)
-             }
+             if ((e.screenX - volBar.offsetLeft) >= 0 && (e.screenX - volBar.offsetLeft) <= 100) { setVol(e.screenX - volBar.offsetLeft) }
              setVolDrag(true)}}>
         <div id='volume' style={(volDrag)? {width: vol, backgroundColor: '#1ed760'} : {width: vol}}>
-            <div className='drag' 
-                 onMouseDown={()=> setVolDrag(true)}
-                 style={(volDrag || volHover)? {visibility: 'visible'} : {visibility: 'hidden'}}>
+            <div className='drag' onMouseDown={()=> setVolDrag(true)} style={(volDrag || volHover)? {visibility: 'visible'} : {visibility: 'hidden'}}>
             </div>
         </div>
       </div>
@@ -569,8 +407,7 @@ export default function WebPlayer() {
     }
     else {
       return (
-        <div className='playBar'></div>
+        <div className='playBar' />
       )
     }
-
 }

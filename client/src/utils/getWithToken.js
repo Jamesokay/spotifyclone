@@ -1,5 +1,4 @@
 export const getWithToken = async (url, token) => {
-    console.log('fired')
     try {
         const response = await fetch(url, {headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}})
         if (!response.ok) {throw new Error(`An error has occured: ${response.status}`)}
