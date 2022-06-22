@@ -422,6 +422,11 @@ body::-webkit-scrollbar {
     position: absolute;
     right: 155px;
     bottom: 30px;
+    stroke: grey;
+}
+
+.volumeIcon:hover {
+    stroke: white;
 }
 
 #volumeBar {
@@ -481,6 +486,14 @@ body::-webkit-scrollbar {
     background-color: rgb(168, 168, 168);
     border-radius: 10px;
     max-width: 480px;
+}
+
+#playProgressBar:hover .drag {
+    visibility: visible;
+}
+
+#volumeBar:hover .drag {
+    visibility: visible;
 }
 
 .drag {
@@ -688,8 +701,21 @@ body::-webkit-scrollbar {
     margin: auto;
 }
 
-.shuffleIcon {
+.shuffle {
     margin-top: 25px;
+    color: grey;
+}
+
+.shuffleIcon {
+    fill: grey;
+}
+
+.shuffle:hover > .shuffleIcon {
+    fill: white;
+}
+
+.shuffleActive {
+    fill: #1ed760;
 }
 
 .circle {
@@ -698,6 +724,7 @@ body::-webkit-scrollbar {
     width: 3.5px;
     border-radius: 100%;
     margin-left: 40%;
+    visibility: hidden;
 }
 
 .circle1 {
@@ -708,8 +735,20 @@ body::-webkit-scrollbar {
     margin-left: 45%;
 }
 
-.repeatIcon {
+.repeat {
     margin-top: 25px;
+}
+
+.repeatIcon {
+    fill: grey;
+}
+
+.repeat:hover > .repeatIcon {
+    fill: white;
+}
+
+.repeatActive {
+    fill: #1ed760;
 }
 
 .repeatOne {

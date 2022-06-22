@@ -22,7 +22,6 @@ const track = {
 export default function WebPlayer() {
   const [player, setPlayer] = useState(undefined)
   const [currentTrack, setCurrentTrack] = useState(track)
-//  const [active, setActive] = useState(false)
   const [paused, setPaused] = useState(false);
   const accessToken = useSelector(state => state.user.token)
   const [devId, setDevId] = useState("")
@@ -30,9 +29,7 @@ export default function WebPlayer() {
   const [vol, setVol] = useState(0)
   const [prevVol, setPrevVol] = useState(0)
   const [volDrag, setVolDrag] = useState(false)
-  const [volHover, setVolHover] = useState(false)
   const [volLevel, setVolLevel] = useState("")
-  const [volIconColour, setVolIconColour] = useState('grey')
   const [mute, setMute] = useState(false)
   const [counter, setCounter] = useState(0)
   var total = currentTrack.duration_ms
@@ -40,15 +37,10 @@ export default function WebPlayer() {
   var playerDiv = document.getElementById('player')
   var bar = document.getElementById('playProgressBar')
   var volBar = document.getElementById('volumeBar')
-  const [barHover, setBarHover] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [dragPos, setDragPos] = useState(0)
   const [shuffling, setShuffling] = useState(false)
-  const [shuffleColour, setShuffleColour] = useState('grey')
   const [repeat, setRepeat] = useState(0)
-  const [repeatCheck, setRepeatCheck] = useState(0)
-  const [repeatInit, setRepeatInit] = useState(false)
-  const [repeatIconColour, setRepeatIconColour] = useState('grey')
   const { setNowPlaying } = useContext(TrackContext)
  
   useEffect(() => {
@@ -83,16 +75,11 @@ export default function WebPlayer() {
       if (!state) {
           return;
       }
-      setRepeatCheck(state.repeat_mode)
+      console.log('player thinks repeat mode is ' + state.repeat_mode)
       setCurrentTrack(state.track_window.current_track);
       setShuffling(state.shuffle)
       setCounter(state.position)
       setPaused(state.paused)
-
-      // player.getCurrentState().then( state => { 
-      //   (!state)? setActive(false) : setActive(true) 
-      // })
-
     }))
 
     player.connect();
@@ -125,6 +112,20 @@ export default function WebPlayer() {
 
   }, [accessToken, devId])
 
+  useEffect(() => {
+    if (!accessToken) return
+
+    const initializeRepeat = async () => {
+      try {
+        const response = await putWithToken(`https://api.spotify.com/v1/me/player/repeat?state=off`, accessToken)
+        console.log(response)
+      } catch (err) { console.error(err) }
+    }
+
+    initializeRepeat()
+    
+  }, [accessToken])
+
 
   useEffect(() => {
     if (!ready) return
@@ -132,34 +133,29 @@ export default function WebPlayer() {
     player.getVolume().then(vol => { setVol(vol * 100) })
   }, [ready, player])
 
-  useEffect(() => {
-    if (!player) return
-    if (!currentTrack.name) return
+  // useEffect(() => {
+  //   if (!player) return
+  //   if (!currentTrack.name) return
 
-    player.getCurrentState().then(state => {
-      if (!state) {
-        console.log("no state")
-        return 
-      }
-      else {
-        setRepeat(state.repeat_mode)
-        setRepeatInit(true)
-      }
-    })
-  }, [currentTrack.name, player])
+  //   player.getCurrentState().then(state => {
+  //     if (!state) {
+  //       console.log("no state")
+  //       return 
+  //     }
+  //     else {
+  //       setRepeat(state.repeat_mode)
+  //     }
+  //   })
+  // }, [currentTrack.name, player])
+
+  useEffect(() => {
+    console.log('I think repeat state is ' + repeat)
+  }, [repeat])
 
 
   useInterval(() => {
     if (ready && !paused) { setCounter(counter + 1000) }
-  }, 1000);
-
-  useEffect(() => {
-    if (shuffling) { setShuffleColour('#1ed760') }
-  }, [shuffling])
-
-  useEffect(()=> {
-    if (repeat >= 1) { setRepeatIconColour('#1ed760') }
-  }, [repeat])
+  }, 1000)
 
   useEffect(() => {
     if (!ready) return
@@ -183,36 +179,40 @@ export default function WebPlayer() {
     }).catch(error => { console.log(error) })
   }, [player, currentTrack.name, setNowPlaying, paused])
 
-  useEffect(() => {
-    if (!accessToken) return
-    if (!repeatInit) return
-
-    const changeRepeat = async () => {
-      try {
-        const response = await putWithToken(`https://api.spotify.com/v1/me/player/repeat?state=${repeatMode}`, accessToken)
-        console.log(response)
-      } catch (err) { console.error(err) }
-    }
-    
-    let repeatMode
-    if (repeat === 0) { repeatMode = "off" }
-    else if (repeat === 1) { repeatMode = "context" }
-    else if (repeat === 2) { repeatMode = "track" }
-
-    if (repeatCheck !== repeat) {
-      changeRepeat()
-    }  
-
-  }, [accessToken, repeatCheck, repeat, repeatInit])
-
   // FUNCTIONS
 
   const toggleShuffle = async (bool) => {
+    setShuffling(bool)
     try {
       const response = await putWithToken(`https://api.spotify.com/v1/me/player/shuffle?state=${bool}`, accessToken)
       console.log(response)
     } catch (err) { console.error(err) }
   }
+
+  useEffect(() => {
+    if (!accessToken) return
+    const handleRepeat = async () => {
+    if (repeat === 0) {
+      try {
+        const response = await putWithToken(`https://api.spotify.com/v1/me/player/repeat?state=off`, accessToken)
+        console.log(response)
+      } catch (err) { console.error(err) }
+    }
+    else if (repeat === 1) {
+      try {
+        const response = await putWithToken(`https://api.spotify.com/v1/me/player/repeat?state=context`, accessToken)
+        console.log(response)
+      } catch (err) { console.error(err) }
+    }
+    else if (repeat === 2) {
+      try {
+        const response = await putWithToken(`https://api.spotify.com/v1/me/player/repeat?state=track`, accessToken)
+        console.log(response)
+      } catch (err) { console.error(err) }
+    }  
+    }
+    handleRepeat()
+  }, [accessToken, repeat])
 
   const setNewPlayback = async (progress) => {
     let newPosition = Math.floor((currentTrack.duration_ms / 100) * progress)
@@ -279,52 +279,29 @@ export default function WebPlayer() {
       </div>
 
       <div id='playFunctions'>
-      <div>
-      <svg className='shuffleIcon' 
-           role="img" 
-           height="16" 
-           width="16" 
-           viewBox="0 0 16 16"
-           onMouseOver={()=> { if (!shuffling) { setShuffleColour('white') } }}
-           onMouseLeave={()=> { if (!shuffling) { setShuffleColour('grey') } }}
-           onClick={()=> {
-             if (shuffling) {
-               setShuffleColour('white')
-               setShuffling(false)
-               toggleShuffle(false)
-             }
-             else {
-              setShuffling(true)
-              toggleShuffle(true)
-             }
-           }}>
-            <path fill={shuffleColour} d="M4.5 6.8l.7-.8C4.1 4.7 2.5 4 .9 4v1c1.3 0 2.6.6 3.5 1.6l.1.2zm7.5 4.7c-1.2 0-2.3-.5-3.2-1.3l-.6.8c1 1 2.4 1.5 3.8 1.5V14l3.5-2-3.5-2v1.5zm0-6V7l3.5-2L12 3v1.5c-1.6 0-3.2.7-4.2 2l-3.4 3.9c-.9 1-2.2 1.6-3.5 1.6v1c1.6 0 3.2-.7 4.2-2l3.4-3.9c.9-1 2.2-1.6 3.5-1.6z"></path>
-        </svg>
-        <div className='circle' style={(shuffling)? {visibility: 'visible'} : {visibility: 'hidden'}}/>
+        <div>
+          <svg className='shuffle' role="img" height="16" width="16" viewBox="0 0 16 16" onClick={()=> toggleShuffle(!shuffling)}>
+            <path className={shuffling? 'shuffleActive' : 'shuffleIcon'} d="M4.5 6.8l.7-.8C4.1 4.7 2.5 4 .9 4v1c1.3 0 2.6.6 3.5 1.6l.1.2zm7.5 4.7c-1.2 0-2.3-.5-3.2-1.3l-.6.8c1 1 2.4 1.5 3.8 1.5V14l3.5-2-3.5-2v1.5zm0-6V7l3.5-2L12 3v1.5c-1.6 0-3.2.7-4.2 2l-3.4 3.9c-.9 1-2.2 1.6-3.5 1.6v1c1.6 0 3.2-.7 4.2-2l3.4-3.9c.9-1 2.2-1.6 3.5-1.6z"></path>
+          </svg>
+          <div className='circle' style={(shuffling)? {visibility: 'visible'} : {}}/>
         </div>
-      <div className='prevBox' onClick={() => player.previousTrack()}>
-        <div className='prevTrackButton' />
-      </div>
-      <div className='playButton' onClick={() => player.togglePlay()}>
-        {(paused)? <div className='playIcon' /> : <div className='pauseIcon' />}
-      </div>
-      <div className='nextBox' onClick={() => player.nextTrack()}>
-        <div className='nextTrackButton' />
-      </div>
+        <div className='prevBox' onClick={() => player.previousTrack()}>
+          <div className='prevTrackButton' />
+        </div>
+        <div className='playButton' onClick={() => player.togglePlay()}>
+          <div className={paused? 'playIcon' : 'pauseIcon'} /> 
+        </div>
+        <div className='nextBox' onClick={() => player.nextTrack()}>
+          <div className='nextTrackButton' />
+        </div>
       <div>
-      <svg className='repeatIcon' role="img" height="16" width="16" viewBox="0 0 16 16"
-          onMouseOver={()=> { if (repeat === 0) { setRepeatIconColour('white') } }}
-          onMouseLeave={()=> { if (repeat === 0) { setRepeatIconColour('grey') }}}
+      <svg className='repeat' role="img" height="16" width="16" viewBox="0 0 16 16"
           onClick={()=> {
             if (repeat === 0) { setRepeat(1) }
             else if (repeat === 1) { setRepeat(2) }
-            else if (repeat === 2) {
-              setRepeat(0)
-              setRepeatIconColour('white')
-            }
-          }}>
-            <path fill={repeatIconColour} d="M5.5 5H10v1.5l3.5-2-3.5-2V4H5.5C3 4 1 6 1 8.5c0 .6.1 1.2.4 1.8l.9-.5C2.1 9.4 2 9 2 8.5 2 6.6 3.6 5 5.5 5zm9.1 1.7l-.9.5c.2.4.3.8.3 1.3 0 1.9-1.6 3.5-3.5 3.5H6v-1.5l-3.5 2 3.5 2V13h4.5C13 13 15 11 15 8.5c0-.6-.1-1.2-.4-1.8z"></path>
-            <circle style={(repeat === 2)? {visibility: 'visible'} : {visibility: 'hidden'}}
+            else if (repeat === 2) { setRepeat(0) }}}>
+            <path className={repeat >= 1? 'repeatActive' : 'repeatIcon'} d="M5.5 5H10v1.5l3.5-2-3.5-2V4H5.5C3 4 1 6 1 8.5c0 .6.1 1.2.4 1.8l.9-.5C2.1 9.4 2 9 2 8.5 2 6.6 3.6 5 5.5 5zm9.1 1.7l-.9.5c.2.4.3.8.3 1.3 0 1.9-1.6 3.5-3.5 3.5H6v-1.5l-3.5 2 3.5 2V13h4.5C13 13 15 11 15 8.5c0-.6-.1-1.2-.4-1.8z"></path>
+            <circle style={repeat === 2? {visibility: 'visible'} : {visibility: 'hidden'}}
                     cx="12" cy="6" r="4.5" stroke="#212121" strokeWidth="1" fill="#1ed760"/>
             <text className="repeatOne"
                   style={(repeat === 2)? {visibility: 'visible'} : {visibility: 'hidden'}}
@@ -342,63 +319,39 @@ export default function WebPlayer() {
 
     <div id='player'>
       <div className='playedTime'>
-        {(dragging)? 
-          toMinsSecs(Math.floor((currentTrack.duration_ms / 100) * (dragPos / bar.offsetWidth) * 100))
-        :
-          toMinsSecs(counter)}
+        {dragging? toMinsSecs(Math.floor((currentTrack.duration_ms / 100) * (dragPos / bar.offsetWidth) * 100)) : toMinsSecs(counter)}
       </div>
-      <div id='playProgressBar' 
-           onMouseOver={()=> setBarHover(true)} 
-           onMouseLeave={()=> setBarHover(false)} 
+      <div id='playProgressBar'
            onMouseDown={(e)=> {
              setDragPos(e.screenX - (bar.offsetLeft + playerDiv.offsetLeft))
-             console.log(playerDiv.offsetLeft)
              setDragging(true)}}>
             <div className='playProgress' style={(dragging)? {width: dragPos, backgroundColor: '#1ed760'} : {width: percent + '%'}}>
-              <div className='drag' 
-                   onMouseDown={()=> setDragging(true)}
-                   style={(dragging || barHover)? {visibility: 'visible'} : {visibility: 'hidden'}}>
-              </div>
+              <div className='drag' onMouseDown={()=> setDragging(true)} style={dragging? {visibility: 'visible'} : {}} />
             </div>
       </div>
       <div className='playingTimeTotal'>{toMinsSecs(total)}</div>
     </div>
 
-      <svg className='volumeIcon'
-           xmlns="http://www.w3.org/2000/svg" 
-           width="24" 
-           fill="none" 
-           height="24" 
-           viewBox="0 0 24 24" 
-           stroke={volIconColour} 
-           strokeWidth="1" 
-           strokeLinecap="round" 
-           strokeLinejoin="round"
-           onMouseOver={()=> setVolIconColour('white')}
-           onMouseLeave={()=> setVolIconColour('grey')}
+      <svg className='volumeIcon' width="24" fill="none" height="24" viewBox="0 0 24 24" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"
            onClick={()=> {
              if (mute) {
                setMute(false)
                setVol(prevVol)
-             }
-             else {
+             } else {
                setMute(true)
                setPrevVol(vol)
                setVol(0)
              }}}
            >
             <polygon points="11,6 6,9 3,9 3,15 6,15 11,18 11,6"></polygon>
-            <path d={volLevel}></path>
-                
+            <path d={volLevel}></path>            
         </svg>
       <div id='volumeBar'
-           onMouseOver={()=> setVolHover(true)} 
-           onMouseLeave={()=> setVolHover(false)}  
            onMouseDown={(e)=> {
              if ((e.screenX - volBar.offsetLeft) >= 0 && (e.screenX - volBar.offsetLeft) <= 100) { setVol(e.screenX - volBar.offsetLeft) }
              setVolDrag(true)}}>
         <div id='volume' style={(volDrag)? {width: vol, backgroundColor: '#1ed760'} : {width: vol}}>
-            <div className='drag' onMouseDown={()=> setVolDrag(true)} style={(volDrag || volHover)? {visibility: 'visible'} : {visibility: 'hidden'}}>
+            <div className='drag' onMouseDown={()=> setVolDrag(true)} style={volDrag? {visibility: 'visible'} : {}}>
             </div>
         </div>
       </div>
