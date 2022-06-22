@@ -6,10 +6,11 @@ import playTrack from '../utils/playTrack'
 import { useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateNotification } from '../pageSlice'
-import axios from 'axios'
+import { postWithToken } from '../utils/postWithToken'
+import { putWithToken } from '../utils/putWithToken'
+import { deleteWithToken } from '../utils/deleteWithToken'
 
 export default function TracksTable({content, page, trackDepth }) {
-
     const accessToken = useSelector(state => state.user.token)
     const dispatch = useDispatch()
     const history = useHistory()
@@ -24,13 +25,10 @@ export default function TracksTable({content, page, trackDepth }) {
     const sidebarWidth = useSelector(state => state.page.sidebarWidth)
     const breakPoint = 800
 
-
     function getLikedIds(arr) {
       let newArr = []
       for (let i = 0; i < arr.length; i++) {
-        if (arr[i].saved) {
-          newArr.push(arr[i].id)
-        }
+        if (arr[i].saved) { newArr.push(arr[i].id) }
       }
       return newArr
     }
@@ -38,109 +36,48 @@ export default function TracksTable({content, page, trackDepth }) {
     useEffect(() => {
       if (content.length === 0) return
       setLikedTracks(getLikedIds(content))
-
-      return function cleanUp() {
-        setLikedTracks([])
-      }
+      return () => { setLikedTracks([]) }
     }, [content])
 
-
-      useEffect(() => {
-        let options = {
-          root: null,
-          rootMargin: '-8.1% 0% 0% 0%',
-          threshold: [0, 1]
-        }
-    
-        function navTableHead(entries) {
-          if (entries[0].intersectionRatio > 0) {           
-            setScrolling(false)
-          }
-          else {           
-            setScrolling(true)
-          }
-        }
-     
-          let observer = new IntersectionObserver(navTableHead, options)
-          let target = document.getElementById('tableHeader')
-          
-
-        observer.observe(target)
-
-        return function cleanUp() {
-          observer.disconnect()
-        }
-      }, [])
-
-      function addTrack(data, trackObj) {
-        dispatch(updateNotification({notification: 'Added to playlist'}))
-        let playlistId = uri.slice(17)
-        const options = {
-          url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-          method: 'POST',
-          headers: {
-              'Authorization': `Bearer ${accessToken}`,
-              'Content-Type': 'application/json',
-              },
-          data
-          }
-      
-        axios(options)
-        .then(response => {
-           console.log(response)
-           setNewTrack(trackObj)
-    
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    useEffect(() => {
+      function navTableHead(entries) {
+        if (entries[0].intersectionRatio > 0) { setScrolling(false) }
+        else { setScrolling(true) }
       }
+      let options = { root: null, rootMargin: '-8.1% 0% 0% 0%', threshold: [0, 1] }
+      let observer = new IntersectionObserver(navTableHead, options)
+      let target = document.getElementById('tableHeader')    
+      observer.observe(target)
+      return () => { observer.disconnect() }
+    }, [])
+    
+    // Only relevant to custom playlist
+    const addTrack = async (data, trackObj) => {
+      dispatch(updateNotification({notification: 'Added to playlist'}))
+      try {
+        const response = await postWithToken(`https://api.spotify.com/v1/playlists/${uri.slice(17)}/tracks`, accessToken, data)
+        console.log(response)
+        setNewTrack(trackObj)
+      } catch (err) { console.error(err) }
+    }
 
-
-     function handleLike(id) {
-
+    const handleLike = async (id) => {
       if (likedTracks.includes(id)) {
         setLikedTracks(likedTracks => likedTracks.filter(item => item !== id))
         dispatch(updateNotification({notification: 'Removed from your Liked Songs'}))
-        const options = {
-          url: `https://api.spotify.com/v1/me/tracks?ids=${id}`,
-          method: 'DELETE',
-          headers: {
-              'Authorization': `Bearer ${accessToken}`,
-              'Content-Type': 'application/json',
-          }
-        }
-
-        axios(options)
-        .then(response => {
+        try {
+          const response = await deleteWithToken(`https://api.spotify.com/v1/me/tracks?ids=${id}`, accessToken)
           console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-      }
-      else {
+        } catch (err) { console.error(err) }
+      } else {
         setLikedTracks(likedTracks => [...likedTracks, id])
         dispatch(updateNotification({notification: 'Added to your Liked Songs'}))
-        const options = {
-            url: `https://api.spotify.com/v1/me/tracks?ids=${id}`,
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json',
-            }
-        }
-
-        axios(options)
-        .then(response => {
+        try {
+          const response = await putWithToken(`https://api.spotify.com/v1/me/tracks?ids=${id}`, accessToken)
           console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-        })
+        } catch (err) { console.error(err) }
       }
-   }
-
+    }
 
     if (page === 'artist') {
         return (

@@ -9,6 +9,8 @@ import getDataObject from '../utils/getDataObject'
 import { useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateSidebarPlaylists } from '../pageSlice'
+import { getWithToken } from '../utils/getWithToken'
+import { postWithToken } from '../utils/postWithToken'
 
 export default function SideBar() {
     const history = useHistory()
@@ -21,50 +23,23 @@ export default function SideBar() {
     const sidebarWidth = useSelector(state => state.page.sidebarWidth)
 
     useEffect(() => {
-      if (!accessToken) return
-      const options = {
-        url: 'https://api.spotify.com/v1/me/playlists',
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-            }
-        }      
+      if (!accessToken) return 
       const getUserPlaylists = async () => {
         try {
-          const response = await axios(options)
-          dispatch(updateSidebarPlaylists({ sidebarPlaylists: response.data.items.map(getDataObject) }))
-        } catch (err) {
-          console.error(err)
-        }
+          const response = await getWithToken('https://api.spotify.com/v1/me/playlists', accessToken)
+          dispatch(updateSidebarPlaylists({ sidebarPlaylists: response.items.map(getDataObject) }))
+        } catch (err) { console.error(err) }
       } 
       getUserPlaylists() 
     }, [accessToken, dispatch])
-
       
     // Function to create new playlist and then navigate to its page
     async function createPlaylist() {
-        const options = {
-          url: `https://api.spotify.com/v1/users/${user.id}/playlists`,
-          method: 'POST',
-          headers: {
-              'Authorization': `Bearer ${accessToken}`,
-              'Content-Type': 'application/json',
-              },
-          data: {name: 'My Playlist #' + (playlists.length + 1)}
-          }
-        
         try {
-          const response = await axios(options)
-          dispatch(updateSidebarPlaylists({ sidebarPlaylists: [...playlists, getDataObject(response.data)]}))
-          let location = {
-            pathname: '/playlist/' + response.data.id,
-            state: response.data.id
-          }
-          history.push(location)
-        } catch (err) {
-          console.error(err)
-        }
+          const response = await postWithToken(`https://api.spotify.com/v1/users/${user.id}/playlists`, accessToken, {name: `My Playlist #${playlists.length + 1}`})
+          dispatch(updateSidebarPlaylists({ sidebarPlaylists: [...playlists, getDataObject(response)]}))
+          history.push({ pathname: '/playlist/' + response.id, state: response.id })
+        } catch (err) { console.error(err) }
     }
 
     return (  

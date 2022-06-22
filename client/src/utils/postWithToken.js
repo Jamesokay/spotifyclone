@@ -1,8 +1,8 @@
-export const putWithToken = async (url, token, reqBody) => {
+export const postWithToken = async (url, token, reqBody) => {
     try {
         const response = await fetch(url, 
             {
-                method: 'PUT', 
+                method: 'POST', 
                 headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'},
                 body: reqBody? JSON.stringify(reqBody) : {}
             })
