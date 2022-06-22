@@ -23,20 +23,12 @@ export default function Dashboard() {
         {recent.length > 7?
           <PanelGrid head={greeting}/>
           :
-          <>
-            <span className='panelTitle'>{greeting}</span>
-            <Panel content={recent} />
-          </>     
+          <Panel content={recent} title={greeting} />  
         }
-        <span className='panelTitle'>{'More like ' + moreLikeSeed}</span>
-        <Panel content={moreLike} />
-        <span className='panelTitle'>Album picks</span>
-        <span className='panelTitleSub'>Albums for you based on what you like to listen to.</span>
-        <Panel content={recommend} />   
-        <span className='panelTitle'>Jump back in</span> 
-        <Panel content={recentReversed} />
-        <span className='panelTitle'>Recommended for today</span>
-        <Panel content={forToday} />
+        <Panel content={moreLike} title={`More like ${moreLikeSeed}`} />
+        <Panel content={recommend} title='Album picks' subtitle='Albums for you based on what you like to listen to' />   
+        <Panel content={recentReversed} title='Jump back in'/>
+        <Panel content={forToday} title='Recommended for today' />
       </div>
     )
 }        

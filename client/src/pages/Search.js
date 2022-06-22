@@ -306,20 +306,12 @@ export default function Search() {
             </div>
 
             </div>
-            {(featuringArtist.length > 0)?
-            <div>
-              <span className='panelTitle'>Featuring {topResult.name}</span>
-              <Panel content={featuringArtist} panelVariant='true'/> 
-            </div>
-            :
-            <div></div>
-            }
-            <span className='panelTitle'>Artists</span>
-            <Panel content={artistResults} />
-            <span className='panelTitle'>Albums</span>
-            <Panel content={albumResults} />
-            <span className='panelTitle'>Playlists</span>
-            <Panel content={playlistResults} />
+            {(featuringArtist.length > 0) && (
+              <Panel content={featuringArtist} title={`Featuring ${topResult.name}`} /> 
+            )}
+            <Panel content={artistResults} title='Artists'/>
+            <Panel content={albumResults} title='Albums' />
+            <Panel content={playlistResults} title='Playlists' />
             </div>
             
             :

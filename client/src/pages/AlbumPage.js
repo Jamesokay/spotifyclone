@@ -183,9 +183,8 @@ export default function AlbumPage({ location }) {
               <AlbumLoader/>
               :
               <TracksTable content={tracksFinal} page='album' />
-            }   
-            <span className='panelTitle'>{(album.artists)? 'More by ' + album.artists[0].name : ''}</span>
-            <Panel content={moreByArtist} /> 
+            }
+            <Panel content={moreByArtist} title={(album.artists)? `More by ${album.artists[0].name}` : ''} /> 
           </div>
         </div>
     )

@@ -50,9 +50,8 @@ export default function CollectionPlaylist() {
 
     return (
     <div id='collectionPagePlaylist'>
-     <CollectionNav />
-     <span className='collectionTitle'>Playlists</span> 
-      <Panel content={playlists} type='collection' likedSongsCard='true'/>
+      <CollectionNav />
+      <Panel content={playlists} type='collection' title='Playlists' likedSongsCard='true'/>
     </div>
     )
 }

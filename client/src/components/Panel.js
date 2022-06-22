@@ -1,18 +1,10 @@
-import { TrackContext, RightClickContext } from '../contexts'
-import playTrack from '../utils/playTrack'
-import pauseTrack from '../utils/pauseTrack'
-import { Link } from 'react-router-dom'
-import { useHistory } from 'react-router-dom'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import useViewport from '../hooks/useViewPort'
 import LikedSongsCard from './LikedSongsCard'
 import { useSelector } from 'react-redux'
+import Card from './Card'
 
-export default function Panel({ content, type, likedSongsCard }) {
-    const accessToken = useSelector(state => state.user.token)
-    const { nowPlaying } = useContext(TrackContext)
-    const history = useHistory()
-    const { rightClick, setRightClick } = useContext(RightClickContext)
+export default function Panel({ title, subtitle, content, type, likedSongsCard }) {
     const [index, setIndex] = useState(5)
     const [cardWidth, setCardWidth] = useState('17.8%')
     const { width } = useViewport() 
@@ -57,64 +49,16 @@ export default function Panel({ content, type, likedSongsCard }) {
     }, [type, content, index])
   
     return (
-        <div className='panel' style={type === 'collection'? {flexWrap: 'wrap'} : {}}> 
-        {likedSongsCard? <LikedSongsCard /> : <></>}
-        {array.map(cont =>
-          <Link className='cardLink' style={{width: cardWidth}} key={cont.key} to={{pathname: `/${cont.type}/${cont.id}`, state: cont.id }}
-                onContextMenu={() => setRightClick({type: cont.type, id: cont.id})}>
-          <div className='cardBody' style={(rightClick.id === cont.id)? {background: 'rgb(40, 40, 40)'} : {}}>
-            {cont.type === 'artist'?
-            <img className='cardArtist' src={cont.imgUrl} alt='' />
-            :
-            <div className='cardImageBox'>
-              <img className='cardImage' src={cont.imgUrl} alt='' />
-              <div className ='cardPlayButton'
-                   style={(cont.uri === nowPlaying.contextUri)? {opacity: '1', bottom: '27px'} : {opacity: '0'}}
-               onClick={(e) => {
-                e.preventDefault()
-                 if (cont.uri === nowPlaying.contextUri && !nowPlaying.isPaused) {
-                     pauseTrack(accessToken)
-                 }
-                 else if (cont.uri === nowPlaying.contextUri && nowPlaying.isPaused) {
-                     playTrack(accessToken)
-                 }
-                 else {
-                 playTrack(accessToken, {context_uri: cont.uri})} 
-                }
-               }>
-                <div className={(!nowPlaying.isPaused && cont.uri === nowPlaying.contextUri)? 'cardPauseIcon' : 'cardPlayIcon'}></div>
-              </div>
-            </div>
-            }
-            <div className='cardText'>
-            <span className='cardTitle' style={(rightClick.id === cont.id)? {textDecoration: 'underline'} : {}}>{cont.name}</span>
-            <br /> 
-            <span className='cardSub'>        
-            {(cont.type === 'album' && !cont.onAlbumPage && !cont.onArtistPage)?
-            cont.artists.map((artist, index, artists) =>
-            <span key={artist.id} style={(rightClick.id === cont.id)? {textDecoration: 'underline'} : {}}>
-              <span className='cardSubLink' onClick={(e) => {
-                e.preventDefault()
-                history.push({
-                  pathname: `/artist/${artist.id}`,
-                  search: '', 
-                  state: artist.id
-                })
-              }}>{artist.name}</span>
-              {(index < artists.length - 1)?
-              <span className='cardPunc'>, </span>
-              :
-              <></>
-              }
-            </span>
-            )
-            :
-            <span className='cardSub'>{cont.subtitle}</span>
-            }
-            </span>  
-            </div>
-          </div>
-          </Link>
+      <>
+        <span className={type === 'collection'? 'collectionTitle' : 'panelTitle'}>{title}</span>
+        {subtitle && (
+          <span className='panelTitleSub'>{subtitle}</span>
         )}
-        </div>)
+        <div className='panel' style={type === 'collection'? {flexWrap: 'wrap'} : {}}> 
+        {likedSongsCard && ( <LikedSongsCard /> )}
+        {array.map(cont =>
+          <Card key={cont.key} item={cont} cardWidth={cardWidth} />
+        )}
+        </div>
+      </>)
 }

@@ -40,8 +40,7 @@ export default function CollectionArtist() {
     return (
         <div id='collectionPage'>
             <CollectionNav />
-            <span className='collectionTitle'>Artists</span>
-            <Panel content={artists} type='collection'/>
+            <Panel content={artists} type='collection' title='Artists' />
         </div>
     )
 }

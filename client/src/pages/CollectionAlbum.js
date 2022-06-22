@@ -41,8 +41,7 @@ export default function CollectionAlbum() {
     return (
         <div id='collectionPage'>
             <CollectionNav />
-            <span className='collectionTitle'>Albums</span>
-            <Panel content={albums} type='collection'/>
+            <Panel content={albums} title='Albums' type='collection'/>
         </div>
     )
 }
